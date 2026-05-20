@@ -61,11 +61,11 @@ export default function Contact() {
           transition={{ duration: 1.4, delay: 0.7, ease: cinema }}
         >
           <MagneticLink
-            href="mailto:hello@lucas.dev"
+            href="mailto:lucaspsckenal@gmail.com"
             className={styles.email}
             strength={0.18}
           >
-            hello@lucas.dev
+            <span data-cursor-label="Send email ↗">lucaspsckenal@gmail.com</span>
           </MagneticLink>
           <span className={styles.emailUnderline} aria-hidden />
         </motion.div>

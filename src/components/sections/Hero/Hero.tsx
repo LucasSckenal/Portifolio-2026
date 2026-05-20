@@ -245,6 +245,9 @@ export default function Hero() {
         </a>
       </div>
 
+      {/* ── Ink-wash transition into the next section ── */}
+      <div className={styles.inkWash} aria-hidden />
+
       {/* ── Initial black curtain fading away ── */}
       <div ref={curtainRef} className={styles.curtain} aria-hidden />
     </section>

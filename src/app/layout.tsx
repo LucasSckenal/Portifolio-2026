@@ -25,8 +25,22 @@ const notoSerifJp = Noto_Serif_JP({
   display: 'swap',
 });
 
-// TODO: replace with your live URL once deployed
-const SITE_URL = 'https://lucassckenal.dev';
+// Resolves the site URL automatically across environments:
+//   1. NEXT_PUBLIC_SITE_URL  — your custom domain (set on Vercel env vars)
+//   2. VERCEL_PROJECT_PRODUCTION_URL — Vercel's main production URL
+//   3. VERCEL_URL — preview/branch deploy URL
+//   4. localhost — dev fallback
+// When you point a custom domain later (e.g. lucassckenal.dev), add it
+// to Vercel project settings → Environment Variables as NEXT_PUBLIC_SITE_URL.
+function getSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL)
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return 'http://localhost:3000';
+}
+
+const SITE_URL = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

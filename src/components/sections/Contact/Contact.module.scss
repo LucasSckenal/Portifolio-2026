@@ -113,11 +113,13 @@
   font-family: var(--font-serif);
   font-weight: 200;
   font-style: italic;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  // Scale slightly tighter than before to keep the full email on one line
+  font-size: clamp(1.6rem, 4vw, 3.2rem);
   letter-spacing: var(--track-snug);
   color: var(--on-dark);
   display: inline-block;
   position: relative;
+  word-break: break-all; // safety on very narrow viewports
   transition: color 0.6s var(--ease-cinema);
 
   &:hover { color: var(--accent); }

@@ -131,7 +131,14 @@ export default function ProjectScene({
 
       <div className={styles.inner}>
         {/* Media side */}
-        <div ref={mediaRef} className={styles.mediaSlot}>
+        <div
+          ref={mediaRef}
+          className={styles.mediaSlot}
+          onMouseMove={handleMouseMove}
+          data-cursor
+          data-cursor-label={live ? 'Open Live ↗' : href ? 'View source ↗' : undefined}
+        >
+          <div className={styles.mediaHighlight} aria-hidden />
           {children}
         </div>
 

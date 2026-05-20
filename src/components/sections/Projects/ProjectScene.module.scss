@@ -127,6 +127,30 @@
   aspect-ratio: 16 / 11;
   will-change: clip-path, transform;
   overflow: hidden;
+
+  // CSS vars set by JS on mousemove for the highlight to track
+  --mx: 50%;
+  --my: 50%;
+
+  &:hover .mediaHighlight { opacity: 1; }
+}
+
+// Pointer-follow radial highlight — Vercel/Linear style.
+// Sits on top of media but with mix-blend so it lifts the area under the cursor.
+.mediaHighlight {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-cinema);
+  background: radial-gradient(
+    260px circle at var(--mx) var(--my),
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05) 35%,
+    transparent 60%
+  );
+  mix-blend-mode: soft-light;
 }
 
 // ── Info column ────────────────────────

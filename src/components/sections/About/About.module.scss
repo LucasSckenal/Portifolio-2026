@@ -1,0 +1,268 @@
+.about {
+  position: relative;
+  width: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  padding-block: var(--s-8);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+// ── Background kanji watermark ───────────
+.watermark {
+  position: absolute;
+  top: 50%;
+  right: -4%;
+  transform: translateY(-50%);
+  z-index: 0;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(28rem, 56vw, 52rem);
+  line-height: 0.85;
+  color: var(--ink);
+  opacity: 0.035;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+  will-change: transform;
+}
+
+// ── Inner layout ─────────────────────────
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+// ── Header row ───────────────────────────
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-7);
+}
+
+.label,
+.labelJp {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.labelJp {
+  font-family: var(--font-serif);
+  text-transform: none;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.divider {
+  flex: 0 1 120px;
+  height: 1px;
+  background: var(--line);
+}
+
+// ── Two-column asymmetric grid ───────────
+.grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--s-6);
+  align-items: start;
+
+  @include breakpoint(md) {
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+}
+
+// ── Portrait column ──────────────────────
+.portraitCol {
+  position: relative;
+  padding-top: var(--s-7); // intentional vertical offset down
+  display: grid;
+  gap: var(--s-3);
+
+  @include breakpoint(md) {
+    padding-top: 0;
+  }
+}
+
+.portraitFrame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #DDD8CF;
+  will-change: transform;
+}
+
+.portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.15) contrast(1.02);
+}
+
+.portraitPlaceholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 40% 35%, #EDE7DD 0%, #C9C2B6 60%, #9C9588 100%);
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.02) 0px,
+        rgba(0, 0, 0, 0.02) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    pointer-events: none;
+  }
+}
+
+.portraitTimecode {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(14, 13, 11, 0.55);
+}
+
+.portraitJp {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(10rem, 22vw, 16rem);
+  line-height: 1;
+  color: rgba(14, 13, 11, 0.22);
+  letter-spacing: 0.02em;
+}
+
+.portraitCorner {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  width: 22px;
+  height: 22px;
+  border-right: 1px solid rgba(14, 13, 11, 0.45);
+  border-bottom: 1px solid rgba(14, 13, 11, 0.45);
+  opacity: 0.7;
+}
+
+.caption {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.captionMark {
+  color: var(--accent);
+}
+
+// ── Copy column ──────────────────────────
+.copyCol {
+  display: grid;
+  gap: var(--s-5);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: var(--track-tight);
+  margin: 0;
+}
+
+.titleLine {
+  display: block;
+  overflow: hidden;
+
+  &:nth-child(2) {
+    font-style: italic;
+    padding-left: 1.2em;
+    color: var(--ink-soft);
+  }
+}
+
+.paragraphs {
+  display: grid;
+  gap: var(--s-3);
+  max-width: 58ch;
+}
+
+.paragraph {
+  font-family: var(--font-sans);
+  font-size: var(--t-md);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  font-weight: 300;
+  letter-spacing: var(--track-snug);
+}
+
+// ── Stats row ────────────────────────────
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+
+  @include breakpoint(sm) {
+    grid-template-columns: 1fr;
+    gap: var(--s-2);
+  }
+}
+
+.stat {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.statJp {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 1rem;
+  color: var(--accent);
+  opacity: 0.85;
+  letter-spacing: 0.08em;
+}
+
+.statLabel {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.statValue {
+  font-family: var(--font-sans);
+  font-size: var(--t-md);
+  font-weight: 300;
+  letter-spacing: var(--track-snug);
+  color: var(--ink);
+}

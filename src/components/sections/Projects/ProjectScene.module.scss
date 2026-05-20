@@ -1,0 +1,341 @@
+// =========================================
+// Per-scene cinematic frame
+// =========================================
+
+.scene {
+  position: relative;
+  min-height: 100vh;
+  padding-block: var(--s-7);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--ink);
+  background: var(--bg);
+  display: grid;
+  align-items: center;
+}
+
+// ── Moods ───────────────────────────────
+.moodDark {
+  background: #14120F;
+  color: var(--on-dark);
+}
+
+.moodLight {
+  background: #F3EFE7;
+  color: var(--ink);
+}
+
+.moodGlass {
+  background: #0F0E0C;
+  color: var(--on-dark);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 25% 30%, rgba(140, 42, 31, 0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 70%, rgba(60, 80, 110, 0.10) 0%, transparent 55%);
+    pointer-events: none;
+  }
+}
+
+// ── Watermark kanji ─────────────────────
+.watermark {
+  position: absolute;
+  top: 50%;
+  right: -6%;
+  transform: translateY(-50%);
+  z-index: 0;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(24rem, 50vw, 44rem);
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  color: currentColor;
+  opacity: 0.05;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.alignRight {
+  .watermark {
+    right: auto;
+    left: -6%;
+  }
+}
+
+// ── Big index number ───────────────────
+.indexBig {
+  position: absolute;
+  top: var(--s-4);
+  left: var(--gutter);
+  z-index: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(8rem, 18vw, 15rem);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: currentColor;
+  opacity: 0.06;
+  user-select: none;
+  pointer-events: none;
+}
+
+.alignRight {
+  .indexBig {
+    left: auto;
+    right: var(--gutter);
+  }
+}
+
+// ── Inner grid ─────────────────────────
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--s-6);
+  align-items: center;
+
+  @include breakpoint(md) {
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+  }
+}
+
+.alignRight .inner {
+  .mediaSlot { order: 2; }
+  .info       { order: 1; }
+
+  @include breakpoint(md) {
+    .mediaSlot { order: 1; }
+    .info       { order: 2; }
+  }
+}
+
+// ── Media slot ─────────────────────────
+.mediaSlot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  will-change: clip-path, transform;
+  overflow: hidden;
+}
+
+// ── Info column ────────────────────────
+.info {
+  display: grid;
+  gap: var(--s-3);
+  align-content: center;
+  max-width: 480px;
+}
+
+.statusRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(140, 42, 31, 0.5);
+  animation: status-pulse 2.4s ease-in-out infinite;
+}
+
+.moodLight .statusDot {
+  background: var(--accent);
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.2); }
+}
+
+.statusSep {
+  opacity: 0.5;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: var(--track-tight);
+  margin: 0;
+}
+
+.titleLine {
+  display: block;
+  overflow: hidden;
+}
+
+.description {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--t-md);
+  line-height: 1.55;
+  letter-spacing: var(--track-snug);
+  opacity: 0.78;
+  max-width: 44ch;
+}
+
+// ── Roles chips ────────────────────────
+.roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: var(--s-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.role {
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  opacity: 0.6;
+  transition: opacity 0.5s var(--ease-cinema);
+
+  &:hover { opacity: 1; }
+}
+
+// ── Tech sub-line ──────────────────────
+.tech {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 4px;
+  padding-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.techLabel {
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.techList {
+  letter-spacing: var(--track-wide);
+}
+
+// ── Team line ──────────────────────────
+.team {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+.teamMark {
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+// ── Footer row ─────────────────────────
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+  // Sass rgba() can't take currentColor, so we use a neutral inset shadow
+  // that reads as a hairline on both dark and light moods.
+  box-shadow: inset 0 1px 0 rgba(127, 127, 127, 0.2);
+}
+
+.indexSmall {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.view {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -6px;
+    height: 1px;
+    background: var(--accent);
+    transition: right 0.6s var(--ease-cinema);
+  }
+
+  &:hover::after { right: 0; }
+}
+
+.viewArrow {
+  display: inline-block;
+  transition: transform 0.5s var(--ease-cinema);
+}
+
+.view:hover .viewArrow { transform: translate(3px, -3px); }
+
+// ── Primary CTA (Live) ─────────────────
+// Reads as the inviting one — visitor sees "Live" first, then "Repository"
+.viewPrimary {
+  color: var(--accent);
+
+  &::after { background: var(--accent); }
+}
+
+.viewDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(140, 42, 31, 0.5);
+  animation: view-pulse 2.4s ease-in-out infinite;
+  margin-right: 2px;
+}
+
+@keyframes view-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.2); }
+}

@@ -1,0 +1,221 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 720px;
+  overflow: hidden;
+  color: var(--on-dark);
+  isolation: isolate;
+}
+
+// ── Video bed ────────────────────────────
+.videoWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  will-change: transform, filter;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.85);
+  transform: scale(1);
+  will-change: transform, filter;
+}
+
+.tint {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(90deg, rgba(14,13,11,0.25) 0%, transparent 40%, transparent 60%, rgba(14,13,11,0.25) 100%);
+  mix-blend-mode: multiply;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%);
+  pointer-events: none;
+}
+
+// ── Kanji watermark ──────────────────────
+.kanji {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  pointer-events: none;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(18rem, 38vw, 30rem);
+  letter-spacing: 0.06em;
+  color: var(--on-dark);
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+// ── Content ──────────────────────────────
+.content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  padding: calc(var(--s-5) + var(--s-3)) var(--gutter) var(--s-4);
+  will-change: transform, opacity;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.7);
+}
+
+// ── Title ────────────────────────────────
+.title {
+  align-self: end;
+  justify-self: start;
+  max-width: 100%;
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: var(--t-hero);
+  letter-spacing: var(--track-tight);
+  line-height: 0.95;
+  color: var(--on-dark);
+}
+
+.titleLine {
+  display: block;
+  overflow: hidden;
+  // Add a little padding so descenders/italic flourishes are not clipped
+  padding-bottom: 0.08em;
+
+  // Slight optical offset for each line
+  &:nth-child(2) { padding-left: 0.6em; }
+  &:nth-child(3) {
+    padding-left: 0.2em;
+    font-style: italic;
+    color: rgba(242, 239, 233, 0.82);
+  }
+}
+
+// The piece that GSAP translates from yPercent 110 → 0
+.titleInner {
+  display: inline-block;
+  will-change: transform;
+}
+
+// ── Bottom row ───────────────────────────
+.bottomRow {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--s-4);
+  padding-top: var(--s-4);
+  margin-top: var(--s-3);
+  border-top: 1px solid var(--on-dark-line);
+  will-change: transform, opacity;
+}
+
+.meta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  max-width: 340px;
+}
+
+.metaJp {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.9;
+}
+
+.metaText {
+  font-family: var(--font-sans);
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: rgba(242, 239, 233, 0.78);
+}
+
+// ── Scroll cue ───────────────────────────
+// Absolutely positioned so it lives independent of the scroll-revealed
+// content — greets the viewer immediately as a quiet invitation.
+.scrollCue {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--s-4);
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.7);
+  transition: color 0.5s var(--ease-cinema);
+  will-change: transform, opacity;
+
+  &:hover { color: var(--on-dark); }
+}
+
+.scrollLabel {
+  display: inline-block;
+}
+
+.scrollLine {
+  position: relative;
+  display: inline-block;
+  width: 1px;
+  height: 56px;
+  background: rgba(242, 239, 233, 0.25);
+  overflow: hidden;
+}
+
+.scrollDot {
+  position: absolute;
+  top: 0;
+  left: -1px;
+  width: 3px;
+  height: 14px;
+  background: var(--on-dark);
+  animation: scroll-cue 2.4s var(--ease-cinema) infinite;
+}
+
+@keyframes scroll-cue {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateY(420%); opacity: 0; }
+}
+
+// ── Opening black curtain ────────────────
+.curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: #07070a;
+  pointer-events: none;
+}
+
+@include reduced-motion {
+  .scrollDot { animation: none; }
+}

@@ -1,0 +1,93 @@
+.sideIndex {
+  position: fixed;
+  top: 50%;
+  right: var(--s-3);
+  transform: translateY(-50%);
+  z-index: var(--z-nav);
+  color: var(--on-dark);
+  mix-blend-mode: difference;
+  pointer-events: auto;
+
+  @include breakpoint(md) { display: none; }
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.item {
+  display: block;
+}
+
+// ── Link ─────────────────────────────────
+.link {
+  position: relative;
+  display: grid;
+  grid-template-columns: 18px auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.45);
+  transition: color 0.5s var(--ease-cinema);
+
+  .label {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity 0.5s var(--ease-cinema),
+      transform 0.5s var(--ease-cinema);
+  }
+
+  &:hover {
+    color: rgba(242, 239, 233, 0.9);
+    .label { opacity: 1; transform: translateX(0); }
+    .dot   { transform: scale(1.4); }
+  }
+}
+
+// ── Active state ─────────────────────────
+.linkActive {
+  color: var(--on-dark);
+
+  .dot {
+    background: var(--accent);
+    transform: scale(1.4);
+    box-shadow: 0 0 10px rgba(140, 42, 31, 0.55);
+  }
+
+  .label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// ── Pieces ───────────────────────────────
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+  transition:
+    transform 0.5s var(--ease-cinema),
+    background-color 0.5s var(--ease-cinema),
+    box-shadow 0.5s var(--ease-cinema);
+}
+
+.indexNum {
+  font-size: 0.6rem;
+  opacity: 0.8;
+}
+
+.label {
+  font-size: 0.62rem;
+  white-space: nowrap;
+}

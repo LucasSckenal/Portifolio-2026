@@ -1,0 +1,196 @@
+.stack {
+  position: relative;
+  width: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  padding-block: var(--s-8);
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+// ── Header ───────────────────────────────
+.header {
+  margin-bottom: var(--s-6);
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.divider {
+  flex: 0 1 100px;
+  height: 1px;
+  background: var(--line);
+}
+
+.labelJp {
+  font-family: var(--font-serif);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: var(--track-tight);
+  max-width: 18ch;
+  margin: 0;
+}
+
+.titleLine {
+  display: block;
+  overflow: hidden;
+
+  &:nth-child(2) {
+    font-style: italic;
+    color: var(--ink-soft);
+    padding-left: 1.4em;
+  }
+}
+
+// ── Grid ─────────────────────────────────
+.grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--s-6);
+  align-items: start;
+
+  @include breakpoint(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ── Philosophy column ───────────────────
+.philosophy {
+  display: grid;
+  gap: var(--s-3);
+  padding-top: var(--s-3);
+}
+
+.philosophyItem {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: var(--s-2);
+  padding-block: var(--s-2);
+  border-top: 1px solid var(--line);
+
+  &:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+.philosophyJp {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: 2.4rem;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.philosophyLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 6px;
+}
+
+.philosophyValue {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: var(--t-md);
+  line-height: 1.4;
+  letter-spacing: var(--track-snug);
+  color: var(--ink);
+  margin: 0;
+}
+
+// ── Stack inventory ─────────────────────
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 14px 4px;
+  border-top: 1px solid var(--line);
+  transition: padding 0.5s var(--ease-cinema);
+
+  &:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  &:hover {
+    padding-left: 14px;
+    .itemName { color: var(--accent); }
+    .itemDots { background-position: 0 0; }
+  }
+}
+
+.itemIndex {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  color: var(--ink-mute);
+  width: 40px;
+}
+
+.itemName {
+  font-family: var(--font-sans);
+  font-size: var(--t-md);
+  font-weight: 300;
+  letter-spacing: var(--track-snug);
+  transition: color 0.5s var(--ease-cinema);
+}
+
+.itemDots {
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    var(--line) 0,
+    var(--line) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  background-size: 8px 1px;
+  background-position: 4px 0;
+  background-repeat: repeat-x;
+  transition: background-position 0.5s var(--ease-cinema);
+}
+
+.itemGroup {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}

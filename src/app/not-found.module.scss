@@ -1,0 +1,164 @@
+.notFound {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg-deep);
+  color: var(--on-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--s-5) var(--gutter);
+}
+
+// Drifting "迷" kanji (mayoi = lost)
+.kanji {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(28rem, 60vw, 48rem);
+  line-height: 0.85;
+  color: var(--on-dark);
+  opacity: 0.05;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+  animation: drift 60s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: translate(-52%, -50%); }
+  to   { transform: translate(-48%, -52%); }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  display: grid;
+  gap: var(--s-3);
+  text-align: left;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: var(--track-tight);
+}
+
+.titleLine {
+  display: block;
+
+  &:nth-child(2) {
+    font-style: italic;
+    padding-left: 1.2em;
+    color: rgba(242, 239, 233, 0.78);
+  }
+}
+
+.body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--t-md);
+  line-height: 1.55;
+  letter-spacing: var(--track-snug);
+  color: rgba(242, 239, 233, 0.65);
+  max-width: 52ch;
+  margin: var(--s-2) 0 var(--s-3);
+}
+
+// ── CTA ──────────────────────────────────
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-block: var(--s-2);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark);
+  position: relative;
+  width: fit-content;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 8px;
+    height: 1px;
+    background: var(--accent);
+    transition: right 0.7s var(--ease-cinema);
+  }
+
+  &:hover::after { right: 0; }
+  &:hover .ctaArrow { transform: translate(4px, -4px); }
+}
+
+.ctaDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(140, 42, 31, 0.6);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.5s var(--ease-cinema);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.2); }
+}
+
+// ── Signature ────────────────────────────
+.signature {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+  padding-top: var(--s-3);
+  border-top: 1px solid rgba(242, 239, 233, 0.10);
+  opacity: 0.5;
+}
+
+.signatureJp {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+}
+
+.signatureLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(242, 239, 233, 0.15);
+}
+
+.signatureLabel {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kanji, .ctaDot { animation: none; }
+}

@@ -1,0 +1,316 @@
+// =========================================
+// GameWorlds — cinematic interstitial
+// =========================================
+
+.worlds {
+  position: relative;
+  width: 100%;
+  background: #14120F;
+  color: var(--on-dark);
+  padding-block: var(--s-7);
+  overflow: hidden;
+  isolation: isolate;
+
+  // Subtle radial glow to break the flatness of the dark
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(140, 42, 31, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 10% 80%, rgba(60, 70, 90, 0.05) 0%, transparent 55%);
+    pointer-events: none;
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+// ── Header ───────────────────────────────
+.header {
+  display: grid;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+  max-width: 720px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.5);
+}
+
+.divider {
+  flex: 0 1 80px;
+  height: 1px;
+  background: rgba(242, 239, 233, 0.12);
+}
+
+.labelJp {
+  font-family: var(--font-serif);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: var(--track-tight);
+}
+
+.titleLine {
+  display: block;
+  overflow: hidden;
+
+  &:nth-child(2) {
+    font-style: italic;
+    padding-left: 1.2em;
+    color: rgba(242, 239, 233, 0.82);
+  }
+}
+
+.intro {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--t-base);
+  line-height: 1.6;
+  letter-spacing: var(--track-snug);
+  color: rgba(242, 239, 233, 0.65);
+  max-width: 56ch;
+  margin: 0;
+}
+
+// ── Worlds grid ──────────────────────────
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: rgba(242, 239, 233, 0.08);
+  border: 1px solid rgba(242, 239, 233, 0.08);
+
+  @include breakpoint(lg) { grid-template-columns: repeat(3, 1fr); }
+  @include breakpoint(md) { grid-template-columns: repeat(2, 1fr); }
+  @include breakpoint(sm) { grid-template-columns: 1fr; }
+}
+
+// ── Each world card ──────────────────────
+.card {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: var(--s-3) var(--s-2);
+  background: #14120F;
+  min-height: 220px;
+  overflow: hidden;
+  transition: background-color 0.6s var(--ease-cinema);
+
+  &:hover {
+    background: #1A1714;
+
+    .cardJp { opacity: 0.18; transform: translate(-12%, -8%) scale(1.05); }
+
+    .cardImage {
+      filter: grayscale(0) brightness(0.95) saturate(1.05);
+      transform: scale(1.04);
+    }
+    .cardImageDim { opacity: 0.35; }
+  }
+}
+
+// Card with image gets extra vertical space + image-aware padding
+.cardWithImage {
+  padding: 0;
+  min-height: 360px;
+  grid-template-rows: auto 1fr;
+
+  .cardJp {
+    // Move kanji to body area instead of full-card overlay
+    right: -6%;
+    top: auto;
+    bottom: 0;
+    font-size: clamp(6rem, 11vw, 9rem);
+    opacity: 0.05;
+  }
+}
+
+.cardJp {
+  position: absolute;
+  right: -8%;
+  top: -10%;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(7rem, 14vw, 11rem);
+  line-height: 1;
+  color: var(--on-dark);
+  opacity: 0.07;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+  z-index: 1;
+  transition:
+    opacity 0.7s var(--ease-cinema),
+    transform 0.7s var(--ease-cinema);
+}
+
+// ── Image thumbnail (optional) ───────────
+.cardImageWrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  // Dim + grayscale by default — full color on card hover (cinema feel)
+  filter: grayscale(0.6) brightness(0.65) saturate(0.85);
+  transform: scale(1);
+  transition:
+    filter 0.8s var(--ease-cinema),
+    transform 0.8s var(--ease-cinema);
+}
+
+.cardImageDim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(20,18,15,0.85) 100%);
+  opacity: 0.65;
+  transition: opacity 0.6s var(--ease-cinema);
+  pointer-events: none;
+}
+
+// Body wrapper — only used by cards with image, so spacing works around the photo
+.cardBody {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 10px;
+  padding: var(--s-3) var(--s-2);
+}
+
+// Cards without image — body is the whole card, layered above .cardJp
+.card:not(.cardWithImage) .cardBody {
+  padding: 0;
+}
+
+// ── Card contents ────────────────────────
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.cardIdx {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.55);
+}
+
+.cardTag {
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  opacity: 0.8;
+}
+
+.cardName {
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.2rem, 1.6vw, 1.5rem);
+  letter-spacing: var(--track-snug);
+  line-height: 1.15;
+}
+
+.cardTema {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.4);
+}
+
+.cardFoot {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding-top: var(--s-2);
+  border-top: 1px solid rgba(242, 239, 233, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.cardBossDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(140, 42, 31, 0.6);
+}
+
+.cardBoss {
+  font-family: var(--font-sans);
+  font-size: var(--t-sm);
+  font-weight: 300;
+  letter-spacing: var(--track-snug);
+  color: var(--on-dark);
+}
+
+.cardBossDetail {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.45);
+  margin-left: 2px;
+}
+
+.cardNoBoss {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  color: rgba(242, 239, 233, 0.3);
+}

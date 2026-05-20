@@ -1,0 +1,83 @@
+// =========================================
+// Design Tokens — Cinematic Japanese Minimal
+// =========================================
+
+:root {
+  // ── Palette ────────────────────────────
+  --bg:         #EEEAE3;          // washi paper
+  --bg-deep:    #1A1816;          // ink night
+  --bg-glass:   rgba(238, 234, 227, 0.55);
+  --ink:        #0E0D0B;
+  --ink-soft:   #2A2825;
+  --ink-mute:   #6B6660;
+  --line:       rgba(14, 13, 11, 0.08);
+  --line-soft:  rgba(14, 13, 11, 0.04);
+  --accent:     #8C2A1F;          // muted shu-iro
+  --accent-soft: rgba(140, 42, 31, 0.16);
+
+  // On dark surfaces
+  --on-dark:        #F2EFE9;
+  --on-dark-mute:   rgba(242, 239, 233, 0.55);
+  --on-dark-line:   rgba(242, 239, 233, 0.12);
+
+  // ── Type scale (1.333 perfect fourth) ──
+  --t-xs:      0.75rem;
+  --t-sm:      0.875rem;
+  --t-base:    1rem;
+  --t-md:      1.333rem;
+  --t-lg:      1.777rem;
+  --t-xl:      2.369rem;
+  --t-2xl:     3.157rem;
+  --t-3xl:     4.209rem;
+  --t-display: clamp(3.5rem, 9vw, 7.5rem);
+  --t-hero:    clamp(4.5rem, 14vw, 11rem);
+
+  // ── Tracking ───────────────────────────
+  --track-tight:  -0.025em;
+  --track-snug:   -0.015em;
+  --track-normal: 0;
+  --track-wide:   0.08em;
+  --track-mark:   0.22em;
+
+  // ── Spacing scale ──────────────────────
+  --s-0: 0;
+  --s-1: 0.5rem;     // 8
+  --s-2: 1rem;       // 16
+  --s-3: 1.5rem;     // 24
+  --s-4: 2.5rem;     // 40
+  --s-5: 4rem;       // 64
+  --s-6: 6rem;       // 96
+  --s-7: 9rem;       // 144
+  --s-8: 12.5rem;    // 200
+
+  // ── Layout ─────────────────────────────
+  --container:    1440px;
+  --gutter:       max(24px, 6vw);
+  --radius-sm:    4px;
+  --radius:       10px;
+  --radius-lg:    20px;
+
+  // ── Motion ─────────────────────────────
+  --ease-cinema: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-drift:  cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-settle: cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-out:    cubic-bezier(0.33, 1, 0.68, 1);
+
+  --dur-fast:  0.4s;
+  --dur:       0.9s;
+  --dur-slow:  1.6s;
+  --dur-epic:  2.4s;
+
+  // ── Z stack ────────────────────────────
+  --z-base:        0;
+  --z-content:     10;
+  --z-nav:         50;
+  --z-cursor:      90;
+  --z-atmosphere:  95;
+  --z-overlay:     100;
+
+  // ── Fonts (loaded via next/font in layout) ──
+  --font-sans:   var(--font-geist), 'Inter', system-ui, sans-serif;
+  --font-serif:  var(--font-serif-jp), 'Times New Roman', serif;
+  --font-mono:   var(--font-geist-mono), ui-monospace, monospace;
+}

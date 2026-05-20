@@ -1,0 +1,47 @@
+@use "mixins" as *;
+
+// Typography primitives — used inside globals.scss
+
+.t-display {
+  @include display;
+  font-size: var(--t-display);
+}
+
+.t-hero {
+  @include display;
+  font-size: var(--t-hero);
+}
+
+.t-h1 {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--t-2xl);
+  letter-spacing: var(--track-snug);
+  line-height: 1.08;
+}
+
+.t-h2 {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--t-xl);
+  letter-spacing: var(--track-snug);
+  line-height: 1.15;
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 56ch;
+}
+
+.t-label {
+  @include label;
+}
+
+.t-jp {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+}

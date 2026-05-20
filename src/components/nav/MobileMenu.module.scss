@@ -1,0 +1,135 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: #0A0907;
+  color: var(--on-dark);
+  padding: var(--s-4) var(--gutter);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  will-change: clip-path;
+}
+
+// ── Close button ─────────────────────────
+.close {
+  position: relative;
+  justify-self: end;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(242, 239, 233, 0.15);
+    border-radius: 50%;
+    transition: border-color 0.4s var(--ease-cinema);
+  }
+
+  &:hover::before { border-color: rgba(242, 239, 233, 0.5); }
+}
+
+.closeBar {
+  position: absolute;
+  width: 14px;
+  height: 1px;
+  background: var(--on-dark);
+
+  &:nth-child(1) { transform: rotate(45deg); }
+  &:nth-child(2) { transform: rotate(-45deg); }
+}
+
+// ── Big kanji watermark ──────────────────
+.kanji {
+  position: absolute;
+  top: 50%;
+  left: -8%;
+  transform: translateY(-50%);
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(30rem, 80vw, 50rem);
+  line-height: 0.82;
+  color: var(--on-dark);
+  opacity: 0.04;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: -0.05em;
+}
+
+// ── Nav ──────────────────────────────────
+.nav {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding-top: var(--s-4);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-self: center;
+  display: grid;
+  gap: var(--s-1);
+}
+
+.item {
+  overflow: hidden;
+  will-change: transform;
+}
+
+.link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  padding: 8px 0;
+  color: var(--on-dark);
+  transition: color 0.4s var(--ease-cinema);
+
+  &:hover { color: var(--accent); }
+}
+
+.linkIndex {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: var(--track-mark);
+  color: rgba(242, 239, 233, 0.45);
+  padding-top: 6px;
+}
+
+.linkLabel {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(3rem, 16vw, 6rem);
+  line-height: 1;
+  letter-spacing: var(--track-tight);
+}
+
+// ── Footer ───────────────────────────────
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: var(--s-3);
+  margin-top: var(--s-4);
+  border-top: 1px solid rgba(242, 239, 233, 0.08);
+
+  span {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    letter-spacing: var(--track-mark);
+    text-transform: uppercase;
+    color: rgba(242, 239, 233, 0.5);
+
+    &:last-child {
+      font-family: var(--font-serif);
+      text-transform: none;
+      color: var(--accent);
+      opacity: 0.85;
+    }
+  }
+}

@@ -1,0 +1,882 @@
+// =========================================
+// Media composition styles — three moods
+// =========================================
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.fill {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// ─────────────────────────────────────────
+// GAME
+// ─────────────────────────────────────────
+.game {
+  background: #0A0907;
+  color: #F2EFE9;
+  font-family: var(--font-mono);
+}
+
+.gameBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, #1A1714 0%, #0A0907 70%),
+    linear-gradient(180deg, rgba(140, 42, 31, 0.10) 0%, transparent 40%);
+}
+
+// Real screenshot mode — image fills the frame, dimmed cinematically
+// so the HUD overlays on top stay legible like design annotations.
+.gameScreenshot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.55) saturate(0.85) contrast(1.05);
+}
+
+.gameScreenshotDim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.55) 100%);
+}
+
+.gameScanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(255, 255, 255, 0.025) 2px,
+    rgba(255, 255, 255, 0.025) 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.bracket {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: var(--accent);
+}
+.bracketTL { top: 16px; left: 16px;   border-top: 1.5px solid; border-left: 1.5px solid; }
+.bracketTR { top: 16px; right: 16px;  border-top: 1.5px solid; border-right: 1.5px solid; }
+.bracketBL { bottom: 16px; left: 16px;  border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.bracketBR { bottom: 16px; right: 16px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+
+.gameTopHud {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.gameTag {
+  color: rgba(242, 239, 233, 0.65);
+}
+
+.gameBoss {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: #F2EFE9;
+  text-transform: none;
+}
+
+.gameCenter {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.gameKanji {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(10rem, 22vw, 18rem);
+  line-height: 1;
+  color: rgba(140, 42, 31, 0.22);
+  text-shadow: 0 0 60px rgba(140, 42, 31, 0.15);
+}
+
+// Boss health bar
+.gameHealthWrap {
+  position: absolute;
+  left: 50%;
+  bottom: 80px;
+  transform: translateX(-50%);
+  width: min(70%, 460px);
+  display: grid;
+  gap: 6px;
+}
+
+.gameHealthTrack {
+  position: relative;
+  height: 4px;
+  background: rgba(242, 239, 233, 0.10);
+  overflow: hidden;
+}
+
+.gameHealthFill {
+  position: absolute;
+  inset: 0;
+  width: 74%;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(140, 42, 31, 0.6);
+  transform-origin: left;
+  animation: hp-pulse 4s ease-in-out infinite;
+}
+
+@keyframes hp-pulse {
+  0%, 100% { transform: scaleX(1); }
+  50%      { transform: scaleX(0.985); }
+}
+
+.gameHealthDelay {
+  position: absolute;
+  inset: 0;
+  width: 78%;
+  background: rgba(242, 239, 233, 0.18);
+  z-index: -1;
+}
+
+.gameHealthMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.6);
+}
+
+.gameTelemetry {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  display: flex;
+  gap: 14px;
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.55);
+}
+
+.gameLink { color: var(--accent); }
+
+.gameActions {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  gap: 14px;
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.65);
+
+  kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    margin-right: 6px;
+    background: rgba(242, 239, 233, 0.08);
+    border: 1px solid rgba(242, 239, 233, 0.2);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+  }
+}
+
+// ─────────────────────────────────────────
+// CHATBOT
+// ─────────────────────────────────────────
+.chat {
+  background: #FAF7F0;
+  color: var(--ink);
+}
+
+// Real screenshot mode — let the product's colors come through with only a
+// subtle cinematic finish (light vignette + tiny contrast bump)
+.chatScreenshot {
+  background: #1A1816; // matches the app's dark UI so letterboxing blends
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.chatScreenshotImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: contrast(1.03) saturate(0.96);
+}
+
+.chatScreenshotDim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.28) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0) 70%, rgba(0,0,0,0.25) 100%);
+}
+
+// ─────────────────────────────────────────
+// CHATBOT — Device Stack mode
+// 3 browser-framed devices floating at angles, parallax-drifting
+// ─────────────────────────────────────────
+.chatStack {
+  position: relative;
+  background: linear-gradient(180deg, #F5F2EC 0%, #E5E0D6 100%);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+// Soft cinematic glow centered behind the main device
+.chatStackGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 75%;
+  height: 75%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(140, 42, 31, 0.10) 0%,
+    rgba(140, 42, 31, 0.04) 35%,
+    transparent 65%
+  );
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+// ── Each device frame ────────────────────
+.chatDevice {
+  position: absolute;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 22px 1fr;
+  box-shadow:
+    0 30px 50px rgba(0, 0, 0, 0.22),
+    0 12px 22px rgba(0, 0, 0, 0.10),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  will-change: transform, translate;
+  transition:
+    rotate 0.9s var(--ease-cinema),
+    scale 0.9s var(--ease-cinema);
+}
+
+// Browser chrome — minimal 3-dot bar
+.chatDeviceBar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  background: #F0EDE7;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #DDD8CF;
+  }
+  span:nth-child(1) { background: #E89A8A; }
+  span:nth-child(2) { background: #E8C97A; }
+  span:nth-child(3) { background: #A8C99A; }
+}
+
+.chatDeviceScreen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+// ── Main device — center stage ───────────
+.chatDeviceMain {
+  width: 64%;
+  aspect-ratio: 16 / 10;
+  top: 16%;
+  left: 18%;
+  rotate: -1.5deg;
+  z-index: 3;
+  animation: float-y-main 7s ease-in-out infinite;
+}
+
+// ── Back left — pushed up-left, dimmed ───
+.chatDeviceBackLeft {
+  width: 50%;
+  aspect-ratio: 16 / 10;
+  top: 3%;
+  left: -4%;
+  rotate: -6deg;
+  z-index: 1;
+  animation: float-y-back-left 5.4s ease-in-out infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 18, 22, 0.10);
+    pointer-events: none;
+  }
+}
+
+// ── Back right — pushed down-right, dimmed ──
+.chatDeviceBackRight {
+  width: 50%;
+  aspect-ratio: 16 / 10;
+  bottom: 3%;
+  right: -4%;
+  rotate: 6deg;
+  z-index: 2;
+  animation: float-y-back-right 6.2s ease-in-out infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 18, 22, 0.06);
+    pointer-events: none;
+  }
+}
+
+// ── Floating animations (independent timings = real parallax feel) ──
+@keyframes float-y-main {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+@keyframes float-y-back-left {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
+}
+@keyframes float-y-back-right {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 8px; }
+}
+
+// ── Hover — main device straightens and lifts slightly ──
+.chatStack:hover .chatDeviceMain {
+  rotate: 0deg;
+  scale: 1.025;
+}
+
+.chatStack:hover .chatDeviceBackLeft {
+  rotate: -4deg;
+  translate: -6px 0;
+}
+
+.chatStack:hover .chatDeviceBackRight {
+  rotate: 4deg;
+  translate: 6px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chatDeviceMain,
+  .chatDeviceBackLeft,
+  .chatDeviceBackRight {
+    animation: none;
+  }
+}
+
+// Mobile — collapse to single device for legibility
+@media (max-width: 640px) {
+  .chatStack .chatDeviceBackLeft,
+  .chatStack .chatDeviceBackRight {
+    display: none;
+  }
+  .chatStack .chatDeviceMain {
+    width: 92%;
+    left: 4%;
+    top: 50%;
+    translate: 0 -50%;
+    rotate: 0deg;
+    animation: none;
+  }
+}
+
+.chatBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.7), transparent 70%),
+    linear-gradient(180deg, #FAF7F0 0%, #EEEAE3 100%);
+}
+
+.chatBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(14, 13, 11, 0.06);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.chatDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(14, 13, 11, 0.12);
+
+  &:nth-child(1) { background: #D6A36A; }
+  &:nth-child(2) { background: #C9C2B6; }
+  &:nth-child(3) { background: #B6BFA8; }
+}
+
+.chatTitle {
+  margin-left: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.chatLang {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  color: var(--accent);
+}
+
+.chatThread {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: 24px 28px 36px;
+  height: calc(100% - 52px);
+  overflow: hidden;
+}
+
+.chatBubble {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 78%;
+  padding: 12px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border-radius: 14px;
+
+  p { margin: 0; }
+}
+
+.chatBubbleUser {
+  align-self: flex-end;
+  background: var(--ink);
+  color: var(--on-dark);
+  border-bottom-right-radius: 4px;
+}
+
+.chatBubbleAi {
+  align-self: flex-start;
+  background: #fff;
+  color: var(--ink-soft);
+  border: 1px solid rgba(14, 13, 11, 0.06);
+  border-bottom-left-radius: 4px;
+}
+
+.chatLangChip {
+  flex-shrink: 0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: var(--track-mark);
+  background: currentColor;
+  color: transparent;
+
+  // Faux pill — readable on each bubble
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+  opacity: 0.8;
+}
+
+.chatBubbleAi .chatLangChip {
+  background: rgba(14, 13, 11, 0.06);
+}
+
+.chatTyping {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid rgba(14, 13, 11, 0.06);
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  width: fit-content;
+
+  span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ink-mute);
+    animation: typing 1.4s ease-in-out infinite;
+  }
+
+  span:nth-child(2) { animation-delay: 0.2s; }
+  span:nth-child(3) { animation-delay: 0.4s; }
+}
+
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30%           { transform: translateY(-3px); opacity: 1; }
+}
+
+// ─────────────────────────────────────────
+// PHANTOM COMMERCE
+// ─────────────────────────────────────────
+.phantom {
+  background: #0A0908;
+  color: var(--on-dark);
+}
+
+.phantomBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, #1A1814 0%, #06050A 70%);
+}
+
+.phantomGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(242, 239, 233, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 239, 233, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+}
+
+.phantomGlow {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(140, 42, 31, 0.45) 0%, transparent 60%);
+  filter: blur(40px);
+  animation: phantom-pulse 6s ease-in-out infinite;
+}
+
+@keyframes phantom-pulse {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.9; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+.phantomTop {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 26px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.5);
+}
+
+.phantomStage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.phantomObject {
+  width: 38%;
+  aspect-ratio: 1.6;
+  background:
+    linear-gradient(135deg, #1F1D1A 0%, #2A2725 50%, #18161A 100%);
+  border-radius: 60px / 38px;
+  box-shadow:
+    inset 0 1px 0 rgba(242, 239, 233, 0.06),
+    inset 0 -20px 40px rgba(140, 42, 31, 0.15),
+    0 30px 60px rgba(0, 0, 0, 0.6);
+  transform: rotate(-12deg);
+}
+
+.phantomGhost {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(8rem, 20vw, 16rem);
+  color: rgba(242, 239, 233, 0.06);
+  pointer-events: none;
+}
+
+.phantomCard {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  bottom: 26px;
+  padding: 18px 22px;
+  background: rgba(242, 239, 233, 0.06);
+  border: 1px solid rgba(242, 239, 233, 0.10);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border-radius: 6px;
+  display: grid;
+  gap: 14px;
+}
+
+.phantomCardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.phantomCardTitle {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 1.15rem;
+  letter-spacing: 0.01em;
+}
+
+.phantomCardPrice {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
+.phantomCardFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid rgba(242, 239, 233, 0.08);
+}
+
+.phantomMeta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.55);
+}
+
+.phantomCta {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark);
+}
+
+.phantomCtaArrow {
+  display: inline-block;
+  margin-left: 6px;
+  color: var(--accent);
+}
+
+// ─────────────────────────────────────────
+// PHANTOM COMMERCE — Device Stack mode
+// 2 browser-framed devices floating on a dark stage with red neon glow
+// ─────────────────────────────────────────
+.phantomStack {
+  position: relative;
+  background: #0A0908;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.phantomStackBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, #1A1814 0%, #06050A 70%);
+}
+
+// Faint architectural grid — same vocabulary as synthetic
+.phantomStackGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(242, 239, 233, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(242, 239, 233, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  pointer-events: none;
+}
+
+// Pulsing red shu glow centered behind main device
+.phantomStackGlow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 65%;
+  aspect-ratio: 1.4;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(140, 42, 31, 0.45) 0%,
+    rgba(140, 42, 31, 0.10) 40%,
+    transparent 70%
+  );
+  filter: blur(50px);
+  animation: phantom-stack-pulse 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes phantom-stack-pulse {
+  0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.95; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+// ── Device frames ────────────────────────
+.phantomDevice {
+  position: absolute;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 22px 1fr;
+  box-shadow:
+    0 36px 60px rgba(0, 0, 0, 0.55),
+    0 14px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(242, 239, 233, 0.06),
+    // Subtle red rim light — picks up the brand accent
+    0 0 60px rgba(140, 42, 31, 0.18);
+  will-change: transform, translate;
+  transition:
+    rotate 0.9s var(--ease-cinema),
+    scale 0.9s var(--ease-cinema),
+    translate 0.9s var(--ease-cinema);
+}
+
+.phantomDeviceBar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  background: #F0EDE7;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #DDD8CF;
+  }
+  span:nth-child(1) { background: #E89A8A; }
+  span:nth-child(2) { background: #E8C97A; }
+  span:nth-child(3) { background: #A8C99A; }
+}
+
+.phantomDeviceScreen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+// ── Main device — center stage, slight forward tilt ──
+.phantomDeviceMain {
+  width: 66%;
+  aspect-ratio: 16 / 10;
+  top: 18%;
+  right: 8%;
+  rotate: -2deg;
+  z-index: 3;
+  animation: phantom-float-main 7s ease-in-out infinite;
+}
+
+// ── Back device — peeks from upper-left, dimmed ──
+.phantomDeviceBack {
+  width: 52%;
+  aspect-ratio: 16 / 10;
+  top: 5%;
+  left: -3%;
+  rotate: -7deg;
+  z-index: 2;
+  animation: phantom-float-back 5.6s ease-in-out infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.20);
+    pointer-events: none;
+  }
+}
+
+@keyframes phantom-float-main {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+@keyframes phantom-float-back {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
+}
+
+// Hover — main straightens and lifts, back opens away
+.phantomStack:hover .phantomDeviceMain {
+  rotate: 0deg;
+  scale: 1.025;
+}
+.phantomStack:hover .phantomDeviceBack {
+  rotate: -5deg;
+  translate: -8px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phantomDeviceMain,
+  .phantomDeviceBack,
+  .phantomStackGlow {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .phantomStack .phantomDeviceBack {
+    display: none;
+  }
+  .phantomStack .phantomDeviceMain {
+    width: 92%;
+    left: 4%;
+    right: auto;
+    top: 50%;
+    translate: 0 -50%;
+    rotate: 0deg;
+    animation: none;
+  }
+}

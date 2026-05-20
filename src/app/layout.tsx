@@ -7,6 +7,10 @@ import Header from '@/components/nav/Header';
 import ConsoleEasterEgg from '@/components/effects/ConsoleEasterEgg';
 import RouteTransition from '@/components/effects/RouteTransition';
 import ScrollProgress from '@/components/effects/ScrollProgress';
+import ThemeTransitionOverlay from '@/components/effects/ThemeTransitionOverlay';
+import Particles from '@/components/atmosphere/Particles';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { LanguageProvider } from '@/components/providers/LanguageProvider';
 import { personSchema, websiteSchema } from '@/lib/structured-data';
 import './globals.scss';
 
@@ -138,15 +142,21 @@ export default function RootLayout({
           Skip to content
         </a>
 
-        <LenisProvider>
-          <ScrollProgress />
-          <Cursor />
-          <Header />
-          <main id="main">{children}</main>
-          <Grain />
-          <RouteTransition />
-          <ConsoleEasterEgg />
-        </LenisProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <LenisProvider>
+              <ScrollProgress />
+              <Particles />
+              <Cursor />
+              <Header />
+              <main id="main">{children}</main>
+              <Grain />
+              <ThemeTransitionOverlay />
+              <RouteTransition />
+              <ConsoleEasterEgg />
+            </LenisProvider>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

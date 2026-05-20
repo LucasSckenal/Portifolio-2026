@@ -1,0 +1,10 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9500; // sits above content, below the route-change ink wipe (9000)
+  background:
+    radial-gradient(ellipse at center, #15110D 0%, #07060A 100%);
+  pointer-events: none;
+  will-change: opacity;
+  mix-blend-mode: multiply;
+}

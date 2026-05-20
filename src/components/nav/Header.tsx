@@ -7,19 +7,20 @@ import { motion } from 'framer-motion';
 import { cinema } from '@/lib/easings';
 import MobileMenu from './MobileMenu';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import { useT } from '@/components/providers/LanguageProvider';
 import styles from './Header.module.scss';
-
-// All hrefs use absolute paths so the header works correctly from any route.
-const nav = [
-  { label: 'Index',    href: '/#top' },
-  { label: 'Work',     href: '/#projects' },
-  { label: 'About',    href: '/#about' },
-  { label: 'Contact',  href: '/#contact' },
-];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const t = useT();
+
+  const nav = [
+    { label: t.nav.index,   href: '/#top'      },
+    { label: t.nav.work,    href: '/#projects' },
+    { label: t.nav.about,   href: '/#about'    },
+    { label: t.nav.contact, href: '/#contact'  },
+  ];
 
   // On any subpage (e.g. /work/[slug]) the logo gains a `←` prefix and
   // acts as the explicit back-to-home action. Replaces the floating
@@ -62,7 +63,7 @@ export default function Header() {
         <div className={styles.right}>
           <ThemeToggle />
           <Link href="/#contact" className={styles.cta} data-cursor>
-            <span>Available · 2026</span>
+            <span>{t.meta.available}</span>
             <span className={styles.dot} aria-hidden />
           </Link>
 

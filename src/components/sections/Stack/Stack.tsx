@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
+import { useT } from '@/components/providers/LanguageProvider';
 import { cinema } from '@/lib/easings';
 import styles from './Stack.module.scss';
 
@@ -69,30 +70,32 @@ const stack = [
   },
 ];
 
-const philosophy = [
-  { jp: '動', label: 'Motion',      value: 'Slow, intentional, cinematic.' },
-  { jp: '間', label: 'Composition', value: 'Negative space as a feature.' },
-  { jp: '質', label: 'Craft',       value: 'Polish in the last 10%.' },
-];
-
 export default function Stack() {
+  const t = useT();
+
+  const philosophy = [
+    { jp: '動', label: t.stack.philosophyMotion,       value: t.stack.philosophyMotionDesc       },
+    { jp: '間', label: t.stack.philosophyComposition,  value: t.stack.philosophyCompositionDesc  },
+    { jp: '質', label: t.stack.philosophyCraft,        value: t.stack.philosophyCraftDesc        },
+  ];
+
   return (
     <section id="stack" className={styles.stack}>
       <div className={styles.inner}>
         {/* ── Header ── */}
         <header className={styles.header}>
           <div className={styles.labelRow}>
-            <span className={styles.label}>004 — Stack</span>
+            <span className={styles.label}>{t.stack.label}</span>
             <span className={styles.divider} aria-hidden />
-            <span className={styles.labelJp}>道具 · Dōgu</span>
+            <span className={styles.labelJp}>{t.stack.labelJp}</span>
           </div>
 
           <h2 className={styles.title}>
             <span className={styles.titleLine}>
-              <SplitText text="Tools, never the" by="word" delay={0.1} />
+              <SplitText text={t.stack.titleLine1} by="word" delay={0.1} />
             </span>
             <span className={styles.titleLine}>
-              <SplitText text="point of the work." by="word" delay={0.25} />
+              <SplitText text={t.stack.titleLine2} by="word" delay={0.25} />
             </span>
           </h2>
         </header>

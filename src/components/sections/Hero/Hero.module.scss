@@ -29,14 +29,37 @@
   will-change: transform, filter;
 }
 
+// Both videos share the same stack and GSAP-driven transforms (scale/filter).
+// Crossfade between them is purely CSS, keyed off the html.theme-inverted class.
+.videoStack {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0.85);
+  transform: scale(1);
+  will-change: transform, filter;
+}
+
 .video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.85);
-  transform: scale(1);
-  will-change: transform, filter;
+  // 1.2s crossfade — well inside the 1.5s theme transition window.
+  // Eclipse totality is at 0.75s; the video swap reaches peak crossfade there.
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Day video visible by default (no .theme-inverted class on html)
+.videoDay  { opacity: 1; }
+.videoNight { opacity: 0; }
+
+:global(html.theme-inverted) {
+  .videoDay   { opacity: 0; }
+  .videoNight { opacity: 1; }
 }
 
 .tint {

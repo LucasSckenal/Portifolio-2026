@@ -4,11 +4,15 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Fog from '@/components/atmosphere/Fog';
+import { useT } from '@/components/providers/LanguageProvider';
 import styles from './Hero.module.scss';
 
 export default function Hero() {
+  const t = useT();
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoStackRef = useRef<HTMLDivElement>(null);
+  const dayVideoRef = useRef<HTMLVideoElement>(null);
+  const nightVideoRef = useRef<HTMLVideoElement>(null);
   const kanjiRef = useRef<HTMLDivElement>(null);
   const topRowRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -16,12 +20,21 @@ export default function Hero() {
   const scrollCueRef = useRef<HTMLAnchorElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
 
-  // Force autoplay + gate the opening curtain on video readiness.
+  // Force autoplay on both videos + gate the opening curtain on the active
+  // video's readiness. Both videos play in parallel so the cinematic theme
+  // crossfade can happen seamlessly at any moment.
   useEffect(() => {
-    const v = videoRef.current;
-    if (!v) return;
+    const day = dayVideoRef.current;
+    const night = nightVideoRef.current;
+    if (!day || !night) return;
 
-    v.play().catch(() => {});
+    day.play().catch(() => {});
+    night.play().catch(() => {});
+
+    // Active video at first paint depends on theme class set by pre-hydration script
+    const initialInverted =
+      document.documentElement.classList.contains('theme-inverted');
+    const active = initialInverted ? night : day;
 
     const fadeCurtain = () => {
       if (!curtainRef.current) return;
@@ -35,16 +48,16 @@ export default function Hero() {
       });
     };
 
-    if (v.readyState >= 3) {
+    if (active.readyState >= 3) {
       fadeCurtain();
       return;
     }
 
-    v.addEventListener('canplay', fadeCurtain, { once: true });
+    active.addEventListener('canplay', fadeCurtain, { once: true });
     const safety = window.setTimeout(fadeCurtain, 4000);
 
     return () => {
-      v.removeEventListener('canplay', fadeCurtain);
+      active.removeEventListener('canplay', fadeCurtain);
       window.clearTimeout(safety);
     };
   }, []);
@@ -100,7 +113,7 @@ export default function Hero() {
       });
 
       // Continuous cinematic camera zoom across the entire sticky range
-      tl.to(videoRef.current, { scale: 1.10, ease: 'none' }, 0);
+      tl.to(videoStackRef.current, { scale: 1.10, ease: 'none' }, 0);
 
       // 1. Kanji watermark drifts in (early atmosphere)
       tl.to(
@@ -156,7 +169,7 @@ export default function Hero() {
         5.4
       );
       tl.to(
-        videoRef.current,
+        videoStackRef.current,
         { filter: 'brightness(0.45)', duration: 1.2, ease: 'power2.in' },
         5.4
       );
@@ -171,17 +184,29 @@ export default function Hero() {
       <div className={styles.sticky}>
         {/* ── Video bed ── */}
         <div className={styles.videoWrap}>
-          <video
-            ref={videoRef}
-            className={styles.video}
-            src="/video/hero.mp4"
-            poster="/video/hero-poster.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          />
+          <div ref={videoStackRef} className={styles.videoStack}>
+            <video
+              ref={dayVideoRef}
+              className={`${styles.video} ${styles.videoDay}`}
+              src="/video/hero.mp4"
+              poster="/video/hero-poster.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            />
+            <video
+              ref={nightVideoRef}
+              className={`${styles.video} ${styles.videoNight}`}
+              src="/video/hero-dark.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            />
+          </div>
           <div className={styles.tint} aria-hidden />
           <Fog />
           <div className={styles.vignette} aria-hidden />
@@ -195,19 +220,19 @@ export default function Hero() {
         {/* ── Content ── */}
         <div className={styles.content}>
           <div ref={topRowRef} className={styles.topRow}>
-            <span className={styles.label}>Lucas — 001 / Portfolio</span>
-            <span className={styles.label}>MMXXVI · Frontend / Motion</span>
+            <span className={styles.label}>{t.hero.label1}</span>
+            <span className={styles.label}>{t.hero.label2}</span>
           </div>
 
           <h1 ref={titleRef} className={styles.title}>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>Six worlds.</span>
+              <span className={styles.titleInner}>{t.hero.title[0]}</span>
             </span>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>Three projects.</span>
+              <span className={styles.titleInner}>{t.hero.title[1]}</span>
             </span>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>One quiet practice.</span>
+              <span className={styles.titleInner}>{t.hero.title[2]}</span>
             </span>
           </h1>
 
@@ -215,8 +240,8 @@ export default function Hero() {
             <div className={styles.meta}>
               <span className={styles.metaJp}>静</span>
               <p className={styles.metaText}>
-                Lucas — creative frontend developer<br />
-                crafting immersive, cinematic interfaces.
+                {t.hero.bio1}<br />
+                {t.hero.bio2}
               </p>
             </div>
           </div>
@@ -227,7 +252,7 @@ export default function Hero() {
             className={styles.scrollCue}
             data-cursor
           >
-            <span className={styles.scrollLabel}>Scroll</span>
+            <span className={styles.scrollLabel}>{t.hero.scroll}</span>
             <span className={styles.scrollLine}>
               <span className={styles.scrollDot} />
             </span>

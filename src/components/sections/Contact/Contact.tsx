@@ -6,6 +6,8 @@ import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
 import MagneticLink from '@/components/ui/MagneticLink';
 import { cinema } from '@/lib/easings';
+import { useT, useLocale } from '@/components/providers/LanguageProvider';
+import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
 import styles from './Contact.module.scss';
 
 const EMAIL = 'lucaspsckenal@gmail.com';
@@ -15,17 +17,9 @@ const socials = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/lucassckenal' },
 ];
 
-const languages = [
-  { name: 'Português',  short: 'PT' },
-  { name: 'English',    short: 'EN' },
-  { name: 'Español',    short: 'ES' },
-  { name: 'Italiano',   short: 'IT' },
-  { name: '日本語',     short: 'JP' },
-];
-
 export default function Contact() {
-  // Click on the email copies to clipboard AND opens the user's mail client.
-  // Cursor label flashes "Copied ✓" for ~2s as visual feedback.
+  const t = useT();
+  const { locale, setLocale } = useLocale();
   const [copied, setCopied] = useState(false);
 
   const handleEmailClick = async () => {
@@ -45,28 +39,25 @@ export default function Contact() {
 
       <div className={styles.inner}>
         <div className={styles.labelRow}>
-          <span className={styles.label}>005 — Contact</span>
+          <span className={styles.label}>{t.contact.label}</span>
           <span className={styles.divider} aria-hidden />
-          <span className={styles.labelJp}>終 · Owari</span>
+          <span className={styles.labelJp}>{t.contact.labelJp}</span>
         </div>
 
         <h2 className={styles.title}>
           <span className={styles.titleLine}>
-            <SplitText text="Let's make" by="word" delay={0.1} />
+            <SplitText text={t.contact.titleLine1} by="word" delay={0.1} />
           </span>
           <span className={styles.titleLine}>
-            <SplitText text="something quiet," by="word" delay={0.25} />
+            <SplitText text={t.contact.titleLine2} by="word" delay={0.25} />
           </span>
           <span className={styles.titleLine}>
-            <SplitText text="and memorable." by="word" delay={0.4} />
+            <SplitText text={t.contact.titleLine3} by="word" delay={0.4} />
           </span>
         </h2>
 
         <Reveal delay={0.6} amount={0.4}>
-          <p className={styles.body}>
-            Available for select frontend, motion and visual-design collaborations
-            in 2026. Game UI, cinematic web, premium product interfaces.
-          </p>
+          <p className={styles.body}>{t.contact.body}</p>
         </Reveal>
 
         {/* Big magnetic email CTA */}
@@ -84,7 +75,7 @@ export default function Contact() {
           >
             <span
               onClick={handleEmailClick}
-              data-cursor-label={copied ? 'Copied ✓' : 'Click — copies & opens'}
+              data-cursor-label={copied ? t.contact.emailCopied : t.contact.emailHover}
             >
               {EMAIL}
             </span>
@@ -119,7 +110,7 @@ export default function Contact() {
           ))}
         </motion.ul>
 
-        {/* Languages — quiet inventory of spoken tongues */}
+        {/* Languages — now clickable buttons that translate the site */}
         <motion.div
           className={styles.languages}
           initial="hidden"
@@ -138,45 +129,58 @@ export default function Contact() {
             }}
           >
             <span className={styles.languagesJp}>言語</span>
-            <span>Languages</span>
+            <span>{t.contact.languagesLabel}</span>
           </motion.span>
 
           <ul className={styles.languagesList}>
-            {languages.map((l) => (
-              <motion.li
-                key={l.short}
-                className={styles.languagesItem}
-                variants={{
-                  hidden: { opacity: 0, y: 8 },
-                  show:   { opacity: 1, y: 0, transition: { duration: 0.9, ease: cinema } },
-                }}
-              >
-                <span className={styles.languagesShort}>{l.short}</span>
-                <span className={styles.languagesName}>{l.name}</span>
-              </motion.li>
-            ))}
+            {LOCALES.map((code: Locale) => {
+              const meta = localeMeta[code];
+              const isActive = locale === code;
+              return (
+                <motion.li
+                  key={code}
+                  variants={{
+                    hidden: { opacity: 0, y: 8 },
+                    show:   { opacity: 1, y: 0, transition: { duration: 0.9, ease: cinema } },
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setLocale(code)}
+                    className={`${styles.languagesItem} ${isActive ? styles.languagesItemActive : ''}`}
+                    data-cursor
+                    data-cursor-label={`→ ${meta.name}`}
+                    aria-pressed={isActive}
+                    aria-label={`Switch to ${meta.name}`}
+                  >
+                    <span className={styles.languagesShort}>{meta.short}</span>
+                    <span className={styles.languagesName}>{meta.name}</span>
+                  </button>
+                </motion.li>
+              );
+            })}
           </ul>
         </motion.div>
 
         {/* Footer */}
         <footer className={styles.footer}>
           <div className={styles.footerCol}>
-            <span className={styles.footerLabel}>Index</span>
-            <span className={styles.footerValue}>Lucas Sckenal / MMXXVI</span>
+            <span className={styles.footerLabel}>{t.contact.footerIndexLabel}</span>
+            <span className={styles.footerValue}>{t.contact.footerIndexValue}</span>
           </div>
           <div className={styles.footerCol}>
-            <span className={styles.footerLabel}>Discipline</span>
-            <span className={styles.footerValue}>Frontend · Motion · UI</span>
+            <span className={styles.footerLabel}>{t.contact.footerDisciplineLabel}</span>
+            <span className={styles.footerValue}>{t.contact.footerDisciplineValue}</span>
           </div>
           <div className={styles.footerCol}>
-            <span className={styles.footerLabel}>Signal</span>
+            <span className={styles.footerLabel}>{t.contact.footerSignalLabel}</span>
             <span className={styles.footerValue}>
-              <span className={styles.footerDot} aria-hidden /> Open to work
+              <span className={styles.footerDot} aria-hidden /> {t.contact.footerSignalValue}
             </span>
           </div>
           <div className={styles.footerCol}>
-            <span className={styles.footerLabel}>Made with</span>
-            <span className={styles.footerValue}>Next · GSAP · Lenis</span>
+            <span className={styles.footerLabel}>{t.contact.footerMadeWithLabel}</span>
+            <span className={styles.footerValue}>{t.contact.footerMadeWithValue}</span>
           </div>
         </footer>
 

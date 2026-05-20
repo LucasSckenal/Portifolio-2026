@@ -7,24 +7,19 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Reveal from '@/components/ui/Reveal';
 import SplitText from '@/components/ui/SplitText';
+import { useT } from '@/components/providers/LanguageProvider';
 import { cinema } from '@/lib/easings';
 import styles from './About.module.scss';
 
-const paragraphs = [
-  "I'm Lucas — a frontend developer drawn to digital experiences that go beyond function. The kind that feel cinematic, atmospheric, visually intentional in every detail.",
-  "My practice favors modern UI, smooth motion, and the texture of game-inspired interfaces. I try to thread creativity, performance, and a premium feeling into the same work — never one at the cost of the others.",
-  "Currently building a Tower Defense game with custom HUD systems, a multilingual medical chatbot, and a gaming-focused commerce concept. Each one is an attempt to give software an identity, an atmosphere, an intent.",
-  "I draw from Japanese minimalism, cinematic motion design, and the Apple / Awwwards school of premium interfaces. The goal: products people remember not for the code, but for the experience they transmit.",
-];
-
-const stats: Array<{ label: string; value: string; jp: string }> = [
-  { label: 'Focus',       value: 'Motion · UI',    jp: '専門' },
-  { label: 'Building',    value: 'Game · Web',     jp: '制作' },
-  { label: 'Currently',   value: 'Open to work',   jp: '現在' },
-];
-
 export default function About() {
+  const t = useT();
   const sectionRef = useRef<HTMLElement>(null);
+
+  const stats = [
+    { label: t.about.statFocusLabel,      value: t.about.statFocusValue,      jp: '専門' },
+    { label: t.about.statBuildingLabel,   value: t.about.statBuildingValue,   jp: '制作' },
+    { label: t.about.statCurrentlyLabel,  value: t.about.statCurrentlyValue,  jp: '現在' },
+  ];
   const kanjiRef = useRef<HTMLDivElement>(null);
   const portraitRef = useRef<HTMLDivElement>(null);
 
@@ -82,9 +77,9 @@ export default function About() {
       <div className={styles.inner}>
         {/* ── Header row ── */}
         <header className={styles.header}>
-          <span className={styles.label}>002 — About</span>
+          <span className={styles.label}>{t.about.label}</span>
           <span className={styles.divider} aria-hidden />
-          <span className={styles.labelJp}>間 · Ma</span>
+          <span className={styles.labelJp}>{t.about.labelJp}</span>
         </header>
 
         {/* ── Main grid ── */}
@@ -109,7 +104,7 @@ export default function About() {
             <Reveal delay={0.2}>
               <p className={styles.caption}>
                 <span className={styles.captionMark}>—</span>
-                A self-portrait, in process.
+                {t.about.caption}
               </p>
             </Reveal>
           </div>
@@ -118,15 +113,15 @@ export default function About() {
           <div className={styles.copyCol}>
             <h2 className={styles.title}>
               <span className={styles.titleLine}>
-                <SplitText text="Building worlds" by="word" delay={0.1} />
+                <SplitText text={t.about.titleLine1} by="word" delay={0.1} />
               </span>
               <span className={styles.titleLine}>
-                <SplitText text="inside the browser." by="word" delay={0.25} />
+                <SplitText text={t.about.titleLine2} by="word" delay={0.25} />
               </span>
             </h2>
 
             <div className={styles.paragraphs}>
-              {paragraphs.map((p, i) => (
+              {t.about.paragraphs.map((p, i) => (
                 <Reveal key={i} delay={0.1 + i * 0.12} amount={0.4}>
                   <p className={styles.paragraph}>{p}</p>
                 </Reveal>

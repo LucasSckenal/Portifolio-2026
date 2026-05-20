@@ -228,9 +228,37 @@
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
-  transition: color 0.5s var(--ease-cinema);
+  padding: 4px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  position: relative;
+  transition: color 0.5s var(--ease-cinema), transform 0.5s var(--ease-cinema);
 
-  &:hover .languagesShort { color: var(--accent); }
+  &::after {
+    content: '';
+    position: absolute;
+    left: 24px;
+    right: 100%;
+    bottom: -2px;
+    height: 1px;
+    background: var(--accent);
+    transition: right 0.55s var(--ease-cinema);
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    .languagesShort { color: var(--accent); }
+  }
+}
+
+.languagesItemActive {
+  &::after { right: 0; }
+
+  .languagesShort { color: var(--accent); }
+  .languagesName  { font-style: italic; }
 }
 
 .languagesShort {

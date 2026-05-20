@@ -121,6 +121,33 @@ html.menu-open body {
   touch-action: none;
 }
 
+// ──────────────────────────────────────────
+// Skip-to-content — keyboard-only a11y link
+// ──────────────────────────────────────────
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 9999;
+  padding: 10px 14px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  border-radius: 4px;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.35s var(--ease-cinema);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: none;
+}
+
 @include reduced-motion {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

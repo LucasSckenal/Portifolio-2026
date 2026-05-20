@@ -16,9 +16,7 @@ export default function Hero() {
   const scrollCueRef = useRef<HTMLAnchorElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
 
-  // Force autoplay (some browsers ignore the attribute alone) +
-  // gate the opening curtain on actual video readiness so we never
-  // dissolve to a black void if the file is slow to load.
+  // Force autoplay + gate the opening curtain on video readiness.
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -43,7 +41,6 @@ export default function Hero() {
     }
 
     v.addEventListener('canplay', fadeCurtain, { once: true });
-    // Safety: if the video stalls (no network / 404), dissolve after 4s anyway.
     const safety = window.setTimeout(fadeCurtain, 4000);
 
     return () => {
@@ -59,8 +56,7 @@ export default function Hero() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-
-      // ── Scroll cue floats in shortly after curtain ──
+      // Scroll cue floats in shortly after curtain (real-time, not scroll)
       gsap.fromTo(
         scrollCueRef.current,
         { opacity: 0, y: 12 },
@@ -68,7 +64,6 @@ export default function Hero() {
       );
 
       if (reduced) {
-        // No scrub motion when reduced — just show everything plainly.
         gsap.set(
           [topRowRef.current, bottomRowRef.current, kanjiRef.current],
           { opacity: 1, y: 0 }
@@ -80,7 +75,6 @@ export default function Hero() {
         return;
       }
 
-      // ── Initial state — hide everything that will reveal on scroll ──
       gsap.set(topRowRef.current,    { opacity: 0, y: -10 });
       gsap.set(bottomRowRef.current, { opacity: 0, y: 24  });
       gsap.set(kanjiRef.current,     { opacity: 0 });
@@ -92,22 +86,20 @@ export default function Hero() {
         gsap.set(titleInners, { yPercent: 110 });
       }
 
-      // ── Pinned, scrubbed master timeline ──
-      // The section is pinned for 200% extra scroll. The timeline plays
-      // scrubbed across that distance — video keeps playing the whole time.
+      // ── Scrubbed timeline driven by section scroll progress ──
+      // IMPORTANT: no `pin:true`. CSS `position: sticky` on .sticky handles the
+      // visual pinning. This avoids GSAP mutating the DOM (pin-spacer wrapper),
+      // which was causing React `removeChild` errors during route transitions.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: '+=200%',
-          pin: true,
-          pinSpacing: true,
+          end: 'bottom bottom',
           scrub: 1.2,
-          anticipatePin: 1,
         },
       });
 
-      // Continuous cinematic camera zoom across the entire pin
+      // Continuous cinematic camera zoom across the entire sticky range
       tl.to(videoRef.current, { scale: 1.10, ease: 'none' }, 0);
 
       // 1. Kanji watermark drifts in (early atmosphere)
@@ -117,14 +109,14 @@ export default function Hero() {
         0.3
       );
 
-      // 2. Top labels (project number + date)
+      // 2. Top labels reveal
       tl.to(
         topRowRef.current,
         { opacity: 1, y: 0, duration: 0.9, ease: 'power2.out' },
         1.0
       );
 
-      // 3. Title lines rise one by one (curtain-up effect)
+      // 3. Title lines rise one by one
       if (titleInners) {
         tl.to(
           titleInners,
@@ -138,22 +130,21 @@ export default function Hero() {
         );
       }
 
-      // 4. Bottom row — bio fades in
+      // 4. Bio
       tl.to(
         bottomRowRef.current,
         { opacity: 1, y: 0, duration: 1, ease: 'power2.out' },
         4.0
       );
 
-      // 5. Scroll cue retracts as we approach the exit
+      // 5. Scroll cue retracts as we approach exit
       tl.to(
         scrollCueRef.current,
         { opacity: 0, y: -10, duration: 0.6, ease: 'power2.in' },
         4.6
       );
 
-      // 6. Cinematic exit — everything lifts and dissolves,
-      //    video deepens for transition into About.
+      // 6. Cinematic exit
       tl.to(
         [topRowRef.current, titleRef.current, bottomRowRef.current],
         { opacity: 0, y: -60, duration: 1.2, ease: 'power2.in' },
@@ -176,80 +167,79 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className={styles.hero} id="top">
-      {/* ── Video bed ── */}
-      <div className={styles.videoWrap}>
-        <video
-          ref={videoRef}
-          className={styles.video}
-          src="/video/hero.mp4"
-          // Optional: drop a still image of the first frame into
-          // public/video/hero-poster.jpg for a graceful fallback on slow loads.
-          poster="/video/hero-poster.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        />
-        <div className={styles.tint} aria-hidden />
-        <Fog />
-        <div className={styles.vignette} aria-hidden />
-      </div>
-
-      {/* ── Drifting kanji watermark ── */}
-      <div ref={kanjiRef} className={styles.kanji} aria-hidden>
-        静寂
-      </div>
-
-      {/* ── Content ── */}
-      <div className={styles.content}>
-        <div ref={topRowRef} className={styles.topRow}>
-          <span className={styles.label}>Lucas — 001 / Portfolio</span>
-          <span className={styles.label}>MMXXVI · Frontend / Motion</span>
+      {/* Sticky container — CSS pins it for the section's full scroll range */}
+      <div className={styles.sticky}>
+        {/* ── Video bed ── */}
+        <div className={styles.videoWrap}>
+          <video
+            ref={videoRef}
+            className={styles.video}
+            src="/video/hero.mp4"
+            poster="/video/hero-poster.jpg"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          />
+          <div className={styles.tint} aria-hidden />
+          <Fog />
+          <div className={styles.vignette} aria-hidden />
         </div>
 
-        <h1 ref={titleRef} className={styles.title}>
-          <span className={styles.titleLine}>
-            <span className={styles.titleInner}>Interfaces</span>
-          </span>
-          <span className={styles.titleLine}>
-            <span className={styles.titleInner}>that move</span>
-          </span>
-          <span className={styles.titleLine}>
-            <span className={styles.titleInner}>like cinema.</span>
-          </span>
-        </h1>
+        {/* ── Drifting kanji watermark ── */}
+        <div ref={kanjiRef} className={styles.kanji} aria-hidden>
+          静寂
+        </div>
 
-        <div ref={bottomRowRef} className={styles.bottomRow}>
-          <div className={styles.meta}>
-            <span className={styles.metaJp}>静</span>
-            <p className={styles.metaText}>
-              Lucas — creative frontend developer<br />
-              crafting immersive, cinematic interfaces.
-            </p>
+        {/* ── Content ── */}
+        <div className={styles.content}>
+          <div ref={topRowRef} className={styles.topRow}>
+            <span className={styles.label}>Lucas — 001 / Portfolio</span>
+            <span className={styles.label}>MMXXVI · Frontend / Motion</span>
           </div>
+
+          <h1 ref={titleRef} className={styles.title}>
+            <span className={styles.titleLine}>
+              <span className={styles.titleInner}>Interfaces</span>
+            </span>
+            <span className={styles.titleLine}>
+              <span className={styles.titleInner}>that move</span>
+            </span>
+            <span className={styles.titleLine}>
+              <span className={styles.titleInner}>like cinema.</span>
+            </span>
+          </h1>
+
+          <div ref={bottomRowRef} className={styles.bottomRow}>
+            <div className={styles.meta}>
+              <span className={styles.metaJp}>静</span>
+              <p className={styles.metaText}>
+                Lucas — creative frontend developer<br />
+                crafting immersive, cinematic interfaces.
+              </p>
+            </div>
+          </div>
+
+          <a
+            ref={scrollCueRef}
+            href="#about"
+            className={styles.scrollCue}
+            data-cursor
+          >
+            <span className={styles.scrollLabel}>Scroll</span>
+            <span className={styles.scrollLine}>
+              <span className={styles.scrollDot} />
+            </span>
+          </a>
         </div>
 
-        {/* Scroll cue is its own layer so it can live independent of the
-            scroll-revealed content — it greets the user immediately. */}
-        <a
-          ref={scrollCueRef}
-          href="#about"
-          className={styles.scrollCue}
-          data-cursor
-        >
-          <span className={styles.scrollLabel}>Scroll</span>
-          <span className={styles.scrollLine}>
-            <span className={styles.scrollDot} />
-          </span>
-        </a>
+        {/* ── Ink-wash transition into the next section ── */}
+        <div className={styles.inkWash} aria-hidden />
+
+        {/* ── Initial black curtain fading away ── */}
+        <div ref={curtainRef} className={styles.curtain} aria-hidden />
       </div>
-
-      {/* ── Ink-wash transition into the next section ── */}
-      <div className={styles.inkWash} aria-hidden />
-
-      {/* ── Initial black curtain fading away ── */}
-      <div ref={curtainRef} className={styles.curtain} aria-hidden />
     </section>
   );
 }

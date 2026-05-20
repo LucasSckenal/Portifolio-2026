@@ -81,3 +81,27 @@
   --font-serif:  var(--font-serif-jp), 'Times New Roman', serif;
   --font-mono:   var(--font-geist-mono), ui-monospace, monospace;
 }
+
+// =========================================
+// Inverted mode — toggled by user via header
+// Same design language, swapped color palette.
+// Sections with locked moods (Hero video, project scenes) keep their
+// identity. The "page" tokens (body, About, Stack, Contact) flip.
+// =========================================
+html.theme-inverted {
+  --bg:         #1A1816;             // page bg becomes ink
+  --bg-deep:    #EEEAE3;             // dark-zone bg becomes paper
+  --bg-glass:   rgba(26, 24, 22, 0.55);
+  --ink:        #F2EFE9;             // primary text becomes paper
+  --ink-soft:   rgba(242, 239, 233, 0.85);
+  --ink-mute:   rgba(242, 239, 233, 0.55);
+  --line:       rgba(242, 239, 233, 0.10);
+  --line-soft:  rgba(242, 239, 233, 0.06);
+
+  // Inverted on-dark contexts (Contact section reads against paper bg)
+  --on-dark:        #0E0D0B;
+  --on-dark-mute:   rgba(14, 13, 11, 0.55);
+  --on-dark-line:   rgba(14, 13, 11, 0.12);
+
+  // Accent stays — muted shu-iro red reads on both palettes
+}

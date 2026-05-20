@@ -1,0 +1,22 @@
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: #07070A;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.curtainGlyph {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(8rem, 22vw, 18rem);
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.65;
+  letter-spacing: 0;
+  user-select: none;
+  will-change: opacity, transform;
+}

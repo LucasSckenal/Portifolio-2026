@@ -10,10 +10,10 @@ import { cinema } from '@/lib/easings';
 import styles from './About.module.scss';
 
 const paragraphs = [
-  "I'm Lucas — a creative frontend developer drawn to interfaces that feel less like software and more like atmosphere.",
-  "My practice sits at the intersection of motion, immersion, and visual identity. I build cinematic web experiences, game-inspired UI systems, and digital products that lean toward the emotional rather than the purely functional.",
-  "I care about the unhurried details: how a transition lands, how light moves across a panel, how a HUD breathes between actions. The space between things, more than the things themselves.",
-  "Currently building a game with custom UI systems, alongside selected client work in design and frontend engineering.",
+  "I'm Lucas — a frontend developer drawn to digital experiences that go beyond function. The kind that feel cinematic, atmospheric, visually intentional in every detail.",
+  "My practice favors modern UI, smooth motion, and the texture of game-inspired interfaces. I try to thread creativity, performance, and a premium feeling into the same work — never one at the cost of the others.",
+  "Currently building a Tower Defense game with custom HUD systems, a multilingual medical chatbot, and a gaming-focused commerce concept. Each one is an attempt to give software an identity, an atmosphere, an intent.",
+  "I draw from Japanese minimalism, cinematic motion design, and the Apple / Awwwards school of premium interfaces. The goal: products people remember not for the code, but for the experience they transmit.",
 ];
 
 const stats: Array<{ label: string; value: string; jp: string }> = [

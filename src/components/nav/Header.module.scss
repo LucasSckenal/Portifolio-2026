@@ -72,6 +72,14 @@
   &Index { opacity: 0.5; font-size: 0.65rem; }
 }
 
+// Right cluster — theme toggle + CTA, with mobile button replacing on small
+.right {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  justify-self: end;
+}
+
 .cta {
   display: inline-flex;
   align-items: center;

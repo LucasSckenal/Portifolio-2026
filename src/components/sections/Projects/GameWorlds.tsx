@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
@@ -127,11 +128,12 @@ export default function GameWorlds() {
             >
               {w.image && (
                 <div className={styles.cardImageWrap}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={w.image}
-                    alt=""
+                    alt={`${w.name} — ${w.tema}`}
                     className={styles.cardImage}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 18vw"
                     loading="lazy"
                   />
                   <div className={styles.cardImageDim} aria-hidden />

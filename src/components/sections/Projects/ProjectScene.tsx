@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, type MouseEvent } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,6 +24,7 @@ type Props = {
   align?: 'left' | 'right';
   href?: string;       // Source / repository URL
   live?: string;       // Live deployment URL (optional secondary CTA)
+  caseSlug?: string;   // /work/[slug] route — primary action when present
   // Optional sub-details that enrich the card without bloating the layout
   tech?: string[];     // e.g., ['Godot 4.6', 'GDScript']
   team?: string;       // e.g., 'Team of 4 · UI / Frontend'
@@ -47,6 +49,7 @@ export default function ProjectScene({
   align = 'left',
   href,
   live,
+  caseSlug,
   tech,
   team,
   children,
@@ -130,17 +133,31 @@ export default function ProjectScene({
       </div>
 
       <div className={styles.inner}>
-        {/* Media side */}
-        <div
-          ref={mediaRef}
-          className={styles.mediaSlot}
-          onMouseMove={handleMouseMove}
-          data-cursor
-          data-cursor-label={live ? 'Open Live ↗' : href ? 'View source ↗' : undefined}
-        >
-          <div className={styles.mediaHighlight} aria-hidden />
-          {children}
-        </div>
+        {/* Media side — click goes to case study when available */}
+        {caseSlug ? (
+          <Link
+            href={`/work/${caseSlug}`}
+            ref={mediaRef as unknown as React.RefObject<HTMLAnchorElement>}
+            className={styles.mediaSlot}
+            onMouseMove={handleMouseMove}
+            data-cursor
+            data-cursor-label="Read case study →"
+          >
+            <div className={styles.mediaHighlight} aria-hidden />
+            {children}
+          </Link>
+        ) : (
+          <div
+            ref={mediaRef}
+            className={styles.mediaSlot}
+            onMouseMove={handleMouseMove}
+            data-cursor
+            data-cursor-label={live ? 'Open Live ↗' : href ? 'View source ↗' : undefined}
+          >
+            <div className={styles.mediaHighlight} aria-hidden />
+            {children}
+          </div>
+        )}
 
         {/* Info side */}
         <div className={styles.info}>
@@ -214,6 +231,18 @@ export default function ProjectScene({
               <span className={styles.indexSmall}>{index} / 03</span>
 
               <div className={styles.actions}>
+                {caseSlug && (
+                  <Link
+                    href={`/work/${caseSlug}`}
+                    className={`${styles.view} ${styles.viewCase}`}
+                    data-cursor
+                    data-cursor-label="Read case study →"
+                  >
+                    <span>Case study</span>
+                    <span className={styles.viewArrow}>→</span>
+                  </Link>
+                )}
+
                 {live && (
                   <a
                     className={`${styles.view} ${styles.viewPrimary}`}
@@ -221,6 +250,7 @@ export default function ProjectScene({
                     target="_blank"
                     rel="noreferrer"
                     data-cursor
+                    data-cursor-label="Open Live ↗"
                   >
                     <span className={styles.viewDot} aria-hidden />
                     <span>Live</span>
@@ -228,22 +258,19 @@ export default function ProjectScene({
                   </a>
                 )}
 
-                {href ? (
+                {href && (
                   <a
                     className={styles.view}
                     href={href}
                     target="_blank"
                     rel="noreferrer"
                     data-cursor
+                    data-cursor-label="View source ↗"
                   >
-                    <span>Repository</span>
+                    <span>Repo</span>
                     <span className={styles.viewArrow}>↗</span>
                   </a>
-                ) : !live ? (
-                  <span className={styles.view}>
-                    <span>Case study soon</span>
-                  </span>
-                ) : null}
+                )}
               </div>
             </div>
           </Reveal>

@@ -4,6 +4,8 @@ import LenisProvider from '@/components/providers/LenisProvider';
 import Grain from '@/components/atmosphere/Grain';
 import Cursor from '@/components/ui/Cursor';
 import Header from '@/components/nav/Header';
+import ConsoleEasterEgg from '@/components/effects/ConsoleEasterEgg';
+import RouteTransition from '@/components/effects/RouteTransition';
 import './globals.scss';
 
 const geist = Geist({
@@ -108,11 +110,27 @@ export default function RootLayout({
       className={`${geist.variable} ${geistMono.variable} ${notoSerifJp.variable}`}
     >
       <body data-theme="dark">
+        {/* Pre-hydration theme sync — runs synchronously to avoid a flash
+            between SSR (default) and hydration (localStorage preference). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('theme-inverted')==='true')document.documentElement.classList.add('theme-inverted')}catch(e){}",
+          }}
+        />
+
+        {/* Keyboard-only skip link — focusable but visually hidden until focused */}
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+
         <LenisProvider>
           <Cursor />
           <Header />
-          <main>{children}</main>
+          <main id="main">{children}</main>
           <Grain />
+          <RouteTransition />
+          <ConsoleEasterEgg />
         </LenisProvider>
       </body>
     </html>

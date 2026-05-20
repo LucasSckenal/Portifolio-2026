@@ -307,6 +307,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+// Case study CTA — primary internal action (→ instead of ↗)
+.viewCase {
+  // Inherits .view styling; the arrow direction signals "internal route"
+  // while the slight bolding distinguishes it from external links.
+  font-weight: 500;
 }
 
 .view {

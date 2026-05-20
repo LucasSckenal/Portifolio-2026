@@ -51,6 +51,7 @@ export default function Projects() {
         mood="dark"
         align="left"
         href="https://github.com/LucasSckenal/pi-4"
+        caseSlug="onde-estao-os-netos"
       >
         <GameMedia
           screenshot="https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png"
@@ -76,6 +77,7 @@ export default function Projects() {
         align="right"
         href="https://github.com/LucasSckenal/PI3-4l"
         live="https://fourl-aplicativocov.onrender.com/login"
+        caseSlug="medical-chatbot"
       >
         <ChatbotMedia
           screenshots={[
@@ -98,6 +100,7 @@ export default function Projects() {
         mood="glass"
         align="left"
         href="https://github.com/LucasSckenal/PhantomCommercee"
+        caseSlug="phantom-commerce"
       >
         <PhantomMedia
           screenshots={[

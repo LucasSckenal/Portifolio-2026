@@ -8,6 +8,18 @@ const nextConfig = {
     // _tokens.scss has a global `:root` block and is loaded once in globals.scss.
     prependData: `@use "mixins" as *;`,
   },
+  images: {
+    // Allow remote images from the Onde Estão os Netos? repo's docs/screenshots
+    // (used by the home Game card and the case study).
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/LucasSckenal/**',
+      },
+    ],
+    formats: ['image/avif', 'image/webp'],
+  },
 };
 
 export default nextConfig;

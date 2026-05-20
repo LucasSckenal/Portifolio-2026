@@ -1,5 +1,6 @@
 // Three custom media compositions — placeholders that evoke each project's
 // world. Replace with real screenshots / video later via the marked slots.
+import Image from 'next/image';
 import styles from './ProjectMedia.module.scss';
 
 // ─────────────────────────────────────────
@@ -17,12 +18,12 @@ export function GameMedia({ screenshot, screenshotAlt = '' }: GameMediaProps = {
     <div className={`${styles.media} ${styles.game}`}>
       {screenshot ? (
         <>
-          {/* Real game screenshot as backdrop */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={screenshot}
             alt={screenshotAlt}
             className={styles.gameScreenshot}
+            fill
+            sizes="(max-width: 900px) 100vw, 60vw"
             loading="lazy"
           />
           <div className={styles.gameScreenshotDim} aria-hidden />
@@ -117,8 +118,16 @@ function ChatDevice({
         <span />
         <span />
       </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} className={styles.chatDeviceScreen} loading="lazy" />
+      <div className={styles.chatDeviceImageWrap}>
+        <Image
+          src={src}
+          alt={alt}
+          className={styles.chatDeviceScreen}
+          fill
+          sizes="(max-width: 900px) 90vw, 35vw"
+          loading="lazy"
+        />
+      </div>
     </div>
   );
 }
@@ -235,8 +244,16 @@ function PhantomDevice({
         <span />
         <span />
       </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} className={styles.phantomDeviceScreen} loading="lazy" />
+      <div className={styles.phantomDeviceImageWrap}>
+        <Image
+          src={src}
+          alt={alt}
+          className={styles.phantomDeviceScreen}
+          fill
+          sizes="(max-width: 900px) 90vw, 35vw"
+          loading="lazy"
+        />
+      </div>
     </div>
   );
 }

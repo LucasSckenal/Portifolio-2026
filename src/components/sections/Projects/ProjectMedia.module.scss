@@ -308,9 +308,14 @@
   span:nth-child(3) { background: #A8C99A; }
 }
 
-.chatDeviceScreen {
+// Wrapper needed because next/image with `fill` requires a positioned parent
+.chatDeviceImageWrap {
+  position: relative;
   width: 100%;
   height: 100%;
+}
+
+.chatDeviceScreen {
   object-fit: cover;
   object-position: center top;
 }
@@ -802,9 +807,13 @@
   span:nth-child(3) { background: #A8C99A; }
 }
 
-.phantomDeviceScreen {
+.phantomDeviceImageWrap {
+  position: relative;
   width: 100%;
   height: 100%;
+}
+
+.phantomDeviceScreen {
   object-fit: cover;
   object-position: center top;
 }

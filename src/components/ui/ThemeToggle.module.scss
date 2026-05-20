@@ -1,0 +1,44 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.4s var(--ease-cinema);
+
+  &:hover {
+    opacity: 1;
+
+    .jp {
+      transform: rotate(8deg);
+    }
+  }
+
+  @include breakpoint(md) { display: none; }
+}
+
+.jp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1;
+  text-transform: none;
+  color: var(--accent);
+  letter-spacing: 0;
+  transition: transform 0.45s var(--ease-cinema);
+}
+
+.label {
+  display: inline-block;
+}

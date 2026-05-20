@@ -1,16 +1,18 @@
 'use client';
 
 import { useEffect } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cinema } from '@/lib/easings';
 import styles from './MobileMenu.module.scss';
 
+// Absolute hrefs so the menu navigates back to home from any route.
 const items = [
-  { label: 'Index',   href: '#top',      index: '01' },
-  { label: 'About',   href: '#about',    index: '02' },
-  { label: 'Work',    href: '#projects', index: '03' },
-  { label: 'Stack',   href: '#stack',    index: '04' },
-  { label: 'Contact', href: '#contact',  index: '05' },
+  { label: 'Index',   href: '/#top',      index: '01' },
+  { label: 'About',   href: '/#about',    index: '02' },
+  { label: 'Work',    href: '/#projects', index: '03' },
+  { label: 'Stack',   href: '/#stack',    index: '04' },
+  { label: 'Contact', href: '/#contact',  index: '05' },
 ];
 
 type Props = {
@@ -45,18 +47,24 @@ export default function MobileMenu({ open, onClose }: Props) {
           aria-modal="true"
           aria-label="Navigation"
         >
-          <button
-            className={styles.close}
-            onClick={onClose}
-            aria-label="Close menu"
-            data-cursor
-          >
-            <span className={styles.closeBar} />
-            <span className={styles.closeBar} />
-          </button>
-
+          {/* Drifting kanji watermark */}
           <div className={styles.kanji} aria-hidden>道</div>
 
+          {/* Top bar — label + close */}
+          <div className={styles.topBar}>
+            <span className={styles.topLabel}>Menu</span>
+            <button
+              className={styles.close}
+              onClick={onClose}
+              aria-label="Close menu"
+              data-cursor
+            >
+              <span className={styles.closeBar} />
+              <span className={styles.closeBar} />
+            </button>
+          </div>
+
+          {/* Nav list */}
           <nav className={styles.nav}>
             <motion.ul
               className={styles.list}
@@ -73,33 +81,44 @@ export default function MobileMenu({ open, onClose }: Props) {
                   key={item.href}
                   className={styles.item}
                   variants={{
-                    hidden: { y: '110%' },
-                    show:   { y: '0%', transition: { duration: 1, ease: cinema } },
+                    hidden: { opacity: 0 },
+                    show:   { opacity: 1, transition: { duration: 0.6, ease: cinema } },
                   }}
                 >
-                  <a
+                  <Link
                     href={item.href}
                     className={styles.link}
                     onClick={onClose}
                     data-cursor
                   >
                     <span className={styles.linkIndex}>{item.index}</span>
-                    <span className={styles.linkLabel}>{item.label}</span>
-                  </a>
+                    <span className={styles.linkLabelWrap}>
+                      <span className={styles.linkLabel}>{item.label}</span>
+                    </span>
+                    <span className={styles.linkArrow} aria-hidden>→</span>
+                  </Link>
                 </motion.li>
               ))}
             </motion.ul>
-
-            <motion.div
-              className={styles.footer}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.9, duration: 1 } }}
-              exit={{ opacity: 0 }}
-            >
-              <span>Lucas Sckenal · MMXXVI</span>
-              <span>静寂 · Quiet practice</span>
-            </motion.div>
           </nav>
+
+          {/* Footer */}
+          <motion.footer
+            className={styles.footer}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.9, duration: 1 } }}
+            exit={{ opacity: 0 }}
+          >
+            <div className={styles.footerLeft}>
+              <span className={styles.footerLabel}>
+                Lucas Sckenal · Frontend / Motion
+              </span>
+              <span className={styles.footerYear}>
+                Crafted in MMXXVI
+              </span>
+            </div>
+            <span className={styles.footerSignature} aria-hidden>静寂</span>
+          </motion.footer>
         </motion.div>
       )}
     </AnimatePresence>

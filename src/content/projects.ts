@@ -208,8 +208,8 @@ export const projects: ProjectCase[] = [
     description:
       'A multilingual medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage.',
     roles: ['Conversational UX', 'Voice + Text', 'Medical Triage', 'Multilingual'],
-    tech: ['React', 'SCSS', 'Web Speech API', 'Render'],
-    team: 'Team of 4 · SENAC · UI / Frontend systems',
+    tech: ['React', 'Vite', 'Node + Express', 'Firebase'],
+    team: 'Team of 3 · Unijui · Front-End lead',
     href: 'https://github.com/LucasSckenal/PI3-4l',
     live: 'https://fourl-aplicativocov.onrender.com/login',
     mood: 'light',
@@ -222,7 +222,7 @@ export const projects: ProjectCase[] = [
       {
         type: 'paragraph',
         body:
-          'Built during PI-3 at SENAC, this is a multilingual conversational interface designed around low-anxiety conversation. Patients describe what they\'re feeling, the AI assembles a structured summary, and the clinical team gets context before the appointment begins.',
+          'Built during Projeto Integrador III at Unijui (Ciência de Dados e Analytics), this is a multilingual conversational interface designed around low-anxiety conversation. Patients describe what they\'re feeling — by voice or text — and the AI assembles a structured summary so the clinical team has context before the appointment begins.',
       },
 
       {
@@ -242,10 +242,11 @@ export const projects: ProjectCase[] = [
         type: 'list',
         items: [
           'Voice or text input for symptom description',
-          'Multilingual interface (Portuguese, Spanish, English)',
-          'Persistent medical profile (blood type, weight, allergies)',
+          'Multilingual interface — Portuguese, Spanish, English',
+          'Firebase authentication with persistent sessions',
           'Diagnostic history tracked per user',
-          'Full UI theming including dark mode and accent color',
+          'Medical profile — blood type, weight, allergies, basic data',
+          'Full UI theming — dark / light mode + custom accent color',
           'Symptom auto-tagging extracted from the conversation',
         ],
       },
@@ -253,15 +254,44 @@ export const projects: ProjectCase[] = [
       {
         type: 'gallery',
         images: [
-          { src: '/projects/chatbot/Home.png', alt: 'Dashboard view', caption: 'Dashboard — diagnostics, frequent symptoms, history.' },
-          { src: '/projects/chatbot/Settings.png', alt: 'Settings view', caption: 'Settings — dark mode, language, theming.' },
+          { src: '/projects/chatbot/Home.png', alt: 'Home dashboard view', caption: 'Home — diagnostic count, frequent symptoms, recent history.' },
+          { src: '/projects/chatbot/Settings.png', alt: 'Settings view', caption: 'Settings — dark mode, language, custom accent color.' },
         ],
       },
 
       {
+        type: 'quote',
+        text:
+          'The whole product sits at one bridge: patient anxiety on one side, clinical context on the other.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Stack & integration',
+        jp: '工',
+        jpLabel: '工 · Craft',
+      },
+      {
         type: 'paragraph',
         body:
-          'The value sits at the bridge — patient anxiety on one side, structured clinical context on the other. Built in React + SCSS, deployed on Render.',
+          'The frontend is React with Vite — fast HMR during development, clean ESM-first build. SCSS Modules for component-scoped styles. React Router for navigation. Context API for theme, auth and chat state. Axios for the API layer with JWT in the header.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'The backend is Node + Express, exposing REST endpoints that proxy to language providers for the AI side. Firebase Authentication handles login; Firestore stores user profiles and conversation history. The whole thing is hosted on Render.',
+      },
+
+      {
+        type: 'heading',
+        text: 'The team',
+        jp: '組',
+        jpLabel: '組 · Group',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'A three-person collaboration at Unijui. I led the entire frontend — design system, theming, chat UX, voice integration, and profile management. Luan Vitor built the backend and AI integration. Henrique handled documentation and process.',
       },
 
       {
@@ -273,7 +303,7 @@ export const projects: ProjectCase[] = [
       {
         type: 'paragraph',
         body:
-          'The chatbot is live. Use the Live link above to register and try a conversation in any of the three supported languages.',
+          'The chatbot is live in production. Use the Live link above to register and try a full conversation in any of the three supported languages.',
       },
     ],
   },
@@ -291,16 +321,22 @@ export const projects: ProjectCase[] = [
     status: 'Live · Concept',
     tagline: 'The store as exhibit, not as catalogue.',
     description:
-      'A gaming-focused commerce concept built around premium product presentation, animated interactions, and a glass-deep visual language.',
-    roles: ['Ecommerce UI', 'Motion Design', 'Frontend Architecture', 'Brand'],
-    tech: ['Next.js', 'React', 'SCSS'],
+      'A gaming-focused commerce platform built around premium product presentation, animated interactions, and a glass-deep visual language.',
+    roles: ['Ecommerce', 'Motion Design', 'Full-Stack', 'Brand'],
+    tech: ['Next.js', 'Firebase', 'SCSS', 'Lucide'],
+    team: 'Team of 3 · Unijui',
     href: 'https://github.com/LucasSckenal/PhantomCommercee',
     mood: 'glass',
     sections: [
       {
         type: 'lead',
         body:
-          'A gaming-focused commerce concept built around premium product presentation and a glass-deep visual language.',
+          'A gaming-focused commerce platform built around premium product presentation and a glass-deep visual language.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Phantom treats each product as the subject of an exhibition rather than an entry in a catalogue. Heavy use of glass, neon edges, and patient motion — every page is composed like a gallery wall.',
       },
       {
         type: 'image',
@@ -308,21 +344,71 @@ export const projects: ProjectCase[] = [
         alt: 'Product detail page',
         caption: 'Product detail — exhibition over catalogue.',
       },
+
+      {
+        type: 'heading',
+        text: 'Why exhibition, not catalogue',
+        jp: '場',
+        jpLabel: '場 · Stage',
+      },
       {
         type: 'paragraph',
         body:
-          'Phantom treats each product as the subject of an exhibition rather than an entry in a catalogue. Heavy use of glass, neon edges, and patient motion.',
+          'Most game stores prioritize density — fitting as many products into the viewport as possible. We went the opposite way: each product gets room to breathe, soft lighting, and visual weight. The hypothesis is that the experience of browsing itself is part of what people pay for in premium retail.',
       },
+      {
+        type: 'quote',
+        text:
+          'Density treats every product as interchangeable. Exhibition makes each one feel chosen.',
+      },
+
       {
         type: 'image',
         src: '/projects/PhantomComerce/homepage.png',
         alt: 'Store homepage',
-        caption: 'Store homepage.',
+        caption: 'Homepage — composed like a gallery wall.',
+      },
+
+      {
+        type: 'heading',
+        text: 'What\'s in it',
+        jp: '機',
+        jpLabel: '機 · Function',
+      },
+      {
+        type: 'list',
+        items: [
+          'Game catalogue with filters and search',
+          'Product detail pages — imagery, description, pricing',
+          'Cart and checkout flow',
+          'User authentication (login / logout)',
+          'Admin panel for adding new products',
+          'Responsive UI built for desktop-first browsing',
+        ],
+      },
+
+      {
+        type: 'heading',
+        text: 'Stack',
+        jp: '工',
+        jpLabel: '工 · Craft',
       },
       {
         type: 'paragraph',
         body:
-          'More case study content coming as the project develops — process notes, animation studies, and reflections on translating retail into a visual narrative.',
+          'Built as a Next.js full-stack application — pages, API routes, and database access in one codebase. SCSS for styling, Lucide and React-Icons for the icon system, Firebase for authentication and Firestore for the product / user data.',
+      },
+
+      {
+        type: 'heading',
+        text: 'The team',
+        jp: '組',
+        jpLabel: '組 · Group',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'A three-person build at Unijui — Henrique, Luan, and myself. The project is open source on GitHub; pull requests and feedback welcome.',
       },
     ],
   },

@@ -69,9 +69,9 @@ export default function Projects() {
         status="Live · Production"
         year="2025"
         roles={['Conversational UX', 'Voice + Text', 'Medical Triage', 'Multilingual']}
-        tech={['React', 'SCSS', 'Web Speech API', 'Render']}
-        team="Team of 4 · SENAC · UI / Frontend systems"
-        description="A medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage. Persistent medical profiles (blood type, weight, allergies), diagnostic history, multilingual interface, and full theming control. Built in React + SCSS, deployed on Render."
+        tech={['React', 'Vite', 'Node + Express', 'Firebase']}
+        team="Team of 3 · Unijui · Front-End lead"
+        description="A multilingual medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage. Persistent medical profiles, diagnostic history, voice + text input, and full UI theming. React + Vite frontend, Node + Express backend, Firebase Auth + Firestore."
         jp="話"
         mood="light"
         align="right"
@@ -94,8 +94,10 @@ export default function Projects() {
         title="Phantom Commerce"
         status="Live · Concept"
         year="2025"
-        roles={['Ecommerce UI', 'Motion Design', 'Frontend Architecture', 'Brand']}
-        description="A gaming-focused commerce experience built around premium product presentation, animated interactions, and a glass-deep visual language. The store as exhibit, not as catalogue."
+        roles={['Ecommerce', 'Motion Design', 'Full-Stack', 'Brand']}
+        tech={['Next.js', 'Firebase', 'SCSS', 'Lucide']}
+        team="Team of 3 · Unijui"
+        description="A gaming-focused commerce platform built around premium product presentation, animated interactions, and a glass-deep visual language. The store as exhibit, not as catalogue. Full-stack Next.js with Firebase for auth and Firestore for the product / user data."
         jp="幻"
         mood="glass"
         align="left"

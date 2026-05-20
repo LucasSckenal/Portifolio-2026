@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -91,15 +92,19 @@ export default function About() {
           {/* Portrait column (offset down) */}
           <div className={styles.portraitCol}>
             <div ref={portraitRef} className={styles.portraitFrame}>
-              {/*
-                Replace this with your portrait:
-                <img src="/images/portrait.jpg" alt="" className={styles.portrait} />
-              */}
-              <div className={styles.portraitPlaceholder} aria-hidden>
-                <span className={styles.portraitTimecode}>00:00:14 · F12</span>
-                <span className={styles.portraitJp}>L</span>
-                <span className={styles.portraitCorner} />
-              </div>
+              <Image
+                src="/projects/portrait.png"
+                alt="Lucas Sckenal"
+                className={styles.portrait}
+                fill
+                sizes="(max-width: 900px) 90vw, 35vw"
+                priority
+              />
+              {/* Film-still overlay — timecode + corner bracket */}
+              <span className={styles.portraitTimecode} aria-hidden>
+                00:00:14 · F12
+              </span>
+              <span className={styles.portraitCorner} aria-hidden />
             </div>
             <Reveal delay={0.2}>
               <p className={styles.caption}>

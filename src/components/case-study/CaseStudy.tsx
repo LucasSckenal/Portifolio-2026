@@ -17,11 +17,8 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
 
   return (
     <article className={`${styles.caseStudy} ${moodClass[project.mood]}`}>
-      {/* ── Back link (fixed) ── */}
-      <Link href="/#projects" className={styles.backLink} data-cursor>
-        <span className={styles.backArrow}>←</span>
-        <span>Index</span>
-      </Link>
+      {/* Back to home is now handled by the header logo, which gains a ← arrow
+          on subpages. Avoids the overlap of two top-left back affordances. */}
 
       {/* ── Hero ── */}
       <header className={styles.hero}>

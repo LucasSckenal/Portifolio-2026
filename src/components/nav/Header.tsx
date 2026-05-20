@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { cinema } from '@/lib/easings';
 import MobileMenu from './MobileMenu';
@@ -9,8 +10,6 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
 import styles from './Header.module.scss';
 
 // All hrefs use absolute paths so the header works correctly from any route.
-// On the home page, Next's <Link> handles smooth scroll to the hash anchor.
-// On a case study page, clicking navigates back to home AND scrolls there.
 const nav = [
   { label: 'Index',    href: '/#top' },
   { label: 'Work',     href: '/#projects' },
@@ -20,16 +19,33 @@ const nav = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // On any subpage (e.g. /work/[slug]) the logo gains a `←` prefix and
+  // acts as the explicit back-to-home action. Replaces the floating
+  // back link that used to overlap the logo.
+  const isSubpage = pathname !== '/' && pathname !== '';
 
   return (
     <>
+      {/* Glass panel — sits BEHIND the header (no blend mode of its own) so
+          backdrop-blur softens whatever's behind without interfering with
+          the header text's mix-blend-difference adaptation. */}
+      <div className={styles.glassPanel} aria-hidden />
+
       <motion.header
         className={styles.header}
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.4, delay: 1.6, ease: cinema }}
       >
-        <Link href="/" className={styles.mark} data-cursor>
+        <Link
+          href="/"
+          className={`${styles.mark} ${isSubpage ? styles.markBack : ''}`}
+          data-cursor
+          data-cursor-label={isSubpage ? 'Back to index ←' : undefined}
+        >
+          {isSubpage && <span className={styles.markBackArrow} aria-hidden>←</span>}
           <span className={styles.markJp}>静</span>
           <span className={styles.markEn}>Lucas</span>
         </Link>

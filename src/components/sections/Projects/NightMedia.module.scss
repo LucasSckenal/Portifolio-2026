@@ -1,0 +1,190 @@
+// =========================================
+// Night project media — atmospheric placeholder for the after-hours work
+// =========================================
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #06050A;
+  color: var(--mood-text-light);
+  font-family: var(--font-mono);
+}
+
+// ── Variants — different cool tints per project ──
+.variantSpirit {
+  .backdrop {
+    background:
+      radial-gradient(ellipse at 30% 30%, #1F1A2A 0%, #0A0810 60%, #050308 100%);
+  }
+  .glow {
+    background: radial-gradient(circle, rgba(140, 120, 200, 0.30) 0%, transparent 60%);
+  }
+  .kanji {
+    color: rgba(180, 160, 220, 0.25);
+    text-shadow: 0 0 80px rgba(140, 120, 200, 0.4);
+  }
+}
+
+.variantMoon {
+  .backdrop {
+    background:
+      radial-gradient(ellipse at 70% 25%, #1A1820 0%, #0A0908 60%, #050405 100%);
+  }
+  .glow {
+    background: radial-gradient(circle, rgba(232, 226, 216, 0.20) 0%, transparent 60%);
+  }
+  .kanji {
+    color: rgba(232, 226, 216, 0.22);
+    text-shadow: 0 0 100px rgba(232, 226, 216, 0.35);
+  }
+}
+
+.variantRain {
+  .backdrop {
+    background:
+      radial-gradient(ellipse at 50% 80%, #0E1820 0%, #060A10 60%, #03050A 100%);
+  }
+  .glow {
+    background: radial-gradient(circle, rgba(110, 160, 200, 0.28) 0%, transparent 60%);
+  }
+  .kanji {
+    color: rgba(140, 180, 210, 0.22);
+    text-shadow: 0 0 90px rgba(110, 160, 200, 0.4);
+  }
+}
+
+// ── Backdrop layers ──
+.backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 3px
+    );
+  mix-blend-mode: overlay;
+}
+
+.glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  aspect-ratio: 1.5;
+  filter: blur(40px);
+  pointer-events: none;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.9;  transform: translate(-50%, -50%) scale(1.04); }
+}
+
+// ── Center kanji ──
+.kanjiWrap {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.kanji {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(12rem, 28vw, 22rem);
+  line-height: 1;
+  letter-spacing: 0;
+  user-select: none;
+}
+
+// ── Top corners ──
+.topMeta {
+  position: absolute;
+  top: 22px;
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.55);
+}
+
+.topDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(140, 42, 31, 0.6);
+}
+
+.experimentTag {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  padding: 3px 9px;
+  font-size: 0.55rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  border: 1px solid rgba(242, 239, 233, 0.18);
+  border-radius: 999px;
+  color: rgba(242, 239, 233, 0.65);
+}
+
+// ── Bottom corners ──
+.bracket {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: rgba(242, 239, 233, 0.4);
+}
+.bracketBL {
+  bottom: 22px;
+  left: 24px;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+.bracketBR {
+  bottom: 22px;
+  right: 24px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+// ── Bottom strip ──
+.bottomStrip {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.5);
+}
+
+.bottomStripJp {
+  font-family: var(--font-serif);
+  font-size: 0.7rem;
+  text-transform: none;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}

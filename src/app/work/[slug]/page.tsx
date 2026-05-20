@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { projects, getProject } from '@/content/projects';
+import { projects, nightProjects, getProject } from '@/content/projects';
 import { creativeWorkSchema } from '@/lib/structured-data';
 import CaseStudy from '@/components/case-study/CaseStudy';
 
-// Pre-render every case study at build time
+// Pre-render every case study at build time (day + night portfolios)
 export function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  return [...projects, ...nightProjects].map((p) => ({ slug: p.slug }));
 }
 
 // Resolves the canonical site URL across environments (mirrors layout.tsx).

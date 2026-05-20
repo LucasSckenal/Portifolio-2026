@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import styles from './RouteTransition.module.scss';
 
 // Cinematic ink-wipe between routes.
@@ -13,6 +14,7 @@ import styles from './RouteTransition.module.scss';
 // curtain isn't doubled.
 export default function RouteTransition() {
   const pathname = usePathname();
+  const { inverted } = useTheme();
   const [activeKey, setActiveKey] = useState<string | null>(null);
   const isFirstRender = useRef(true);
 
@@ -38,7 +40,7 @@ export default function RouteTransition() {
           aria-hidden
         >
           <motion.span
-            className={styles.curtainGlyph}
+            className={`${styles.curtainGlyph} ${inverted ? styles.curtainGlyphNight : ''}`}
             initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: [0, 1, 1, 0], scale: 1 }}
             transition={{
@@ -47,7 +49,7 @@ export default function RouteTransition() {
               ease: 'easeOut',
             }}
           >
-            静
+            {inverted ? '夜' : '静'}
           </motion.span>
         </motion.div>
       )}

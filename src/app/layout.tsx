@@ -114,6 +114,14 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geist.variable} ${geistMono.variable} ${notoSerifJp.variable}`}
+      // Pre-hydration scripts mutate <html> before React hydrates:
+      //   · theme-inverted class (saved Night preference)
+      //   · lang attribute (user's saved language)
+      // suppressHydrationWarning tells React to preserve those mutations
+      // instead of reconciling them back to the SSR output. Without this,
+      // the theme-inverted class would be stripped on hydration and the
+      // toggle would feel "stuck" in one direction.
+      suppressHydrationWarning
     >
       <body data-theme="dark">
         {/* Pre-hydration theme sync — runs synchronously to avoid a flash

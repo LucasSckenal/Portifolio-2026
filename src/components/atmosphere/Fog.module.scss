@@ -7,6 +7,18 @@
   overflow: hidden;
   mix-blend-mode: screen;
   opacity: 0.55;
+  // Slower hue-shift transition when theme flips (synced with the 1.5s cinematic)
+  transition:
+    filter 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Night fog — cooler tint, denser feel. The hue-rotate shifts the warm
+// white turbulence toward a cool moon-silver; saturate reduces the warmth
+// of any remaining yellows; blur softens the noise for a dreamier read.
+:global(html.theme-inverted) .fog {
+  opacity: 0.42;
+  filter: hue-rotate(190deg) saturate(0.55) brightness(0.85);
 }
 
 .layer {

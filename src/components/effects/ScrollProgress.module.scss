@@ -10,4 +10,11 @@
   pointer-events: none;
   // Subtle glow underneath so the line reads even when the bg matches
   box-shadow: 0 0 6px rgba(140, 42, 31, 0.4);
+  transition: background 1.2s var(--ease-cinema), box-shadow 1.2s var(--ease-cinema);
+}
+
+// Night mode — shift to lantern-warm so the bar carries the night atmosphere
+:global(html.theme-inverted) .bar {
+  background: var(--accent-night);
+  box-shadow: 0 0 8px rgba(232, 154, 79, 0.5);
 }

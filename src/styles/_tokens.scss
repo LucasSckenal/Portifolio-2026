@@ -15,6 +15,12 @@
   --accent:     #8C2A1F;          // muted shu-iro
   --accent-soft: rgba(140, 42, 31, 0.16);
 
+  // Night-only secondary accent — lantern warm. Used sparsely in night mode
+  // for moments where the shu-iro red doesn't carry the atmosphere alone
+  // (scroll bar, particles, night route transition).
+  --accent-night:      #E89A4F;
+  --accent-night-soft: rgba(232, 154, 79, 0.20);
+
   // On dark surfaces — these INVERT with the body theme toggle
   --on-dark:        #F2EFE9;
   --on-dark-soft:   rgba(242, 239, 233, 0.85);

@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { cinema } from '@/lib/easings';
+import { useLocale } from '@/components/providers/LanguageProvider';
+import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
 import styles from './MobileMenu.module.scss';
 
 // Absolute hrefs so the menu navigates back to home from any route.
@@ -21,6 +23,7 @@ type Props = {
 };
 
 export default function MobileMenu({ open, onClose }: Props) {
+  const { locale, setLocale } = useLocale();
   // Lock body scroll while open
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -101,6 +104,30 @@ export default function MobileMenu({ open, onClose }: Props) {
               ))}
             </motion.ul>
           </nav>
+
+          {/* Language strip — quick access in mobile menu */}
+          <motion.div
+            className={styles.langStrip}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, transition: { delay: 0.85, duration: 0.8 } }}
+            exit={{ opacity: 0 }}
+          >
+            <span className={styles.langStripLabel}>言語 · Language</span>
+            <div className={styles.langStripList}>
+              {LOCALES.map((code: Locale) => (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => setLocale(code)}
+                  className={`${styles.langStripItem} ${code === locale ? styles.langStripItemActive : ''}`}
+                  aria-label={`Switch to ${localeMeta[code].name}`}
+                  aria-pressed={code === locale}
+                >
+                  {localeMeta[code].short}
+                </button>
+              ))}
+            </div>
+          </motion.div>
 
           {/* Footer */}
           <motion.footer

@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { cinema } from '@/lib/easings';
 import MobileMenu from './MobileMenu';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import LanguagePicker from '@/components/ui/LanguagePicker';
 import { useT } from '@/components/providers/LanguageProvider';
 import styles from './Header.module.scss';
 
@@ -61,6 +62,7 @@ export default function Header() {
         </nav>
 
         <div className={styles.right}>
+          <LanguagePicker />
           <ThemeToggle />
           <Link href="/#contact" className={styles.cta} data-cursor>
             <span>{t.meta.available}</span>

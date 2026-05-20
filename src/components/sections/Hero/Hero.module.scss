@@ -252,25 +252,29 @@
   pointer-events: none;
 }
 
-// ── Ink-wash bleed into next section ────
-// Soft gradient at the bottom that transitions from ink-deep to paper —
-// bridges the Hero's dark mood into the warm About without a hard cut.
-// Body theme bridge handles the body-level transition; this is the visual
-// seam inside the Hero frame.
+// ── Bottom vignette ─────────────────────
+// Soft dark fade at the bottom of the visible Hero. ALWAYS dark — never
+// uses theme tokens — because this layer sits inside the sticky container
+// and is visible during the entire Hero scroll, not just at the transition
+// moment. Using a token here would show its color through the dark video
+// (paper strip in Day, paper strip in Night when --bg-deep flips, etc).
+//
+// The actual color flow into the next section is handled by HeroBodyBridge
+// changing `body[data-theme]` when the user crosses into About — not by
+// this gradient.
 .inkWash {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 18vh;
+  height: 22vh;
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(14, 13, 11, 0) 0%,
-    rgba(14, 13, 11, 0.35) 45%,
-    rgba(26, 24, 22, 0.85) 80%,
-    var(--bg-deep) 100%
+    rgba(7, 6, 5, 0)    0%,
+    rgba(7, 6, 5, 0.35) 50%,
+    rgba(7, 6, 5, 0.85) 100%
   );
 }
 

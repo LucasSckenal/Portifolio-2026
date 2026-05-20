@@ -8,6 +8,21 @@
   justify-content: center;
   overflow: hidden;
   padding: var(--s-5) var(--gutter);
+  transition:
+    background 1.2s var(--ease-cinema),
+    color 1.2s var(--ease-cinema);
+}
+
+// Night 404 — locked dark with cooler radial cast + lantern accent
+.night {
+  background: #0A0810;
+  color: var(--mood-text-light);
+
+  .kanji   { color: var(--mood-text-light); }
+  .label   { color: var(--accent-night); }
+  .ctaDot  { background: var(--accent-night); box-shadow: 0 0 8px rgba(232, 154, 79, 0.6); }
+  .cta::after { background: var(--accent-night); }
+  .body, .titleLine:nth-child(2) { color: rgba(242, 239, 233, 0.78); }
 }
 
 // Drifting "迷" kanji (mayoi = lost)

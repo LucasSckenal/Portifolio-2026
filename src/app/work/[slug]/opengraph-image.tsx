@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { projects, getProject } from '@/content/projects';
+import { projects, nightProjects, getProject } from '@/content/projects';
 
 // Generates a unique OG image per case study, served at edge runtime.
 // When sharing /work/onde-estao-os-netos on social, the preview shows the
@@ -11,7 +11,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export function generateImageMetadata() {
-  return projects.map((p) => ({
+  return [...projects, ...nightProjects].map((p) => ({
     id: p.slug,
     alt: `${p.title} — case study`,
     contentType,

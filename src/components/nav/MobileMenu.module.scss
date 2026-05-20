@@ -161,6 +161,50 @@
     transform 0.5s var(--ease-cinema);
 }
 
+// ── Language strip ───────────────────────
+.langStrip {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 12px;
+  padding-top: var(--s-3);
+  border-top: 1px solid rgba(242, 239, 233, 0.08);
+}
+
+.langStripLabel {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--mood-text-light-mute);
+}
+
+.langStripList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.langStripItem {
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid rgba(242, 239, 233, 0.18);
+  border-radius: 999px;
+  color: rgba(242, 239, 233, 0.7);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  cursor: pointer;
+  transition: border-color 0.4s var(--ease-cinema), color 0.4s var(--ease-cinema);
+
+  &:hover { border-color: rgba(242, 239, 233, 0.6); color: var(--mood-text-light); }
+}
+
+.langStripItemActive {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 // ── Footer ───────────────────────────────
 .footer {
   position: relative;

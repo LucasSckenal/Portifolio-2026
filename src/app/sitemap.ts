@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { projects } from '@/content/projects';
+import { projects, nightProjects } from '@/content/projects';
 
 // Auto-generated sitemap.xml at /sitemap.xml
 // Includes the home page + each case study route.
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 1,
     },
-    ...projects.map((p) => ({
+    ...[...projects, ...nightProjects].map((p) => ({
       url: `${base}/work/${p.slug}`,
       lastModified: now,
       changeFrequency: 'monthly' as const,

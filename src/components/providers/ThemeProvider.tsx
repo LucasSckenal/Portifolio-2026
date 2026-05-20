@@ -12,23 +12,25 @@ import {
 // =========================================
 // Cinematic theme orchestrator.
 //
-// Holds two pieces of state:
+// Two pieces of state:
 //   · `inverted`     — current theme (false = Day, true = Night)
 //   · `transitioning` — true during the 1.5s cinematic flip
 //
-// The toggle() function runs a coordinated sequence:
-//   t=0.00s  → transitioning = true, all listeners begin choreography
-//   t=0.75s  → totality. The actual class flip happens behind the shadow disc.
-//              Video crossfade, particles swap, palette inversion all align here.
+// Coordinated sequence on toggle():
+//   t=0.00s  → transitioning = true
+//   t=0.75s  → totality. The class flips at this exact moment.
+//              Video crossfade, particles swap, palette inversion all align.
 //   t=1.50s  → transitioning = false. Click re-enabled.
 //
-// All sub-components (EclipseToggle, ThemeTransitionOverlay, Hero, Particles)
-// read from this context so the rhythm stays unified.
+// IMPORTANT: state updater functions are kept PURE (no side effects).
+// Strict Mode in dev runs them twice; side effects inside would schedule
+// the choreography twice. The DOM sync (classList + localStorage) lives in
+// a dedicated useEffect that only fires when `inverted` actually changes.
 // =========================================
 
 const STORAGE_KEY = 'theme-inverted';
 const TRANSITION_MS = 1500;
-const TOTALITY_MS = 750; // 50% of the transition — when the shadow disc is centered
+const TOTALITY_MS = 750;
 
 type ThemeState = {
   inverted: boolean;
@@ -39,51 +41,70 @@ type ThemeState = {
 const ThemeContext = createContext<ThemeState | null>(null);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Initial state synced from the DOM (set by the pre-hydration script in layout.tsx)
   const [inverted, setInverted] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+
+  // Lock as a ref so we can guard against re-entry without a stale closure
+  const lockedRef = useRef(false);
+
+  // Timer handles for cleanup on unmount
   const timersRef = useRef<number[]>([]);
 
-  // Sync once on mount — the pre-hydration script may have set the class already
+  // ── First-paint sync — read what the pre-hydration script wrote ──
+  // The inline script in <body> adds `theme-inverted` to <html> based on
+  // localStorage. We mirror that into React state once on mount so the
+  // useTheme() consumers see the right value.
   useEffect(() => {
-    setInverted(document.documentElement.classList.contains('theme-inverted'));
+    const initial = document.documentElement.classList.contains('theme-inverted');
+    setInverted(initial);
   }, []);
 
-  // Clean up any pending timers on unmount
+  // ── DOM sync — runs ONLY when `inverted` actually flips ──
+  // Skips the initial mount because the class is already set by the script.
+  const isFirstSync = useRef(true);
+  useEffect(() => {
+    if (isFirstSync.current) {
+      isFirstSync.current = false;
+      return;
+    }
+    document.documentElement.classList.toggle('theme-inverted', inverted);
+    try {
+      localStorage.setItem(STORAGE_KEY, String(inverted));
+    } catch {
+      // Safari private mode etc — ignore
+    }
+  }, [inverted]);
+
+  // ── Timer cleanup on unmount ──
   useEffect(() => {
     return () => {
       timersRef.current.forEach(window.clearTimeout);
+      timersRef.current = [];
     };
   }, []);
 
+  // ── Toggle action ──
+  // Pure scheduling — no state updaters with side effects.
+  // The lockedRef guard prevents double-clicks and re-entry without stale state.
   const toggle = useCallback(() => {
-    // Lock the toggle while the choreography is playing — prevents stutters
-    // if the user clicks rapidly.
-    setTransitioning((wasTransitioning) => {
-      if (wasTransitioning) return wasTransitioning;
+    if (lockedRef.current) return;
+    lockedRef.current = true;
 
-      // Schedule the actual class flip at totality.
-      const flipTimer = window.setTimeout(() => {
-        setInverted((prev) => {
-          const next = !prev;
-          document.documentElement.classList.toggle('theme-inverted', next);
-          try {
-            localStorage.setItem(STORAGE_KEY, String(next));
-          } catch {
-            // Safari private mode etc — ignore
-          }
-          return next;
-        });
-      }, TOTALITY_MS);
+    setTransitioning(true);
 
-      // Release the lock when the curtain falls
-      const releaseTimer = window.setTimeout(() => {
-        setTransitioning(false);
-      }, TRANSITION_MS);
+    // At totality, flip the actual value. The state updater is pure — the
+    // classList / localStorage side effects live in the sync useEffect above.
+    const flipTimer = window.setTimeout(() => {
+      setInverted((prev) => !prev);
+    }, TOTALITY_MS);
 
-      timersRef.current.push(flipTimer, releaseTimer);
-      return true;
-    });
+    // End of transition — release the lock and re-enable the toggle
+    const releaseTimer = window.setTimeout(() => {
+      setTransitioning(false);
+      lockedRef.current = false;
+    }, TRANSITION_MS);
+
+    timersRef.current.push(flipTimer, releaseTimer);
   }, []);
 
   return (

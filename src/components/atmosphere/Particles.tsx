@@ -61,6 +61,19 @@ export default function Particles() {
             }}
           />
         ))}
+        {/* Lantern fireflies — warm drifting points that echo the
+            paper-lantern atmosphere of the night Hero video */}
+        {stars.slice(0, 10).map((p, i) => (
+          <span
+            key={`f-${i}`}
+            className={styles.firefly}
+            style={{
+              left: ((i * 91 + 7) % 95) + '%',
+              animationDelay: ((i * 1.3) % 7).toFixed(2) + 's',
+              animationDuration: 22 + (i % 4) * 6 + 's',
+            }}
+          />
+        ))}
       </div>
     </div>
   );

@@ -20,3 +20,9 @@
   user-select: none;
   will-change: opacity, transform;
 }
+
+// Night mode — shift to lantern warm for the route kanji
+.curtainGlyphNight {
+  color: var(--accent-night);
+  text-shadow: 0 0 80px rgba(232, 154, 79, 0.4);
+}

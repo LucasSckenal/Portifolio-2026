@@ -5,11 +5,26 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Fog from '@/components/atmosphere/Fog';
 import { useT } from '@/components/providers/LanguageProvider';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import styles from './Hero.module.scss';
 
 export default function Hero() {
   const t = useT();
+  const { inverted } = useTheme();
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Night portfolio gets its own tagline — same kanji aesthetic, different
+  // content vibe. Day = commercial work title; Night = experimental work title.
+  const titleLines: [string, string, string] = inverted
+    ? ['Sketches.', 'Experiments.', 'Studies of light.']
+    : (t.hero.title as [string, string, string]);
+
+  const bioLine1 = inverted
+    ? 'Lucas — frontend developer'
+    : t.hero.bio1;
+  const bioLine2 = inverted
+    ? 'tinkering after the clients are asleep.'
+    : t.hero.bio2;
   const videoStackRef = useRef<HTMLDivElement>(null);
   const dayVideoRef = useRef<HTMLVideoElement>(null);
   const nightVideoRef = useRef<HTMLVideoElement>(null);
@@ -226,22 +241,22 @@ export default function Hero() {
 
           <h1 ref={titleRef} className={styles.title}>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>{t.hero.title[0]}</span>
+              <span className={styles.titleInner}>{titleLines[0]}</span>
             </span>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>{t.hero.title[1]}</span>
+              <span className={styles.titleInner}>{titleLines[1]}</span>
             </span>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>{t.hero.title[2]}</span>
+              <span className={styles.titleInner}>{titleLines[2]}</span>
             </span>
           </h1>
 
           <div ref={bottomRowRef} className={styles.bottomRow}>
             <div className={styles.meta}>
-              <span className={styles.metaJp}>静</span>
+              <span className={styles.metaJp}>{inverted ? '夜' : '静'}</span>
               <p className={styles.metaText}>
-                {t.hero.bio1}<br />
-                {t.hero.bio2}
+                {bioLine1}<br />
+                {bioLine2}
               </p>
             </div>
           </div>

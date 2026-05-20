@@ -414,17 +414,178 @@ export const projects: ProjectCase[] = [
   },
 ];
 
+// =========================================
+// NIGHT PORTFOLIO — appears only when the user toggles to Night mode.
+// These are experiments and personal explorations — the "after-hours studio"
+// version of the practice. Fill in real content as you ship pieces.
+// =========================================
+
+export const nightProjects: ProjectCase[] = [
+  {
+    slug: 'yokai-shader-gallery',
+    index: '01',
+    title: 'Yōkai',
+    jp: '妖',
+    jpLabel: '妖 · Spirit',
+    year: '2026',
+    status: 'In progress · experiments',
+    tagline: 'A gallery of shaders shaped like Japanese spirits.',
+    description:
+      'A personal series of fragment shaders, each one inspired by a yōkai — the strange creatures of Japanese folklore. Procedural, atmospheric, never the same on two refreshes.',
+    roles: ['Shaders', 'WebGL', 'Procedural Art'],
+    tech: ['Three.js', 'GLSL', 'WebGL'],
+    href: 'https://github.com/LucasSckenal',
+    mood: 'glass',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'A gallery of fragment shaders, each shaped like a different yōkai — the strange creatures of Japanese folklore.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'After the client work is shipped and the briefs are answered, I write shaders. Procedural, atmospheric, untethered from product requirements. This gallery is a small archive of them.',
+      },
+      {
+        type: 'heading',
+        text: 'Why yōkai',
+        jp: '妖',
+        jpLabel: '妖 · Spirit',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Yōkai sit between things — between alive and dead, between visible and invisible, between threatening and friendly. That ambiguity is what shaders do too: each pixel is a function, but the result feels almost alive. It seemed honest to name them after spirits.',
+      },
+      {
+        type: 'quote',
+        text:
+          'A shader is the closest a programmer gets to drawing with breath instead of lines.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'More entries coming as I finish them. Each shader sketches a different creature — kasa-obake, kappa, tsukumogami — and the gallery is the way to wander through them.',
+      },
+    ],
+  },
+
+  {
+    slug: 'tsuki-type-studies',
+    index: '02',
+    title: 'Tsuki',
+    jp: '月',
+    jpLabel: '月 · Moon',
+    year: '2026',
+    status: 'Ongoing · personal',
+    tagline: 'Animated typography studies in kanji and latin.',
+    description:
+      'Slow letter-by-letter and stroke-by-stroke type animations. The kanji draw themselves in the order they would be written by hand; the latin glyphs morph through related forms.',
+    roles: ['Motion Design', 'Type', 'SVG'],
+    tech: ['GSAP', 'SVG', 'After Effects'],
+    href: 'https://github.com/LucasSckenal',
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'Slow, deliberate type animations — kanji drawing themselves stroke by stroke, latin glyphs morphing through related forms.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'When you watch a Japanese calligrapher, the order of strokes is fixed and reads almost like choreography. I started animating kanji in that exact order, then asked the same of latin letterforms — drawing them as if they were brush gestures, not glyphs sitting in place.',
+      },
+      {
+        type: 'heading',
+        text: 'Technical notes',
+        jp: '工',
+        jpLabel: '工 · Craft',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Each character is an SVG path animated via GSAP\'s DrawSVG. The stroke order metadata for kanji comes from the KanjiVG project. Latin morphing uses a custom shape-tween built on flubber.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Still figuring out the rhythm — too fast and it reads as a load animation, too slow and it becomes precious. Somewhere around 1.2s per kanji feels right.',
+      },
+    ],
+  },
+
+  {
+    slug: 'ame-audio-visuals',
+    index: '03',
+    title: 'Ame',
+    jp: '雨',
+    jpLabel: '雨 · Rain',
+    year: '2026',
+    status: 'Concept · weekend builds',
+    tagline: 'Audio-reactive interfaces for lo-fi tracks.',
+    description:
+      'Small visual sketches that listen to music — minimal, atmospheric, never overwhelming. Each visualization corresponds to a specific lo-fi track, designed to feel like rain on glass rather than a visualizer.',
+    roles: ['Audio · Visual', 'Canvas', 'Sound Design'],
+    tech: ['Web Audio API', 'Canvas', 'WebGL'],
+    href: 'https://github.com/LucasSckenal',
+    mood: 'glass',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'Audio-reactive sketches that listen instead of decorate. Each one is paired with a specific lo-fi track.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Most music visualizers are loud — bouncing bars, exploding particles, neon. I wanted the opposite. Visuals that respond to the audio but stay below the music\'s threshold. Like rain on a window during a slow song.',
+      },
+      {
+        type: 'heading',
+        text: 'How',
+        jp: '法',
+        jpLabel: '法 · Method',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Web Audio API extracts amplitude and frequency. A canvas renders soft particle systems or warped gradients driven by the analysis. The visuals never spike — they only breathe slightly faster on louder sections.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'This isn\'t a tool; it\'s a series of small pieces. Each one is married to one track. You can\'t swap them.',
+      },
+    ],
+  },
+];
+
+// Combined lookup — case study routes serve from either array.
+const allProjects = [...projects, ...nightProjects];
+
 export function getProject(slug: string): ProjectCase | undefined {
-  return projects.find((p) => p.slug === slug);
+  return allProjects.find((p) => p.slug === slug);
 }
 
 export function getAdjacentProjects(
   slug: string
 ): { prev: ProjectCase; next: ProjectCase } | null {
-  const i = projects.findIndex((p) => p.slug === slug);
-  if (i === -1) return null;
-  return {
-    prev: projects[(i - 1 + projects.length) % projects.length],
-    next: projects[(i + 1) % projects.length],
-  };
+  // Adjacent navigation stays within the same portfolio (day↔day, night↔night)
+  for (const list of [projects, nightProjects]) {
+    const i = list.findIndex((p) => p.slug === slug);
+    if (i !== -1) {
+      return {
+        prev: list[(i - 1 + list.length) % list.length],
+        next: list[(i + 1) % list.length],
+      };
+    }
+  }
+  return null;
+}
+
+// Used by sitemap to include both portfolios
+export function getAllProjectSlugs(): string[] {
+  return allProjects.map((p) => p.slug);
 }

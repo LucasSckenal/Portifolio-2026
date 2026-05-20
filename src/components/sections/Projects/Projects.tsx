@@ -1,15 +1,41 @@
 'use client';
 
+import React from 'react';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import ProjectScene from './ProjectScene';
 import { GameMedia, ChatbotMedia, PhantomMedia } from './ProjectMedia';
+import NightMedia from './NightMedia';
 import GameWorlds from './GameWorlds';
+import NightReading from './NightReading';
+import { nightProjects } from '@/content/projects';
 import styles from './Projects.module.scss';
 
+// Two parallel portfolios:
+//   Day   → commercial work (Game, Chatbot, Phantom) with rich custom media
+//   Night → personal experiments (Yōkai, Tsuki, Ame) with atmospheric placeholders
+//
+// The eclipse toggle swaps between them with the same cinematic 1.5s transition.
+// The home <section id="projects"> stays in place; only its inner content
+// rerenders based on `inverted`.
+
 export default function Projects() {
+  const { inverted } = useTheme();
+
   return (
     <section id="projects" className={styles.projects}>
+      {inverted ? <NightBlock /> : <DayBlock />}
+    </section>
+  );
+}
+
+// ─────────────────────────────────────────
+// DAY — three commercial projects
+// ─────────────────────────────────────────
+function DayBlock() {
+  return (
+    <>
       {/* ── Section header ─────────────────── */}
       <header className={styles.header}>
         <div className={styles.headerInner}>
@@ -123,6 +149,81 @@ export default function Projects() {
           </p>
         </Reveal>
       </footer>
-    </section>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────
+// NIGHT — three personal experiments
+// ─────────────────────────────────────────
+const nightVariants: Array<'spirit' | 'moon' | 'rain'> = ['spirit', 'moon', 'rain'];
+
+function NightBlock() {
+  return (
+    <>
+      {/* ── Section header ─── */}
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <div className={styles.headerLabelRow}>
+            <span className={styles.headerLabel}>003 — Night work</span>
+            <span className={styles.headerDivider} aria-hidden />
+            <span className={styles.headerJp}>夜行 · Yakō</span>
+          </div>
+
+          <h2 className={styles.headerTitle}>
+            <span className={styles.headerTitleLine}>
+              <SplitText text="Three studies" by="word" delay={0.1} />
+            </span>
+            <span className={styles.headerTitleLine}>
+              <SplitText text="from after-hours." by="word" delay={0.3} />
+            </span>
+          </h2>
+
+          <Reveal delay={0.5} amount={0.4}>
+            <p className={styles.headerBody}>
+              When the briefs are answered and the clients are asleep, this is
+              what I make instead — shaders, type, sound. Experiments without
+              specifications, nothing to ship.
+            </p>
+          </Reveal>
+        </div>
+      </header>
+
+      {nightProjects.map((p, i) => (
+        <React.Fragment key={p.slug}>
+          <ProjectScene
+            index={p.index}
+            title={p.title}
+            status={p.status}
+            year={p.year}
+            roles={p.roles}
+            tech={p.tech}
+            description={p.description}
+            jp={p.jp}
+            mood={p.mood}
+            align={i % 2 === 0 ? 'left' : 'right'}
+            href={p.href}
+            caseSlug={p.slug}
+          >
+            <NightMedia jp={p.jp} jpLabel={p.jpLabel} variant={nightVariants[i] ?? 'spirit'} />
+          </ProjectScene>
+
+          {/* After the first Night project (Yōkai), drop the Reading
+              interstitial — same structural role as GameWorlds plays in Day */}
+          {i === 0 && <NightReading />}
+        </React.Fragment>
+      ))}
+
+      <footer className={styles.footer}>
+        <Reveal>
+          <p className={styles.footerNote}>
+            These pieces don&apos;t ship — they accumulate.
+            <a href="#contact" className={styles.footerLink} data-cursor>
+              {' '}Ask for a process walk-through ↗
+            </a>
+          </p>
+        </Reveal>
+      </footer>
+    </>
   );
 }

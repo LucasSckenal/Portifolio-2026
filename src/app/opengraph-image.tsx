@@ -4,7 +4,7 @@ import { ImageResponse } from 'next/og';
 // Renders to PNG via Vercel's satori under the hood.
 
 export const runtime = 'edge';
-export const alt = 'Lucas Sckenal — Cinematic interfaces, game UI, motion.';
+export const alt = 'Lucas Sckenal — Six worlds. Three projects. One quiet practice.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -69,28 +69,40 @@ export default async function Image() {
         >
           <div
             style={{
-              fontSize: 108,
-              lineHeight: 0.95,
+              fontSize: 96,
+              lineHeight: 1.05,
               fontWeight: 300,
               letterSpacing: -2,
               display: 'flex',
             }}
           >
-            Interfaces that move
+            Six worlds.
           </div>
           <div
             style={{
-              fontSize: 108,
-              lineHeight: 0.95,
+              fontSize: 96,
+              lineHeight: 1.05,
+              fontWeight: 300,
+              letterSpacing: -2,
+              paddingLeft: 28,
+              display: 'flex',
+            }}
+          >
+            Three projects.
+          </div>
+          <div
+            style={{
+              fontSize: 96,
+              lineHeight: 1.05,
               fontWeight: 300,
               letterSpacing: -2,
               fontStyle: 'italic',
               color: 'rgba(238, 234, 227, 0.82)',
-              paddingLeft: 36,
+              paddingLeft: 56,
               display: 'flex',
             }}
           >
-            like cinema.
+            One quiet practice.
           </div>
 
           <div

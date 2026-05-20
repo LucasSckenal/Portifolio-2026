@@ -7,18 +7,66 @@ import { cinema } from '@/lib/easings';
 import styles from './Stack.module.scss';
 
 const stack = [
-  { name: 'Next.js',       group: 'Framework' },
-  { name: 'React',         group: 'Framework' },
-  { name: 'TypeScript',    group: 'Language'  },
-  { name: 'GSAP',          group: 'Motion'    },
-  { name: 'Framer Motion', group: 'Motion'    },
-  { name: 'Lenis',         group: 'Motion'    },
-  { name: 'Three.js',      group: '3D'        },
-  { name: 'WebGL',         group: '3D'        },
-  { name: 'SCSS',          group: 'Styling'   },
-  { name: 'Tailwind',      group: 'Styling'   },
-  { name: 'Figma',         group: 'Design'    },
-  { name: 'After Effects', group: 'Motion'    },
+  {
+    name: 'Next.js',
+    group: 'Framework',
+    detail: 'App Router, static generation, edge runtime for dynamic OG.',
+  },
+  {
+    name: 'React',
+    group: 'Framework',
+    detail: 'Server + client components, hooks-first state. React 19.',
+  },
+  {
+    name: 'TypeScript',
+    group: 'Language',
+    detail: 'Strict mode end-to-end. Tokenized design system, typed content.',
+  },
+  {
+    name: 'GSAP',
+    group: 'Motion',
+    detail: 'ScrollTrigger timelines, route curtains, scrubbed scenes.',
+  },
+  {
+    name: 'Framer Motion',
+    group: 'Motion',
+    detail: 'Variants, presence, viewport-triggered reveals.',
+  },
+  {
+    name: 'Lenis',
+    group: 'Motion',
+    detail: 'Buttery smooth scrolling with reduced-motion fallback.',
+  },
+  {
+    name: 'Three.js',
+    group: '3D',
+    detail: 'Procedural scenes for atmospheric backgrounds.',
+  },
+  {
+    name: 'WebGL',
+    group: '3D',
+    detail: 'Custom shaders for fog, particles and grain.',
+  },
+  {
+    name: 'SCSS',
+    group: 'Styling',
+    detail: 'CSS Modules + design tokens with theme inversion.',
+  },
+  {
+    name: 'Godot',
+    group: 'Game',
+    detail: 'Onde Estão os Netos? — GDScript, CSV balancing, autoloads.',
+  },
+  {
+    name: 'Figma',
+    group: 'Design',
+    detail: 'Components and design systems before code.',
+  },
+  {
+    name: 'Firebase',
+    group: 'Backend',
+    detail: 'Auth + Firestore on the chatbot and Phantom Commerce.',
+  },
 ];
 
 const philosophy = [
@@ -86,12 +134,17 @@ export default function Stack() {
                   show: { opacity: 1, y: 0, transition: { duration: 0.9, ease: cinema } },
                 }}
               >
-                <span className={styles.itemIndex}>
-                  {(i + 1).toString().padStart(2, '0')}
-                </span>
-                <span className={styles.itemName}>{item.name}</span>
-                <span className={styles.itemDots} aria-hidden />
-                <span className={styles.itemGroup}>{item.group}</span>
+                <div className={styles.itemRow}>
+                  <span className={styles.itemIndex}>
+                    {(i + 1).toString().padStart(2, '0')}
+                  </span>
+                  <span className={styles.itemName}>{item.name}</span>
+                  <span className={styles.itemDots} aria-hidden />
+                  <span className={styles.itemGroup}>{item.group}</span>
+                </div>
+                <div className={styles.itemDetailWrap} aria-hidden>
+                  <p className={styles.itemDetail}>{item.detail}</p>
+                </div>
               </motion.li>
             ))}
           </motion.ul>

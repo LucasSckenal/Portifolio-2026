@@ -1,6 +1,6 @@
 // Three custom media compositions — placeholders that evoke each project's
 // world. Replace with real screenshots / video later via the marked slots.
-import Image from 'next/image';
+import FadeImage from '@/components/ui/FadeImage';
 import styles from './ProjectMedia.module.scss';
 
 // ─────────────────────────────────────────
@@ -18,7 +18,7 @@ export function GameMedia({ screenshot, screenshotAlt = '' }: GameMediaProps = {
     <div className={`${styles.media} ${styles.game}`}>
       {screenshot ? (
         <>
-          <Image
+          <FadeImage
             src={screenshot}
             alt={screenshotAlt}
             className={styles.gameScreenshot}
@@ -119,7 +119,7 @@ function ChatDevice({
         <span />
       </div>
       <div className={styles.chatDeviceImageWrap}>
-        <Image
+        <FadeImage
           src={src}
           alt={alt}
           className={styles.chatDeviceScreen}
@@ -245,7 +245,7 @@ function PhantomDevice({
         <span />
       </div>
       <div className={styles.phantomDeviceImageWrap}>
-        <Image
+        <FadeImage
           src={src}
           alt={alt}
           className={styles.phantomDeviceScreen}

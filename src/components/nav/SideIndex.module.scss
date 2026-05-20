@@ -4,7 +4,7 @@
   right: var(--s-3);
   transform: translateY(-50%);
   z-index: var(--z-nav);
-  color: var(--on-dark);
+  color: var(--mood-text-light);
   mix-blend-mode: difference;
   pointer-events: auto;
 
@@ -55,7 +55,7 @@
 
 // ── Active state ─────────────────────────
 .linkActive {
-  color: var(--on-dark);
+  color: var(--mood-text-light);
 
   .dot {
     background: var(--accent);

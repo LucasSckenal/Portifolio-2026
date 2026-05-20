@@ -15,10 +15,14 @@
   --accent:     #8C2A1F;          // muted shu-iro
   --accent-soft: rgba(140, 42, 31, 0.16);
 
-  // On dark surfaces
+  // On dark surfaces — these INVERT with the body theme toggle
   --on-dark:        #F2EFE9;
+  --on-dark-soft:   rgba(242, 239, 233, 0.85);
+  --on-dark-subtle: rgba(242, 239, 233, 0.7);
   --on-dark-mute:   rgba(242, 239, 233, 0.55);
+  --on-dark-faded:  rgba(242, 239, 233, 0.4);
   --on-dark-line:   rgba(242, 239, 233, 0.12);
+  --on-dark-line-soft: rgba(242, 239, 233, 0.06);
 
   // ── Type scale (1.333 perfect fourth) ──
   --t-xs:      0.75rem;
@@ -115,8 +119,12 @@ html.theme-inverted {
 
   // Inverted on-dark contexts (Contact section reads against paper bg)
   --on-dark:        #0E0D0B;
+  --on-dark-soft:   rgba(14, 13, 11, 0.85);
+  --on-dark-subtle: rgba(14, 13, 11, 0.7);
   --on-dark-mute:   rgba(14, 13, 11, 0.55);
+  --on-dark-faded:  rgba(14, 13, 11, 0.4);
   --on-dark-line:   rgba(14, 13, 11, 0.12);
+  --on-dark-line-soft: rgba(14, 13, 11, 0.06);
 
   // Accent stays — muted shu-iro red reads on both palettes
 }

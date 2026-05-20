@@ -201,13 +201,13 @@ export default function Hero() {
 
           <h1 ref={titleRef} className={styles.title}>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>Interfaces</span>
+              <span className={styles.titleInner}>Six worlds.</span>
             </span>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>that move</span>
+              <span className={styles.titleInner}>Three projects.</span>
             </span>
             <span className={styles.titleLine}>
-              <span className={styles.titleInner}>like cinema.</span>
+              <span className={styles.titleInner}>One quiet practice.</span>
             </span>
           </h1>
 

@@ -29,7 +29,11 @@
   align-items: center;
   gap: var(--s-4);
   padding: var(--s-3) var(--gutter);
-  color: var(--on-dark);
+  // Locked to white so mix-blend-difference always produces the
+  // opposite of whatever is behind. If we used a token that flips with
+  // the user's theme, blend math reverses (white→black, black on dark bg
+  // is invisible) and the nav becomes unreadable.
+  color: var(--mood-text-light);
   mix-blend-mode: difference;
 }
 

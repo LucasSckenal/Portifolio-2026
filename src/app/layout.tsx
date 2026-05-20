@@ -6,6 +6,8 @@ import Cursor from '@/components/ui/Cursor';
 import Header from '@/components/nav/Header';
 import ConsoleEasterEgg from '@/components/effects/ConsoleEasterEgg';
 import RouteTransition from '@/components/effects/RouteTransition';
+import ScrollProgress from '@/components/effects/ScrollProgress';
+import { personSchema, websiteSchema } from '@/lib/structured-data';
 import './globals.scss';
 
 const geist = Geist({
@@ -119,12 +121,25 @@ export default function RootLayout({
           }}
         />
 
+        {/* Schema.org structured data — Person + WebSite. Helps Google build
+            a knowledge panel and improve search snippets. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([
+              personSchema(SITE_URL),
+              websiteSchema(SITE_URL),
+            ]),
+          }}
+        />
+
         {/* Keyboard-only skip link — focusable but visually hidden until focused */}
         <a href="#main" className="skip-link">
           Skip to content
         </a>
 
         <LenisProvider>
+          <ScrollProgress />
           <Cursor />
           <Header />
           <main id="main">{children}</main>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
+import FadeImage from '@/components/ui/FadeImage';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -92,7 +92,7 @@ export default function About() {
           {/* Portrait column (offset down) */}
           <div className={styles.portraitCol}>
             <div ref={portraitRef} className={styles.portraitFrame}>
-              <Image
+              <FadeImage
                 src="/projects/portrait.png"
                 alt="Lucas Sckenal"
                 className={styles.portrait}

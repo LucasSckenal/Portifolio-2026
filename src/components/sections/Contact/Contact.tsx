@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
 import MagneticLink from '@/components/ui/MagneticLink';
 import { cinema } from '@/lib/easings';
 import styles from './Contact.module.scss';
+
+const EMAIL = 'lucaspsckenal@gmail.com';
 
 const socials = [
   { label: 'GitHub',   href: 'https://github.com/LucasSckenal/lucasSckenal' },
@@ -21,6 +24,20 @@ const languages = [
 ];
 
 export default function Contact() {
+  // Click on the email copies to clipboard AND opens the user's mail client.
+  // Cursor label flashes "Copied ✓" for ~2s as visual feedback.
+  const [copied, setCopied] = useState(false);
+
+  const handleEmailClick = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      // Browsers without clipboard access still get the mailto behavior
+    }
+  };
+
   return (
     <section id="contact" className={styles.contact}>
       {/* Drifting watermark */}
@@ -61,11 +78,16 @@ export default function Contact() {
           transition={{ duration: 1.4, delay: 0.7, ease: cinema }}
         >
           <MagneticLink
-            href="mailto:lucaspsckenal@gmail.com"
+            href={`mailto:${EMAIL}`}
             className={styles.email}
             strength={0.18}
           >
-            <span data-cursor-label="Send email ↗">lucaspsckenal@gmail.com</span>
+            <span
+              onClick={handleEmailClick}
+              data-cursor-label={copied ? 'Copied ✓' : 'Click — copies & opens'}
+            >
+              {EMAIL}
+            </span>
           </MagneticLink>
           <span className={styles.emailUnderline} aria-hidden />
         </motion.div>

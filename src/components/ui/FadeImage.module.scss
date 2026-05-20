@@ -1,0 +1,15 @@
+.image {
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-cinema);
+}
+
+.loaded {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    opacity: 1;
+    transition: none;
+  }
+}

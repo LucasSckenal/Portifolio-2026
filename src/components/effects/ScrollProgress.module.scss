@@ -1,0 +1,13 @@
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--accent);
+  transform-origin: 0% 50%;
+  z-index: 9999;
+  pointer-events: none;
+  // Subtle glow underneath so the line reads even when the bg matches
+  box-shadow: 0 0 6px rgba(140, 42, 31, 0.4);
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import FadeImage from '@/components/ui/FadeImage';
 import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
@@ -128,7 +128,7 @@ export default function GameWorlds() {
             >
               {w.image && (
                 <div className={styles.cardImageWrap}>
-                  <Image
+                  <FadeImage
                     src={w.image}
                     alt={`${w.name} — ${w.tema}`}
                     className={styles.cardImage}

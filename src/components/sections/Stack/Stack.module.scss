@@ -137,11 +137,6 @@
 }
 
 .item {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
-  align-items: center;
-  gap: var(--s-2);
-  padding: 14px 4px;
   border-top: 1px solid var(--line);
   transition: padding 0.5s var(--ease-cinema);
 
@@ -151,9 +146,56 @@
 
   &:hover {
     padding-left: 14px;
+
     .itemName { color: var(--accent); }
     .itemDots { background-position: 0 0; }
+
+    .itemDetailWrap {
+      grid-template-rows: 1fr;
+      padding-block-end: 14px;
+    }
+    .itemDetail {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
+}
+
+.itemRow {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 14px 4px;
+}
+
+// Detail reveal — uses grid-template-rows trick for animatable height
+.itemDetailWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows 0.55s var(--ease-cinema),
+    padding-block-end 0.55s var(--ease-cinema);
+  padding-inline: 4px;
+  padding-block-end: 0;
+}
+
+.itemDetail {
+  overflow: hidden;
+  margin: 0;
+  padding-left: 56px; // align with .itemName column (40px index + 16px gap)
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink-mute);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.55s var(--ease-cinema),
+    transform 0.55s var(--ease-cinema);
+  max-width: 60ch;
 }
 
 .itemIndex {

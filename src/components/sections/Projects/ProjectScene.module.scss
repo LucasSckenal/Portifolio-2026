@@ -15,19 +15,21 @@
 }
 
 // ── Moods ───────────────────────────────
+// Each mood is identity-locked: bg + color stay constant regardless of user
+// theme toggle. The mood is part of the project's brand, not the page theme.
 .moodDark {
   background: #14120F;
-  color: var(--on-dark);
+  color: var(--mood-text-light);
 }
 
 .moodLight {
   background: #F3EFE7;
-  color: var(--ink);
+  color: var(--mood-text-dark);
 }
 
 .moodGlass {
   background: #0F0E0C;
-  color: var(--on-dark);
+  color: var(--mood-text-light);
 
   &::before {
     content: '';

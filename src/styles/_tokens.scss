@@ -80,6 +80,21 @@
   --font-sans:   var(--font-geist), 'Inter', system-ui, sans-serif;
   --font-serif:  var(--font-serif-jp), 'Times New Roman', serif;
   --font-mono:   var(--font-geist-mono), ui-monospace, monospace;
+
+  // ── Mood-locked palette ──────────────
+  // These NEVER invert with the user's theme toggle. Used by sections that
+  // have intentional fixed identity (project scenes, GameWorlds, Mobile menu).
+  // Body sections (About, Stack, Contact) use the regular --ink/--on-dark
+  // tokens which DO invert.
+  --mood-text-light:       #F2EFE9;
+  --mood-text-light-soft:  rgba(242, 239, 233, 0.85);
+  --mood-text-light-mute:  rgba(242, 239, 233, 0.55);
+  --mood-text-light-line:  rgba(242, 239, 233, 0.10);
+
+  --mood-text-dark:        #0E0D0B;
+  --mood-text-dark-soft:   rgba(14, 13, 11, 0.85);
+  --mood-text-dark-mute:   rgba(14, 13, 11, 0.55);
+  --mood-text-dark-line:   rgba(14, 13, 11, 0.08);
 }
 
 // =========================================

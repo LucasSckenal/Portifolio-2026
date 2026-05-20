@@ -212,7 +212,7 @@
 // ─────────────────────────────────────────
 .chat {
   background: #FAF7F0;
-  color: var(--ink);
+  color: var(--mood-text-dark);
 }
 
 // Real screenshot mode — let the product's colors come through with only a
@@ -459,7 +459,7 @@
   font-size: var(--t-xs);
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--mood-text-dark-soft);
 }
 
 .chatLang {
@@ -496,15 +496,15 @@
 
 .chatBubbleUser {
   align-self: flex-end;
-  background: var(--ink);
-  color: var(--on-dark);
+  background: var(--mood-text-dark);
+  color: var(--mood-text-light);
   border-bottom-right-radius: 4px;
 }
 
 .chatBubbleAi {
   align-self: flex-start;
   background: #fff;
-  color: var(--ink-soft);
+  color: var(--mood-text-dark-soft);
   border: 1px solid rgba(14, 13, 11, 0.06);
   border-bottom-left-radius: 4px;
 }
@@ -544,7 +544,7 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--ink-mute);
+    background: var(--mood-text-dark-mute);
     animation: typing 1.4s ease-in-out infinite;
   }
 
@@ -562,7 +562,7 @@
 // ─────────────────────────────────────────
 .phantom {
   background: #0A0908;
-  color: var(--on-dark);
+  color: var(--mood-text-light);
 }
 
 .phantomBackdrop {
@@ -703,7 +703,7 @@
   font-size: 0.62rem;
   letter-spacing: var(--track-mark);
   text-transform: uppercase;
-  color: var(--on-dark);
+  color: var(--mood-text-light);
 }
 
 .phantomCtaArrow {

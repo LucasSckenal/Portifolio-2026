@@ -60,7 +60,8 @@ export default function ProjectScene({
 
   // Pointer-follow highlight: writes the mouse position to CSS variables
   // on the media wrap, so a radial gradient in CSS can track the cursor.
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  // Typed broadly because the wrap can be either a <div> or a <Link>/<a>.
+  const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
     const el = mediaRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();

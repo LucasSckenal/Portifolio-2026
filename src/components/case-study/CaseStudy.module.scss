@@ -22,7 +22,7 @@
 
 .moodGlass {
   background: #0F0E0C;
-  color: var(--on-dark);
+  color: var(--mood-text-light);
 
   &::before {
     content: '';

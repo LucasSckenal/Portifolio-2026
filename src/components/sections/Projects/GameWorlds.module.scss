@@ -6,7 +6,7 @@
   position: relative;
   width: 100%;
   background: #14120F;
-  color: var(--on-dark);
+  color: var(--mood-text-light);
   padding-block: var(--s-7);
   overflow: hidden;
   isolation: isolate;
@@ -163,7 +163,7 @@
   font-weight: 200;
   font-size: clamp(7rem, 14vw, 11rem);
   line-height: 1;
-  color: var(--on-dark);
+  color: var(--mood-text-light);
   opacity: 0.07;
   user-select: none;
   pointer-events: none;
@@ -295,7 +295,7 @@
   font-size: var(--t-sm);
   font-weight: 300;
   letter-spacing: var(--track-snug);
-  color: var(--on-dark);
+  color: var(--mood-text-light);
 }
 
 .cardBossDetail {

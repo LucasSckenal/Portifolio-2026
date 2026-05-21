@@ -7,6 +7,7 @@ import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
 import { cinema } from '@/lib/easings';
 import MobileMenu from './MobileMenu';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import LanguagePicker from '@/components/ui/LanguagePicker';
 import { useT } from '@/components/providers/LanguageProvider';
 import styles from './Header.module.scss';
 
@@ -77,6 +78,9 @@ export default function Header() {
           </nav>
 
           <div className={styles.right}>
+            {/* Language picker first so non-English visitors immediately see
+                they can switch. Theme toggle (eclipse) right after. */}
+            <LanguagePicker />
             <ThemeToggle />
             <Link href="/#contact" className={styles.cta} data-cursor>
               <span>{t.meta.available}</span>

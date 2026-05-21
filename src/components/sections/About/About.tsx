@@ -99,13 +99,16 @@ export default function About() {
           {/* Portrait column (offset down) */}
           <div className={styles.portraitCol}>
             <div ref={portraitRef} className={styles.portraitFrame}>
+              {/* Portrait swaps between day/night versions to match the
+                  cinematic theme. Same person, different light. */}
               <FadeImage
-                src="/projects/portrait.png"
+                src={inverted ? '/projects/portrait-dark.png' : '/projects/portrait.png'}
                 alt="Lucas Sckenal"
                 className={styles.portrait}
                 fill
                 sizes="(max-width: 900px) 90vw, 35vw"
                 priority
+                key={inverted ? 'dark' : 'light'} // forces fade on swap
               />
               {/* Film-still overlay — timecode + corner bracket */}
               <span className={styles.portraitTimecode} aria-hidden>

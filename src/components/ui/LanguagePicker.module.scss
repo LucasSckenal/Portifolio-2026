@@ -60,23 +60,40 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   transition: transform 0.4s $ease;
 }
 
+// ── Floating wrapper (portaled to body) ──
+// Lives outside the header's mix-blend-difference scope, so the menu
+// renders with crisp solid colors instead of ghosted/double-vision text.
+// Positioned by JS via inline top/right relative to the trigger.
+.menuFloating {
+  position: fixed;
+  z-index: 10000; // above the header (50) and route transition (9000)
+  animation: menu-in 0.35s $ease backwards;
+}
+
 // ── Dropdown menu ──
 .menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  min-width: 180px;
+  min-width: 200px;
   margin: 0;
   padding: 6px;
   list-style: none;
-  background: rgba(14, 13, 11, 0.92);
-  backdrop-filter: blur(16px) saturate(120%);
-  -webkit-backdrop-filter: blur(16px) saturate(120%);
-  border: 1px solid rgba(242, 239, 233, 0.10);
-  border-radius: 6px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  z-index: calc(var(--z-nav) + 1);
-  animation: menu-in 0.35s $ease backwards;
+  background: rgba(14, 13, 11, 0.94);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  border: 1px solid rgba(242, 239, 233, 0.12);
+  border-radius: 8px;
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+// ── Night-mode tint — warm border + glow ──
+:global(html.theme-inverted) .menu {
+  background: rgba(20, 12, 6, 0.94);
+  border-color: rgba(232, 154, 79, 0.18);
+  box-shadow:
+    0 24px 48px rgba(0, 0, 0, 0.6),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 24px rgba(232, 154, 79, 0.08);
 }
 
 @keyframes menu-in {
@@ -143,4 +160,12 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 6px rgba(140, 42, 31, 0.55);
+}
+
+:global(html.theme-inverted) {
+  .optionActive .optionCode { color: var(--accent-night); }
+  .optionDot {
+    background: var(--accent-night);
+    box-shadow: 0 0 6px rgba(232, 154, 79, 0.55);
+  }
 }

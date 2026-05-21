@@ -24,10 +24,6 @@
   left: 0;
   right: 0;
   z-index: var(--z-nav);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--s-4);
   padding: var(--s-3) var(--gutter);
   // Locked to white so mix-blend-difference always produces the
   // opposite of whatever is behind. If we used a token that flips with
@@ -35,6 +31,19 @@
   // is invisible) and the nav becomes unreadable.
   color: var(--mood-text-light);
   mix-blend-mode: difference;
+}
+
+// Inner container — same max-width as content sections so the header
+// rhythm aligns with the rest of the site instead of stretching edge-to-edge
+// on wide displays.
+.inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--s-4);
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
 }
 
 .mark {
@@ -48,6 +57,8 @@
   &Jp {
     font-size: 1.4rem;
     line-height: 1;
+    // text-shadow transition stays smooth across the 1.5s theme transition
+    transition: text-shadow 1.2s var(--ease-cinema);
   }
   &En {
     font-family: var(--font-mono);
@@ -145,6 +156,94 @@
     opacity: 0.5;
     font-size: 0.65rem;
     transition: color 0.5s var(--ease-cinema);
+  }
+
+  // Active section state — when the current scroll position is inside this
+  // nav item's section. The label is fully opaque and the index goes accent.
+  &Active {
+    opacity: 1;
+    .linkIndex { color: var(--accent); }
+  }
+}
+
+// ── Active section dot (magnetic) ────────
+// Single dot rendered by ONE active nav item at a time, but Framer's layoutId
+// system makes the DOM element "slide" smoothly when activeSection changes.
+// Sits just below the label so it doesn't compete with the hover ::after line.
+.activeDot {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(140, 42, 31, 0.65);
+  pointer-events: none;
+}
+
+:global(html.theme-inverted) .activeDot {
+  background: var(--accent-night);
+  box-shadow: 0 0 8px rgba(232, 154, 79, 0.65);
+}
+
+// ── Condensed states (scroll > 120px) ───
+// Header tightens slightly when the user scrolls past the Hero — gives more
+// breathing room for content below. Logo subtly shrinks, padding reduces,
+// glass panel thins out. Cinematic but functional micro-interaction.
+.headerCondensed {
+  padding-block: calc(var(--s-3) - 8px);
+
+  .markJp { font-size: 1.2rem; }
+  .markEn { opacity: 0.55; }
+}
+
+.glassPanelCondensed {
+  height: 3.6rem;
+}
+
+// ─────────────────────────────────────────
+// Night-mode logo glow — soft red lantern
+// ─────────────────────────────────────────
+// Echoes the paper lanterns (chochin) visible in the night Hero video.
+// Two-layer text-shadow: tight shu-iro core + wider lantern halo.
+// The flicker keyframe pulses gently like a real candle inside a paper
+// lantern — never strong, never mechanical.
+:global(html.theme-inverted) .markJp {
+  text-shadow:
+    0 0 4px  rgba(140, 42, 31, 0.55),   // shu-iro core
+    0 0 14px rgba(232, 154, 79, 0.45),  // lantern warm halo
+    0 0 28px rgba(232, 154, 79, 0.18);  // diffuse outer glow
+  animation: lantern-flicker 5.5s ease-in-out infinite;
+}
+
+@keyframes lantern-flicker {
+  0%, 100% {
+    text-shadow:
+      0 0 4px  rgba(140, 42, 31, 0.55),
+      0 0 14px rgba(232, 154, 79, 0.45),
+      0 0 28px rgba(232, 154, 79, 0.18);
+  }
+  // Brief dim — like a draft passing the lantern
+  35% {
+    text-shadow:
+      0 0 3px  rgba(140, 42, 31, 0.40),
+      0 0 10px rgba(232, 154, 79, 0.32),
+      0 0 22px rgba(232, 154, 79, 0.12);
+  }
+  // Peak — slight intensification
+  70% {
+    text-shadow:
+      0 0 5px  rgba(140, 42, 31, 0.65),
+      0 0 18px rgba(232, 154, 79, 0.55),
+      0 0 34px rgba(232, 154, 79, 0.22);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html.theme-inverted) .markJp {
+    animation: none;
   }
 }
 

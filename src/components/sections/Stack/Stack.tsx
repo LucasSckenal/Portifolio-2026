@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
 import { useT } from '@/components/providers/LanguageProvider';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { cinema } from '@/lib/easings';
 import styles from './Stack.module.scss';
 
@@ -72,12 +73,22 @@ const stack = [
 
 export default function Stack() {
   const t = useT();
+  const { inverted } = useTheme();
 
-  const philosophy = [
-    { jp: '動', label: t.stack.philosophyMotion,       value: t.stack.philosophyMotionDesc       },
-    { jp: '間', label: t.stack.philosophyComposition,  value: t.stack.philosophyCompositionDesc  },
-    { jp: '質', label: t.stack.philosophyCraft,        value: t.stack.philosophyCraftDesc        },
-  ];
+  // Day philosophy = the values that ship work.
+  // Night philosophy = the values that keep the practice curious.
+  // Same triadic rhythm, different register.
+  const philosophy = inverted
+    ? [
+        { jp: '奇', label: 'Curiosity', value: "Following what won't shut up." },
+        { jp: '耐', label: 'Patience',  value: 'No deadline. No shortcuts.' },
+        { jp: '流', label: 'Drift',     value: 'Let the work suggest the next move.' },
+      ]
+    : [
+        { jp: '動', label: t.stack.philosophyMotion,       value: t.stack.philosophyMotionDesc       },
+        { jp: '間', label: t.stack.philosophyComposition,  value: t.stack.philosophyCompositionDesc  },
+        { jp: '質', label: t.stack.philosophyCraft,        value: t.stack.philosophyCraftDesc        },
+      ];
 
   return (
     <section id="stack" className={styles.stack}>

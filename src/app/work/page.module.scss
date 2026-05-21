@@ -1,0 +1,295 @@
+// =========================================
+// /work — Filmography archive
+// Editorial table layout; restraint over imagery.
+// =========================================
+
+.archive {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding-block: calc(var(--s-8) + var(--s-4)) var(--s-7);
+  background: var(--bg);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+// ── Header ───────────────────────────────
+.header {
+  margin-bottom: var(--s-6);
+  display: grid;
+  gap: var(--s-3);
+  max-width: 720px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.divider {
+  flex: 0 1 100px;
+  height: 1px;
+  background: var(--line);
+}
+
+.labelJp {
+  font-family: var(--font-serif);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2.5rem, 5.5vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: var(--track-tight);
+}
+
+.titleLine {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+
+  &:nth-child(2) {
+    font-style: italic;
+    padding-left: 1.2em;
+    color: var(--ink-soft);
+  }
+}
+
+.intro {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--t-md);
+  line-height: 1.55;
+  letter-spacing: var(--track-snug);
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin: 0;
+}
+
+// ── Filters bar ──────────────────────────
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+  padding-block: var(--s-3);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.filterBtn {
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    color 0.4s var(--ease-cinema),
+    border-color 0.4s var(--ease-cinema),
+    background 0.4s var(--ease-cinema);
+
+  &:hover {
+    color: var(--ink);
+    border-color: var(--line);
+  }
+}
+
+.filterBtnActive {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+:global(html.theme-inverted) .filterBtnActive {
+  color: var(--bg);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.filterCount {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+// ── Filmography list ─────────────────────
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  border-bottom: 1px solid var(--line);
+
+  &:first-child {
+    border-top: 1px solid var(--line);
+  }
+}
+
+.rowInner {
+  display: grid;
+  grid-template-columns: 80px 1fr auto auto;
+  grid-template-areas:
+    'year title type arrow'
+    '.    line  line line';
+  align-items: baseline;
+  gap: var(--s-3);
+  padding-block: var(--s-3);
+  padding-inline: 4px;
+  color: inherit;
+  text-decoration: none;
+  transition: padding 0.5s var(--ease-cinema);
+
+  // For non-link <div> rows
+  &:not(a):not([href]) {
+    cursor: default;
+  }
+}
+
+a.rowInner:hover,
+.row:hover .rowInner {
+  padding-left: 16px;
+
+  .cellTitle  { color: var(--accent); }
+  .cellArrow  { transform: translate(4px, -2px); color: var(--accent); }
+  .cellOneLiner {
+    max-height: 60px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Cells ────────────────────────────────
+.cellYear {
+  grid-area: year;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.cellTitle {
+  grid-area: title;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.15;
+  letter-spacing: var(--track-snug);
+  color: var(--ink);
+  transition: color 0.4s var(--ease-cinema);
+}
+
+.cellType {
+  grid-area: type;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+
+  @include breakpoint(md) { display: none; }
+}
+
+.cellArrow {
+  grid-area: arrow;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--ink-mute);
+  transition:
+    transform 0.5s var(--ease-cinema),
+    color 0.4s var(--ease-cinema);
+}
+
+// One-liner hidden by default, revealed on row hover
+.cellOneLiner {
+  grid-area: line;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-4px);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  transition:
+    max-height 0.5s var(--ease-cinema),
+    opacity 0.45s var(--ease-cinema),
+    transform 0.5s var(--ease-cinema);
+}
+
+.oneLinerMark {
+  color: var(--accent);
+  font-style: normal;
+}
+
+// ── Footer note ──────────────────────────
+.footerNote {
+  margin-top: var(--s-7);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  letter-spacing: var(--track-snug);
+  color: var(--ink-soft);
+}
+
+.footerLink {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.6em;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  font-style: normal;
+  color: var(--ink);
+  margin-left: 8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -4px;
+    height: 1px;
+    background: var(--accent);
+    transition: right 0.6s var(--ease-cinema);
+  }
+
+  &:hover::after { right: 0; }
+}

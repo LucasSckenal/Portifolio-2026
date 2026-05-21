@@ -82,6 +82,18 @@
   scale: 1;
 }
 
+// ── Night-mode tint — lantern warm replaces shu-iro ──
+:global(html.theme-inverted) {
+  .ring        { border-color: rgba(232, 154, 79, 0.55); }
+  .ringHover   { border-color: rgba(232, 154, 79, 0.85); }
+  .ringLabel   { border-color: rgba(232, 154, 79, 0.95); }
+  .label {
+    background: rgba(20, 12, 6, 0.85);
+    border-color: rgba(232, 154, 79, 0.22);
+    color: #FBE0BD;
+  }
+}
+
 @media (max-width: 900px) {
   .dot, .ring { display: none; }
 }

@@ -7,6 +7,7 @@ import Reveal from '@/components/ui/Reveal';
 import MagneticLink from '@/components/ui/MagneticLink';
 import { cinema } from '@/lib/easings';
 import { useT, useLocale } from '@/components/providers/LanguageProvider';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
 import styles from './Contact.module.scss';
 
@@ -20,7 +21,11 @@ const socials = [
 export default function Contact() {
   const t = useT();
   const { locale, setLocale } = useLocale();
+  const { inverted } = useTheme();
   const [copied, setCopied] = useState(false);
+
+  // Night-mode tone: same invitation, slightly more relaxed about timing
+  const signalValue = inverted ? 'Quiet hours' : t.contact.footerSignalValue;
 
   const handleEmailClick = async () => {
     try {
@@ -57,7 +62,17 @@ export default function Contact() {
         </h2>
 
         <Reveal delay={0.6} amount={0.4}>
-          <p className={styles.body}>{t.contact.body}</p>
+          <p className={styles.body}>
+            {t.contact.body}
+            {inverted && (
+              <>
+                <br />
+                <span style={{ opacity: 0.7 }}>
+                  Night replies may come the next morning.
+                </span>
+              </>
+            )}
+          </p>
         </Reveal>
 
         {/* Big magnetic email CTA */}
@@ -108,6 +123,26 @@ export default function Contact() {
               </a>
             </motion.li>
           ))}
+
+          {/* CV — direct download link. Drop your PDF at
+              public/cv-lucas-sckenal.pdf when ready. */}
+          <motion.li
+            variants={{
+              hidden: { opacity: 0, y: 12 },
+              show:   { opacity: 1, y: 0, transition: { duration: 0.9, ease: cinema } },
+            }}
+          >
+            <a
+              href="/cv-lucas-sckenal.pdf"
+              download
+              className={`${styles.social} ${styles.socialCv}`}
+              data-cursor
+              data-cursor-label="Download CV ↓"
+            >
+              <span>CV</span>
+              <span className={styles.socialArrow}>↓</span>
+            </a>
+          </motion.li>
         </motion.ul>
 
         {/* Languages — now clickable buttons that translate the site */}
@@ -175,7 +210,7 @@ export default function Contact() {
           <div className={styles.footerCol}>
             <span className={styles.footerLabel}>{t.contact.footerSignalLabel}</span>
             <span className={styles.footerValue}>
-              <span className={styles.footerDot} aria-hidden /> {t.contact.footerSignalValue}
+              <span className={styles.footerDot} aria-hidden /> {signalValue}
             </span>
           </div>
           <div className={styles.footerCol}>

@@ -35,6 +35,31 @@ export default function Hero() {
   const scrollCueRef = useRef<HTMLAnchorElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
 
+  // Pause the inactive video AFTER the 1.5s cinematic crossfade completes —
+  // pausing earlier would freeze the visible crossfade mid-stream. Both videos
+  // stay decoded but only one is actually rendering frames at rest. Saves GPU.
+  useEffect(() => {
+    const day = dayVideoRef.current;
+    const night = nightVideoRef.current;
+    if (!day || !night) return;
+
+    // Both play during the transition window (1.5s)
+    day.play().catch(() => {});
+    night.play().catch(() => {});
+
+    // After the cinematic flip + a small buffer for the crossfade opacity,
+    // pause the now-invisible video.
+    const t = window.setTimeout(() => {
+      if (inverted) {
+        day.pause();
+      } else {
+        night.pause();
+      }
+    }, 1700);
+
+    return () => window.clearTimeout(t);
+  }, [inverted]);
+
   // Force autoplay on both videos + gate the opening curtain on the active
   // video's readiness. Both videos play in parallel so the cinematic theme
   // crossfade can happen seamlessly at any moment.
@@ -228,8 +253,10 @@ export default function Hero() {
         </div>
 
         {/* ── Drifting kanji watermark ── */}
+        {/* Day: 静寂 (sei-jaku — quiet stillness). Night: 夜寂 (yo-jaku — night
+            stillness) — same character family, shifted to the night register. */}
         <div ref={kanjiRef} className={styles.kanji} aria-hidden>
-          静寂
+          {inverted ? '夜寂' : '静寂'}
         </div>
 
         {/* ── Content ── */}

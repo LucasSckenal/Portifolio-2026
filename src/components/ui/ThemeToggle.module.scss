@@ -145,4 +145,17 @@ $ease: cubic-bezier(0.4, 0, 0.2, 1);
   50%      { opacity: 0.5; }
 }
 
+// ── Night-mode toggle — lantern-warm accents ──
+:global(html.theme-inverted) {
+  .toggle  { border-color: rgba(232, 154, 79, 0.35); }
+  .toggle:hover:not(:disabled) { border-color: rgba(232, 154, 79, 0.85); }
+  .halo {
+    background: radial-gradient(
+      circle,
+      rgba(232, 154, 79, 0.35) 0%,
+      transparent 65%
+    );
+  }
+}
+
 @include breakpoint(md) { .toggle { display: none; } }

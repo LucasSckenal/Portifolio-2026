@@ -589,3 +589,78 @@ export function getAdjacentProjects(
 export function getAllProjectSlugs(): string[] {
   return allProjects.map((p) => p.slug);
 }
+
+// =========================================
+// FILMOGRAPHY — every piece, including small ones without case studies
+// Powers the /work route. Director-style chronological table.
+// =========================================
+
+export type ArchiveKind = 'commercial' | 'personal' | 'academic' | 'experiment';
+
+export type ArchiveEntry = {
+  year: string;
+  title: string;
+  type: string;          // short — "Game UI · Godot" or "Frontend · React"
+  kind: ArchiveKind;
+  href?: string;         // internal /work/[slug] OR external URL
+  external?: boolean;    // if true, href opens in new tab
+  oneLiner: string;      // shown on hover, single sentence
+};
+
+// Stand-alone archive entries — pieces without a full case study.
+// Fill in your real older projects here. Placeholders are fine for the
+// shape; the row simply hides if you delete the entry.
+export const archiveExtras: ArchiveEntry[] = [
+  {
+    year: '2024',
+    title: '[Academic project — replace]',
+    type: 'Course work · React',
+    kind: 'academic',
+    oneLiner: 'Replace with a real project from your studies.',
+  },
+  {
+    year: '2024',
+    title: '[Weekend build — replace]',
+    type: 'Personal · Vue',
+    kind: 'experiment',
+    oneLiner: 'A small thing you built for the fun of it.',
+  },
+  {
+    year: '2023',
+    title: '[First freelance — replace]',
+    type: 'Client work',
+    kind: 'commercial',
+    oneLiner: 'The first piece someone paid you for.',
+  },
+];
+
+// Combines featured day + night projects with archive extras into one
+// chronologically-sorted filmography. Used by /work page.
+export function getFilmography(): ArchiveEntry[] {
+  const featuredCommercial: ArchiveEntry[] = projects.map((p) => ({
+    year: p.year,
+    title: p.title,
+    type: p.roles.slice(0, 2).join(' · '),
+    kind: 'commercial',
+    href: `/work/${p.slug}`,
+    external: false,
+    oneLiner: p.tagline,
+  }));
+
+  const featuredPersonal: ArchiveEntry[] = nightProjects.map((p) => ({
+    year: p.year,
+    title: p.title,
+    type: p.roles.slice(0, 2).join(' · '),
+    kind: 'personal',
+    href: `/work/${p.slug}`,
+    external: false,
+    oneLiner: p.tagline,
+  }));
+
+  return [...featuredCommercial, ...featuredPersonal, ...archiveExtras]
+    // newest first, stable tie-break by title for deterministic order
+    .sort((a, b) => {
+      if (a.year !== b.year) return b.year.localeCompare(a.year);
+      return a.title.localeCompare(b.title);
+    });
+}

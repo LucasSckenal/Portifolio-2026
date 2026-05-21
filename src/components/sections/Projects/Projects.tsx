@@ -143,8 +143,8 @@ function DayBlock() {
         <Reveal>
           <p className={styles.footerNote}>
             More work, case studies and process notes —
-            <a href="#contact" className={styles.footerLink} data-cursor>
-              {' '}on request →
+            <a href="/work" className={styles.footerLink} data-cursor data-cursor-label="See all work →">
+              {' '}all work →
             </a>
           </p>
         </Reveal>

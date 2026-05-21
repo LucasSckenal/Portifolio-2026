@@ -8,11 +8,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Reveal from '@/components/ui/Reveal';
 import SplitText from '@/components/ui/SplitText';
 import { useT } from '@/components/providers/LanguageProvider';
+import { useTheme } from '@/components/providers/ThemeProvider';
 import { cinema } from '@/lib/easings';
 import styles from './About.module.scss';
 
 export default function About() {
   const t = useT();
+  const { inverted } = useTheme();
   const sectionRef = useRef<HTMLElement>(null);
 
   const stats = [
@@ -20,6 +22,16 @@ export default function About() {
     { label: t.about.statBuildingLabel,   value: t.about.statBuildingValue,   jp: '制作' },
     { label: t.about.statCurrentlyLabel,  value: t.about.statCurrentlyValue,  jp: '現在' },
   ];
+
+  // In Night mode, append a paragraph that frames the after-hours version of
+  // the studio. Same voice, slightly more confessional. Stays in English for
+  // now — Night content has its own register independent of i18n locales.
+  const paragraphs = inverted
+    ? [
+        ...t.about.paragraphs,
+        "By night, this becomes a different studio — looser, more experimental. The work that fits no brief comes out here.",
+      ]
+    : t.about.paragraphs;
   const kanjiRef = useRef<HTMLDivElement>(null);
   const portraitRef = useRef<HTMLDivElement>(null);
 
@@ -121,7 +133,7 @@ export default function About() {
             </h2>
 
             <div className={styles.paragraphs}>
-              {t.about.paragraphs.map((p, i) => (
+              {paragraphs.map((p, i) => (
                 <Reveal key={i} delay={0.1 + i * 0.12} amount={0.4}>
                   <p className={styles.paragraph}>{p}</p>
                 </Reveal>
@@ -153,6 +165,23 @@ export default function About() {
                 </motion.div>
               ))}
             </motion.dl>
+
+            {/* ── Now / Currently card ─────
+                Update this monthly. Inspired by nownownow.com — signals
+                the site is alive, not a snapshot. */}
+            <Reveal delay={0.45} amount={0.4}>
+              <aside className={styles.now}>
+                <div className={styles.nowHeader}>
+                  <span className={styles.nowJp}>現</span>
+                  <span className={styles.nowLabel}>Now · January 2026</span>
+                </div>
+                <ul className={styles.nowList}>
+                  <li>Building the Yōkai shader gallery — first 3 entries shipping soon.</li>
+                  <li>Reading <em>The Death of the Heart</em> (Bowen) and re-reading Tufte.</li>
+                  <li>Currently obsessed with Three.js post-processing and Japanese paper textures.</li>
+                </ul>
+              </aside>
+            </Reveal>
           </div>
         </div>
       </div>

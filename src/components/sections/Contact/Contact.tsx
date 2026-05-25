@@ -25,7 +25,7 @@ export default function Contact() {
   const [copied, setCopied] = useState(false);
 
   // Night-mode tone: same invitation, slightly more relaxed about timing
-  const signalValue = inverted ? 'Quiet hours' : t.contact.footerSignalValue;
+  const signalValue = inverted ? t.contact.footerSignalValueNight : t.contact.footerSignalValue;
 
   const handleEmailClick = async () => {
     try {
@@ -68,7 +68,7 @@ export default function Contact() {
               <>
                 <br />
                 <span style={{ opacity: 0.7 }}>
-                  Night replies may come the next morning.
+                  {t.contact.bodyNightExtra}
                 </span>
               </>
             )}

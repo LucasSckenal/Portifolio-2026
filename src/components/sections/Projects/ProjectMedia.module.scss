@@ -889,3 +889,797 @@
     animation: none;
   }
 }
+
+// ─────────────────────────────────────────
+// NEXO — workspace SaaS (dark stage, indigo-violet accent)
+// ─────────────────────────────────────────
+.nexo {
+  background: #0B0A12;
+  color: var(--mood-text-light);
+}
+
+.nexoBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, #1A1830 0%, #07060E 70%);
+}
+
+.nexoGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(180, 170, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 170, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+}
+
+.nexoGlow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(120, 105, 230, 0.42) 0%, transparent 60%);
+  filter: blur(45px);
+  animation: nexo-pulse 7s ease-in-out infinite;
+}
+
+@keyframes nexo-pulse {
+  0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.85; transform: translate(-50%, -50%) scale(1.06); }
+}
+
+.nexoTop {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 26px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.55);
+}
+
+.nexoCenter {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.nexoKanji {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(8rem, 20vw, 16rem);
+  color: rgba(180, 168, 255, 0.10);
+  text-shadow: 0 0 80px rgba(120, 105, 230, 0.2);
+}
+
+.nexoColumn {
+  position: absolute;
+  top: 28%;
+  left: 26px;
+  width: min(220px, 34%);
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  background: rgba(242, 239, 233, 0.04);
+  border: 1px solid rgba(242, 239, 233, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 6px;
+}
+
+.nexoColumnLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(180, 168, 255, 0.75);
+}
+
+.nexoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  background: rgba(20, 18, 30, 0.65);
+  border: 1px solid rgba(242, 239, 233, 0.06);
+  border-radius: 4px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: rgba(242, 239, 233, 0.88);
+}
+
+.nexoCardMeta {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(180, 168, 255, 0.7);
+}
+
+.nexoAnalytics {
+  position: absolute;
+  bottom: 28px;
+  right: 26px;
+  width: min(220px, 34%);
+  padding: 14px;
+  background: rgba(242, 239, 233, 0.04);
+  border: 1px solid rgba(242, 239, 233, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 6px;
+  display: grid;
+  gap: 10px;
+}
+
+.nexoAnalyticsLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(180, 168, 255, 0.75);
+}
+
+.nexoSpark {
+  width: 100%;
+  height: 36px;
+  color: rgba(180, 168, 255, 0.85);
+  filter: drop-shadow(0 0 6px rgba(120, 105, 230, 0.4));
+}
+
+// ── NEXO — Device Stack mode ─────────────
+.nexoStack {
+  position: relative;
+  background: #0B0A12;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.nexoStackBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, #1A1830 0%, #07060E 70%);
+}
+
+.nexoStackGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(180, 170, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 170, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  pointer-events: none;
+}
+
+.nexoStackGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  aspect-ratio: 1.4;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(120, 105, 230, 0.40) 0%,
+    rgba(120, 105, 230, 0.10) 40%,
+    transparent 70%
+  );
+  filter: blur(48px);
+  animation: nexo-stack-pulse 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes nexo-stack-pulse {
+  0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.95; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+.nexoDevice {
+  position: absolute;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 22px 1fr;
+  box-shadow:
+    0 36px 60px rgba(0, 0, 0, 0.55),
+    0 14px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(242, 239, 233, 0.06),
+    0 0 60px rgba(120, 105, 230, 0.20);
+  will-change: transform, translate;
+  transition:
+    rotate 0.9s var(--ease-cinema),
+    scale 0.9s var(--ease-cinema),
+    translate 0.9s var(--ease-cinema);
+}
+
+.nexoDeviceBar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  background: #F0EDE7;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #DDD8CF;
+  }
+  span:nth-child(1) { background: #E89A8A; }
+  span:nth-child(2) { background: #E8C97A; }
+  span:nth-child(3) { background: #A8C99A; }
+}
+
+.nexoDeviceImageWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.nexoDeviceScreen {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.nexoDeviceMain {
+  width: 64%;
+  aspect-ratio: 16 / 10;
+  top: 16%;
+  left: 18%;
+  rotate: -1.5deg;
+  z-index: 3;
+  animation: nexo-float-main 7s ease-in-out infinite;
+}
+
+// Single centered device — used by video mode. Larger than the stack
+// variant since it holds all the visual weight on its own.
+.nexoDeviceSolo {
+  width: min(78%, 720px);
+  aspect-ratio: 16 / 10;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  rotate: 0deg;
+  z-index: 3;
+  animation: nexo-float-solo 8s ease-in-out infinite;
+}
+
+// Video element fills the device frame. The dark letterbox color blends
+// with the stage if the recording aspect ratio is slightly off 16:10.
+.nexoDeviceVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  background: #0B0A12;
+}
+
+// Video mode tweaks — stronger violet glow since one device carries
+// all the visual weight, and the rim light pulses a touch warmer.
+.nexoVideoMode .nexoStackGlow {
+  width: 78%;
+  aspect-ratio: 1.4;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(120, 105, 230, 0.50) 0%,
+    rgba(120, 105, 230, 0.14) 35%,
+    transparent 65%
+  );
+  animation: nexo-glow-pulse 7s ease-in-out infinite;
+}
+
+.nexoVideoMode .nexoDeviceSolo {
+  box-shadow:
+    0 40px 70px rgba(0, 0, 0, 0.65),
+    0 16px 28px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(242, 239, 233, 0.08),
+    0 0 80px rgba(120, 105, 230, 0.28);
+}
+
+@keyframes nexo-float-solo {
+  0%, 100% { translate: -50% -50%; }
+  50%      { translate: -50% calc(-50% - 6px); }
+}
+
+@keyframes nexo-glow-pulse {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.95; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+.nexoVideoMode:hover .nexoDeviceSolo {
+  scale: 1.015;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nexoDeviceSolo,
+  .nexoVideoMode .nexoStackGlow {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .nexoVideoMode .nexoDeviceSolo {
+    width: 94%;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.nexoDeviceBackLeft {
+  width: 50%;
+  aspect-ratio: 16 / 10;
+  top: 3%;
+  left: -4%;
+  rotate: -6deg;
+  z-index: 1;
+  animation: nexo-float-back-left 5.4s ease-in-out infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+  }
+}
+
+.nexoDeviceBackRight {
+  width: 50%;
+  aspect-ratio: 16 / 10;
+  bottom: 3%;
+  right: -4%;
+  rotate: 6deg;
+  z-index: 2;
+  animation: nexo-float-back-right 6.2s ease-in-out infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.14);
+    pointer-events: none;
+  }
+}
+
+@keyframes nexo-float-main {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+@keyframes nexo-float-back-left {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
+}
+@keyframes nexo-float-back-right {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 8px; }
+}
+
+.nexoStack:hover .nexoDeviceMain {
+  rotate: 0deg;
+  scale: 1.025;
+}
+.nexoStack:hover .nexoDeviceBackLeft {
+  rotate: -4deg;
+  translate: -6px 0;
+}
+.nexoStack:hover .nexoDeviceBackRight {
+  rotate: 4deg;
+  translate: 6px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nexoDeviceMain,
+  .nexoDeviceBackLeft,
+  .nexoDeviceBackRight,
+  .nexoStackGlow,
+  .nexoGlow {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .nexoStack .nexoDeviceBackLeft,
+  .nexoStack .nexoDeviceBackRight {
+    display: none;
+  }
+  .nexoStack .nexoDeviceMain {
+    width: 92%;
+    left: 4%;
+    top: 50%;
+    translate: 0 -50%;
+    rotate: 0deg;
+    animation: none;
+  }
+}
+
+// ─────────────────────────────────────────
+// LJ — boutique wellness studio (warm light stage)
+// ─────────────────────────────────────────
+.lj {
+  background: #F4F1EA;
+  color: var(--mood-text-dark);
+}
+
+.ljBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, #FBF8F1 0%, #E6DFD3 80%);
+}
+
+.ljGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(206, 161, 99, 0.30) 0%, transparent 65%);
+  filter: blur(45px);
+}
+
+.ljTop {
+  position: absolute;
+  top: 26px;
+  left: 28px;
+  display: grid;
+  gap: 2px;
+}
+
+.ljBrand {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: var(--mood-text-dark);
+}
+
+.ljBrandSub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--mood-text-dark-mute);
+}
+
+.ljCenter {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.ljKanji {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(8rem, 20vw, 16rem);
+  color: rgba(120, 90, 50, 0.10);
+}
+
+.ljSchedule {
+  position: absolute;
+  top: 30%;
+  right: 28px;
+  width: min(230px, 36%);
+  padding: 12px 14px;
+  background: rgba(255, 252, 245, 0.85);
+  border: 1px solid rgba(14, 13, 11, 0.06);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  display: grid;
+  gap: 4px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.05);
+}
+
+.ljScheduleLabel {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 0.95rem;
+  color: var(--mood-text-dark);
+}
+
+.ljScheduleSlots {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(206, 161, 99, 0.95);
+}
+
+.ljPlan {
+  position: absolute;
+  bottom: 26px;
+  left: 28px;
+  width: min(260px, 40%);
+  padding: 16px 18px;
+  background: rgba(255, 252, 245, 0.9);
+  border: 1px solid rgba(14, 13, 11, 0.06);
+  backdrop-filter: blur(8px);
+  border-radius: 6px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.06);
+}
+
+.ljPlanHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ljPlanName {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 1.05rem;
+  color: var(--mood-text-dark);
+}
+
+.ljPlanTag {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(206, 161, 99, 0.18);
+  color: #8B5E2B;
+  border-radius: 999px;
+}
+
+.ljPlanPrice {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  color: var(--mood-text-dark);
+
+  span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: var(--track-mark);
+    text-transform: uppercase;
+    color: var(--mood-text-dark-mute);
+    margin-left: 4px;
+  }
+}
+
+.ljPlanCta {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: #8B5E2B;
+}
+
+// ── LJ — Device Stack mode ───────────────
+.ljStack {
+  position: relative;
+  background: linear-gradient(180deg, #F4F1EA 0%, #E2DCCF 100%);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.ljStackBackdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 252, 245, 0.7), transparent 70%);
+}
+
+.ljStackGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 70%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(206, 161, 99, 0.22) 0%,
+    rgba(206, 161, 99, 0.06) 35%,
+    transparent 65%
+  );
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.ljDevice {
+  position: absolute;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 22px 1fr;
+  box-shadow:
+    0 30px 50px rgba(0, 0, 0, 0.18),
+    0 12px 22px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  will-change: transform, translate;
+  transition:
+    rotate 0.9s var(--ease-cinema),
+    scale 0.9s var(--ease-cinema),
+    translate 0.9s var(--ease-cinema);
+}
+
+.ljDeviceBar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  background: #F0EDE7;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #DDD8CF;
+  }
+  span:nth-child(1) { background: #E89A8A; }
+  span:nth-child(2) { background: #E8C97A; }
+  span:nth-child(3) { background: #A8C99A; }
+}
+
+.ljDeviceImageWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.ljDeviceScreen {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.ljDeviceMain {
+  width: 66%;
+  aspect-ratio: 16 / 10;
+  top: 18%;
+  right: 8%;
+  rotate: -2deg;
+  z-index: 3;
+  animation: lj-float-main 7s ease-in-out infinite;
+}
+
+// Single centered device — used by video mode. Larger than the stack
+// variant since it stands alone, and centered for a cinematic frame.
+.ljDeviceSolo {
+  width: min(78%, 720px);
+  aspect-ratio: 16 / 10;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  rotate: 0deg;
+  z-index: 3;
+  // Softer float — barely perceptible, just enough to feel alive
+  animation: lj-float-solo 8s ease-in-out infinite;
+}
+
+// Video element fills the device frame. object-fit: cover keeps the
+// composition tight when the recording aspect ratio doesn't perfectly
+// match 16:10 (common with 1920×1200 captures, but defensive either way).
+.ljDeviceVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  background: #FAF7F0; // letterbox blends with light stage if it happens
+}
+
+// Video mode tweaks — slightly stronger glow since one device holds all
+// the visual weight, and the warm hue pulses a touch more.
+.ljVideoMode .ljStackGlow {
+  width: 78%;
+  height: 78%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(206, 161, 99, 0.28) 0%,
+    rgba(206, 161, 99, 0.08) 35%,
+    transparent 65%
+  );
+  animation: lj-glow-pulse 7s ease-in-out infinite;
+}
+
+@keyframes lj-float-solo {
+  0%, 100% { translate: -50% -50%; }
+  50%      { translate: -50% calc(-50% - 6px); }
+}
+
+@keyframes lj-glow-pulse {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 0.95; transform: translate(-50%, -50%) scale(1.04); }
+}
+
+// Hover — subtle lift, no rotation since the device is already centered
+.ljVideoMode:hover .ljDeviceSolo {
+  scale: 1.015;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ljDeviceSolo,
+  .ljVideoMode .ljStackGlow {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .ljVideoMode .ljDeviceSolo {
+    width: 94%;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.ljDeviceBack {
+  width: 52%;
+  aspect-ratio: 16 / 10;
+  top: 5%;
+  left: -3%;
+  rotate: -7deg;
+  z-index: 2;
+  animation: lj-float-back 5.6s ease-in-out infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 18, 22, 0.08);
+    pointer-events: none;
+  }
+}
+
+@keyframes lj-float-main {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+@keyframes lj-float-back {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
+}
+
+.ljStack:hover .ljDeviceMain {
+  rotate: 0deg;
+  scale: 1.025;
+}
+.ljStack:hover .ljDeviceBack {
+  rotate: -5deg;
+  translate: -8px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ljDeviceMain,
+  .ljDeviceBack {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .ljStack .ljDeviceBack {
+    display: none;
+  }
+  .ljStack .ljDeviceMain {
+    width: 92%;
+    left: 4%;
+    right: auto;
+    top: 50%;
+    translate: 0 -50%;
+    rotate: 0deg;
+    animation: none;
+  }
+}

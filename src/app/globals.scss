@@ -52,19 +52,6 @@ a {
   text-decoration: none;
 }
 
-// Hide native cursor when custom cursor active (toggled via class)
-.has-custom-cursor,
-.has-custom-cursor * {
-  cursor: none !important;
-}
-
-@media (max-width: 900px) {
-  .has-custom-cursor,
-  .has-custom-cursor * {
-    cursor: auto !important;
-  }
-}
-
 // Selection
 ::selection {
   background: var(--accent);
@@ -83,11 +70,6 @@ a {
   outline-offset: 4px;
   border-radius: 2px;
   transition: outline-offset 0.25s var(--ease-cinema);
-}
-
-// Skip-on-hover state since custom cursor handles mouse affordance
-.has-custom-cursor :focus:not(:focus-visible) {
-  outline: none;
 }
 
 // Lenis required styles

@@ -17,6 +17,9 @@ export const pt: Dictionary = {
     bio1: 'Lucas — desenvolvedor frontend criativo',
     bio2: 'criando interfaces imersivas e cinematográficas.',
     scroll: 'Role',
+    titleNight: ['Esboços.', 'Experimentos.', 'Estudos de luz.'],
+    bio1Night: 'Lucas — desenvolvedor frontend',
+    bio2Night: 'mexendo enquanto os clientes dormem.',
   },
   about: {
     label: '002 — Sobre',
@@ -26,7 +29,7 @@ export const pt: Dictionary = {
     paragraphs: [
       'Sou Lucas — um desenvolvedor frontend atraído por experiências digitais que vão além do funcional. Aquelas que parecem cinematográficas, atmosféricas, visualmente intencionais em cada detalhe.',
       'Minha prática favorece UI moderna, movimento suave e a textura de interfaces inspiradas em jogos. Tento unir criatividade, performance e uma sensação premium no mesmo trabalho — nunca uma à custa das outras.',
-      'Atualmente desenvolvendo um jogo Tower Defense com sistemas de HUD personalizados, um chatbot médico multilíngue e um conceito de e-commerce focado em games. Cada um é uma tentativa de dar identidade, atmosfera e intenção ao software.',
+      'Atualmente desenvolvendo um jogo Tower Defense pensado para idosos, um workspace de equipe onde a IA mora dentro do trabalho — não numa sidebar — e um site para estúdio de treinamento boutique que se lê como consultório privado. Cada um é uma tentativa de dar identidade, atmosfera e intenção ao software.',
       'Inspiro-me no minimalismo japonês, no design de movimento cinematográfico e na escola Apple / Awwwards de interfaces premium. O objetivo: produtos que as pessoas lembram não pelo código, mas pela experiência que transmitem.',
     ],
     caption: 'Um autorretrato, em processo.',
@@ -43,12 +46,36 @@ export const pt: Dictionary = {
     titleLine1: 'Três mundos',
     titleLine2: 'da prática.',
     intro:
-      'Uma seleção entre UI de jogo, IA conversacional e e-commerce — cada um tratado como uma atmosfera própria, não como uma especificação de produto.',
+      'Um jogo feito para avós, um workspace onde a IA vive dentro do trabalho, e um estúdio boutique que vende confiança antes de acesso — cada um tratado como sua própria atmosfera, não como uma especificação de produto.',
     caseStudyCta: 'Case study',
     liveCta: 'Live',
     repoCta: 'Repo',
     moreLine: 'Mais trabalhos, case studies e notas de processo —',
-    moreLink: 'sob solicitação →',
+    moreLink: 'todo o trabalho →',
+  },
+  projectsNight: {
+    label: '003 — Depois do expediente',
+    titleLine1: 'Dois estudos',
+    titleLine2: 'dos anos de universidade.',
+    intro:
+      'Construídos durante minha graduação na Unijuí — projetos full-stack moldados em disciplinas, mantidos aqui como alicerces e não como entregas de cliente. Menores em escopo, maiores em aprendizado.',
+    moreLine: 'Mais dos anos de fundação —',
+    moreLink: 'todo o trabalho →',
+  },
+  nightReading: {
+    label: '↳ Trabalho noturno · referências',
+    titleLine1: 'A biblioteca',
+    titleLine2: 'por trás do estúdio.',
+    intro:
+      'O trabalho que segue é moldado por esses — livros, filmes, palestras, álbuns aos quais sempre volto. Não são créditos; são coordenadas.',
+  },
+  gameWorlds: {
+    label: '↳ Onde Estão os Netos? · complementar',
+    titleLine1: 'Seis mundos temáticos',
+    titleLine2: 'a atravessar.',
+    intro:
+      'Cada mapa carrega sua própria identidade visual, NavMesh, lista de inimigos, arquitetura de base e trilha sonora — seis câmaras autocontidas que o jogador atravessa em sequência.',
+    worldPrefix: 'Mundo',
   },
   stack: {
     label: '004 — Stack',
@@ -61,6 +88,12 @@ export const pt: Dictionary = {
     philosophyCompositionDesc: 'Espaço negativo como elemento.',
     philosophyCraft: 'Ofício',
     philosophyCraftDesc: 'O polimento nos últimos 10%.',
+    philosophyCuriosity: 'Curiosidade',
+    philosophyCuriosityDesc: 'Seguindo o que não cala.',
+    philosophyPatience: 'Paciência',
+    philosophyPatienceDesc: 'Sem prazo. Sem atalhos.',
+    philosophyDrift: 'Deriva',
+    philosophyDriftDesc: 'Deixar o trabalho sugerir o próximo passo.',
   },
   contact: {
     label: '005 — Contato',
@@ -81,5 +114,7 @@ export const pt: Dictionary = {
     footerMadeWithValue: 'Next · GSAP · Lenis',
     emailHover: 'Clique — copia e abre',
     emailCopied: 'Copiado ✓',
+    bodyNightExtra: 'Respostas noturnas podem chegar na manhã seguinte.',
+    footerSignalValueNight: 'Horário silencioso',
   },
 };

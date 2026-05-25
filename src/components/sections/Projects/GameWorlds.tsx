@@ -4,6 +4,7 @@ import FadeImage from '@/components/ui/FadeImage';
 import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
+import { useT } from '@/components/providers/LanguageProvider';
 import { cinema } from '@/lib/easings';
 import styles from './GameWorlds.module.scss';
 
@@ -76,34 +77,32 @@ const worlds: World[] = [
   },
 ];
 
-// Cinematic interstitial between the Game scene and the Chatbot scene —
-// a chapter break that shows the breadth of the project.
+// Cinematic interstitial between the Game scene and the Nexo scene —
+// a chapter break that shows the breadth of the game's six worlds.
 export default function GameWorlds() {
+  const t = useT();
   return (
     <section className={styles.worlds} aria-label="Six themed worlds">
       <div className={styles.inner}>
         <header className={styles.header}>
           <div className={styles.labelRow}>
-            <span className={styles.label}>↳ Onde Estão os Netos? · supplementary</span>
+            <span className={styles.label}>{t.gameWorlds.label}</span>
             <span className={styles.divider} aria-hidden />
+            {/* Kanji decorative label stays in JP per design system */}
             <span className={styles.labelJp}>世界 · Sekai</span>
           </div>
 
           <h3 className={styles.title}>
             <span className={styles.titleLine}>
-              <SplitText text="Six themed worlds" by="word" delay={0.1} />
+              <SplitText text={t.gameWorlds.titleLine1} by="word" delay={0.1} />
             </span>
             <span className={styles.titleLine}>
-              <SplitText text="to cross." by="word" delay={0.25} />
+              <SplitText text={t.gameWorlds.titleLine2} by="word" delay={0.25} />
             </span>
           </h3>
 
           <Reveal delay={0.4} amount={0.4}>
-            <p className={styles.intro}>
-              Each map carries its own visual identity, NavMesh, enemy roster,
-              base architecture and soundtrack — six self-contained chambers
-              the player moves through in sequence.
-            </p>
+            <p className={styles.intro}>{t.gameWorlds.intro}</p>
           </Reveal>
         </header>
 
@@ -144,7 +143,7 @@ export default function GameWorlds() {
 
               <div className={styles.cardBody}>
                 <div className={styles.cardTop}>
-                  <span className={styles.cardIdx}>Mundo {w.idx}</span>
+                  <span className={styles.cardIdx}>{t.gameWorlds.worldPrefix} {w.idx}</span>
                   {w.tag && <span className={styles.cardTag}>{w.tag}</span>}
                 </div>
 

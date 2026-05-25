@@ -17,6 +17,9 @@ export const ja: Dictionary = {
     bio1: 'Lucas — クリエイティブ・フロントエンド開発者。',
     bio2: '没入感のある映画的なインターフェースを制作。',
     scroll: 'スクロール',
+    titleNight: ['素描。', '実験。', '光の研究。'],
+    bio1Night: 'Lucas — フロントエンド開発者',
+    bio2Night: 'クライアントが眠った後に手を動かす。',
   },
   about: {
     label: '002 — 紹介',
@@ -26,7 +29,7 @@ export const ja: Dictionary = {
     paragraphs: [
       '私はLucas。機能を超えたデジタル体験に惹かれるフロントエンド開発者です。映画のように、雰囲気があり、細部まで意図された視覚を持つもの。',
       '私の制作はモダンなUI、滑らかなモーション、ゲームに着想を得たインターフェースの質感を大切にしています。創造性、性能、そして高品質な感触を一つの作品に同時に織り込むこと — どれかを犠牲にすることなく。',
-      '現在、カスタムHUDシステムを持つタワーディフェンスゲーム、多言語対応の医療チャットボット、ゲーミング志向のEコマースを開発中。それぞれがソフトウェアにアイデンティティ、雰囲気、意図を与えようとする試みです。',
+      '現在、高齢のプレイヤーを想定したタワーディフェンスゲーム、AIをサイドバーではなく作業の中に置いたチームワークスペース、そして大型ジムではなく個人サロンのように読ませるブティック型トレーニングスタジオのサイトを制作中。それぞれがソフトウェアにアイデンティティ、雰囲気、意図を与えようとする試みです。',
       '日本のミニマリズム、映画的なモーションデザイン、Apple / Awwwardsのプレミアムなインターフェースに影響を受けています。目標は、コードではなく、伝わる体験で人々の記憶に残るプロダクトを作ること。',
     ],
     caption: '進行中の自画像。',
@@ -43,12 +46,36 @@ export const ja: Dictionary = {
     titleLine1: '実践から',
     titleLine2: '三つの世界。',
     intro:
-      'ゲームUI、対話型AI、Eコマースから選ばれた作品 — それぞれが製品仕様ではなく、独自の雰囲気として扱われています。',
+      '祖父母のために作られたゲーム、AIが作業の中に住むワークスペース、そしてアクセスより信頼を売るブティックスタジオ — それぞれが製品仕様ではなく独自の雰囲気として扱われています。',
     caseStudyCta: 'ケース',
     liveCta: 'Live',
     repoCta: 'Repo',
     moreLine: 'その他の作品、ケーススタディ、制作ノート —',
-    moreLink: 'お問い合わせください →',
+    moreLink: 'すべての作品 →',
+  },
+  projectsNight: {
+    label: '003 — 業務時間外',
+    titleLine1: '二つの研究',
+    titleLine2: '大学時代から。',
+    intro:
+      'ウニジュイでの学位課程中に作られた — 授業で形作られたフルスタックのプロジェクトで、クライアント納品ではなく土台として保管されています。予算は小さく、学びは大きい。',
+    moreLine: '基礎の年からのその他 —',
+    moreLink: 'すべての作品 →',
+  },
+  nightReading: {
+    label: '↳ 夜の作業 · 参考',
+    titleLine1: '書庫',
+    titleLine2: 'スタジオの背景にある。',
+    intro:
+      'これから続く作品は、これらに形作られています — 何度も戻ってくる本、映画、講演、アルバム。クレジットではなく、座標です。',
+  },
+  gameWorlds: {
+    label: '↳ Onde Estão os Netos? · 補足',
+    titleLine1: '六つのテーマ世界',
+    titleLine2: 'を渡る。',
+    intro:
+      '各マップは独自のビジュアル・アイデンティティ、NavMesh、敵リスト、基地の構造、サウンドトラックを持っています — プレイヤーが順に進む六つの独立した部屋。',
+    worldPrefix: 'Mundo',
   },
   stack: {
     label: '004 — スタック',
@@ -61,6 +88,12 @@ export const ja: Dictionary = {
     philosophyCompositionDesc: '余白を要素として。',
     philosophyCraft: '工芸',
     philosophyCraftDesc: '最後の10%を磨く。',
+    philosophyCuriosity: '好奇心',
+    philosophyCuriosityDesc: '黙らないものに従う。',
+    philosophyPatience: '忍耐',
+    philosophyPatienceDesc: '締切なし。近道なし。',
+    philosophyDrift: '漂流',
+    philosophyDriftDesc: '作品に次の一手を示させる。',
   },
   contact: {
     label: '005 — 連絡',
@@ -81,5 +114,7 @@ export const ja: Dictionary = {
     footerMadeWithValue: 'Next · GSAP · Lenis',
     emailHover: 'クリックでコピー',
     emailCopied: 'コピー済 ✓',
+    bodyNightExtra: '夜間の返信は翌朝になることがあります。',
+    footerSignalValueNight: '静寂の時間',
   },
 };

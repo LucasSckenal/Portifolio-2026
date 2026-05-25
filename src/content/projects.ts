@@ -1,6 +1,10 @@
 // =========================================
 // Single source of truth for project data.
 // Used by both the home Projects section and the /work/[slug] case study pages.
+//
+// Two parallel portfolios:
+//   Day   → professional / showcase pieces (Game, Nexo, LJ)
+//   Night → academic university work (Chatbot, Phantom)
 // =========================================
 
 export type CaseSection =
@@ -9,8 +13,11 @@ export type CaseSection =
   | { type: 'heading'; text: string; jp?: string; jpLabel?: string }
   | { type: 'quote'; text: string; attribution?: string }
   | { type: 'list'; items: string[]; ordered?: boolean }
-  | { type: 'image'; src: string; alt: string; caption?: string }
-  | { type: 'gallery'; images: Array<{ src: string; alt: string; caption?: string }> }
+  // `variant`: 'wide' (default) for landscape desktop captures,
+  //            'mobile' for phone portrait shots — caps at ~360px wide so
+  //            a 390x844 capture renders close to its real screen size.
+  | { type: 'image'; src: string; alt: string; caption?: string; variant?: 'wide' | 'mobile' }
+  | { type: 'gallery'; images: Array<{ src: string; alt: string; caption?: string; variant?: 'wide' | 'mobile' }> }
   | { type: 'stats'; items: Array<{ label: string; value: string; jp?: string }> }
   | { type: 'divider' };
 
@@ -35,7 +42,7 @@ export type ProjectCase = {
 
 export const projects: ProjectCase[] = [
   // ─────────────────────────────────────────
-  // 01 — Onde Estão os Netos?
+  // 01 — Onde Estão os Netos? (game showcase)
   // ─────────────────────────────────────────
   {
     slug: 'onde-estao-os-netos',
@@ -194,19 +201,286 @@ export const projects: ProjectCase[] = [
   },
 
   // ─────────────────────────────────────────
-  // 02 — Medical AI Chatbot
+  // 02 — Nexo (workspace SaaS with AI)
+  // ─────────────────────────────────────────
+  {
+    slug: 'nexo',
+    index: '02',
+    title: 'Nexo',
+    jp: '繋',
+    jpLabel: '繋 · Connect',
+    year: '2026',
+    status: 'Live · In production',
+    tagline: 'A team workspace where AI is part of the team.',
+    description:
+      'A management and collaboration platform — Kanban, backlog, client tracking, analytics, and a Gemini-powered assistant that drafts tasks and refines text. Built on Next 16 + React 19 + Firebase.',
+    roles: ['Product Design', 'Full-Stack', 'AI Integration', 'SaaS'],
+    tech: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind v4', 'Firebase', 'Gemini'],
+    href: 'https://github.com/LucasSckenal/nexo',
+    live: 'https://nexo-8yq8.vercel.app/',
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'Nexo is a workspace for small teams — Kanban boards, backlog, client and member management, analytics, and an AI assistant that drafts tasks and refines copy as you write.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'It started as the answer to a small frustration: every project tool I used either treated AI as a sidebar afterthought or buried collaboration under settings. I wanted a workspace where the AI is part of the daily loop — generating a card from a sentence, polishing a description, summarizing a backlog — without ever becoming a chatbot you have to remember to open.',
+      },
+      {
+        type: 'image',
+        src: '/projects/nexo/Dashboard.png',
+        alt: 'Nexo dashboard — the workspace at first open',
+        caption: 'Dashboard — the workspace at first open, sidebar holding the room together.',
+      },
+
+      {
+        type: 'heading',
+        text: 'The shape of the product',
+        jp: '型',
+        jpLabel: '型 · Form',
+      },
+      {
+        type: 'list',
+        items: [
+          'Customizable Kanban boards with per-column search and filters',
+          'Backlog with priority, estimates, and drag-to-board flow',
+          'Client and member directories with role-based context',
+          'Analytics dashboards — throughput, cycle time, member load',
+          'AI assistant (Gemini) — generate tasks from a brief, refine text, summarize threads',
+          'Real-time notifications with sender avatars',
+          'Dark / light themes, per-user accent color',
+        ],
+      },
+      {
+        type: 'image',
+        src: '/projects/nexo/Kanbam.png',
+        alt: 'Nexo Kanban board populated with cards across columns',
+        caption: 'Kanban — cards across columns, AI-suggested items marked.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Why AI as a teammate, not a sidebar',
+        jp: '助',
+        jpLabel: '助 · Aid',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Most products bolt an AI panel onto an existing UI. The friction is real — you switch context, paste content in, copy the output back. The AI ends up used once and forgotten.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Nexo inverts that. When you start writing a card, a quick prompt drafts five candidate cards. When you describe a sprint goal in one sentence, the assistant breaks it into a backlog. When you finish typing a description, you can ask for a tighter version inline. The AI lives where the work lives.',
+      },
+      {
+        type: 'image',
+        src: '/projects/nexo/CrateTask.png',
+        alt: 'Nexo — Gemini assistant generating tasks from a sentence',
+        caption: 'A sentence becomes a backlog — Gemini drafts candidate cards inline.',
+      },
+      {
+        type: 'quote',
+        text:
+          'The point isn\'t to replace the person typing. It\'s to make typing feel less like typing.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Stack & architecture',
+        jp: '構',
+        jpLabel: '構 · Structure',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Next.js 16 with the App Router on React 19. TypeScript 5 strict. Tailwind v4 for the design system — every token in CSS variables, theme switching is a single class flip. Firebase for auth, Firestore for the data, Firebase Storage for uploads.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'The AI surface is Google Gemini via the generative-AI SDK, routed through Next API endpoints so the API key never reaches the client. TipTap 3 handles rich text — extensible enough to wrap AI actions inline. Recharts powers the analytics dashboards. Phosphor and Lucide icons throughout.',
+      },
+      {
+        type: 'image',
+        src: '/projects/nexo/analytics.png',
+        alt: 'Nexo analytics — throughput and cycle-time dashboards',
+        caption: 'Analytics — throughput, cycle time, and member load via Recharts.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'The codebase is organized by feature, not by file type — auth, analytics, backlog, clients, kanban, members each get their own folder with components, contexts, and routes co-located. It scales without the typical "where does this live?" tax.',
+      },
+      {
+        type: 'image',
+        src: '/projects/nexo/Backlog.png',
+        alt: 'Nexo backlog — prioritized list with estimates',
+        caption: 'Backlog — priorities and estimates, draggable straight to the board.',
+      },
+
+      {
+        type: 'heading',
+        text: 'What\'s next',
+        jp: '次',
+        jpLabel: '次 · Next',
+      },
+      {
+        type: 'list',
+        items: [
+          'Public marketing landing in front of the auth wall',
+          'Demo workspace seeded with example data — no sign-up to explore',
+          'GitHub bidirectional sync for issues',
+          'Per-workspace AI memory so the assistant gets sharper over time',
+        ],
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────
+  // 03 — LJ Treinamento Integrado (client work)
+  // ─────────────────────────────────────────
+  {
+    slug: 'lj-treinamento-integrado',
+    index: '03',
+    title: 'LJ Treinamento Integrado',
+    jp: '体',
+    jpLabel: '体 · Body',
+    year: '2026',
+    status: 'Live · Production',
+    tagline: 'A boutique training studio that sells trust before it sells classes.',
+    description:
+      'Marketing site and booking front for an integrated training studio in Ijuí — schedule, plans, methodology, WhatsApp-driven reservations. Designed to read like a private practice, not a gym.',
+    roles: ['Brand Web', 'Booking UX', 'Client Work', 'Responsive'],
+    tech: ['Next.js', 'TypeScript', 'TailwindCSS'],
+    team: 'Solo · Client: Luis Joris',
+    live: 'https://lj-nu.vercel.app/',
+    mood: 'light',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'A site for Luis Joris — a personal trainer in Ijuí who works with no more than four people per class. The brief was simple: don\'t sell like a gym. The product is attention, not access.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Most fitness studio sites push you to a wall of plan cards and a CTA before they\'ve earned a second of trust. We did the opposite — open with the room, the method, the cap of four students, and only then the prices.',
+      },
+      {
+        type: 'image',
+        src: '/projects/lj/hero.png',
+        alt: 'LJ homepage hero — Corpo em movimento. Mente em transformação.',
+        caption: 'Homepage hero — the room and the promise before the price tag.',
+      },
+
+      {
+        type: 'heading',
+        text: 'What the site does',
+        jp: '機',
+        jpLabel: '機 · Function',
+      },
+      {
+        type: 'list',
+        items: [
+          'Hero stating the method, not the discount — "Corpo em movimento. Mente em transformação."',
+          'Five-pillar methodology breakdown (Mobility, Stability, Strength, Conditioning, Balance)',
+          'Three modalities with their distinct character: Funcional, Five Konzept, Cardio Premium',
+          'Live weekly schedule showing real openings — each slot links straight to WhatsApp reservation',
+          'Three pricing tiers with a marked "Most Chosen" plan and a trial single-class option',
+          'Location, opening hours, social proof from the studio Instagram',
+        ],
+      },
+      {
+        type: 'image',
+        src: '/projects/lj/method.png',
+        alt: 'LJ method section — five pillars of integrated training',
+        caption: 'The five-pillar methodology — Mobility, Stability, Strength, Conditioning, Balance.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Design choices',
+        jp: '構',
+        jpLabel: '構 · Composition',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Neutral palette — whites, grays, accent black — with all weight given to typography and white space. The trainer is a single specialist; the site needed to feel like a private practice, not a chain. Long-form sections breathe; CTAs appear only after the reader has been given enough to decide.',
+      },
+      {
+        type: 'image',
+        src: '/projects/lj/plans.png',
+        alt: 'LJ plans — three pricing tiers',
+        caption: 'Three plans, the middle one marked. No coupons, no fake urgency.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Booking is intentionally not a form. Each free slot is a WhatsApp deep-link with a pre-filled message — the client reaches Luis in one tap, conversation already started, no friction account creation. For a boutique studio this is conversion at the right grain.',
+      },
+      {
+        type: 'image',
+        src: '/projects/lj/schedule.png',
+        alt: 'LJ weekly schedule — each open slot links to WhatsApp',
+        caption: 'Weekly schedule — every open slot is a one-tap WhatsApp deep-link.',
+      },
+      {
+        type: 'quote',
+        text:
+          'A gym sells access. A boutique studio sells the trainer\'s attention. The website has to feel like the latter.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Stack',
+        jp: '工',
+        jpLabel: '工 · Craft',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Built in Next.js with TypeScript and Tailwind. Deployed on Vercel. The schedule data is editable without touching code — Luis can rotate slots and capacity from a content file, which keeps the site honest about availability without me being a bottleneck.',
+      },
+      {
+        type: 'image',
+        src: '/projects/lj/mobile.png',
+        alt: 'LJ mobile view — same hierarchy at phone width',
+        caption: 'Mobile view — same hierarchy, same restraint. Booking still one tap.',
+        variant: 'mobile',
+      },
+    ],
+  },
+];
+
+// =========================================
+// NIGHT PORTFOLIO — academic university work
+// Projects shaped during my degree at Unijui, kept here as foundations
+// rather than client deliverables. The toggle reframes them as "after hours" —
+// the work that lives outside billable scope.
+// =========================================
+
+export const nightProjects: ProjectCase[] = [
+  // ─────────────────────────────────────────
+  // 01 — Medical AI Chatbot (PI-3 Unijui)
   // ─────────────────────────────────────────
   {
     slug: 'medical-chatbot',
-    index: '02',
+    index: '01',
     title: 'Medical AI Chatbot',
     jp: '話',
     jpLabel: '話 · Speak',
     year: '2025',
-    status: 'Live · Production',
+    status: 'Academic · Live demo',
     tagline: 'Voice or text symptoms, translated into structured triage.',
     description:
-      'A multilingual medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage.',
+      'A multilingual medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage. PI-3 at Unijui.',
     roles: ['Conversational UX', 'Voice + Text', 'Medical Triage', 'Multilingual'],
     tech: ['React', 'Vite', 'Node + Express', 'Firebase'],
     team: 'Team of 3 · Unijui · Front-End lead',
@@ -309,19 +583,19 @@ export const projects: ProjectCase[] = [
   },
 
   // ─────────────────────────────────────────
-  // 03 — Phantom Commerce
+  // 02 — Phantom Commerce (Unijui)
   // ─────────────────────────────────────────
   {
     slug: 'phantom-commerce',
-    index: '03',
+    index: '02',
     title: 'Phantom Commerce',
     jp: '幻',
     jpLabel: '幻 · Phantom',
     year: '2025',
-    status: 'Live · Concept',
+    status: 'Academic · Concept',
     tagline: 'The store as exhibit, not as catalogue.',
     description:
-      'A gaming-focused commerce platform built around premium product presentation, animated interactions, and a glass-deep visual language.',
+      'A gaming-focused commerce platform built around premium product presentation, animated interactions, and a glass-deep visual language. Coursework at Unijui.',
     roles: ['Ecommerce', 'Motion Design', 'Full-Stack', 'Brand'],
     tech: ['Next.js', 'Firebase', 'SCSS', 'Lucide'],
     team: 'Team of 3 · Unijui',
@@ -414,154 +688,6 @@ export const projects: ProjectCase[] = [
   },
 ];
 
-// =========================================
-// NIGHT PORTFOLIO — appears only when the user toggles to Night mode.
-// These are experiments and personal explorations — the "after-hours studio"
-// version of the practice. Fill in real content as you ship pieces.
-// =========================================
-
-export const nightProjects: ProjectCase[] = [
-  {
-    slug: 'yokai-shader-gallery',
-    index: '01',
-    title: 'Yōkai',
-    jp: '妖',
-    jpLabel: '妖 · Spirit',
-    year: '2026',
-    status: 'In progress · experiments',
-    tagline: 'A gallery of shaders shaped like Japanese spirits.',
-    description:
-      'A personal series of fragment shaders, each one inspired by a yōkai — the strange creatures of Japanese folklore. Procedural, atmospheric, never the same on two refreshes.',
-    roles: ['Shaders', 'WebGL', 'Procedural Art'],
-    tech: ['Three.js', 'GLSL', 'WebGL'],
-    href: 'https://github.com/LucasSckenal',
-    mood: 'glass',
-    sections: [
-      {
-        type: 'lead',
-        body:
-          'A gallery of fragment shaders, each shaped like a different yōkai — the strange creatures of Japanese folklore.',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'After the client work is shipped and the briefs are answered, I write shaders. Procedural, atmospheric, untethered from product requirements. This gallery is a small archive of them.',
-      },
-      {
-        type: 'heading',
-        text: 'Why yōkai',
-        jp: '妖',
-        jpLabel: '妖 · Spirit',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'Yōkai sit between things — between alive and dead, between visible and invisible, between threatening and friendly. That ambiguity is what shaders do too: each pixel is a function, but the result feels almost alive. It seemed honest to name them after spirits.',
-      },
-      {
-        type: 'quote',
-        text:
-          'A shader is the closest a programmer gets to drawing with breath instead of lines.',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'More entries coming as I finish them. Each shader sketches a different creature — kasa-obake, kappa, tsukumogami — and the gallery is the way to wander through them.',
-      },
-    ],
-  },
-
-  {
-    slug: 'tsuki-type-studies',
-    index: '02',
-    title: 'Tsuki',
-    jp: '月',
-    jpLabel: '月 · Moon',
-    year: '2026',
-    status: 'Ongoing · personal',
-    tagline: 'Animated typography studies in kanji and latin.',
-    description:
-      'Slow letter-by-letter and stroke-by-stroke type animations. The kanji draw themselves in the order they would be written by hand; the latin glyphs morph through related forms.',
-    roles: ['Motion Design', 'Type', 'SVG'],
-    tech: ['GSAP', 'SVG', 'After Effects'],
-    href: 'https://github.com/LucasSckenal',
-    mood: 'dark',
-    sections: [
-      {
-        type: 'lead',
-        body:
-          'Slow, deliberate type animations — kanji drawing themselves stroke by stroke, latin glyphs morphing through related forms.',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'When you watch a Japanese calligrapher, the order of strokes is fixed and reads almost like choreography. I started animating kanji in that exact order, then asked the same of latin letterforms — drawing them as if they were brush gestures, not glyphs sitting in place.',
-      },
-      {
-        type: 'heading',
-        text: 'Technical notes',
-        jp: '工',
-        jpLabel: '工 · Craft',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'Each character is an SVG path animated via GSAP\'s DrawSVG. The stroke order metadata for kanji comes from the KanjiVG project. Latin morphing uses a custom shape-tween built on flubber.',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'Still figuring out the rhythm — too fast and it reads as a load animation, too slow and it becomes precious. Somewhere around 1.2s per kanji feels right.',
-      },
-    ],
-  },
-
-  {
-    slug: 'ame-audio-visuals',
-    index: '03',
-    title: 'Ame',
-    jp: '雨',
-    jpLabel: '雨 · Rain',
-    year: '2026',
-    status: 'Concept · weekend builds',
-    tagline: 'Audio-reactive interfaces for lo-fi tracks.',
-    description:
-      'Small visual sketches that listen to music — minimal, atmospheric, never overwhelming. Each visualization corresponds to a specific lo-fi track, designed to feel like rain on glass rather than a visualizer.',
-    roles: ['Audio · Visual', 'Canvas', 'Sound Design'],
-    tech: ['Web Audio API', 'Canvas', 'WebGL'],
-    href: 'https://github.com/LucasSckenal',
-    mood: 'glass',
-    sections: [
-      {
-        type: 'lead',
-        body:
-          'Audio-reactive sketches that listen instead of decorate. Each one is paired with a specific lo-fi track.',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'Most music visualizers are loud — bouncing bars, exploding particles, neon. I wanted the opposite. Visuals that respond to the audio but stay below the music\'s threshold. Like rain on a window during a slow song.',
-      },
-      {
-        type: 'heading',
-        text: 'How',
-        jp: '法',
-        jpLabel: '法 · Method',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'Web Audio API extracts amplitude and frequency. A canvas renders soft particle systems or warped gradients driven by the analysis. The visuals never spike — they only breathe slightly faster on louder sections.',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'This isn\'t a tool; it\'s a series of small pieces. Each one is married to one track. You can\'t swap them.',
-      },
-    ],
-  },
-];
-
 // Combined lookup — case study routes serve from either array.
 const allProjects = [...projects, ...nightProjects];
 
@@ -608,56 +734,42 @@ export type ArchiveEntry = {
 };
 
 // Stand-alone archive entries — pieces without a full case study.
-// Fill in your real older projects here. Placeholders are fine for the
-// shape; the row simply hides if you delete the entry.
-export const archiveExtras: ArchiveEntry[] = [
-  {
-    year: '2024',
-    title: '[Academic project — replace]',
-    type: 'Course work · React',
-    kind: 'academic',
-    oneLiner: 'Replace with a real project from your studies.',
-  },
-  {
-    year: '2024',
-    title: '[Weekend build — replace]',
-    type: 'Personal · Vue',
-    kind: 'experiment',
-    oneLiner: 'A small thing you built for the fun of it.',
-  },
-  {
-    year: '2023',
-    title: '[First freelance — replace]',
-    type: 'Client work',
-    kind: 'commercial',
-    oneLiner: 'The first piece someone paid you for.',
-  },
-];
+// Empty for now; fill in older work as it becomes worth documenting.
+export const archiveExtras: ArchiveEntry[] = [];
 
 // Combines featured day + night projects with archive extras into one
 // chronologically-sorted filmography. Used by /work page.
 export function getFilmography(): ArchiveEntry[] {
-  const featuredCommercial: ArchiveEntry[] = projects.map((p) => ({
+  // Day projects: Game stays academic (it's PI-4), Nexo is personal product,
+  // LJ is commercial client work. We classify per project, not per portfolio.
+  const featuredDay: ArchiveEntry[] = projects.map((p) => {
+    const kind: ArchiveKind =
+      p.slug === 'lj-treinamento-integrado' ? 'commercial'
+      : p.slug === 'nexo' ? 'personal'
+      : 'academic';
+    return {
+      year: p.year,
+      title: p.title,
+      type: p.roles.slice(0, 2).join(' · '),
+      kind,
+      href: `/work/${p.slug}`,
+      external: false,
+      oneLiner: p.tagline,
+    };
+  });
+
+  // Night portfolio holds academic work (Chatbot + Phantom from Unijui)
+  const featuredNight: ArchiveEntry[] = nightProjects.map((p) => ({
     year: p.year,
     title: p.title,
     type: p.roles.slice(0, 2).join(' · '),
-    kind: 'commercial',
+    kind: 'academic',
     href: `/work/${p.slug}`,
     external: false,
     oneLiner: p.tagline,
   }));
 
-  const featuredPersonal: ArchiveEntry[] = nightProjects.map((p) => ({
-    year: p.year,
-    title: p.title,
-    type: p.roles.slice(0, 2).join(' · '),
-    kind: 'personal',
-    href: `/work/${p.slug}`,
-    external: false,
-    oneLiner: p.tagline,
-  }));
-
-  return [...featuredCommercial, ...featuredPersonal, ...archiveExtras]
+  return [...featuredDay, ...featuredNight, ...archiveExtras]
     // newest first, stable tie-break by title for deterministic order
     .sort((a, b) => {
       if (a.year !== b.year) return b.year.localeCompare(a.year);

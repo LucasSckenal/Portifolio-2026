@@ -14,17 +14,14 @@ export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
 
   // Night portfolio gets its own tagline — same kanji aesthetic, different
-  // content vibe. Day = commercial work title; Night = experimental work title.
+  // content vibe. Both variants come from the active locale dictionary so
+  // the title respects the user's language in both Day and Night modes.
   const titleLines: [string, string, string] = inverted
-    ? ['Sketches.', 'Experiments.', 'Studies of light.']
+    ? (t.hero.titleNight as [string, string, string])
     : (t.hero.title as [string, string, string]);
 
-  const bioLine1 = inverted
-    ? 'Lucas — frontend developer'
-    : t.hero.bio1;
-  const bioLine2 = inverted
-    ? 'tinkering after the clients are asleep.'
-    : t.hero.bio2;
+  const bioLine1 = inverted ? t.hero.bio1Night : t.hero.bio1;
+  const bioLine2 = inverted ? t.hero.bio2Night : t.hero.bio2;
   const videoStackRef = useRef<HTMLDivElement>(null);
   const dayVideoRef = useRef<HTMLVideoElement>(null);
   const nightVideoRef = useRef<HTMLVideoElement>(null);

@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Noto_Serif_JP } from 'next/font/google';
 import LenisProvider from '@/components/providers/LenisProvider';
 import Grain from '@/components/atmosphere/Grain';
-import Cursor from '@/components/ui/Cursor';
 import Header from '@/components/nav/Header';
 import ConsoleEasterEgg from '@/components/effects/ConsoleEasterEgg';
 import RouteTransition from '@/components/effects/RouteTransition';
@@ -155,7 +154,6 @@ export default function RootLayout({
             <LenisProvider>
               <ScrollProgress />
               <Particles />
-              <Cursor />
               <Header />
               <main id="main">{children}</main>
               <Grain />

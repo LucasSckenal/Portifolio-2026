@@ -77,12 +77,13 @@ export default function Stack() {
 
   // Day philosophy = the values that ship work.
   // Night philosophy = the values that keep the practice curious.
-  // Same triadic rhythm, different register.
+  // Same triadic rhythm, different register — both pulled from i18n so the
+  // copy respects the user's language in either mode.
   const philosophy = inverted
     ? [
-        { jp: '奇', label: 'Curiosity', value: "Following what won't shut up." },
-        { jp: '耐', label: 'Patience',  value: 'No deadline. No shortcuts.' },
-        { jp: '流', label: 'Drift',     value: 'Let the work suggest the next move.' },
+        { jp: '奇', label: t.stack.philosophyCuriosity, value: t.stack.philosophyCuriosityDesc },
+        { jp: '耐', label: t.stack.philosophyPatience,  value: t.stack.philosophyPatienceDesc  },
+        { jp: '流', label: t.stack.philosophyDrift,     value: t.stack.philosophyDriftDesc     },
       ]
     : [
         { jp: '動', label: t.stack.philosophyMotion,       value: t.stack.philosophyMotionDesc       },

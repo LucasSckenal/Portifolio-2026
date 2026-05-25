@@ -17,6 +17,9 @@ export const en: Dictionary = {
     bio1: 'Lucas — creative frontend developer',
     bio2: 'crafting immersive, cinematic interfaces.',
     scroll: 'Scroll',
+    titleNight: ['Sketches.', 'Experiments.', 'Studies of light.'],
+    bio1Night: 'Lucas — frontend developer',
+    bio2Night: 'tinkering after the clients are asleep.',
   },
   about: {
     label: '002 — About',
@@ -26,7 +29,7 @@ export const en: Dictionary = {
     paragraphs: [
       "I'm Lucas — a frontend developer drawn to digital experiences that go beyond function. The kind that feel cinematic, atmospheric, visually intentional in every detail.",
       'My practice favors modern UI, smooth motion, and the texture of game-inspired interfaces. I try to thread creativity, performance, and a premium feeling into the same work — never one at the cost of the others.',
-      'Currently building a Tower Defense game with custom HUD systems, a multilingual medical chatbot, and a gaming-focused commerce concept. Each one is an attempt to give software an identity, an atmosphere, an intent.',
+      'Currently building a Tower Defense game shaped for elderly players, a team workspace where AI sits inside the work instead of in a sidebar, and a boutique training studio site that reads like a private practice. Each one is an attempt to give software an identity, an atmosphere, an intent.',
       'I draw from Japanese minimalism, cinematic motion design, and the Apple / Awwwards school of premium interfaces. The goal: products people remember not for the code, but for the experience they transmit.',
     ],
     caption: 'A self-portrait, in process.',
@@ -43,12 +46,36 @@ export const en: Dictionary = {
     titleLine1: 'Three worlds',
     titleLine2: 'from the practice.',
     intro:
-      'A selection from across game UI, conversational AI, and ecommerce — each treated as its own atmosphere rather than a product spec.',
+      'A game built for grandparents, a workspace where AI lives inside the loop, and a boutique studio that sells trust before access — each treated as its own atmosphere rather than a product spec.',
     caseStudyCta: 'Case study',
     liveCta: 'Live',
     repoCta: 'Repo',
     moreLine: 'More work, case studies and process notes —',
-    moreLink: 'on request →',
+    moreLink: 'all work →',
+  },
+  projectsNight: {
+    label: '003 — After hours',
+    titleLine1: 'Two studies',
+    titleLine2: 'from the university years.',
+    intro:
+      'Built during my degree at Unijui — full-stack projects shaped in coursework, kept here as foundations rather than client deliverables. Smaller in budget, larger in learning.',
+    moreLine: 'More from the foundation years —',
+    moreLink: 'all work →',
+  },
+  nightReading: {
+    label: '↳ Night work · references',
+    titleLine1: 'The library',
+    titleLine2: 'behind the studio.',
+    intro:
+      'The work that follows is shaped by these — books, films, talks, albums that I keep returning to. Not credits; coordinates.',
+  },
+  gameWorlds: {
+    label: '↳ Onde Estão os Netos? · supplementary',
+    titleLine1: 'Six themed worlds',
+    titleLine2: 'to cross.',
+    intro:
+      'Each map carries its own visual identity, NavMesh, enemy roster, base architecture and soundtrack — six self-contained chambers the player moves through in sequence.',
+    worldPrefix: 'World',
   },
   stack: {
     label: '004 — Stack',
@@ -61,6 +88,12 @@ export const en: Dictionary = {
     philosophyCompositionDesc: 'Negative space as a feature.',
     philosophyCraft: 'Craft',
     philosophyCraftDesc: 'Polish in the last 10%.',
+    philosophyCuriosity: 'Curiosity',
+    philosophyCuriosityDesc: "Following what won't shut up.",
+    philosophyPatience: 'Patience',
+    philosophyPatienceDesc: 'No deadline. No shortcuts.',
+    philosophyDrift: 'Drift',
+    philosophyDriftDesc: 'Let the work suggest the next move.',
   },
   contact: {
     label: '005 — Contact',
@@ -81,5 +114,7 @@ export const en: Dictionary = {
     footerMadeWithValue: 'Next · GSAP · Lenis',
     emailHover: 'Click — copies & opens',
     emailCopied: 'Copied ✓',
+    bodyNightExtra: 'Night replies may come the next morning.',
+    footerSignalValueNight: 'Quiet hours',
   },
 };

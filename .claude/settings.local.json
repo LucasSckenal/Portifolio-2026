@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "WebFetch(domain:portifolio-rho-rosy-34.vercel.app)",
+      "WebFetch(domain:nexo-8yq8.vercel.app)",
+      "Bash(gh repo *)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:lj-nu.vercel.app)"
     ]
   }
 }

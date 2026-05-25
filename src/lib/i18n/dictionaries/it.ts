@@ -17,6 +17,9 @@ export const it: Dictionary = {
     bio1: 'Lucas — sviluppatore frontend creativo',
     bio2: 'che crea interfacce immersive e cinematografiche.',
     scroll: 'Scorri',
+    titleNight: ['Schizzi.', 'Esperimenti.', 'Studi di luce.'],
+    bio1Night: 'Lucas — sviluppatore frontend',
+    bio2Night: 'a smanettare mentre i clienti dormono.',
   },
   about: {
     label: '002 — Chi sono',
@@ -26,7 +29,7 @@ export const it: Dictionary = {
     paragraphs: [
       'Sono Lucas — uno sviluppatore frontend attratto da esperienze digitali che vanno oltre la funzione. Quelle che sembrano cinematografiche, atmosferiche, visivamente intenzionali in ogni dettaglio.',
       'La mia pratica privilegia UI moderna, movimento fluido e la trama di interfacce ispirate ai videogiochi. Cerco di unire creatività, performance e una sensazione premium nello stesso lavoro — mai una a scapito delle altre.',
-      'Attualmente sto sviluppando un gioco Tower Defense con sistemi HUD personalizzati, un chatbot medico multilingue e un concept di e-commerce focalizzato sul gaming. Ognuno è un tentativo di dare al software un\'identità, un\'atmosfera, un\'intenzione.',
+      'Attualmente sto sviluppando un gioco Tower Defense pensato per giocatori anziani, uno spazio di lavoro per team dove l\'IA vive dentro al lavoro invece che in una barra laterale, e un sito per uno studio di training boutique che si legge come uno studio privato. Ognuno è un tentativo di dare al software un\'identità, un\'atmosfera, un\'intenzione.',
       'Mi ispiro al minimalismo giapponese, al motion design cinematografico e alla scuola Apple / Awwwards delle interfacce premium. L\'obiettivo: prodotti che le persone ricordano non per il codice, ma per l\'esperienza che trasmettono.',
     ],
     caption: 'Un autoritratto, in divenire.',
@@ -43,12 +46,36 @@ export const it: Dictionary = {
     titleLine1: 'Tre mondi',
     titleLine2: 'dalla pratica.',
     intro:
-      'Una selezione tra UI di gioco, IA conversazionale ed e-commerce — ciascuno trattato come una propria atmosfera, non come una specifica di prodotto.',
+      'Un gioco fatto per i nonni, uno spazio di lavoro dove l\'IA vive dentro al lavoro, e uno studio boutique che vende fiducia prima dell\'accesso — ognuno trattato come la propria atmosfera, non come una specifica di prodotto.',
     caseStudyCta: 'Case study',
     liveCta: 'Live',
     repoCta: 'Repo',
     moreLine: 'Altri lavori, case study e note di processo —',
-    moreLink: 'su richiesta →',
+    moreLink: 'tutto il lavoro →',
+  },
+  projectsNight: {
+    label: '003 — Fuori orario',
+    titleLine1: 'Due studi',
+    titleLine2: 'dagli anni universitari.',
+    intro:
+      'Costruiti durante la mia laurea a Unijuí — progetti full-stack plasmati nei corsi, conservati qui come fondamenta più che come consegne ai clienti. Più piccoli in scopo, più grandi nell\'apprendimento.',
+    moreLine: 'Altri dagli anni di formazione —',
+    moreLink: 'tutto il lavoro →',
+  },
+  nightReading: {
+    label: '↳ Lavoro notturno · riferimenti',
+    titleLine1: 'La biblioteca',
+    titleLine2: 'dietro lo studio.',
+    intro:
+      'Il lavoro che segue è plasmato da questi — libri, film, talk, album a cui torno sempre. Non crediti; coordinate.',
+  },
+  gameWorlds: {
+    label: '↳ Onde Estão os Netos? · supplementare',
+    titleLine1: 'Sei mondi tematici',
+    titleLine2: 'da attraversare.',
+    intro:
+      'Ogni mappa porta la propria identità visiva, NavMesh, roster nemici, architettura della base e colonna sonora — sei stanze autonome che il giocatore attraversa in sequenza.',
+    worldPrefix: 'Mundo',
   },
   stack: {
     label: '004 — Stack',
@@ -61,6 +88,12 @@ export const it: Dictionary = {
     philosophyCompositionDesc: 'Spazio negativo come elemento.',
     philosophyCraft: 'Artigianato',
     philosophyCraftDesc: 'La rifinitura nell\'ultimo 10%.',
+    philosophyCuriosity: 'Curiosità',
+    philosophyCuriosityDesc: 'Seguendo ciò che non sta zitto.',
+    philosophyPatience: 'Pazienza',
+    philosophyPatienceDesc: 'Nessuna scadenza. Nessuna scorciatoia.',
+    philosophyDrift: 'Deriva',
+    philosophyDriftDesc: 'Lasciare che il lavoro suggerisca la mossa successiva.',
   },
   contact: {
     label: '005 — Contatto',
@@ -81,5 +114,7 @@ export const it: Dictionary = {
     footerMadeWithValue: 'Next · GSAP · Lenis',
     emailHover: 'Clicca — copia e apre',
     emailCopied: 'Copiato ✓',
+    bodyNightExtra: 'Le risposte notturne possono arrivare la mattina dopo.',
+    footerSignalValueNight: 'Ore silenziose',
   },
 };

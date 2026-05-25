@@ -72,9 +72,11 @@ export default function SectionRenderer({ section }: { section: CaseSection }) {
         </section>
       );
 
-    case 'image':
+    case 'image': {
+      const variantClass =
+        section.variant === 'mobile' ? styles.imageSectionMobile : '';
       return (
-        <section className={styles.imageSection}>
+        <section className={`${styles.imageSection} ${variantClass}`}>
           <Reveal>
             <figure>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -84,6 +86,7 @@ export default function SectionRenderer({ section }: { section: CaseSection }) {
           </Reveal>
         </section>
       );
+    }
 
     case 'gallery':
       return (
@@ -91,7 +94,7 @@ export default function SectionRenderer({ section }: { section: CaseSection }) {
           <Reveal>
             <div className={styles.galleryGrid}>
               {section.images.map((img, i) => (
-                <figure key={i}>
+                <figure key={i} className={img.variant === 'mobile' ? styles.galleryFigureMobile : ''}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={img.src} alt={img.alt} loading="lazy" />
                   {img.caption && <figcaption>{img.caption}</figcaption>}

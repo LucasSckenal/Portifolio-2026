@@ -1,20 +1,18 @@
 'use client';
 
-import React from 'react';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
 import { useTheme } from '@/components/providers/ThemeProvider';
+import { useT } from '@/components/providers/LanguageProvider';
 import ProjectScene from './ProjectScene';
-import { GameMedia, ChatbotMedia, PhantomMedia } from './ProjectMedia';
-import NightMedia from './NightMedia';
+import { GameMedia, ChatbotMedia, PhantomMedia, NexoMedia, LJMedia } from './ProjectMedia';
 import GameWorlds from './GameWorlds';
 import NightReading from './NightReading';
-import { nightProjects } from '@/content/projects';
 import styles from './Projects.module.scss';
 
 // Two parallel portfolios:
-//   Day   → commercial work (Game, Chatbot, Phantom) with rich custom media
-//   Night → personal experiments (Yōkai, Tsuki, Ame) with atmospheric placeholders
+//   Day   → professional / showcase work (Game, Nexo, LJ)
+//   Night → academic university work     (Chatbot, Phantom)
 //
 // The eclipse toggle swaps between them with the same cinematic 1.5s transition.
 // The home <section id="projects"> stays in place; only its inner content
@@ -31,39 +29,37 @@ export default function Projects() {
 }
 
 // ─────────────────────────────────────────
-// DAY — three commercial projects
+// DAY — three showcase pieces
 // ─────────────────────────────────────────
 function DayBlock() {
+  const t = useT();
   return (
     <>
       {/* ── Section header ─────────────────── */}
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <div className={styles.headerLabelRow}>
-            <span className={styles.headerLabel}>003 — Selected work</span>
+            <span className={styles.headerLabel}>{t.projects.label}</span>
             <span className={styles.headerDivider} aria-hidden />
-            <span className={styles.headerJp}>作 · Sakuhin</span>
+            <span className={styles.headerJp}>{t.projects.labelJp}</span>
           </div>
 
           <h2 className={styles.headerTitle}>
             <span className={styles.headerTitleLine}>
-              <SplitText text="Three worlds" by="word" delay={0.1} />
+              <SplitText text={t.projects.titleLine1} by="word" delay={0.1} />
             </span>
             <span className={styles.headerTitleLine}>
-              <SplitText text="from the practice." by="word" delay={0.3} />
+              <SplitText text={t.projects.titleLine2} by="word" delay={0.3} />
             </span>
           </h2>
 
           <Reveal delay={0.5} amount={0.4}>
-            <p className={styles.headerBody}>
-              A selection from across game UI, conversational AI, and ecommerce —
-              each treated as its own atmosphere rather than a product spec.
-            </p>
+            <p className={styles.headerBody}>{t.projects.intro}</p>
           </Reveal>
         </div>
       </header>
 
-      {/* ── Scene 01 — Game ─────────────────── */}
+      {/* ── Scene 01 — Onde Estão os Netos? ── */}
       <ProjectScene
         index="01"
         title="Onde Estão os Netos?"
@@ -88,11 +84,124 @@ function DayBlock() {
       {/* ── Interstitial — the 6 worlds of the game ── */}
       <GameWorlds />
 
-      {/* ── Scene 02 — Chatbot ──────────────── */}
+      {/* ── Scene 02 — Nexo ─────────────────── */}
       <ProjectScene
         index="02"
-        title="Medical AI Chatbot"
+        title="Nexo"
+        status="Live · In production"
+        year="2026"
+        roles={['Product Design', 'Full-Stack', 'AI Integration', 'SaaS']}
+        tech={['Next.js 16', 'React 19', 'TypeScript', 'Tailwind v4', 'Firebase', 'Gemini']}
+        description="A team workspace where AI is part of the team — Kanban boards, backlog, client and member management, analytics, and a Gemini assistant that drafts tasks and refines text from inside the work, not from a sidebar."
+        jp="繋"
+        mood="dark"
+        align="right"
+        href="https://github.com/LucasSckenal/nexo"
+        live="https://nexo-8yq8.vercel.app/"
+        caseSlug="nexo"
+      >
+        {/* Video preview takes priority — leads with the Gemini AI in action.
+            Screenshots are kept as a fallback in case the video fails to load
+            (e.g. CSP, codec). Add a preview.webm next to preview.mp4 later for
+            smaller payload on Chrome/Firefox/Edge. */}
+        <NexoMedia
+          video={[
+            { src: '/projects/nexo/preview.mp4',  type: 'video/mp4'  },
+          ]}
+          videoAlt="Nexo — Gemini AI generating tasks from a sprint goal"
+          screenshots={[
+            { src: '/projects/nexo/Kanbam.png',    alt: 'Nexo — Kanban board with AI-generated cards' },
+            { src: '/projects/nexo/analytics.png', alt: 'Nexo — throughput and cycle-time dashboards' },
+            { src: '/projects/nexo/CrateTask.png', alt: 'Nexo — Gemini assistant generating tasks' },
+          ]}
+        />
+      </ProjectScene>
+
+      {/* ── Scene 03 — LJ ───────────────────── */}
+      <ProjectScene
+        index="03"
+        title="LJ Treinamento Integrado"
         status="Live · Production"
+        year="2026"
+        roles={['Brand Web', 'Booking UX', 'Client Work', 'Responsive']}
+        tech={['Next.js', 'TypeScript', 'TailwindCSS']}
+        team="Solo · Client: Luis Joris"
+        description="A marketing and booking site for a boutique training studio in Ijuí — max four students per class, single specialist trainer. The site reads like a private practice, not a gym. Free slots link straight to WhatsApp reservations, no friction account creation."
+        jp="体"
+        mood="light"
+        align="left"
+        live="https://lj-nu.vercel.app/"
+        caseSlug="lj-treinamento-integrado"
+      >
+        {/* Video preview takes priority. Drop preview.webm + preview.mp4 into
+            /public/projects/lj/ — the device frame autoloops them, muted, with
+            offscreen-pause to save battery. Screenshots and the synthetic
+            fallback are kept here for graceful degradation. */}
+        <LJMedia
+          video={[
+            { src: '/projects/lj/preview.webm', type: 'video/webm' },
+            { src: '/projects/lj/preview.mp4',  type: 'video/mp4'  },
+          ]}
+          videoAlt="LJ Treinamento Integrado — scrolling tour of the site"
+          // screenshots={[
+          //   { src: '/projects/lj/hero.png',     alt: 'LJ — homepage hero with method' },
+          //   { src: '/projects/lj/schedule.png', alt: 'LJ — weekly schedule with WhatsApp links' },
+          // ]}
+        />
+      </ProjectScene>
+
+      {/* ── Closing line ────────────────────── */}
+      <footer className={styles.footer}>
+        <Reveal>
+          <p className={styles.footerNote}>
+            {t.projects.moreLine}
+            <a href="/work" className={styles.footerLink} data-cursor data-cursor-label={t.projects.moreLink}>
+              {' '}{t.projects.moreLink}
+            </a>
+          </p>
+        </Reveal>
+      </footer>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────
+// NIGHT — academic university work
+// ─────────────────────────────────────────
+function NightBlock() {
+  const t = useT();
+  return (
+    <>
+      {/* ── Section header ─── */}
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <div className={styles.headerLabelRow}>
+            <span className={styles.headerLabel}>{t.projectsNight.label}</span>
+            <span className={styles.headerDivider} aria-hidden />
+            {/* Kanji label stays in JP as decorative element (per design system) */}
+            <span className={styles.headerJp}>夜行 · Yakō</span>
+          </div>
+
+          <h2 className={styles.headerTitle}>
+            <span className={styles.headerTitleLine}>
+              <SplitText text={t.projectsNight.titleLine1} by="word" delay={0.1} />
+            </span>
+            <span className={styles.headerTitleLine}>
+              <SplitText text={t.projectsNight.titleLine2} by="word" delay={0.3} />
+            </span>
+          </h2>
+
+          <Reveal delay={0.5} amount={0.4}>
+            <p className={styles.headerBody}>{t.projectsNight.intro}</p>
+          </Reveal>
+        </div>
+      </header>
+
+      {/* ── Scene 01 — Medical Chatbot (PI-3) ── */}
+      <ProjectScene
+        index="01"
+        title="Medical AI Chatbot"
+        status="Academic · Live demo · PI-3"
         year="2025"
         roles={['Conversational UX', 'Voice + Text', 'Medical Triage', 'Multilingual']}
         tech={['React', 'Vite', 'Node + Express', 'Firebase']}
@@ -100,7 +209,7 @@ function DayBlock() {
         description="A multilingual medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage. Persistent medical profiles, diagnostic history, voice + text input, and full UI theming. React + Vite frontend, Node + Express backend, Firebase Auth + Firestore."
         jp="話"
         mood="light"
-        align="right"
+        align="left"
         href="https://github.com/LucasSckenal/PI3-4l"
         live="https://fourl-aplicativocov.onrender.com/login"
         caseSlug="medical-chatbot"
@@ -114,11 +223,14 @@ function DayBlock() {
         />
       </ProjectScene>
 
-      {/* ── Scene 03 — Phantom ──────────────── */}
+      {/* ── Interstitial — the library behind the work ── */}
+      <NightReading />
+
+      {/* ── Scene 02 — Phantom Commerce ─────── */}
       <ProjectScene
-        index="03"
+        index="02"
         title="Phantom Commerce"
-        status="Live · Concept"
+        status="Academic · Concept"
         year="2025"
         roles={['Ecommerce', 'Motion Design', 'Full-Stack', 'Brand']}
         tech={['Next.js', 'Firebase', 'SCSS', 'Lucide']}
@@ -126,7 +238,7 @@ function DayBlock() {
         description="A gaming-focused commerce platform built around premium product presentation, animated interactions, and a glass-deep visual language. The store as exhibit, not as catalogue. Full-stack Next.js with Firebase for auth and Firestore for the product / user data."
         jp="幻"
         mood="glass"
-        align="left"
+        align="right"
         href="https://github.com/LucasSckenal/PhantomCommercee"
         caseSlug="phantom-commerce"
       >
@@ -138,88 +250,12 @@ function DayBlock() {
         />
       </ProjectScene>
 
-      {/* ── Closing line ────────────────────── */}
       <footer className={styles.footer}>
         <Reveal>
           <p className={styles.footerNote}>
-            More work, case studies and process notes —
-            <a href="/work" className={styles.footerLink} data-cursor data-cursor-label="See all work →">
-              {' '}all work →
-            </a>
-          </p>
-        </Reveal>
-      </footer>
-    </>
-  );
-}
-
-// ─────────────────────────────────────────
-// NIGHT — three personal experiments
-// ─────────────────────────────────────────
-const nightVariants: Array<'spirit' | 'moon' | 'rain'> = ['spirit', 'moon', 'rain'];
-
-function NightBlock() {
-  return (
-    <>
-      {/* ── Section header ─── */}
-      <header className={styles.header}>
-        <div className={styles.headerInner}>
-          <div className={styles.headerLabelRow}>
-            <span className={styles.headerLabel}>003 — Night work</span>
-            <span className={styles.headerDivider} aria-hidden />
-            <span className={styles.headerJp}>夜行 · Yakō</span>
-          </div>
-
-          <h2 className={styles.headerTitle}>
-            <span className={styles.headerTitleLine}>
-              <SplitText text="Three studies" by="word" delay={0.1} />
-            </span>
-            <span className={styles.headerTitleLine}>
-              <SplitText text="from after-hours." by="word" delay={0.3} />
-            </span>
-          </h2>
-
-          <Reveal delay={0.5} amount={0.4}>
-            <p className={styles.headerBody}>
-              When the briefs are answered and the clients are asleep, this is
-              what I make instead — shaders, type, sound. Experiments without
-              specifications, nothing to ship.
-            </p>
-          </Reveal>
-        </div>
-      </header>
-
-      {nightProjects.map((p, i) => (
-        <React.Fragment key={p.slug}>
-          <ProjectScene
-            index={p.index}
-            title={p.title}
-            status={p.status}
-            year={p.year}
-            roles={p.roles}
-            tech={p.tech}
-            description={p.description}
-            jp={p.jp}
-            mood={p.mood}
-            align={i % 2 === 0 ? 'left' : 'right'}
-            href={p.href}
-            caseSlug={p.slug}
-          >
-            <NightMedia jp={p.jp} jpLabel={p.jpLabel} variant={nightVariants[i] ?? 'spirit'} />
-          </ProjectScene>
-
-          {/* After the first Night project (Yōkai), drop the Reading
-              interstitial — same structural role as GameWorlds plays in Day */}
-          {i === 0 && <NightReading />}
-        </React.Fragment>
-      ))}
-
-      <footer className={styles.footer}>
-        <Reveal>
-          <p className={styles.footerNote}>
-            These pieces don&apos;t ship — they accumulate.
-            <a href="#contact" className={styles.footerLink} data-cursor>
-              {' '}Ask for a process walk-through ↗
+            {t.projectsNight.moreLine}
+            <a href="/work" className={styles.footerLink} data-cursor data-cursor-label={t.projectsNight.moreLink}>
+              {' '}{t.projectsNight.moreLink}
             </a>
           </p>
         </Reveal>

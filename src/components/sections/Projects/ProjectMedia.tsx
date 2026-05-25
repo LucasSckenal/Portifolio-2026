@@ -1,7 +1,10 @@
-// Three custom media compositions — placeholders that evoke each project's
-// world. Replace with real screenshots / video later via the marked slots.
+// Custom media compositions — each project's world rendered as a stage.
+// All variants accept `screenshots` for real product imagery and fall back to
+// a synthetic mood frame (kanji + glow) when no images are wired yet.
 import FadeImage from '@/components/ui/FadeImage';
 import styles from './ProjectMedia.module.scss';
+
+type Screenshot = { src: string; alt?: string };
 
 // ─────────────────────────────────────────
 // GAME — dark cinematic HUD frame
@@ -87,7 +90,6 @@ export function GameMedia({ screenshot, screenshotAlt = '' }: GameMediaProps = {
 //   · `screenshot`  (single)   → one screenshot, lightly framed
 //   · neither                  → synthetic chat bubbles (fallback)
 // ─────────────────────────────────────────
-type Screenshot = { src: string; alt?: string };
 type ChatbotMediaProps = {
   screenshot?: string;
   screenshotAlt?: string;
@@ -305,6 +307,370 @@ export function PhantomMedia({ screenshots }: PhantomMediaProps = {}) {
             Add to cart <span className={styles.phantomCtaArrow}>→</span>
           </span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────
+// NEXO — workspace SaaS (dark stage, AI accent)
+// Modes (in priority order — first defined wins):
+//   · `video`        → single device frame autoloops a muted screencast
+//   · `screenshots`  → cinematic device stack (Kanban, Analytics, AI)
+//   · neither        → synthetic workspace frame with kanji glow
+// ─────────────────────────────────────────
+type NexoMediaProps = {
+  /**
+   * One or more video sources for the device frame. The browser picks the
+   * first it can play (WebM → MP4 fallback). Autoplays muted, loops, and
+   * pauses automatically when off-screen.
+   */
+  video?: VideoSource[];
+  /** Optional poster image while the video buffers */
+  videoPoster?: string;
+  /** Alt-text equivalent for the video frame */
+  videoAlt?: string;
+  screenshots?: Screenshot[];
+};
+
+// Same pattern as LJVideoDevice, dark/indigo themed to match Nexo's stage.
+function NexoVideoDevice({
+  sources,
+  poster,
+  ariaLabel,
+}: {
+  sources: VideoSource[];
+  poster?: string;
+  ariaLabel?: string;
+}) {
+  // Pause off-screen to save GPU. Mirrors Hero's video pattern.
+  const setVideoRef = (node: HTMLVideoElement | null) => {
+    if (!node) return;
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      node.play().catch(() => {});
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) node.play().catch(() => {});
+        else node.pause();
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(node);
+  };
+
+  return (
+    <div className={`${styles.nexoDevice} ${styles.nexoDeviceSolo}`}>
+      <div className={styles.nexoDeviceBar} aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className={styles.nexoDeviceImageWrap}>
+        <video
+          ref={setVideoRef}
+          className={styles.nexoDeviceVideo}
+          poster={poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={ariaLabel}
+        >
+          {sources.map((s) => (
+            <source key={s.src} src={s.src} type={s.type} />
+          ))}
+        </video>
+      </div>
+    </div>
+  );
+}
+
+function NexoDevice({
+  src,
+  alt = '',
+  variant,
+}: {
+  src: string;
+  alt?: string;
+  variant: 'main' | 'backLeft' | 'backRight';
+}) {
+  const variantClass =
+    variant === 'main'
+      ? styles.nexoDeviceMain
+      : variant === 'backLeft'
+      ? styles.nexoDeviceBackLeft
+      : styles.nexoDeviceBackRight;
+
+  return (
+    <div className={`${styles.nexoDevice} ${variantClass}`}>
+      <div className={styles.nexoDeviceBar} aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className={styles.nexoDeviceImageWrap}>
+        <FadeImage
+          src={src}
+          alt={alt}
+          className={styles.nexoDeviceScreen}
+          fill
+          sizes="(max-width: 900px) 90vw, 35vw"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  );
+}
+
+export function NexoMedia({ video, videoPoster, videoAlt, screenshots }: NexoMediaProps = {}) {
+  // ── Mode 1: Single video device — leads with the AI in motion ──
+  if (video && video.length > 0) {
+    return (
+      <div className={`${styles.media} ${styles.nexoStack} ${styles.nexoVideoMode}`}>
+        <div className={styles.nexoStackBackdrop} aria-hidden />
+        <div className={styles.nexoStackGrid} aria-hidden />
+        <div className={styles.nexoStackGlow} aria-hidden />
+        <NexoVideoDevice sources={video} poster={videoPoster} ariaLabel={videoAlt} />
+      </div>
+    );
+  }
+
+  // ── Mode 2: Device stack ──
+  if (screenshots && screenshots.length >= 3) {
+    const [main, backLeft, backRight] = screenshots;
+    return (
+      <div className={`${styles.media} ${styles.nexoStack}`}>
+        <div className={styles.nexoStackBackdrop} aria-hidden />
+        <div className={styles.nexoStackGrid} aria-hidden />
+        <div className={styles.nexoStackGlow} aria-hidden />
+
+        <NexoDevice src={backLeft.src}  alt={backLeft.alt}  variant="backLeft" />
+        <NexoDevice src={backRight.src} alt={backRight.alt} variant="backRight" />
+        <NexoDevice src={main.src}      alt={main.alt}      variant="main" />
+      </div>
+    );
+  }
+
+  // ── Mode 3: Synthetic workspace frame (fallback) ──
+  return (
+    <div className={`${styles.media} ${styles.nexo}`}>
+      <div className={styles.nexoBackdrop} aria-hidden />
+      <div className={styles.nexoGrid} aria-hidden />
+      <div className={styles.nexoGlow} aria-hidden />
+
+      {/* Top toolbar */}
+      <div className={styles.nexoTop}>
+        <span>Nexo · Workspace</span>
+        <span>◇ AI assist · live</span>
+      </div>
+
+      {/* Centerpiece — connection kanji */}
+      <div className={styles.nexoCenter} aria-hidden>
+        <span className={styles.nexoKanji}>繋</span>
+      </div>
+
+      {/* Kanban column hint */}
+      <div className={styles.nexoColumn}>
+        <span className={styles.nexoColumnLabel}>In progress · 04</span>
+        <div className={styles.nexoCard}>
+          <span>Draft sprint goals</span>
+          <span className={styles.nexoCardMeta}>AI · 5 cards</span>
+        </div>
+        <div className={styles.nexoCard}>
+          <span>Refine onboarding copy</span>
+          <span className={styles.nexoCardMeta}>Gemini</span>
+        </div>
+      </div>
+
+      {/* Analytics sparkline */}
+      <div className={styles.nexoAnalytics}>
+        <span className={styles.nexoAnalyticsLabel}>Throughput · 7d</span>
+        <svg className={styles.nexoSpark} viewBox="0 0 100 30" preserveAspectRatio="none">
+          <polyline
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            points="0,22 14,18 28,20 42,12 56,15 70,8 84,11 100,4"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────
+// LJ — boutique wellness studio (light stage, warm accent)
+// Modes (in order of priority — first defined wins):
+//   · `video`        → single device frame autoloops a muted screencast
+//   · `screenshots`  → dual device stack on neutral stage (2 items)
+//   · neither        → synthetic schedule + plan card composition
+// ─────────────────────────────────────────
+type VideoSource = { src: string; type: string };
+type LJMediaProps = {
+  /**
+   * One or more video sources for the device frame. List in order of preference;
+   * the browser picks the first it can play (WebM first → MP4 fallback for Safari).
+   * The video autoplays muted, loops, and pauses automatically when off-screen.
+   */
+  video?: VideoSource[];
+  /** Optional poster image shown until the video buffers */
+  videoPoster?: string;
+  /** Alt-text equivalent for the video frame */
+  videoAlt?: string;
+  screenshots?: Screenshot[];
+};
+
+// Lazy import — keeps initial render tree clean; the video device only
+// imports the IntersectionObserver helper when it actually mounts.
+function LJVideoDevice({
+  sources,
+  poster,
+  ariaLabel,
+}: {
+  sources: VideoSource[];
+  poster?: string;
+  ariaLabel?: string;
+}) {
+  // Pause the video while off-screen — same GPU-saver pattern as Hero.
+  // Uses a callback ref so the observer attaches the moment the video mounts.
+  const setVideoRef = (node: HTMLVideoElement | null) => {
+    if (!node) return;
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      // Old browsers: just autoplay, never pause. Acceptable fallback.
+      node.play().catch(() => {});
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) node.play().catch(() => {});
+        else node.pause();
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(node);
+  };
+
+  return (
+    <div className={`${styles.ljDevice} ${styles.ljDeviceSolo}`}>
+      <div className={styles.ljDeviceBar} aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className={styles.ljDeviceImageWrap}>
+        <video
+          ref={setVideoRef}
+          className={styles.ljDeviceVideo}
+          poster={poster}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={ariaLabel}
+        >
+          {sources.map((s) => (
+            <source key={s.src} src={s.src} type={s.type} />
+          ))}
+        </video>
+      </div>
+    </div>
+  );
+}
+
+function LJDevice({
+  src,
+  alt = '',
+  variant,
+}: {
+  src: string;
+  alt?: string;
+  variant: 'main' | 'back';
+}) {
+  const variantClass =
+    variant === 'main' ? styles.ljDeviceMain : styles.ljDeviceBack;
+
+  return (
+    <div className={`${styles.ljDevice} ${variantClass}`}>
+      <div className={styles.ljDeviceBar} aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className={styles.ljDeviceImageWrap}>
+        <FadeImage
+          src={src}
+          alt={alt}
+          className={styles.ljDeviceScreen}
+          fill
+          sizes="(max-width: 900px) 90vw, 35vw"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  );
+}
+
+export function LJMedia({ video, videoPoster, videoAlt, screenshots }: LJMediaProps = {}) {
+  // ── Mode 1: Single video device — most cinematic, used when a screencast exists ──
+  if (video && video.length > 0) {
+    return (
+      <div className={`${styles.media} ${styles.ljStack} ${styles.ljVideoMode}`}>
+        <div className={styles.ljStackBackdrop} aria-hidden />
+        <div className={styles.ljStackGlow} aria-hidden />
+        <LJVideoDevice sources={video} poster={videoPoster} ariaLabel={videoAlt} />
+      </div>
+    );
+  }
+
+  // ── Mode 2: Dual device stack ──
+  if (screenshots && screenshots.length >= 2) {
+    const [main, back] = screenshots;
+    return (
+      <div className={`${styles.media} ${styles.ljStack}`}>
+        <div className={styles.ljStackBackdrop} aria-hidden />
+        <div className={styles.ljStackGlow} aria-hidden />
+
+        <LJDevice src={back.src} alt={back.alt} variant="back" />
+        <LJDevice src={main.src} alt={main.alt} variant="main" />
+      </div>
+    );
+  }
+
+  // ── Mode 3: Synthetic schedule + plan card (fallback) ──
+  return (
+    <div className={`${styles.media} ${styles.lj}`}>
+      <div className={styles.ljBackdrop} aria-hidden />
+      <div className={styles.ljGlow} aria-hidden />
+
+      {/* Top brand strip */}
+      <div className={styles.ljTop}>
+        <span className={styles.ljBrand}>Luis Joris</span>
+        <span className={styles.ljBrandSub}>Treinamento Integrado</span>
+      </div>
+
+      {/* Centerpiece — body kanji */}
+      <div className={styles.ljCenter} aria-hidden>
+        <span className={styles.ljKanji}>体</span>
+      </div>
+
+      {/* Schedule strip */}
+      <div className={styles.ljSchedule}>
+        <span className={styles.ljScheduleLabel}>Wed · 18:00 — Funcional</span>
+        <span className={styles.ljScheduleSlots}>3 of 4 spots</span>
+      </div>
+
+      {/* Plan card */}
+      <div className={styles.ljPlan}>
+        <div className={styles.ljPlanHead}>
+          <span className={styles.ljPlanName}>Personalizado</span>
+          <span className={styles.ljPlanTag}>Most chosen</span>
+        </div>
+        <div className={styles.ljPlanPrice}>R$ 750 <span>/ month</span></div>
+        <div className={styles.ljPlanCta}>Reserve via WhatsApp →</div>
       </div>
     </div>
   );

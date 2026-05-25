@@ -3,12 +3,13 @@
 import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
+import { useT } from '@/components/providers/LanguageProvider';
 import { cinema } from '@/lib/easings';
 import styles from './NightReading.module.scss';
 
 // The Night portfolio's interstitial. Plays the role GameWorlds plays in the
-// Day flow — sits between Yōkai (scene 01) and Tsuki (scene 02), offering a
-// curated library of references that shape the after-hours work.
+// Day flow — sits between the Chatbot scene and the Phantom scene, offering a
+// curated library of references that shape the work shown after it.
 //
 // Each entry: author, title, kind (book/film/talk/album/essay/practice), year,
 // one-line note. Edit / extend this array freely as you read more.
@@ -74,30 +75,29 @@ const readings: Reading[] = [
 ];
 
 export default function NightReading() {
+  const t = useT();
   return (
     <section className={styles.reading} aria-label="Night reading list">
       <div className={styles.inner}>
         <header className={styles.header}>
           <div className={styles.labelRow}>
-            <span className={styles.label}>↳ Night work · references</span>
+            <span className={styles.label}>{t.nightReading.label}</span>
             <span className={styles.divider} aria-hidden />
+            {/* Kanji decorative label stays in JP per design system */}
             <span className={styles.labelJp}>読 · Yomu</span>
           </div>
 
           <h3 className={styles.title}>
             <span className={styles.titleLine}>
-              <SplitText text="The library" by="word" delay={0.1} />
+              <SplitText text={t.nightReading.titleLine1} by="word" delay={0.1} />
             </span>
             <span className={styles.titleLine}>
-              <SplitText text="behind the studio." by="word" delay={0.25} />
+              <SplitText text={t.nightReading.titleLine2} by="word" delay={0.25} />
             </span>
           </h3>
 
           <Reveal delay={0.4} amount={0.4}>
-            <p className={styles.intro}>
-              The work that follows is shaped by these — books, films, talks,
-              albums that I keep returning to. Not credits; coordinates.
-            </p>
+            <p className={styles.intro}>{t.nightReading.intro}</p>
           </Reveal>
         </header>
 

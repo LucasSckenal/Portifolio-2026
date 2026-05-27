@@ -44,10 +44,15 @@ export default function LabIndex() {
             <li key={p.slug} className={styles.cell}>
               <Link
                 href={p.href}
-                className={styles.card}
+                className={`${styles.card} ${p.preview ? styles.cardWithPreview : ''}`}
                 data-cursor
                 data-cursor-label={`Enter ${p.title} ↗`}
+                style={p.preview ? { backgroundImage: `url(${p.preview})` } : undefined}
               >
+                {/* Preview overlay — dark gradient so text stays readable.
+                    Only rendered when preview image is wired (graceful absence). */}
+                {p.preview && <div className={styles.cardPreviewOverlay} aria-hidden />}
+
                 {/* Index + status meta */}
                 <div className={styles.cardMeta}>
                   <span className={styles.cardIndex}>

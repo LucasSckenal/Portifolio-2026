@@ -5,7 +5,11 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import MobileFallback from './MobileFallback';
 import SoundToggle from './SoundToggle';
+import { setupGLTFLoader } from '@/lib/gltf-setup';
 import styles from './KagamiScene.module.scss';
+
+// One-time DRACO decoder configuration — must run before any useGLTF call
+setupGLTFLoader();
 
 // Client-only orchestrator. Picks between:
 //   · Mobile (<= 900px) → static fallback page (own layout, scrollable)

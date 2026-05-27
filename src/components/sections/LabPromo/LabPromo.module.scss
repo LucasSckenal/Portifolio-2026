@@ -1,0 +1,204 @@
+// ── LabPromo section — interstitial between Projects and Stack ──
+// Aesthetic matches the other interstitials (NightReading, GameWorlds).
+// Dark base since Lab pieces are night-themed in spirit (even Niwa's
+// daytime is an after-hours experiment).
+
+.section {
+  padding-block: var(--s-7) var(--s-7);
+  padding-inline: var(--gutter);
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.inner {
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+// ── Header ────────────────────────────────
+.header {
+  margin-bottom: var(--s-6);
+  max-width: 720px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.divider {
+  flex: 0 1 80px;
+  height: 1px;
+  background: var(--ink-mute);
+  opacity: 0.3;
+}
+
+.labelJp {
+  font-family: var(--font-serif);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: var(--track-tight);
+  margin: 0 0 var(--s-4);
+}
+
+.titleLine {
+  display: block;
+
+  &:nth-child(2) {
+    font-style: italic;
+    padding-left: 0.6em;
+    color: var(--ink-soft);
+  }
+}
+
+.body {
+  font-family: var(--font-sans);
+  font-size: var(--t-md);
+  line-height: 1.6;
+  font-weight: 300;
+  color: var(--ink-soft);
+  max-width: 56ch;
+  margin: 0;
+}
+
+// ── Pieces preview ────────────────────────
+.pieces {
+  list-style: none;
+  margin: 0 0 var(--s-6);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: var(--s-3);
+
+  @include breakpoint(sm) {
+    grid-template-columns: 1fr;
+  }
+
+  li { margin: 0; padding: 0; }
+}
+
+.piece {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  background: rgba(127, 127, 127, 0.03);
+  border: 1px solid var(--ink-mute);
+  border-radius: 4px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition:
+    background 0.5s var(--ease-cinema),
+    border-color 0.5s var(--ease-cinema),
+    transform 0.5s var(--ease-cinema);
+
+  &:hover {
+    background: rgba(127, 127, 127, 0.06);
+    border-color: var(--accent);
+    transform: translateX(2px);
+
+    .pieceKanji { color: var(--accent); }
+    .pieceArrow { transform: translate(3px, -3px); }
+  }
+}
+
+.pieceKanji {
+  flex-shrink: 0;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2.6rem, 5vw, 3.6rem);
+  line-height: 1;
+  color: var(--ink);
+  transition: color 0.5s var(--ease-cinema);
+}
+
+.pieceMeta {
+  display: grid;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.pieceName {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+
+.pieceTagline {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+
+.pieceArrow {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  color: var(--ink-mute);
+  transition: transform 0.5s var(--ease-cinema);
+}
+
+// ── Footer CTA ────────────────────────────
+.footer {
+  margin-top: var(--s-4);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 26px;
+  border: 1px solid var(--ink-mute);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  background: transparent;
+  transition:
+    border-color 0.5s var(--ease-cinema),
+    color 0.5s var(--ease-cinema),
+    background 0.5s var(--ease-cinema),
+    transform 0.5s var(--ease-cinema);
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+
+    .ctaArrow { transform: translateX(4px); }
+  }
+}
+
+.ctaArrow {
+  display: inline-block;
+  transition: transform 0.5s var(--ease-cinema);
+}

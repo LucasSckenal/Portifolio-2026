@@ -6,11 +6,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './SideIndex.module.scss';
 
 const sections = [
-  { id: 'top',      label: 'Hero',     index: '01' },
-  { id: 'about',    label: 'About',    index: '02' },
-  { id: 'projects', label: 'Work',     index: '03' },
-  { id: 'stack',    label: 'Stack',    index: '04' },
-  { id: 'contact',  label: 'Contact',  index: '05' },
+  { id: 'top',        label: 'Hero',     index: '01' },
+  { id: 'about',      label: 'About',    index: '02' },
+  { id: 'projects',   label: 'Work',     index: '03' },
+  { id: 'lab-promo',  label: 'Lab',      index: '04' },
+  { id: 'stack',      label: 'Stack',    index: '05' },
+  { id: 'contact',    label: 'Contact',  index: '06' },
 ];
 
 export default function SideIndex() {

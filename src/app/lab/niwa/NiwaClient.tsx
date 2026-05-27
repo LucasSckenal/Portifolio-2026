@@ -3,7 +3,11 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { setupGLTFLoader } from '@/lib/gltf-setup';
 import styles from './NiwaScene.module.scss';
+
+// One-time DRACO decoder configuration — must run before any useGLTF call
+setupGLTFLoader();
 
 // Mobile fallback for Niwa lives inline here for now (simpler than a
 // dedicated component). When Niwa is feature-complete, lift it into its

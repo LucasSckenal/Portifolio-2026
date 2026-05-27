@@ -1,6 +1,7 @@
 import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
 import Projects from '@/components/sections/Projects';
+import LabPromo from '@/components/sections/LabPromo/LabPromo';
 import Stack from '@/components/sections/Stack';
 import Contact from '@/components/sections/Contact';
 import ThemeOnScroll from '@/components/effects/ThemeOnScroll';
@@ -13,6 +14,7 @@ export default function Page() {
       <Hero />
       <About />
       <Projects />
+      <LabPromo />
       <Stack />
       <Contact />
 

@@ -29,9 +29,11 @@ export default function Header() {
     { label: t.nav.index,   href: '/#top'      },
     { label: t.nav.about,   href: '/#about'    },
     { label: t.nav.work,    href: '/#projects' },
-    { label: t.nav.lab,     href: '/lab'       },
     { label: t.nav.contact, href: '/#contact'  },
   ];
+  // Lab no longer in the global nav — too crowded at 5 items. Lab is
+  // surfaced via the dedicated LabPromo section in the home page flow
+  // (between Projects and Stack), so users still discover it naturally.
 
   // Condense the header after 120px of scroll — softer padding, smaller logo.
   // IMPORTANT: this hook must be called BEFORE any conditional return, or

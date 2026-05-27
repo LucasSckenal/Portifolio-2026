@@ -21,6 +21,11 @@ type Reading = {
   year: string;
   note: string;
   jp: string;
+  // Optional 1:1 square thumbnail (poster/cover/iconic frame).
+  // Drop a 400×400 JPG in /public/night-reading/[slug].jpg, ~30-60KB.
+  // Renders B&W by default, fades to color on entry hover.
+  // When absent, the entry uses the original kanji-only layout (graceful).
+  image?: string;
 };
 
 const readings: Reading[] = [
@@ -31,6 +36,7 @@ const readings: Reading[] = [
     year: '2001',
     note: 'The patience of frame-by-frame ambient detail.',
     jp: '映',
+    image: '/night-reading/spirited-away.jpg',
   },
   {
     author: 'Bret Victor',
@@ -39,6 +45,7 @@ const readings: Reading[] = [
     year: '2012',
     note: 'Interfaces should respond to the principles behind them.',
     jp: '思',
+    image: '/night-reading/inventing-on-principle.jpg',
   },
   {
     author: 'Brian Eno',
@@ -47,6 +54,7 @@ const readings: Reading[] = [
     year: '1978',
     note: 'Ambient as architecture, not background.',
     jp: '音',
+    image: '/night-reading/music-for-airports.jpg',
   },
   {
     author: 'Christopher Alexander',
@@ -55,6 +63,7 @@ const readings: Reading[] = [
     year: '1977',
     note: 'Living structures are made of small reusable principles.',
     jp: '構',
+    image: '/night-reading/pattern-language.jpg',
   },
   {
     author: 'Jiro Yoshihara',
@@ -63,6 +72,7 @@ const readings: Reading[] = [
     year: '1956',
     note: 'Let the material speak — never force it.',
     jp: '具',
+    image: '/night-reading/gutai-manifesto.jpg',
   },
   {
     author: 'Naoto Fukasawa',
@@ -71,6 +81,7 @@ const readings: Reading[] = [
     year: 'ongoing',
     note: 'Design that disappears into use.',
     jp: '想',
+    image: '/night-reading/without-thought.jpg',
   },
 ];
 
@@ -114,12 +125,31 @@ export default function NightReading() {
           {readings.map((r, i) => (
             <motion.li
               key={r.title}
-              className={styles.entry}
+              className={`${styles.entry} ${r.image ? styles.entryWithImage : ''}`}
               variants={{
                 hidden: { opacity: 0, y: 24 },
                 show:   { opacity: 1, y: 0, transition: { duration: 1, ease: cinema } },
               }}
             >
+              {/*
+                Thumbnail — B&W by default, fades to color on entry hover.
+                onError silently hides the broken image so missing files
+                don't show ugly placeholders during development.
+              */}
+              {r.image && (
+                <div className={styles.entryThumb} aria-hidden>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={r.image}
+                    alt=""
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
+
               <span className={styles.entryJp} aria-hidden>{r.jp}</span>
               <span className={styles.entryIndex}>
                 {(i + 1).toString().padStart(2, '0')}

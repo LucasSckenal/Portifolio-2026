@@ -94,84 +94,98 @@
 
 .cell { margin: 0; padding: 0; }
 
+// ── Card — two-zone layout (preview on top, info on bottom) ──
+// When a preview image exists, the card splits into:
+//   · Top: preview as visual hero (with kanji watermark)
+//   · Bottom: solid-bg text info zone
+// When no preview, falls back to single-zone with centered kanji.
+// This isolates the image from the text — no overlap, no readability issues.
+
 .card {
   position: relative;
-  display: grid;
-  gap: var(--s-3);
-  padding: var(--s-4);
+  display: flex;
+  flex-direction: column;
   background: rgba(242, 239, 233, 0.02);
   border: 1px solid var(--on-dark-line);
   border-radius: 4px;
   text-decoration: none;
   color: inherit;
-  isolation: isolate;
   overflow: hidden;
-  // When preview image is wired, the card background becomes that image
-  background-size: cover;
-  background-position: center;
   transition:
     background-color 0.5s var(--ease-cinema),
     border-color 0.5s var(--ease-cinema),
     transform 0.5s var(--ease-cinema);
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse at 30% 30%,
-      rgba(232, 154, 79, 0.06) 0%,
-      transparent 60%
-    );
-    opacity: 0;
-    transition: opacity 0.6s var(--ease-cinema);
-    z-index: -1;
-  }
 
   &:hover {
     background-color: rgba(242, 239, 233, 0.04);
     border-color: var(--accent);
     transform: translateY(-2px);
 
-    &::before { opacity: 1; }
+    .cardPreview {
+      transform: scale(1.03);
+    }
+    .cardPreviewKanji { color: var(--accent); }
     .cardKanji { color: var(--accent); opacity: 0.18; }
     .cardEnter { color: var(--accent); }
   }
 }
 
-// Card with preview image — adds a dark gradient overlay so the text
-// stays readable on top of the screenshot.
-.cardWithPreview {
-  min-height: 360px; // give the preview room to breathe
-}
-
-.cardPreviewOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 10, 16, 0.55) 0%,
-    rgba(10, 10, 16, 0.75) 50%,
-    rgba(10, 10, 16, 0.92) 100%
-  );
-  pointer-events: none;
-  transition: background 0.5s var(--ease-cinema);
-}
-
-.cardWithPreview:hover .cardPreviewOverlay {
-  background: linear-gradient(
-    180deg,
-    rgba(10, 10, 16, 0.40) 0%,
-    rgba(10, 10, 16, 0.65) 50%,
-    rgba(10, 10, 16, 0.88) 100%
-  );
-}
-
-// Push all card content above the overlay
-.cardWithPreview > * {
+// ── Top preview zone (only with preview image) ──
+.cardPreview {
   position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-size: cover;
+  // center-top so the bottom overlay UI from the original screenshot
+  // (DRAG TO ORBIT, hint text) is cropped out automatically
+  background-position: center top;
+  overflow: hidden;
+  // Subtle inner scale on card hover
+  transition: transform 0.8s var(--ease-cinema);
+
+  // Bottom-edge fade into the info zone (no hard line between zones)
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent 60%,
+      rgba(10, 10, 16, 0.55) 100%
+    );
+  }
+}
+
+// Big kanji overlaid on the preview — identity marker on the image
+.cardPreviewKanji {
+  position: absolute;
+  bottom: var(--s-3);
+  right: var(--s-4);
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(4rem, 8vw, 6rem);
+  line-height: 1;
+  color: rgba(242, 239, 233, 0.92);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
   z-index: 1;
+  transition: color 0.5s var(--ease-cinema);
+}
+
+// ── Bottom info zone (always solid bg, never overlapped) ──
+.cardInfo {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+}
+
+// When card has NO preview (graceful), the cardInfo expands to fill,
+// kanji watermark fills the right side of the info zone instead.
+.card:not(.cardWithPreview) .cardInfo {
+  position: relative;
+  min-height: 280px;
+  isolation: isolate;
 }
 
 .cardMeta {

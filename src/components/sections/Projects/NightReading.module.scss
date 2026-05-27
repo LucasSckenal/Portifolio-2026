@@ -132,6 +132,55 @@
       transform: translate(-12%, -6%) scale(1.06);
       color: var(--accent-night);
     }
+
+    // Thumb fades from B&W to color on entry hover — the "library reveal"
+    .entryThumb img {
+      filter: grayscale(0) brightness(1);
+      transform: scale(1.04);
+    }
+
+    // When image is present, dim the kanji watermark further (avoid competing)
+    &.entryWithImage .entryJp {
+      opacity: 0.10;
+    }
+  }
+}
+
+// ── Reference image thumbnail (top-right of entry) ──
+// B&W default → color on hover. Subtle scale-in animation pairs with the
+// kanji's scale-out so the entry "breathes" on interaction.
+.entryThumb {
+  position: absolute;
+  top: var(--s-3);
+  right: var(--s-2);
+  z-index: 2;
+  width: 88px;
+  height: 88px;
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid rgba(242, 239, 233, 0.08);
+  pointer-events: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    // B&W + slight darken by default — feels "archival library"
+    filter: grayscale(1) brightness(0.85);
+    transition:
+      filter 0.8s var(--ease-cinema),
+      transform 0.8s var(--ease-cinema);
+  }
+}
+
+// When entry has an image, shift the body text to the left so it doesn't
+// run under the thumbnail. Adds enough right-padding for the 88px thumb + gap.
+.entryWithImage {
+  .entryHead,
+  .entryTitle,
+  .entryNote {
+    padding-right: 104px;
   }
 }
 

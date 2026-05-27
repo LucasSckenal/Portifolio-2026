@@ -39,7 +39,7 @@ export const LAB_PIECES: LabPiece[] = [
       'A 3D study in stillness and disturbance. The torii suspended in pure darkness, the lanterns its only warmth. Mouse moves stir the water; sound enters when you ask.',
     tech: ['Three.js', 'R3F', 'GLSL', 'HDRI', 'Postprocessing'],
     href: '/lab/kagami',
-    preview: '/lab/kagami/preview.jpg', // drop a screenshot here when ready
+    preview: '/lab/kagami/preview.png',
   },
   {
     slug: 'niwa',
@@ -53,7 +53,7 @@ export const LAB_PIECES: LabPiece[] = [
       'A karesansui garden translated to WebGL — three stones arranged by the rule of five, momiji leaves rotating on the water surface, the same night sky reflected below. Companion piece to Kagami.',
     tech: ['Three.js', 'R3F', 'InstancedMesh', 'Custom water shader'],
     href: '/lab/niwa',
-    preview: '/lab/niwa/preview.jpg', // drop a screenshot here when ready
+    preview: '/lab/niwa/preview.png',
   },
 ];
 

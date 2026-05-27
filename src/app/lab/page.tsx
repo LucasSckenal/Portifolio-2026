@@ -47,44 +47,54 @@ export default function LabIndex() {
                 className={`${styles.card} ${p.preview ? styles.cardWithPreview : ''}`}
                 data-cursor
                 data-cursor-label={`Enter ${p.title} ↗`}
-                style={p.preview ? { backgroundImage: `url(${p.preview})` } : undefined}
               >
-                {/* Preview overlay — dark gradient so text stays readable.
-                    Only rendered when preview image is wired (graceful absence). */}
-                {p.preview && <div className={styles.cardPreviewOverlay} aria-hidden />}
+                {/* ── Top zone: preview image (when present) ── */}
+                {p.preview && (
+                  <div
+                    className={styles.cardPreview}
+                    style={{ backgroundImage: `url(${p.preview})` }}
+                    aria-hidden
+                  >
+                    {/* Big kanji overlaid on the preview — identity marker */}
+                    <span className={styles.cardPreviewKanji}>{p.kanji}</span>
+                  </div>
+                )}
 
-                {/* Index + status meta */}
-                <div className={styles.cardMeta}>
-                  <span className={styles.cardIndex}>
-                    0{i + 1}
+                {/* ── Bottom zone: text info (always solid background) ── */}
+                <div className={styles.cardInfo}>
+                  {/* Index + status meta */}
+                  <div className={styles.cardMeta}>
+                    <span className={styles.cardIndex}>0{i + 1}</span>
+                    <span className={styles.cardStatus}>{p.status} · {p.year}</span>
+                  </div>
+
+                  {/* Kanji-only fallback when no preview (graceful) */}
+                  {!p.preview && (
+                    <div className={styles.cardKanji} aria-hidden>{p.kanji}</div>
+                  )}
+
+                  {/* Title + tagline */}
+                  <div className={styles.cardBody}>
+                    <h2 className={styles.cardTitle}>
+                      {p.title}
+                      <span className={styles.cardTitleSub}>· {p.kanjiLabel.split('·')[1]?.trim()}</span>
+                    </h2>
+                    <p className={styles.cardTagline}>{p.tagline}</p>
+                    <p className={styles.cardDescription}>{p.description}</p>
+                  </div>
+
+                  {/* Tech chips */}
+                  <ul className={styles.cardTech}>
+                    {p.tech.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+
+                  {/* Enter arrow */}
+                  <span className={styles.cardEnter}>
+                    Enter <span aria-hidden>↗</span>
                   </span>
-                  <span className={styles.cardStatus}>{p.status} · {p.year}</span>
                 </div>
-
-                {/* Centerpiece kanji */}
-                <div className={styles.cardKanji} aria-hidden>{p.kanji}</div>
-
-                {/* Title + tagline */}
-                <div className={styles.cardBody}>
-                  <h2 className={styles.cardTitle}>
-                    {p.title}
-                    <span className={styles.cardTitleSub}>· {p.kanjiLabel.split('·')[1]?.trim()}</span>
-                  </h2>
-                  <p className={styles.cardTagline}>{p.tagline}</p>
-                  <p className={styles.cardDescription}>{p.description}</p>
-                </div>
-
-                {/* Tech chips */}
-                <ul className={styles.cardTech}>
-                  {p.tech.map((t) => (
-                    <li key={t}>{t}</li>
-                  ))}
-                </ul>
-
-                {/* Enter arrow */}
-                <span className={styles.cardEnter}>
-                  Enter <span aria-hidden>↗</span>
-                </span>
               </Link>
             </li>
           ))}

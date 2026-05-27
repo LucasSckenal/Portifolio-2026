@@ -10,26 +10,23 @@ import {
   Vignette,
 } from '@react-three/postprocessing';
 import Pond from './components/Pond';
-import Stones from './components/Stones';
-import Leaves from './components/Leaves';
-import Ishidoro from './components/Ishidoro';
+import Tree from './components/Tree';
+import FallingPetals from './components/FallingPetals';
 
-// ── Niwa — daytime karesansui, companion to Kagami's night ────
-// Where Kagami is cosmic-cold-infinite (torii in void at night with moon),
-// Niwa is grounded-warm-intimate (pond garden at morning with sun).
-//
-// Both pieces share technical DNA but live in opposite atmospheric registers,
-// so the Lab gallery reads as "two sides of the same day". Visitor sees
-// Kagami and feels suspended in night-time; visits Niwa and feels grounded
-// in golden hour morning. Each one strengthens the other by contrast.
+// ── Niwa — lone tree on an island, sheds petals onto still water ──────
+// Pivoted from karesansui rock garden → single-tree island composition.
+// Inspired by Studio Ghibli painted moments: solitary sakura/momiji-style
+// tree on a tiny earth island in the middle of a misty mountain lake.
 //
 // Composition:
-//   · Sky        — drei's Hosek-Wilkie sky shader with low warm sun
-//   · Stones     — same karesansui arrangement, but lit warm now
-//   · Pond       — daytime water (lighter, more translucent, sky reflection)
-//   · Leaves     — momiji drifting (warm red pops against blue water)
+//   · Sky        — drei's procedural Hosek-Wilkie with low warm sun (golden hour)
+//   · Pond       — translucent water reflecting sky + tree canopy
+//   · Tree       — curved trunk + 400 leaf canopy + island base
+//   · Falling petals — shed from canopy, settle on water, drift, respawn
+//   · Leaves     — already-floating leaves (added density, organic feel)
 //
-// No Starfield, no Moon — those are night-only props.
+// No stones, no lantern — the tree is the FULL subject. Karesansui rocks
+// would compete; here the silence around the tree IS the composition.
 
 export default function NiwaScene() {
   return (
@@ -38,93 +35,78 @@ export default function NiwaScene() {
       gl={{
         antialias: true,
         alpha: false,
-        toneMappingExposure: 1.0, // brighter than Kagami's 0.7 — daylight
+        toneMappingExposure: 1.0,
       }}
       shadows
-      camera={{ position: [3, 6, 7], fov: 42, near: 0.1, far: 1000 }}
+      camera={{ position: [4, 3.5, 6], fov: 40, near: 0.1, far: 1000 }}
       style={{ position: 'absolute', inset: 0 }}
     >
-      {/* ── Atmospheric sky — drei's procedural Sky shader ── */}
-      {/*
-        Sun positioned low in the sky for that "early morning" Japanese
-        garden feel — soft, slanted light. Turbidity tuned higher so the
-        sky has slight haze (not crystal-clear summer noon).
-          · sunPosition  — direction the sun is "from" (large radius so it
-                           reads as distant)
-          · turbidity    — atmospheric haze (higher = mistier)
-          · rayleigh     — blue scattering (higher = bluer sky)
-          · mieCoefficient — warm scattering near sun
-      */}
+      {/* ── Atmospheric sky ── */}
       <Sky
         distance={450000}
         sunPosition={[15, 3, -8]}
-        turbidity={6}
-        rayleigh={2}
-        mieCoefficient={0.018}
-        mieDirectionalG={0.8}
-        inclination={0.45}
-        azimuth={0.25}
+        turbidity={7}
+        rayleigh={2.5}
+        mieCoefficient={0.022}
+        mieDirectionalG={0.82}
       />
 
-      {/* ── Lighting — warm sun + cool sky bounce ── */}
-      {/*
-        Strong warm directional matches the Sky's sun position. Hemisphere
-        bounces cool sky-blue from above + warm ground-reflected from below.
-      */}
+      {/* ── Lighting — warm golden-hour sun + cool sky bounce ── */}
       <directionalLight
         position={[15, 12, -8]}
-        intensity={2.8}
-        color="#FFE5B0"
+        intensity={2.6}
+        color="#FFD8A8"
         castShadow
         shadow-mapSize={[2048, 2048]}
-        shadow-camera-left={-10}
-        shadow-camera-right={10}
-        shadow-camera-top={10}
-        shadow-camera-bottom={-10}
+        shadow-camera-left={-8}
+        shadow-camera-right={8}
+        shadow-camera-top={8}
+        shadow-camera-bottom={-8}
         shadow-bias={-0.0005}
       />
-      <ambientLight intensity={0.35} color="#D0E0F0" />
-      <hemisphereLight args={['#B0D0F0', '#5C4A38', 0.6]} />
+      <ambientLight intensity={0.4} color="#D8E0F0" />
+      <hemisphereLight args={['#C0D8F0', '#5C4A38', 0.7]} />
 
       {/* ── Geometry ── */}
+      {/*
+        Removed standalone <Leaves /> — was spawning random sprites all over
+        the pond with no visible source. FallingPetals replaces it (petals
+        come FROM the tree, fall, settle on water, drift) which is
+        narratively coherent. Same visual density, organic origin.
+      */}
       <Suspense fallback={null}>
         <Pond />
-        <Stones />
-        {/*
-          Ishidōrō — back-left position so it doesn't compete with the
-          hero stone (foreground-right). Asymmetric balance follows the
-          same karesansui principle as the stone arrangement: opposite
-          quadrants for visual tension.
-        */}
-        <Ishidoro position={[-2.5, 0, -1.8]} rotation={[0, 0.4, 0]} scale={1.0} />
-        <Leaves />
+        <Tree />
+        <FallingPetals />
       </Suspense>
 
-      {/* ── Postprocessing — gentler than Kagami's heavy night grade ── */}
+      {/* ── Postprocessing ── */}
       <EffectComposer>
-        {/* Bloom on the sun + any specular highlights on water */}
         <Bloom
-          intensity={0.4}
-          luminanceThreshold={0.9}
+          intensity={0.45}
+          luminanceThreshold={0.85}
           luminanceSmoothing={0.4}
           mipmapBlur
         />
-        {/* Slight saturation boost — daytime wants warm, not desat */}
-        <HueSaturation saturation={0.08} />
-        {/* Very subtle vignette — just enough to focus, not darken */}
-        <Vignette eskil={false} offset={0.4} darkness={0.35} />
+        <HueSaturation saturation={0.10} />
+        <Vignette eskil={false} offset={0.4} darkness={0.4} />
       </EffectComposer>
 
       {/* ── Camera + controls ── */}
-      <PerspectiveCamera makeDefault position={[3, 6, 7]} fov={42} />
+      {/*
+        Camera tightened — was too pulled back, tree felt small in empty
+        pond. Now framed close-medium, target slightly higher to put tree
+        canopy near upper third of viewport (rule of thirds composition).
+      */}
+      <PerspectiveCamera makeDefault position={[2.8, 2.5, 4.5]} fov={42} />
       <OrbitControls
         enablePan={false}
         enableZoom={true}
-        minDistance={5}
-        maxDistance={15}
-        minPolarAngle={0.3}
-        maxPolarAngle={1.1}
-        target={[0, 0, 0]}
+        minDistance={3.5}
+        maxDistance={10}
+        minPolarAngle={0.5}
+        maxPolarAngle={1.3}
+        target={[0, 1.0, 0]} // look at canopy lower-third, not base
         enableDamping
         dampingFactor={0.06}
       />

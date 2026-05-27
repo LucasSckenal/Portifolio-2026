@@ -19,17 +19,26 @@ import { CanvasTexture, RepeatWrapping } from 'three';
 // binding cleanly (avoids the "first render has no map" timing issues
 // you get from setting it imperatively on a ref).
 
-type Ripple = { x: number; y: number; age: number };
+// `intensity` lets cursor ripples (1.0) and rain drops (~0.3) coexist
+// with different visual weights from the same ripple system.
+type Ripple = { x: number; y: number; age: number; intensity: number };
 
-const MAX_RIPPLES = 16;
+const MAX_RIPPLES = 48;             // bumped to handle cursor + rain together
 const RIPPLE_LIFETIME = 2.6;
 const RIPPLE_EXPAND_SPEED = 0.32;
 const RIPPLE_THROTTLE_MS = 55;
 const CANVAS_SIZE = 512;
 
+// ── Rain impact ripples ──
+// Automatic random ripples simulate raindrops hitting the water — so the
+// surface stays visually disturbed even when the user isn't moving the cursor.
+const RAIN_RIPPLE_INTERVAL_MS = 110;  // average ms between drops on water
+const RAIN_INTENSITY = 0.32;          // smaller + fainter than cursor ripples
+
 export default function Water() {
   const ripples = useRef<Ripple[]>([]);
   const lastAddRef = useRef(0);
+  const lastRainRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Texture lives in state so the MeshReflectorMaterial gets it as a normal
@@ -60,12 +69,27 @@ export default function Water() {
     };
   }, []);
 
-  // ── Per-frame: age ripples + redraw canvas + flag texture for upload ──
+  // ── Per-frame: emit rain drops, age ripples, redraw canvas ──
   useFrame((_, delta) => {
     const canvas = canvasRef.current;
     if (!canvas || !distortionTexture) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    // Rain drop emitter — adds a small ripple at random UV every ~110ms
+    // (with jitter so drops don't feel mechanical). The Rain component
+    // visually drops streaks; this connects them to surface impact.
+    const now = performance.now();
+    if (now - lastRainRef.current > RAIN_RIPPLE_INTERVAL_MS * (0.6 + Math.random() * 0.8)) {
+      lastRainRef.current = now;
+      ripples.current.push({
+        x: Math.random(),
+        y: Math.random(),
+        age: 0,
+        intensity: RAIN_INTENSITY,
+      });
+      if (ripples.current.length > MAX_RIPPLES) ripples.current.shift();
+    }
 
     // Age + cull expired ripples
     for (const r of ripples.current) r.age += delta;
@@ -75,14 +99,15 @@ export default function Water() {
     ctx.fillStyle = 'rgb(128, 128, 128)';
     ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
-    // Draw each ripple as expanding bright ring with feathered edges
+    // Draw each ripple — radius + alpha + thickness modulated by intensity
+    // so rain drops appear smaller and fainter than cursor strokes.
     for (const r of ripples.current) {
       const cx = r.x * CANVAS_SIZE;
       const cy = (1 - r.y) * CANVAS_SIZE;
       const t = r.age / RIPPLE_LIFETIME;
-      const radius = t * RIPPLE_EXPAND_SPEED * CANVAS_SIZE;
-      const alpha = (1 - t) * 0.85;
-      const thickness = Math.max(6, 18 * (1 - t * 0.6));
+      const radius = t * RIPPLE_EXPAND_SPEED * CANVAS_SIZE * r.intensity;
+      const alpha = (1 - t) * 0.85 * r.intensity;
+      const thickness = Math.max(4, 18 * (1 - t * 0.6) * r.intensity);
 
       const inner = Math.max(0, radius - thickness);
       const outer = radius + thickness;
@@ -107,7 +132,7 @@ export default function Water() {
     if (now - lastAddRef.current < RIPPLE_THROTTLE_MS) return;
     lastAddRef.current = now;
 
-    ripples.current.push({ x: e.uv.x, y: e.uv.y, age: 0 });
+    ripples.current.push({ x: e.uv.x, y: e.uv.y, age: 0, intensity: 1.0 });
     if (ripples.current.length > MAX_RIPPLES) ripples.current.shift();
   };
 
@@ -120,11 +145,11 @@ export default function Water() {
     >
       <planeGeometry args={[200, 200, 1, 1]} />
       <MeshReflectorMaterial
-        resolution={2048}        // bumped — captures stars cleaner before blur eats them
+        resolution={1024}
         mirror={0.85}
         mixStrength={1.6}
-        mixBlur={0.25}           // slightly less blur
-        blur={[30, 15]}          // halved — small detail like stars survives now
+        mixBlur={0.3}
+        blur={[40, 20]}
         roughness={0.30}
         metalness={0.0}
         color="#050810"

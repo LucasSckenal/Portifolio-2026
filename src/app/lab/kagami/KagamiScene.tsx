@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useCallback, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, PerspectiveCamera, Sparkles } from '@react-three/drei';
 import {
@@ -15,6 +15,8 @@ import Water from './components/Water';
 import Lanterns from './components/Lanterns';
 import Moon from './components/Moon';
 import Starfield from './components/Starfield';
+import Rain from './components/Rain';
+import Splashes, { type SplashesHandle } from './components/Splashes';
 
 // ── Kagami — scene root ───────────────────────────────
 // Composition:
@@ -34,9 +36,17 @@ import Starfield from './components/Starfield';
 //   · shadows enabled — torii casts soft shadow onto water for depth cue
 
 export default function KagamiScene() {
+  // Ref to Splashes component so Rain can fire impacts at exact positions
+  // where drops cross the water plane. Routed via stable useCallback so
+  // Rain doesn't re-mount each render.
+  const splashesRef = useRef<SplashesHandle>(null);
+  const handleRainImpact = useCallback((x: number, z: number) => {
+    splashesRef.current?.add(x, z);
+  }, []);
+
   return (
     <Canvas
-      dpr={[1, 2]}
+      dpr={[1, 1.75]}
       gl={{
         antialias: true,
         alpha: false,
@@ -126,7 +136,7 @@ export default function KagamiScene() {
           · noise   — randomness of motion (0 = straight lines, 1 = wandering)
       */}
       <Sparkles
-        count={80}
+        count={50}                  // 80 → 50 (still feels alive, less GPU)
         scale={[22, 10, 22]}
         size={2.2}
         speed={0.25}
@@ -135,6 +145,15 @@ export default function KagamiScene() {
         noise={0.8}
         opacity={0.55}
       />
+
+      {/*
+        Rain → onImpact → Splashes. The drop's actual (x, z) at the
+        moment it crosses y=0 is forwarded to the Splashes component,
+        which spawns a ring at exactly that position. No more random
+        splashes appearing where no drop fell.
+      */}
+      <Rain onImpact={handleRainImpact} />
+      <Splashes ref={splashesRef} />
 
       {/* ── Postprocessing — the night atmosphere lives here ── */}
       {/*

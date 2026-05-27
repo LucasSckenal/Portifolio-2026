@@ -8,6 +8,7 @@ export const pt: Dictionary = {
     index: 'Início',
     work: 'Trabalhos',
     about: 'Sobre',
+    lab: 'Lab',
     contact: 'Contato',
   },
   hero: {

@@ -124,11 +124,18 @@ export default function RootLayout({
     >
       <body data-theme="dark">
         {/* Pre-hydration theme sync — runs synchronously to avoid a flash
-            between SSR (default) and hydration (localStorage preference). */}
+            between SSR (default) and hydration.
+            Resolution order:
+              1. localStorage explicit choice  → respected forever
+              2. No stored choice              → time-based default
+                                                 Night between 18:00–06:00 local,
+                                                 Day otherwise.
+              Once the user clicks the toggle, localStorage takes over and the
+              time-based default is never consulted again. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{if(localStorage.getItem('theme-inverted')==='true')document.documentElement.classList.add('theme-inverted')}catch(e){}",
+              "try{var s=localStorage.getItem('theme-inverted');var n=s==='true'||(s===null&&(function(){var h=new Date().getHours();return h>=18||h<6})());if(n)document.documentElement.classList.add('theme-inverted')}catch(e){}",
           }}
         />
 

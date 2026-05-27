@@ -1,0 +1,164 @@
+// ── Kagami — full-viewport 3D piece ──────────────────
+// The Canvas takes the whole screen. The overlay UI floats on top,
+// non-interactive except for the back link.
+
+.page {
+  position: fixed;
+  inset: 0;
+  background: #0A0808; // matches the scene's deepest tone so loading is invisible
+  overflow: hidden;
+}
+
+// ── Canvas wrapper from R3F lives inside .page directly ──
+
+// ── Overlay UI — chrome that doesn't compete with the scene ──
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none; // children opt in individually
+  padding: var(--s-5) var(--s-5);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+// Top bar — back link on left, sound toggle on right
+.topBar {
+  pointer-events: none; // children opt in
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+
+// Top-left back link
+.back {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 10px 16px;
+  background: rgba(20, 18, 16, 0.5);
+  border: 1px solid rgba(242, 239, 233, 0.12);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.85);
+  transition:
+    border-color 0.5s var(--ease-cinema),
+    color 0.5s var(--ease-cinema),
+    background 0.5s var(--ease-cinema);
+
+  &:hover {
+    color: #fff;
+    border-color: rgba(232, 154, 79, 0.6);
+    background: rgba(20, 18, 16, 0.75);
+  }
+}
+
+.backArrow {
+  display: inline-block;
+  transition: transform 0.4s var(--ease-cinema);
+}
+
+.back:hover .backArrow { transform: translateX(-4px); }
+
+// ── Sound toggle — mirrors the back-link aesthetic ──
+.soundToggle {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(20, 18, 16, 0.5);
+  border: 1px solid rgba(242, 239, 233, 0.12);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.85);
+  cursor: pointer;
+  transition:
+    border-color 0.5s var(--ease-cinema),
+    color 0.5s var(--ease-cinema),
+    background 0.5s var(--ease-cinema);
+
+  &:hover {
+    color: #fff;
+    border-color: rgba(232, 154, 79, 0.6);
+    background: rgba(20, 18, 16, 0.75);
+  }
+
+  &[aria-pressed="true"] .soundIcon {
+    color: rgba(232, 154, 79, 0.95);
+  }
+}
+
+.soundIcon {
+  display: inline-block;
+  font-size: 0.85rem;
+  line-height: 1;
+  transition: color 0.4s var(--ease-cinema);
+}
+
+// Bottom-right project signature
+.signature {
+  align-self: end;
+  justify-self: end;
+  display: grid;
+  gap: 2px;
+  text-align: right;
+  color: rgba(242, 239, 233, 0.7);
+}
+
+.signatureKanji {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: 3rem;
+  line-height: 1;
+  color: rgba(232, 154, 79, 0.85); // lantern warm
+}
+
+.signatureName {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.signatureSub {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.45);
+  margin-top: 4px;
+}
+
+// Bottom-center interaction hint — temporary, removed when controls are real
+.hint {
+  align-self: end;
+  justify-self: center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.35);
+  margin-bottom: 8px;
+}
+
+// Mobile — relax padding, drop signature
+@media (max-width: 640px) {
+  .overlay { padding: var(--s-3); }
+  .signature { display: none; }
+}

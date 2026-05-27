@@ -1,0 +1,234 @@
+// ── MobileFallback ────────────────────────────────────
+// Same atmosphere as the live scene — void background, warm accent,
+// minimalist composition — but rendered in pure HTML/CSS for any device.
+
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(120, 105, 230, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #070A14 0%, #04060C 100%);
+  color: var(--on-dark);
+  padding: var(--s-4);
+  display: grid;
+  gap: var(--s-5);
+}
+
+// ── Back link ──
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 10px 16px;
+  background: rgba(20, 18, 16, 0.5);
+  border: 1px solid rgba(242, 239, 233, 0.12);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: rgba(242, 239, 233, 0.85);
+  text-decoration: none;
+}
+
+.backArrow {
+  display: inline-block;
+}
+
+// ── Hero — kanji over poster image ──
+.hero {
+  display: grid;
+  place-items: center;
+  margin-block: var(--s-3);
+}
+
+.heroFrame {
+  position: relative;
+  width: min(100%, 460px);
+  aspect-ratio: 16 / 11;
+  border: 1px solid rgba(242, 239, 233, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(232, 154, 79, 0.05) 0%,
+    transparent 60%
+  );
+  display: grid;
+  place-items: center;
+}
+
+.heroImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.heroKanji {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(8rem, 30vw, 12rem);
+  line-height: 1;
+  color: rgba(232, 154, 79, 0.7);
+  text-shadow: 0 0 60px rgba(232, 154, 79, 0.3);
+  animation: kanji-breathe 6s ease-in-out infinite;
+}
+
+@keyframes kanji-breathe {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50%      { opacity: 0.95; transform: scale(1.03); }
+}
+
+// ── Info ──
+.info {
+  display: grid;
+  gap: var(--s-4);
+  max-width: 600px;
+  margin-inline: auto;
+  padding-inline: var(--s-2);
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark-mute);
+}
+
+.divider {
+  flex: 0 1 60px;
+  height: 1px;
+  background: var(--on-dark-line);
+}
+
+.labelJp {
+  font-family: var(--font-serif);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(2rem, 7vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: var(--track-tight);
+  margin: 0;
+}
+
+.description {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--t-base);
+  line-height: 1.6;
+  color: var(--on-dark-subtle);
+  margin: 0;
+}
+
+// ── Desktop-only notice ──
+.notice {
+  display: flex;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  background: rgba(242, 239, 233, 0.03);
+  border: 1px solid rgba(232, 154, 79, 0.20);
+  border-radius: 4px;
+}
+
+.noticeIcon {
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  color: rgba(232, 154, 79, 0.85);
+  font-family: var(--font-serif);
+}
+
+.noticeTitle {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark);
+  margin: 0 0 var(--s-2);
+}
+
+.noticeBody {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--on-dark-subtle);
+  margin: 0 0 var(--s-2);
+
+  &:last-child { margin-bottom: 0; }
+}
+
+// ── Tech stack ──
+.techWrap {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.techLabel {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark-mute);
+}
+
+.techList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  li {
+    padding: 4px 10px;
+    background: rgba(242, 239, 233, 0.05);
+    border: 1px solid var(--on-dark-line);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: var(--track-mark);
+    text-transform: uppercase;
+    color: var(--on-dark-mute);
+  }
+}
+
+// ── Portfolio CTA ──
+.portfolioCta {
+  margin-top: var(--s-3);
+  padding: 12px 22px;
+  border: 1px solid var(--on-dark-line);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark);
+  text-decoration: none;
+  text-align: center;
+  transition: border-color 0.4s ease, color 0.4s ease;
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+}

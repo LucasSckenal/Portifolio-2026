@@ -29,13 +29,22 @@ export default function Header() {
     { label: t.nav.index,   href: '/#top'      },
     { label: t.nav.about,   href: '/#about'    },
     { label: t.nav.work,    href: '/#projects' },
+    { label: t.nav.lab,     href: '/lab'       },
     { label: t.nav.contact, href: '/#contact'  },
   ];
 
   // Condense the header after 120px of scroll — softer padding, smaller logo.
+  // IMPORTANT: this hook must be called BEFORE any conditional return, or
+  // React complains about inconsistent hook order between renders.
   useMotionValueEvent(scrollY, 'change', (latest) => {
     setCondensed(latest > 120);
   });
+
+  // Immersive lab pieces (/lab/[piece]) hide the global header entirely —
+  // they own the full viewport. The /lab index itself KEEPS the header
+  // (it's a regular browseable page, not an immersive scene).
+  // Early return AFTER all hooks above.
+  if (pathname?.startsWith('/lab/')) return null;
 
   return (
     <>

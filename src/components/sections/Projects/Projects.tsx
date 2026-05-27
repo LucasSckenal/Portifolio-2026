@@ -150,15 +150,19 @@ function DayBlock() {
         />
       </ProjectScene>
 
-      {/* ── Closing line ────────────────────── */}
+      {/* ── Closing line — phrase + explicit CTA button ─── */}
       <footer className={styles.footer}>
         <Reveal>
-          <p className={styles.footerNote}>
-            {t.projects.moreLine}
-            <a href="/work" className={styles.footerLink} data-cursor data-cursor-label={t.projects.moreLink}>
-              {' '}{t.projects.moreLink}
-            </a>
-          </p>
+          <p className={styles.footerNote}>{t.projects.moreLine}</p>
+          <a
+            href="/work"
+            className={styles.footerCta}
+            data-cursor
+            data-cursor-label={t.projects.moreLink}
+          >
+            <span className={styles.footerCtaLabel}>{t.projects.moreLink}</span>
+            <span className={styles.footerCtaArrow} aria-hidden>↗</span>
+          </a>
         </Reveal>
       </footer>
     </>
@@ -252,12 +256,16 @@ function NightBlock() {
 
       <footer className={styles.footer}>
         <Reveal>
-          <p className={styles.footerNote}>
-            {t.projectsNight.moreLine}
-            <a href="/work" className={styles.footerLink} data-cursor data-cursor-label={t.projectsNight.moreLink}>
-              {' '}{t.projectsNight.moreLink}
-            </a>
-          </p>
+          <p className={styles.footerNote}>{t.projectsNight.moreLine}</p>
+          <a
+            href="/work"
+            className={styles.footerCta}
+            data-cursor
+            data-cursor-label={t.projectsNight.moreLink}
+          >
+            <span className={styles.footerCtaLabel}>{t.projectsNight.moreLink}</span>
+            <span className={styles.footerCtaArrow} aria-hidden>↗</span>
+          </a>
         </Reveal>
       </footer>
     </>

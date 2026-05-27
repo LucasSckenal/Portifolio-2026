@@ -10,6 +10,7 @@ export type Dictionary = {
     index: string;
     work: string;
     about: string;
+    lab: string;
     contact: string;
   };
   hero: {

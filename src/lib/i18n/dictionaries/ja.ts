@@ -8,6 +8,7 @@ export const ja: Dictionary = {
     index: '目次',
     work: '作品',
     about: '紹介',
+    lab: '実験',
     contact: '連絡',
   },
   hero: {

@@ -1,3 +1,6 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import styles from './Particles.module.scss';
 
 // Two atmospheric layers, both rendered always, with opacity controlled by
@@ -28,6 +31,11 @@ const stars = Array.from({ length: COUNT }, (_, i) => ({
 }));
 
 export default function Particles() {
+  const pathname = usePathname();
+  // Immersive lab pieces own the atmosphere — skip the global dust/stars.
+  // The /lab index page keeps them (it's a regular gallery page).
+  if (pathname?.startsWith('/lab/')) return null;
+
   return (
     <div className={styles.particles} aria-hidden>
       <div className={`${styles.layer} ${styles.day}`}>

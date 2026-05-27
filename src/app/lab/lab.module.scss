@@ -1,0 +1,272 @@
+// ── Lab index page ──────────────────────────────────
+// Matches the visual rhythm of /work but with darker, more atmospheric
+// treatment since Lab pieces are night-spirit experiments.
+
+.lab {
+  min-height: 100vh;
+  padding-block: var(--s-7) var(--s-6);
+  padding-inline: var(--gutter);
+  background: var(--bg-deep);
+  color: var(--on-dark);
+}
+
+.inner {
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+// ── Header ────────────────────────────────
+.header {
+  margin-bottom: var(--s-7);
+  padding-top: var(--s-6);
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-bottom: var(--s-4);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark-mute);
+}
+
+.divider {
+  flex: 0 1 100px;
+  height: 1px;
+  background: var(--on-dark-line);
+}
+
+.labelJp {
+  font-family: var(--font-serif);
+  font-size: var(--t-xs);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: var(--track-tight);
+  margin: 0 0 var(--s-4);
+  max-width: 18ch;
+}
+
+.titleLine {
+  display: block;
+
+  &:nth-child(2) {
+    font-style: italic;
+    padding-left: 0.6em;
+    color: var(--on-dark-soft);
+  }
+}
+
+.intro {
+  font-family: var(--font-sans);
+  font-size: var(--t-md);
+  line-height: 1.6;
+  font-weight: 300;
+  color: var(--on-dark-subtle);
+  max-width: 56ch;
+}
+
+// ── Pieces grid ───────────────────────────
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: var(--s-4);
+
+  @include breakpoint(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cell { margin: 0; padding: 0; }
+
+.card {
+  position: relative;
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  background: rgba(242, 239, 233, 0.02);
+  border: 1px solid var(--on-dark-line);
+  border-radius: 4px;
+  text-decoration: none;
+  color: inherit;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    background 0.5s var(--ease-cinema),
+    border-color 0.5s var(--ease-cinema),
+    transform 0.5s var(--ease-cinema);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 30% 30%,
+      rgba(232, 154, 79, 0.06) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-cinema);
+    z-index: -1;
+  }
+
+  &:hover {
+    background: rgba(242, 239, 233, 0.04);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+
+    &::before { opacity: 1; }
+    .cardKanji { color: var(--accent); opacity: 0.18; }
+    .cardEnter { color: var(--accent); }
+  }
+}
+
+.cardMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark-faded);
+}
+
+.cardIndex { color: var(--on-dark); }
+.cardStatus {}
+
+.cardKanji {
+  position: absolute;
+  top: 50%;
+  right: -10%;
+  transform: translateY(-50%);
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: clamp(10rem, 25vw, 18rem);
+  line-height: 0.8;
+  color: var(--on-dark);
+  opacity: 0.05;
+  pointer-events: none;
+  user-select: none;
+  transition: color 0.5s var(--ease-cinema), opacity 0.5s var(--ease-cinema);
+  z-index: -1;
+}
+
+.cardBody {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-3);
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: var(--track-tight);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cardTitleSub {
+  font-family: var(--font-mono);
+  font-size: 0.55em;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.cardTagline {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: var(--t-md);
+  color: var(--on-dark-soft);
+  margin: 0;
+}
+
+.cardDescription {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--t-base);
+  line-height: 1.55;
+  color: var(--on-dark-subtle);
+  margin: 0;
+  max-width: 52ch;
+}
+
+.cardTech {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  li {
+    padding: 3px 8px;
+    background: rgba(242, 239, 233, 0.05);
+    border: 1px solid var(--on-dark-line);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: var(--track-mark);
+    text-transform: uppercase;
+    color: var(--on-dark-mute);
+  }
+}
+
+.cardEnter {
+  margin-top: var(--s-3);
+  align-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  color: var(--on-dark);
+  transition: color 0.5s var(--ease-cinema);
+
+  span { transition: transform 0.5s var(--ease-cinema); }
+}
+
+.card:hover .cardEnter span {
+  transform: translate(3px, -3px);
+}
+
+// ── Footer note ───────────────────────────
+.footer {
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--on-dark-line);
+
+  p {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-style: italic;
+    font-size: var(--t-md);
+    color: var(--on-dark-faded);
+    max-width: 56ch;
+    margin: 0;
+  }
+}

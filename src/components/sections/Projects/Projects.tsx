@@ -5,7 +5,7 @@ import Reveal from '@/components/ui/Reveal';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { useT } from '@/components/providers/LanguageProvider';
 import ProjectScene from './ProjectScene';
-import { GameMedia, ChatbotMedia, PhantomMedia, NexoMedia, LJMedia } from './ProjectMedia';
+import { GameMedia, ChatbotMedia, PhantomMedia, NexoMedia, LJMedia, MaFinanceMedia } from './ProjectMedia';
 import GameWorlds from './GameWorlds';
 import NightReading from './NightReading';
 import styles from './Projects.module.scss';
@@ -59,30 +59,30 @@ function DayBlock() {
         </div>
       </header>
 
-      {/* ── Scene 01 — Onde Estão os Netos? ── */}
+      {/* ── Scene 01 — Ma Finance OS ─────────── */}
       <ProjectScene
         index="01"
-        title="Onde Estão os Netos?"
-        status="v1.0 · In development · PI-4"
-        year="2025"
-        roles={['Game UI', 'Tower Defense', 'Roguelike', 'Accessibility']}
-        tech={['Godot 4.6', 'GDScript', 'CSV-driven balancing']}
-        team="Team of 4 · SENAC · UI / Frontend systems"
-        description="A Tower Defense game where grandparents Afonso and Berta — pulled into an antique board game — must cross six themed worlds to rescue their grandchildren. Day-and-night loop with roguelike power-ups and an in-game AI advisor. Built in Godot 4.6 and designed from the start around accessibility for elderly players."
-        jp="戦"
+        title="Ma Finance OS"
+        status="Live · In production"
+        year="2026"
+        roles={['Product Design', 'Full-Stack', 'AI Integration', 'SaaS']}
+        tech={['Next.js 16', 'React 19', 'TypeScript', 'SCSS Modules', 'Firebase', 'Gemini']}
+        description="A minimalist operating system for personal finance — net worth, budgets, goals, and investments tracked in real time, with a Gemini-powered assistant that doesn't just answer questions, it executes actions on your behalf."
+        jp="間"
         mood="dark"
         align="left"
-        href="https://github.com/LucasSckenal/pi-4"
-        caseSlug="onde-estao-os-netos"
+        href="https://github.com/LucasSckenal/Project-Organization-finaces"
+        live="https://project-organization-finaces.vercel.app/"
+        caseSlug="ma-finance-os"
       >
-        <GameMedia
-          screenshot="https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png"
-          screenshotAlt="Gameplay screenshot — night phase combat"
+        <MaFinanceMedia
+          video={[
+            { src: '/projects/ma-finance-os/Preview.webm', type: 'video/webm' },
+            { src: '/projects/ma-finance-os/Preview.mp4',  type: 'video/mp4'  },
+          ]}
+          videoAlt="Ma Finance OS — AI assistant creating a budget in real time"
         />
       </ProjectScene>
-
-      {/* ── Interstitial — the 6 worlds of the game ── */}
-      <GameWorlds />
 
       {/* ── Scene 02 — Nexo ─────────────────── */}
       <ProjectScene
@@ -201,9 +201,34 @@ function NightBlock() {
         </div>
       </header>
 
-      {/* ── Scene 01 — Medical Chatbot (PI-3) ── */}
+      {/* ── Scene 01 — Onde Estão os Netos? ── */}
       <ProjectScene
         index="01"
+        title="Onde Estão os Netos?"
+        status="v1.0 · In development · PI-4"
+        year="2025"
+        roles={['Game UI', 'Tower Defense', 'Roguelike', 'Accessibility']}
+        tech={['Godot 4.6', 'GDScript', 'CSV-driven balancing']}
+        team="Team of 4 · SENAC · UI / Frontend systems"
+        description="A Tower Defense game where grandparents Afonso and Berta — pulled into an antique board game — must cross six themed worlds to rescue their grandchildren. Day-and-night loop with roguelike power-ups and an in-game AI advisor. Built in Godot 4.6 and designed from the start around accessibility for elderly players."
+        jp="戦"
+        mood="dark"
+        align="left"
+        href="https://github.com/LucasSckenal/pi-4"
+        caseSlug="onde-estao-os-netos"
+      >
+        <GameMedia
+          screenshot="https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png"
+          screenshotAlt="Gameplay screenshot — night phase combat"
+        />
+      </ProjectScene>
+
+      {/* ── Interstitial — the 6 worlds of the game ── */}
+      <GameWorlds />
+
+      {/* ── Scene 02 — Medical Chatbot (PI-3) ── */}
+      <ProjectScene
+        index="02"
         title="Medical AI Chatbot"
         status="Academic · Live demo · PI-3"
         year="2025"
@@ -213,7 +238,7 @@ function NightBlock() {
         description="A multilingual medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage. Persistent medical profiles, diagnostic history, voice + text input, and full UI theming. React + Vite frontend, Node + Express backend, Firebase Auth + Firestore."
         jp="話"
         mood="light"
-        align="left"
+        align="right"
         href="https://github.com/LucasSckenal/PI3-4l"
         live="https://fourl-aplicativocov.onrender.com/login"
         caseSlug="medical-chatbot"
@@ -230,9 +255,9 @@ function NightBlock() {
       {/* ── Interstitial — the library behind the work ── */}
       <NightReading />
 
-      {/* ── Scene 02 — Phantom Commerce ─────── */}
+      {/* ── Scene 03 — Phantom Commerce ─────── */}
       <ProjectScene
-        index="02"
+        index="03"
         title="Phantom Commerce"
         status="Academic · Concept"
         year="2025"

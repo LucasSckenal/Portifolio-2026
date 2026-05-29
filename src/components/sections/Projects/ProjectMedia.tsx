@@ -502,6 +502,58 @@ export function NexoMedia({ video, videoPoster, videoAlt, screenshots }: NexoMed
 }
 
 // ─────────────────────────────────────────
+// MA FINANCE OS — minimalist finance OS (dark stage, reuses Nexo device chrome)
+// Modes (in priority order):
+//   · `video`        → single device frame autoloops a muted screencast
+//   · `screenshots`  → cinematic device stack (3+ items)
+//   · neither        → synthetic finance frame with 間 kanji
+// ─────────────────────────────────────────
+type MaFinanceMediaProps = {
+  video?: VideoSource[];
+  videoPoster?: string;
+  videoAlt?: string;
+  screenshots?: Screenshot[];
+};
+
+export function MaFinanceMedia({ video, videoPoster, videoAlt, screenshots }: MaFinanceMediaProps = {}) {
+  if (video && video.length > 0) {
+    return (
+      <div className={`${styles.media} ${styles.nexoStack} ${styles.nexoVideoMode}`}>
+        <div className={styles.nexoStackBackdrop} aria-hidden />
+        <div className={styles.nexoStackGrid} aria-hidden />
+        <div className={styles.nexoStackGlow} aria-hidden />
+        <NexoVideoDevice sources={video} poster={videoPoster} ariaLabel={videoAlt} />
+      </div>
+    );
+  }
+
+  if (screenshots && screenshots.length >= 3) {
+    const [main, backLeft, backRight] = screenshots;
+    return (
+      <div className={`${styles.media} ${styles.nexoStack}`}>
+        <div className={styles.nexoStackBackdrop} aria-hidden />
+        <div className={styles.nexoStackGrid} aria-hidden />
+        <div className={styles.nexoStackGlow} aria-hidden />
+        <NexoDevice src={backLeft.src}  alt={backLeft.alt}  variant="backLeft"  />
+        <NexoDevice src={backRight.src} alt={backRight.alt} variant="backRight" />
+        <NexoDevice src={main.src}      alt={main.alt}      variant="main"      />
+      </div>
+    );
+  }
+
+  return (
+    <div className={`${styles.media} ${styles.nexo}`}>
+      <div className={styles.nexoBackdrop} aria-hidden />
+      <div className={styles.nexoGrid} aria-hidden />
+      <div className={styles.nexoGlow} aria-hidden />
+      <div className={styles.nexoCenter} aria-hidden>
+        <span className={styles.nexoKanji}>間</span>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────
 // LJ — boutique wellness studio (light stage, warm accent)
 // Modes (in order of priority — first defined wins):
 //   · `video`        → single device frame autoloops a muted screencast

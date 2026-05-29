@@ -42,160 +42,146 @@ export type ProjectCase = {
 
 export const projects: ProjectCase[] = [
   // ─────────────────────────────────────────
-  // 01 — Onde Estão os Netos? (game showcase)
+  // 01 — Ma Finance OS (personal SaaS)
   // ─────────────────────────────────────────
   {
-    slug: 'onde-estao-os-netos',
+    slug: 'ma-finance-os',
     index: '01',
-    title: 'Onde Estão os Netos?',
-    jp: '戦',
-    jpLabel: '戦 · Battle',
-    year: '2025',
-    status: 'v1.0 · In development',
-    tagline: 'A Tower Defense built for the player we never see.',
+    title: 'Ma Finance OS',
+    jp: '間',
+    jpLabel: '間 · Space',
+    year: '2026',
+    status: 'Live · In production',
+    tagline: 'A minimalist operating system for personal finance — with AI that acts.',
     description:
-      'Two grandparents pulled into an antique board game must cross six perilous worlds to rescue their grandchildren. Built in Godot 4.6, designed from day one around accessibility for elderly players.',
-    roles: ['Game UI', 'Tower Defense', 'Roguelike', 'Accessibility'],
-    tech: ['Godot 4.6', 'GDScript', 'CSV-driven balancing'],
-    team: 'Team of 4 · SENAC · UI / Frontend systems',
-    href: 'https://github.com/LucasSckenal/pi-4',
+      'A full-stack personal finance platform that tracks net worth, budgets, and investments in real time — with a Gemini-powered assistant that doesn\'t just answer questions, it executes actions on your behalf. Built on Next.js 16 + React 19 + Firebase.',
+    roles: ['Product Design', 'Full-Stack', 'AI Integration', 'SaaS'],
+    tech: ['Next.js 16', 'React 19', 'TypeScript', 'SCSS Modules', 'Firebase', 'Gemini', 'Framer Motion'],
+    href: 'https://github.com/LucasSckenal/Project-Organization-finaces',
+    live: 'https://project-organization-finaces.vercel.app/',
     mood: 'dark',
     sections: [
       {
         type: 'lead',
         body:
-          'A family is pulled into an antique board game. Two grandparents — Afonso and Berta — must cross six perilous worlds to rescue their grandchildren and find their way back home.',
+          'Ma (間) treats personal finance as an operating system, not a dashboard. One surface for everything — accounts, budgets, goals, investments — updated live, understood by an AI that can act.',
+      },
+      {
+        type: 'image',
+        src: '/projects/ma-finance-os/dashboard.png',
+        alt: 'Ma Finance OS — main dashboard with net worth and account overview',
+        caption: 'Dashboard — net worth, accounts, and real-time balance at a glance.',
       },
       {
         type: 'paragraph',
         body:
-          'This is the seed of Onde Estão os Netos?, a Tower Defense game developed as Projeto Integrador IV at SENAC. It\'s a strange premise on purpose — most build-defense games drop you into a generic fantasy battlefield. We wanted players to feel like they had been transported somewhere personal.',
+          'Most finance tools give you charts and leave you to figure out what to do next. Ma flips that: the AI assistant doesn\'t just describe your spending — it proposes and executes actions on your behalf, waiting only for your confirmation before applying them to your data.',
       },
 
       {
         type: 'heading',
-        text: 'Designing for the player we never see',
-        jp: '誰',
-        jpLabel: '誰 · The other',
+        text: 'The OS metaphor',
+        jp: '界',
+        jpLabel: '界 · World',
       },
       {
         type: 'paragraph',
         body:
-          'Tower defense is, traditionally, a genre built around twitch responses. Place towers fast, react to threats, manage tempo, stack power-ups in tight windows.',
-      },
-      { type: 'paragraph', body: 'The audience for this game is the opposite of that.' },
-      {
-        type: 'paragraph',
-        body:
-          'We designed Onde Estão os Netos? for elderly players from day one — players who have never picked up a gamepad, who don\'t read fast on small screens, who get anxious when an interface punishes hesitation. Every design decision flows from there:',
+          'Calling it an "operating system" is deliberate. Your finances are running whether you\'re looking or not — recurring transactions process automatically, investment prices update live via Yahoo Finance, budget alerts fire before you overspend. Ma keeps everything in motion in the background so the surface stays quiet.',
       },
       {
         type: 'list',
         items: [
-          'Large fonts and clear icons — readable from a comfortable distance',
-          'Two well-defined phases per round (Day to prepare, Night to defend) — predictable rhythm, never rushed',
-          'Fixed isometric camera — no spatial disorientation, ever',
-          'Touch-only or click-only controls — no keyboard, no gamepad required',
-          'Auto-attacking towers — the player makes the strategy, the game executes',
-          'Lo-fi / Bossa Nova soundtrack — genuinely relaxing under pressure',
+          'Automatic net worth calculation across cash, investments, and goals',
+          'Multi-account support with real transfer flows',
+          'Budget management with live progress — not end-of-month reports',
+          'Goal tracking with deposits and deadline monitoring',
+          'Automatic recurring transaction processing — set it, forget it',
+          'CSV import / export with full data ownership',
+          'Bilingual UI — Portuguese and English, with multi-currency conversion',
+          'PWA with offline functionality and command palette',
         ],
       },
-
       {
         type: 'image',
-        src: 'https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png',
-        alt: 'Gameplay during a combat (night) phase',
-        caption: 'Combat phase — auto-attacking towers, player controls only the tempo.',
+        src: '/projects/ma-finance-os/budget.png',
+        alt: 'Ma Finance OS — budget management with category-based limits',
+        caption: 'Budgets — live progress per category, alerts before you overspend.',
       },
 
       {
         type: 'heading',
-        text: 'The AI Advisor',
-        jp: '師',
-        jpLabel: '師 · Mentor',
+        text: 'AI that executes, not just explains',
+        jp: '行',
+        jpLabel: '行 · Action',
       },
       {
         type: 'paragraph',
         body:
-          'One of the systems I\'m proudest of in the project: an in-game advisor that watches what the player is doing and offers contextual suggestions.',
+          'The Gemini integration uses function calling — a technique where the model proposes a specific action (create transaction, update budget, set goal deposit) and the interface renders a confirmation before writing anything to Firestore. The user stays in control; the AI does the heavy lifting.',
       },
       {
-        type: 'paragraph',
-        body:
-          'It reads HP of the base, income per wave, free slots, threat level. Then it ranks recommendations from Urgent down to Low priority — "Build a sniper at the eastern choke point" or "You\'re falling behind on income; place a market this round."',
+        type: 'image',
+        src: '/projects/ma-finance-os/ai-chat.png',
+        alt: 'Ma Finance OS — AI assistant executing a budget creation action',
+        caption: 'AI assistant — proposes actions with function calling, waits for your confirmation.',
+        variant: 'mobile',
       },
       {
         type: 'quote',
         text:
-          'It\'s not an autopilot. It\'s a calm voice over your shoulder — especially valuable for players who\'ve never played a strategy game.',
-      },
-
-      {
-        type: 'heading',
-        text: 'Six themed worlds',
-        jp: '世界',
-        jpLabel: '世界 · Sekai',
+          'The assistant doesn\'t open a chat window. It lives inside the flow you\'re already in.',
       },
       {
         type: 'paragraph',
         body:
-          'Each map is its own self-contained chamber — unique theme, NavMesh, enemy roster, base architecture and soundtrack. The player crosses them in sequence.',
+          'Ask "how much did I spend on restaurants last month?" — get a direct answer. Say "create a budget for groceries, R$800" — the model calls the budget-create function, shows the preview, and waits for your tap. No copy-paste, no tab switching.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Stack & architecture',
+        jp: '構',
+        jpLabel: '構 · Structure',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Next.js 16 with the App Router, React 19, TypeScript 5 strict. SCSS Modules for the design system — the ink-night palette is a set of CSS variables, so light mode is a single class swap. Framer Motion for micro-interactions; Lenis for smooth scroll.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Firebase handles auth, Firestore for all user data, Storage for uploads. ID tokens are verified via jose on every API route — Gemini and Yahoo Finance calls never reach the client, preventing quota abuse. Recharts powers the analytics views. The full Gemini surface runs through server-side API routes.',
       },
       {
         type: 'stats',
         items: [
-          { label: 'Floresta Medieval', value: 'Tutorial', jp: '森' },
-          { label: 'Deserto Carmesim', value: 'Egípcio', jp: '砂' },
-          { label: 'Mansão Assombrada', value: 'Terror', jp: '幽' },
-          { label: 'Fenda dos Piratas', value: 'Oceano', jp: '海' },
-          { label: 'Planeta Maluco', value: 'Sci-Fi', jp: '宙' },
-          { label: 'Covil do Dragão', value: 'Final', jp: '龍' },
+          { label: 'Framework', value: 'Next.js 16', jp: '工' },
+          { label: 'Runtime', value: 'React 19', jp: '動' },
+          { label: 'Database', value: 'Firestore', jp: '庫' },
+          { label: 'AI', value: 'Gemini FC', jp: '脳' },
+          { label: 'Auth', value: 'Firebase', jp: '鍵' },
+          { label: 'Deploy', value: 'Vercel', jp: '雲' },
         ],
       },
-
       {
-        type: 'heading',
-        text: 'Roguelike between rounds',
-        jp: '札',
-        jpLabel: '札 · Cards',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'At the end of each phase, the player picks one power-up card from three random options. Seven cards drive build variety across runs — Balística Pesada (heavy artillery), Frequência Crítica (more crits), Fúria (faster attacks), Gelo (slowing towers), Imposto de Guerra (more income), Muralhas Reforçadas (stronger walls), and Engenharia Eficiente (cheaper builds).',
+        type: 'image',
+        src: '/projects/ma-finance-os/reports.png',
+        alt: 'Ma Finance OS — financial reports with income, expenses, and net worth history',
+        caption: 'Reports — historical income/expense breakdown and net worth evolution.',
       },
 
       {
         type: 'heading',
-        text: 'Stack & process',
-        jp: '工',
-        jpLabel: '工 · Craft',
+        text: 'Design language',
+        jp: '美',
+        jpLabel: '美 · Aesthetic',
       },
       {
         type: 'paragraph',
         body:
-          'Built in Godot 4.6 with GDScript. Game balancing is driven by a CSV file — multipliers for HP, damage, and speed are read at runtime, so the team can rebalance without rebuilding the project.',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'Autoloads (singletons) handle global state: game manager, balance parser, music, build slot manager, achievement popups, AI memory. The result is a clean separation between gameplay logic and presentation that made the UI iteration fast.',
-      },
-
-      {
-        type: 'heading',
-        text: 'Reflection',
-        jp: '思',
-        jpLabel: '思 · Reflection',
-      },
-      {
-        type: 'paragraph',
-        body:
-          'The hardest part wasn\'t the towers, the enemies, or the cards. It was teaching ourselves to remove things — extra animation, extra punctuation, extra steps — until what was left felt effortless to someone unfamiliar with games.',
-      },
-      {
-        type: 'paragraph',
-        body: 'That\'s the design lesson I\'m taking forward into web work.',
+          'Ink-night palette — near-black backgrounds, warm off-whites, tight typographic hierarchy with a serif display face and monospace numerics. Every financial value is a number first; the chrome around it stays invisible. The Japanese name 間 (space / interval) describes the design intent: as much deliberate emptiness as information.',
       },
     ],
   },
@@ -460,19 +446,178 @@ export const projects: ProjectCase[] = [
 ];
 
 // =========================================
-// NIGHT PORTFOLIO — academic university work
-// Projects shaped during my degree at Unijui, kept here as foundations
+// NIGHT PORTFOLIO — academic & experimental work
+// Projects shaped during my degree at SENAC / Unijui, kept here as foundations
 // rather than client deliverables. The toggle reframes them as "after hours" —
 // the work that lives outside billable scope.
 // =========================================
 
 export const nightProjects: ProjectCase[] = [
   // ─────────────────────────────────────────
-  // 01 — Medical AI Chatbot (PI-3 Unijui)
+  // 01 — Onde Estão os Netos? (game showcase)
+  // ─────────────────────────────────────────
+  {
+    slug: 'onde-estao-os-netos',
+    index: '01',
+    title: 'Onde Estão os Netos?',
+    jp: '戦',
+    jpLabel: '戦 · Battle',
+    year: '2025',
+    status: 'v1.0 · In development',
+    tagline: 'A Tower Defense built for the player we never see.',
+    description:
+      'Two grandparents pulled into an antique board game must cross six perilous worlds to rescue their grandchildren. Built in Godot 4.6, designed from day one around accessibility for elderly players.',
+    roles: ['Game UI', 'Tower Defense', 'Roguelike', 'Accessibility'],
+    tech: ['Godot 4.6', 'GDScript', 'CSV-driven balancing'],
+    team: 'Team of 4 · SENAC · UI / Frontend systems',
+    href: 'https://github.com/LucasSckenal/pi-4',
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'A family is pulled into an antique board game. Two grandparents — Afonso and Berta — must cross six perilous worlds to rescue their grandchildren and find their way back home.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'This is the seed of Onde Estão os Netos?, a Tower Defense game developed as Projeto Integrador IV at SENAC. It\'s a strange premise on purpose — most build-defense games drop you into a generic fantasy battlefield. We wanted players to feel like they had been transported somewhere personal.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Designing for the player we never see',
+        jp: '誰',
+        jpLabel: '誰 · The other',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Tower defense is, traditionally, a genre built around twitch responses. Place towers fast, react to threats, manage tempo, stack power-ups in tight windows.',
+      },
+      { type: 'paragraph', body: 'The audience for this game is the opposite of that.' },
+      {
+        type: 'paragraph',
+        body:
+          'We designed Onde Estão os Netos? for elderly players from day one — players who have never picked up a gamepad, who don\'t read fast on small screens, who get anxious when an interface punishes hesitation. Every design decision flows from there:',
+      },
+      {
+        type: 'list',
+        items: [
+          'Large fonts and clear icons — readable from a comfortable distance',
+          'Two well-defined phases per round (Day to prepare, Night to defend) — predictable rhythm, never rushed',
+          'Fixed isometric camera — no spatial disorientation, ever',
+          'Touch-only or click-only controls — no keyboard, no gamepad required',
+          'Auto-attacking towers — the player makes the strategy, the game executes',
+          'Lo-fi / Bossa Nova soundtrack — genuinely relaxing under pressure',
+        ],
+      },
+
+      {
+        type: 'image',
+        src: 'https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png',
+        alt: 'Gameplay during a combat (night) phase',
+        caption: 'Combat phase — auto-attacking towers, player controls only the tempo.',
+      },
+
+      {
+        type: 'heading',
+        text: 'The AI Advisor',
+        jp: '師',
+        jpLabel: '師 · Mentor',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'One of the systems I\'m proudest of in the project: an in-game advisor that watches what the player is doing and offers contextual suggestions.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'It reads HP of the base, income per wave, free slots, threat level. Then it ranks recommendations from Urgent down to Low priority — "Build a sniper at the eastern choke point" or "You\'re falling behind on income; place a market this round."',
+      },
+      {
+        type: 'quote',
+        text:
+          'It\'s not an autopilot. It\'s a calm voice over your shoulder — especially valuable for players who\'ve never played a strategy game.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Six themed worlds',
+        jp: '世界',
+        jpLabel: '世界 · Sekai',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Each map is its own self-contained chamber — unique theme, NavMesh, enemy roster, base architecture and soundtrack. The player crosses them in sequence.',
+      },
+      {
+        type: 'stats',
+        items: [
+          { label: 'Floresta Medieval', value: 'Tutorial', jp: '森' },
+          { label: 'Deserto Carmesim', value: 'Egípcio', jp: '砂' },
+          { label: 'Mansão Assombrada', value: 'Terror', jp: '幽' },
+          { label: 'Fenda dos Piratas', value: 'Oceano', jp: '海' },
+          { label: 'Planeta Maluco', value: 'Sci-Fi', jp: '宙' },
+          { label: 'Covil do Dragão', value: 'Final', jp: '龍' },
+        ],
+      },
+
+      {
+        type: 'heading',
+        text: 'Roguelike between rounds',
+        jp: '札',
+        jpLabel: '札 · Cards',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'At the end of each phase, the player picks one power-up card from three random options. Seven cards drive build variety across runs — Balística Pesada (heavy artillery), Frequência Crítica (more crits), Fúria (faster attacks), Gelo (slowing towers), Imposto de Guerra (more income), Muralhas Reforçadas (stronger walls), and Engenharia Eficiente (cheaper builds).',
+      },
+
+      {
+        type: 'heading',
+        text: 'Stack & process',
+        jp: '工',
+        jpLabel: '工 · Craft',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Built in Godot 4.6 with GDScript. Game balancing is driven by a CSV file — multipliers for HP, damage, and speed are read at runtime, so the team can rebalance without rebuilding the project.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Autoloads (singletons) handle global state: game manager, balance parser, music, build slot manager, achievement popups, AI memory. The result is a clean separation between gameplay logic and presentation that made the UI iteration fast.',
+      },
+
+      {
+        type: 'heading',
+        text: 'Reflection',
+        jp: '思',
+        jpLabel: '思 · Reflection',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'The hardest part wasn\'t the towers, the enemies, or the cards. It was teaching ourselves to remove things — extra animation, extra punctuation, extra steps — until what was left felt effortless to someone unfamiliar with games.',
+      },
+      {
+        type: 'paragraph',
+        body: 'That\'s the design lesson I\'m taking forward into web work.',
+      },
+    ],
+  },
+
+  // ─────────────────────────────────────────
+  // 02 — Medical AI Chatbot (PI-3 Unijui)
   // ─────────────────────────────────────────
   {
     slug: 'medical-chatbot',
-    index: '01',
+    index: '02',
     title: 'Medical AI Chatbot',
     jp: '話',
     jpLabel: '話 · Speak',
@@ -583,11 +728,11 @@ export const nightProjects: ProjectCase[] = [
   },
 
   // ─────────────────────────────────────────
-  // 02 — Phantom Commerce (Unijui)
+  // 03 — Phantom Commerce (Unijui)
   // ─────────────────────────────────────────
   {
     slug: 'phantom-commerce',
-    index: '02',
+    index: '03',
     title: 'Phantom Commerce',
     jp: '幻',
     jpLabel: '幻 · Phantom',
@@ -745,7 +890,7 @@ export function getFilmography(): ArchiveEntry[] {
   const featuredDay: ArchiveEntry[] = projects.map((p) => {
     const kind: ArchiveKind =
       p.slug === 'lj-treinamento-integrado' ? 'commercial'
-      : p.slug === 'nexo' ? 'personal'
+      : p.slug === 'nexo' || p.slug === 'ma-finance-os' ? 'personal'
       : 'academic';
     return {
       year: p.year,

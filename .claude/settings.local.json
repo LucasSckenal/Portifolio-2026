@@ -6,7 +6,9 @@
       "WebFetch(domain:nexo-8yq8.vercel.app)",
       "Bash(gh repo *)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:lj-nu.vercel.app)"
+      "WebFetch(domain:lj-nu.vercel.app)",
+      "Bash(npx tsc *)",
+      "Bash(node -e \"const {projects, nightProjects} = require\\('./src/content/projects.ts'\\); console.log\\('day:', projects.map\\(p=>p.slug+' '+p.index\\)\\); console.log\\('night:', nightProjects.map\\(p=>p.slug+' '+p.index\\)\\);\")"
     ]
   }
 }

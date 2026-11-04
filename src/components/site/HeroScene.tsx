@@ -322,6 +322,9 @@ const panelFrag = /* glsl */ `
 // 25 cut-out frames of the head turning: 0 = facing right (the original
 // photo), 8 = facing the viewer, 24 = facing left.
 const HEAD = { count: 25, front: 8, w: 1024, h: 576 };
+// The panel under the cursor, as a screen x (-1 left … 1 right) relative to
+// the head; the ring writes it, the portrait turns to look at it.
+const gaze = { x: null as number | null };
 const headSrc = (k: number) => `/home/head/f${String(k).padStart(2, '0')}.webp`;
 
 function Portrait({
@@ -422,7 +425,12 @@ function Portrait({
     const x = Math.max(-1, Math.min(1, state.pointer.x));
     let target = 0;
     if (lookAhead) target = HEAD.front;
-    else if (moved.current) target = x >= 0 ? HEAD.front * (1 - x) : HEAD.front + (HEAD.count - 1 - HEAD.front) * -x;
+    else if (gaze.x !== null) {
+      // a hovered project: he turns to it, fully by the time it is a short
+      // way off his face
+      const g = Math.max(-1, Math.min(1, gaze.x / 0.3));
+      target = g >= 0 ? HEAD.front * (1 - g) : HEAD.front + (HEAD.count - 1 - HEAD.front) * -g;
+    } else if (moved.current) target = x >= 0 ? HEAD.front * (1 - x) : HEAD.front + (HEAD.count - 1 - HEAD.front) * -x;
     look.current += (target - look.current) * Math.min(1, dt * (reduced ? 3 : 6));
 
     // show the nearest frame that has arrived
@@ -729,6 +737,14 @@ function Ring({
         lead = k;
       }
     });
+    // where the hovered panel sits on screen, relative to the head
+    const hm = hover >= 0 ? meshes.current[hover] : null;
+    if (hm) {
+      hm.getWorldPosition(tmp).project(state.camera);
+      const hx = tmp.x;
+      tmp.set(center[0], center[1], center[2]).project(state.camera);
+      gaze.x = hx - tmp.x;
+    } else gaze.x = null;
     materials.forEach((m, i) => {
       const u = m.uniforms.uHover;
       u.value += ((hover === i ? 1 : 0) - u.value) * Math.min(1, dt * 10);

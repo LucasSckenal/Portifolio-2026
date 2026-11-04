@@ -172,7 +172,7 @@ export type Dictionary = {
   };
   // ── 2027 home (src/components/site) ──
   site: {
-    nav: { work: string; about: string; contact: string; cta: string; language: string; back: string };
+    nav: { work: string; about: string; contact: string; cta: string; language: string; back: string; menu: string };
     hero: {
       line1: string;
       line2: string;

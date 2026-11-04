@@ -187,7 +187,8 @@ export const en: Dictionary = {
       "contact": "Contact",
       "cta": "Start a project",
       "language": "Language",
-      "back": "Back"
+      "back": "Back",
+      "menu": "Menu"
     },
     "hero": {
       "line1": "Interfaces that",

@@ -355,6 +355,7 @@ function Portrait({
   const shown = useRef(-1);
   const look = useRef(0); // smoothed frame position
   const moved = useRef(false); // until the pointer moves, hold the photo's pose
+  const skip = useRef(0);
 
   const draw = (k: number) => {
     const img = frames.current[k];
@@ -425,7 +426,8 @@ function Portrait({
 
     // show the nearest frame that has arrived
     const want = Math.round(look.current);
-    if (want !== shown.current) {
+    skip.current = TOUCH ? (skip.current + 1) % 2 : 0;
+    if (want !== shown.current && skip.current === 0) {
       for (let d = 0; d < HEAD.count; d++) {
         if (draw(Math.min(HEAD.count - 1, want + d)) || draw(Math.max(0, want - d))) break;
       }
@@ -434,7 +436,7 @@ function Portrait({
 
   return (
     <mesh position={[0, y, 0]} renderOrder={-1}>
-      <planeGeometry args={[width, height, 220, 124]} />
+      <planeGeometry args={TOUCH ? [width, height, 110, 62] : [width, height, 220, 124]} />
       <shaderMaterial
         vertexShader={portraitVert}
         fragmentShader={portraitFrag}
@@ -681,6 +683,17 @@ function Ring({
     }
     if (born.current === null) born.current = state.clock.elapsedTime;
     const since = state.clock.elapsedTime - born.current;
+    // one clip at a time: the panel nearest the viewer
+    let lead = -1;
+    let leadZ = -Infinity;
+    meshes.current.forEach((mesh, k) => {
+      if (!mesh || !PANELS[k].clip) return;
+      mesh.getWorldPosition(tmp);
+      if (tmp.z > leadZ) {
+        leadZ = tmp.z;
+        lead = k;
+      }
+    });
     materials.forEach((m, i) => {
       const u = m.uniforms.uHover;
       u.value += ((hover === i ? 1 : 0) - u.value) * Math.min(1, dt * 10);
@@ -712,7 +725,7 @@ function Ring({
       const mesh = meshes.current[i];
       if (!p.clip || !mesh || !clipsAllowed) return;
       mesh.getWorldPosition(tmp);
-      const facing = tmp.z - center[2] > radius * 0.25 && !document.hidden;
+      const facing = i === lead && tmp.z - center[2] > radius * 0.25 && !document.hidden;
       let c = clips.current[i];
       if (facing && !c) {
         const video = document.createElement('video');
@@ -884,7 +897,8 @@ function Stage({ reduced, onOpen, controlRef, onReady, openSlug, onFlight }: Pro
   const narrow = viewport.width < viewport.height;
   const h = Math.min(viewport.height * 0.6, (viewport.width / PHOTO_ASPECT) * (narrow ? 1.75 : 1.12));
   const y = -viewport.height / 2 + h / 2;
-  const radius = h * ORBIT_DEFAULTS.radius;
+  // portrait screens: the photo is large, so the halo tightens around the head
+  const radius = h * ORBIT_DEFAULTS.radius * (narrow ? 0.66 : 1);
   // head centre in the photo ≈ (0.54, 0.40) of the frame, ring at eye level
   const center: [number, number, number] = [h * PHOTO_ASPECT * 0.03, y + h * ORBIT_DEFAULTS.height, 0];
 
@@ -909,12 +923,15 @@ function Stage({ reduced, onOpen, controlRef, onReady, openSlug, onFlight }: Pro
   );
 }
 
+const TOUCH = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+
 export default function HeroScene(props: Props) {
   return (
     <Canvas
-      dpr={[1, 2]}
+      // phones: cap the pixel ratio (3× screens cost 4× the pixels of 1.5×)
+      dpr={TOUCH ? [1, 1.5] : [1, 2]}
       camera={{ position: [0, 0.15, 7], fov: 30 }}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      gl={{ antialias: !TOUCH, alpha: true, powerPreference: 'high-performance' }}
       style={{ position: 'absolute', inset: 0, touchAction: 'pan-y' }}
     >
       <Stage {...props} />

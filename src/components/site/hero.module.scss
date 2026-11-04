@@ -551,9 +551,20 @@
 
 
 // Short screens: give the scene the room
-@media (max-height: 760px) {
+@media (max-height: 640px) {
   .sub {
     display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .sub {
+    margin-top: 14px;
+    font-size: 0.86rem;
+    max-width: 34ch;
+  }
+  .actions {
+    margin-top: 18px;
   }
 }
 

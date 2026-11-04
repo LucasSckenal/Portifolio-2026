@@ -187,7 +187,8 @@ export const it: Dictionary = {
       "contact": "Contatti",
       "cta": "Chiedi un preventivo",
       "language": "Lingua",
-      "back": "Indietro"
+      "back": "Indietro",
+      "menu": "Menu"
     },
     "hero": {
       "line1": "Interfacce che",

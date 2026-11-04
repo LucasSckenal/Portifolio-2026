@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
+import { getProjectCopy } from '@/content/projects.i18n';
 import Orbit from './Orbit';
+import { SHOWCASE, type ProjectId } from './panels';
 import SocialComb from './SocialComb';
 import styles from './hero.module.scss';
 
@@ -14,6 +17,25 @@ const LIVE = [
   { icon: '/icons/app/nexo.png', name: 'Nexo', href: 'https://nexo-8yq8.vercel.app/' },
   { icon: '/icons/app/lj.png', name: 'LJ Treinamento Integrado', href: 'https://lj-nu.vercel.app/' },
 ];
+// green dot in the captions: anything you can open in a browser today
+const LIVE_SLUGS = new Set<ProjectId>(['ma-finance-os', 'nexo', 'lj-treinamento-integrado', 'medical-chatbot']);
+
+// "3 days ago", in the visitor's language
+function ago(iso: string, locale: string) {
+  const s = (new Date(iso).getTime() - Date.now()) / 1000;
+  const steps: Array<[Intl.RelativeTimeFormatUnit, number]> = [
+    ['minute', 60],
+    ['hour', 3600],
+    ['day', 86400],
+    ['week', 604800],
+    ['month', 2629800],
+  ];
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+  let unit: Intl.RelativeTimeFormatUnit = 'minute';
+  let size = 60;
+  for (const [u, n] of steps) if (Math.abs(s) >= n) [unit, size] = [u, n];
+  return rtf.format(Math.round(s / size), unit);
+}
 
 export default function Hero() {
   const t = useT();
@@ -23,6 +45,25 @@ export default function Hero() {
   const spin = () => window.dispatchEvent(new CustomEvent('orbit:spin'));
   // the flat list of every project (the 3D halo stays the experience)
   const openFirst = () => window.dispatchEvent(new CustomEvent('projects:open'));
+
+  // the side notes caption the project under the pointer (desktop only)
+  const [focus, setFocus] = useState<ProjectId | null>(null);
+  useEffect(() => {
+    const on = (e: Event) => setFocus((e as CustomEvent<ProjectId | null>).detail);
+    window.addEventListener('panel:hover', on);
+    return () => window.removeEventListener('panel:hover', on);
+  }, []);
+  // latest push to one of the showcased repos (server-cached, real data)
+  const [activity, setActivity] = useState<{ slug: ProjectId; at: string } | null>(null);
+  useEffect(() => {
+    fetch('/api/activity')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((a) => a?.slug && setActivity(a))
+      .catch(() => {});
+  }, []);
+  const shown = focus ? SHOWCASE.find((p) => p.slug === focus) : undefined;
+  const copy = shown ? (getProjectCopy(shown.slug, locale) ?? getProjectCopy(shown.slug, 'en')) : undefined;
+  const busy = activity ? SHOWCASE.find((p) => p.slug === activity.slug) : undefined;
 
   return (
     <section className={styles.hero} aria-labelledby="hero-title">
@@ -62,18 +103,46 @@ export default function Hero() {
       </svg>
 
       <div className={`${styles.note} ${styles.noteLeft}`}>
-        <svg className={styles.noteIcon} width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-          {/* a screen with code on it: web and desktop */}
-          <path pathLength={1} d="M2.5 3.5h13v9h-13zM6.5 15.5h5M7.5 6.5L5.5 8l2 1.5M10.5 6.5l2 1.5-2 1.5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <strong>{h.cardLeftTitle}</strong>
-        <span>{h.cardLeftBody}</span>
+        {shown ? (
+          <div key={shown.slug} className={styles.noteBody}>
+            <span className={styles.noteApp}>
+              {shown.icon && <Image src={shown.icon} alt="" width={22} height={22} />}
+              <em>{shown.note}</em>
+            </span>
+            <strong>{shown.title}</strong>
+            <span>{copy?.tagline}</span>
+          </div>
+        ) : (
+          <div key="idle" className={styles.noteBody}>
+            <svg className={styles.noteIcon} width="18" height="18" viewBox="0 0 18 18" aria-hidden>
+              {/* a screen with code on it: web and desktop */}
+              <path pathLength={1} d="M2.5 3.5h13v9h-13zM6.5 15.5h5M7.5 6.5L5.5 8l2 1.5M10.5 6.5l2 1.5-2 1.5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <strong>{h.cardLeftTitle}</strong>
+            <span>{h.cardLeftBody}</span>
+          </div>
+        )}
       </div>
 
       <div className={`${styles.note} ${styles.noteRight}`}>
-        <span className={styles.liveDot} aria-hidden />
-        <strong>{h.cardRightTitle}</strong>
-        <span>{h.cardRightBody}</span>
+        {shown ? (
+          <div key={shown.slug} className={styles.noteBody}>
+            <span className={`${styles.liveDot} ${LIVE_SLUGS.has(shown.slug) ? '' : styles.idleDot}`} aria-hidden />
+            <strong>{copy?.status}</strong>
+            <span>{h.openHint}</span>
+          </div>
+        ) : (
+          <div key="idle" className={styles.noteBody}>
+            <span className={styles.liveDot} aria-hidden />
+            <strong>{h.cardRightTitle}</strong>
+            <span>{h.cardRightBody}</span>
+            {busy && activity && (
+              <span className={styles.activity}>
+                {h.activity} <b>{busy.short}</b> · {ago(activity.at, locale)}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       <div className={styles.live}>

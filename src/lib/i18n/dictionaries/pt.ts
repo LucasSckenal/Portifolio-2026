@@ -202,6 +202,8 @@ export const pt: Dictionary = {
       "cardLeftBody": "KERN e Ilha rodam no computador; Nexo e Ma Finance, no navegador.",
       "cardRightTitle": "Aberto para freela",
       "cardRightBody": "Aceitando projetos novos, remoto.",
+      "openHint": "Clique no projeto para abrir.",
+      "activity": "Última atualização no GitHub:",
       "liveLabel": "produtos no ar agora",
       "motto": "Menos template. Mais intenção.",
       "badge": "SOFTWARE · FRONTEND · FREELA · ",

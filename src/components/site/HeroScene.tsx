@@ -496,6 +496,11 @@ function Ring({
     return !c?.saveData;
   }, []);
   const [hover, setHover] = useState(-1);
+  // the page's side notes caption whichever project the pointer is on
+  useEffect(() => {
+    const slug = hover >= 0 ? PANELS[hover].slug : null;
+    window.dispatchEvent(new CustomEvent('panel:hover', { detail: slug }));
+  }, [hover]);
   const { gl, camera } = useThree();
   const born = useRef<number | null>(null);
   const flyer = useRef<THREE.Mesh>(null);

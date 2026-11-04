@@ -202,6 +202,8 @@ export const ja: Dictionary = {
       "cardLeftBody": "KERN と Ilha はデスクトップで、Nexo と Ma Finance はブラウザで動きます。",
       "cardRightTitle": "フリーランス受付中",
       "cardRightBody": "新しい案件をリモートで受付中。",
+      "openHint": "プロジェクトをクリックして開く。",
+      "activity": "GitHub の最終更新:",
       "liveLabel": "つのプロダクトが公開中",
       "motto": "テンプレートより、意図を。",
       "badge": "ソフトウェア · フロントエンド · フリーランス · ",

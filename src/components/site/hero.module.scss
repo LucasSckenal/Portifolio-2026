@@ -247,8 +247,6 @@
 .note {
   position: absolute;
   z-index: 3;
-  display: grid;
-  gap: 6px;
   width: 210px;
   padding: 18px 18px 20px;
   background: var(--surface);
@@ -269,6 +267,68 @@
 }
 
 // The notes are pinned paper, not buttons: no hover lift (it read as clickable).
+// They caption the project under the pointer; each change fades in.
+.noteBody {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  animation: noteIn 0.35s var(--ease-out) both;
+}
+
+.noteApp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+
+  img {
+    border-radius: 6px;
+  }
+
+  em {
+    font-style: normal;
+    font-size: 0.74rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-3);
+  }
+}
+
+// a project that isn't live: same dot, grey, still
+.liveDot.idleDot {
+  background: #b9b9b6;
+  box-shadow: 0 0 0 4px rgba(13, 13, 13, 0.06);
+
+  &::after {
+    display: none;
+  }
+}
+
+.activity {
+  justify-self: stretch;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 0.76rem;
+  color: var(--ink-3);
+
+  b {
+    font-weight: 600;
+    color: var(--ink);
+  }
+}
+
+@keyframes noteIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .noteBody {
+    animation: none;
+  }
+}
 
 .noteLeft {
   left: calc(var(--gutter) + 2vw);

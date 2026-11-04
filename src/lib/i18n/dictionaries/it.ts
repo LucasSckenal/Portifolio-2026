@@ -202,6 +202,8 @@ export const it: Dictionary = {
       "cardLeftBody": "KERN e Ilha girano sul desktop; Nexo e Ma Finance, nel browser.",
       "cardRightTitle": "Disponibile per freelance",
       "cardRightBody": "Accetto nuovi progetti, da remoto.",
+      "openHint": "Clicca sul progetto per aprirlo.",
+      "activity": "Ultimo aggiornamento su GitHub:",
       "liveLabel": "prodotti online adesso",
       "motto": "Meno template. Più intenzione.",
       "badge": "SOFTWARE · FRONTEND · FREELANCE · ",

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import SplitText from '@/components/ui/SplitText';
 import { type ProjectCase, getAdjacentProjects } from '@/content/projects';
 import SectionRenderer from './SectionRenderer';
+import { useT, useLocale } from '@/components/providers/LanguageProvider';
+import { useProjectCopy } from '@/lib/hooks/useProjectCopy';
 import styles from './CaseStudy.module.scss';
 
 const moodClass: Record<ProjectCase['mood'], string> = {
@@ -14,6 +16,9 @@ const moodClass: Record<ProjectCase['mood'], string> = {
 
 export default function CaseStudy({ project }: { project: ProjectCase }) {
   const adjacents = getAdjacentProjects(project.slug);
+  const t = useT();
+  const { locale } = useLocale();
+  const copy = useProjectCopy(project.slug);
 
   return (
     <article className={`${styles.caseStudy} ${moodClass[project.mood]}`}>
@@ -30,7 +35,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
           <div className={styles.heroMeta}>
             <span>{project.index} / 03</span>
             <span className={styles.heroDot} aria-hidden />
-            <span>{project.status}</span>
+            <span>{copy.status}</span>
             <span className={styles.heroDot} aria-hidden />
             <span>{project.year}</span>
           </div>
@@ -39,7 +44,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
             <SplitText text={project.title} by="word" delay={0.2} />
           </h1>
 
-          <p className={styles.heroTagline}>{project.tagline}</p>
+          <p className={styles.heroTagline}>{copy.tagline}</p>
 
           <ul className={styles.chips}>
             {project.roles.map((r) => (
@@ -50,7 +55,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
           </ul>
 
           <div className={styles.heroTech}>
-            <span className={styles.heroTechLabel}>Built with</span>
+            <span className={styles.heroTechLabel}>{t.caseStudy.builtWith}</span>
             <span>{project.tech.join(' · ')}</span>
           </div>
 
@@ -59,7 +64,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
               <span className={styles.heroTeamMark} aria-hidden>
                 ↳
               </span>
-              <span>{project.team}</span>
+              <span>{locale === 'en' ? project.team : copy.team ?? project.team}</span>
             </div>
           )}
 
@@ -74,7 +79,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
                 data-cursor-label="Open Live ↗"
               >
                 <span className={styles.heroCtaDot} aria-hidden />
-                <span>Live</span>
+                <span>{t.caseStudy.live}</span>
                 <span className={styles.heroCtaArrow}>↗</span>
               </a>
             )}
@@ -87,7 +92,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
                 data-cursor
                 data-cursor-label="View source ↗"
               >
-                <span>Repository</span>
+                <span>{t.caseStudy.repo}</span>
                 <span className={styles.heroCtaArrow}>↗</span>
               </a>
             )}
@@ -97,9 +102,15 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
 
       {/* ── Content ── */}
       <div className={styles.content}>
-        {project.sections.map((section, i) => (
-          <SectionRenderer key={i} section={section} />
-        ))}
+        {t.caseStudy.bodyNote && (
+          <p className={styles.bodyNote}>{t.caseStudy.bodyNote}</p>
+        )}
+        {/* Case bodies are English-only for now; lang keeps screen readers right */}
+        <div lang="en" className={styles.contentBody}>
+          {project.sections.map((section, i) => (
+            <SectionRenderer key={i} section={section} />
+          ))}
+        </div>
       </div>
 
       {/* ── Footer nav ── */}
@@ -111,7 +122,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
             data-cursor
             data-cursor-label="Previous case →"
           >
-            <span className={styles.navLabel}>← Previous</span>
+            <span className={styles.navLabel}>{t.caseStudy.previous}</span>
             <span className={styles.navTitle}>{adjacents.prev.title}</span>
           </Link>
           <Link
@@ -120,7 +131,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
             data-cursor
             data-cursor-label="Next case →"
           >
-            <span className={styles.navLabel}>Next →</span>
+            <span className={styles.navLabel}>{t.caseStudy.next}</span>
             <span className={styles.navTitle}>{adjacents.next.title}</span>
           </Link>
         </nav>

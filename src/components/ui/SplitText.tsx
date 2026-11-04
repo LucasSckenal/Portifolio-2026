@@ -42,7 +42,12 @@ export default function SplitText({
             display: 'inline-block',
             overflow: 'hidden',
             verticalAlign: 'top',
-            marginRight: by === 'word' ? '0.25em' : 0,
+            // The mask needs room for descenders (p, g) and italic overhang;
+            // padding grows the mask, the negative margins keep spacing as before.
+            paddingBottom: '0.14em',
+            marginBottom: '-0.14em',
+            paddingRight: '0.1em',
+            marginRight: by === 'word' ? '0.15em' : '-0.1em',
           }}
         >
           <motion.span

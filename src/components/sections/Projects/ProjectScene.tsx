@@ -8,6 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
 import { cinema } from '@/lib/easings';
+import { useT } from '@/components/providers/LanguageProvider';
 import styles from './ProjectScene.module.scss';
 
 export type Mood = 'dark' | 'light' | 'glass';
@@ -54,6 +55,7 @@ export default function ProjectScene({
   team,
   children,
 }: Props) {
+  const t = useT();
   const sectionRef = useRef<HTMLElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
   const watermarkRef = useRef<HTMLDivElement>(null);
@@ -212,7 +214,7 @@ export default function ProjectScene({
           {tech && tech.length > 0 && (
             <Reveal delay={0.4} amount={0.4}>
               <div className={styles.tech}>
-                <span className={styles.techLabel}>Built with</span>
+                <span className={styles.techLabel}>{t.caseStudy.builtWith}</span>
                 <span className={styles.techList}>{tech.join(' · ')}</span>
               </div>
             </Reveal>
@@ -239,7 +241,7 @@ export default function ProjectScene({
                     data-cursor
                     data-cursor-label="Read case study →"
                   >
-                    <span>Case study</span>
+                    <span>{t.projects.caseStudyCta}</span>
                     <span className={styles.viewArrow}>→</span>
                   </Link>
                 )}
@@ -254,7 +256,7 @@ export default function ProjectScene({
                     data-cursor-label="Open Live ↗"
                   >
                     <span className={styles.viewDot} aria-hidden />
-                    <span>Live</span>
+                    <span>{t.projects.liveCta}</span>
                     <span className={styles.viewArrow}>↗</span>
                   </a>
                 )}
@@ -268,7 +270,7 @@ export default function ProjectScene({
                     data-cursor
                     data-cursor-label="View source ↗"
                   >
-                    <span>Repo</span>
+                    <span>{t.projects.repoCta}</span>
                     <span className={styles.viewArrow}>↗</span>
                   </a>
                 )}

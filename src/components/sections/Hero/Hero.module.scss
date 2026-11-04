@@ -89,8 +89,11 @@
   pointer-events: none;
   font-family: var(--font-serif);
   font-weight: 200;
-  font-size: clamp(18rem, 38vw, 30rem);
+  // Two glyphs must fit the viewport: 38vw each keeps them inside even on
+  // phones (the old 18rem floor made them ~600px wide at 375px).
+  font-size: clamp(8rem, 38vw, 30rem);
   letter-spacing: 0.06em;
+  overflow: hidden;
   color: #F2EFE9;
   user-select: none;
   will-change: transform, opacity;
@@ -102,6 +105,9 @@
   z-index: 2;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  // minmax(0, 1fr) stops the longest title line from widening the column
+  // past the viewport on narrow screens.
+  grid-template-columns: minmax(0, 1fr);
   height: 100%;
   padding: calc(var(--s-5) + var(--s-3)) var(--gutter) var(--s-4);
   will-change: transform, opacity;
@@ -109,9 +115,10 @@
 
 .topRow {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: var(--s-3);
+  gap: var(--s-1) var(--s-3);
 }
 
 .label {
@@ -134,6 +141,10 @@
   letter-spacing: var(--track-tight);
   line-height: 0.95;
   color: #F2EFE9;
+
+  // The global hero token floors at 4.5rem, which pushes "silenciosa." past
+  // a 375px screen. On phones scale purely with the viewport instead.
+  @include breakpoint(sm) { font-size: 12.5vw; }
 }
 
 .titleLine {

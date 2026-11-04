@@ -118,4 +118,66 @@ export const es: Dictionary = {
     bodyNightExtra: 'Las respuestas nocturnas pueden llegar a la mañana siguiente.',
     footerSignalValueNight: 'Horas silenciosas',
   },
+  now: {
+    "label": "Ahora · Enero 2026",
+    "items": [
+      "Construyendo la galería de shaders Yōkai — las 3 primeras piezas salen pronto.",
+      "Leyendo “The Death of the Heart” (Bowen) y releyendo a Tufte.",
+      "Obsesionado con el post-procesado en Three.js y las texturas de papel japonés."
+    ]
+  },
+  labPromo: {
+    "label": "↳ Experimentos paralelos",
+    "titleLine1": "Lo que creo",
+    "titleLine2": "sin briefing.",
+    "body": "Piezas WebGL independientes — hechas cuando el trabajo del cliente ya está entregado y la pregunta se vuelve “¿y si…?”. Cada una vive en su propia ruta, sin marco, sin señales de salida salvo el camino de vuelta.",
+    "cta": "Entrar al lab",
+    "enter": "Entrar a"
+  },
+  lab: {
+    "titleLine1": "Experimentos",
+    "titleLine2": "sin briefing.",
+    "intro": "Piezas WebGL independientes — hechas cuando el trabajo del cliente ya está entregado y la pregunta es solo “¿y si…?”. Cada una es una ruta inmersiva completa, sin cabecera, sin marco, sin señales de salida salvo el enlace de vuelta al portafolio.",
+    "enter": "Entrar",
+    "footer": "Más piezas en desarrollo — shaders, bocetos que reaccionan al sonido, estudios de tipografía cinética. Vuelve de vez en cuando.",
+    "pieces": {
+      "kagami": {
+        "status": "En línea",
+        "tagline": "Un torii flotando en un vacío infinito.",
+        "description": "Un estudio 3D sobre quietud y perturbación. El torii suspendido en la oscuridad total, las linternas como único calor. El ratón agita el agua; el sonido entra cuando lo pides."
+      },
+      "niwa": {
+        "status": "En progreso",
+        "tagline": "Un estanque poco profundo, piedras gastadas, una hoja a la deriva.",
+        "description": "Un jardín karesansui traducido a WebGL — hojas de momiji cayendo y girando sobre el agua alrededor de un viejo arce. Pieza hermana de Kagami."
+      }
+    }
+  },
+  work: {
+    "label": "007 — Filmografía",
+    "titleLine1": "Cada pieza,",
+    "titleLine2": "en orden cronológico.",
+    "intro": "Desde {year} · {count} piezas. Trabajo comercial, experimentos personales, proyectos académicos y proyectos de fin de semana — todo en un lugar. Los tres de la portada son lo destacado; aquí está el carrete completo.",
+    "filters": {
+      "all": "Todos",
+      "commercial": "Comercial",
+      "personal": "Personal",
+      "academic": "Académico",
+      "experiment": "Experimento"
+    },
+    "piece": "pieza",
+    "pieces": "piezas",
+    "footer": "¿Buscas algo concreto?",
+    "footerLink": "Pregunta directamente ↗",
+    "readCase": "Leer el caso →",
+    "open": "Abrir ↗"
+  },
+  caseStudy: {
+    "builtWith": "Hecho con",
+    "live": "En línea",
+    "repo": "Repositorio",
+    "previous": "← Anterior",
+    "next": "Siguiente →",
+    "bodyNote": "El texto completo de este caso está en inglés."
+  },
 };

@@ -118,4 +118,66 @@ export const en: Dictionary = {
     bodyNightExtra: 'Night replies may come the next morning.',
     footerSignalValueNight: 'Quiet hours',
   },
+  now: {
+    "label": "Now · January 2026",
+    "items": [
+      "Building the Yōkai shader gallery — first 3 entries shipping soon.",
+      "Reading “The Death of the Heart” (Bowen) and re-reading Tufte.",
+      "Currently obsessed with Three.js post-processing and Japanese paper textures."
+    ]
+  },
+  labPromo: {
+    "label": "↳ Side experiments",
+    "titleLine1": "What I build",
+    "titleLine2": "without a brief.",
+    "body": "Standalone WebGL pieces — built when the client work is shipped and the question becomes “what if?”. Each one lives on its own full route, no chrome, no exit signs except the way back.",
+    "cta": "Enter the lab",
+    "enter": "Enter"
+  },
+  lab: {
+    "titleLine1": "Experiments",
+    "titleLine2": "without a brief.",
+    "intro": "Standalone WebGL pieces — built when the client work is shipped and the question is just “what if?”. Each one is a full immersive route on its own, no header, no chrome, no exit signs except the link back to the portfolio.",
+    "enter": "Enter",
+    "footer": "More pieces in development — shaders, audio-reactive sketches, kinetic type studies. Drop in occasionally.",
+    "pieces": {
+      "kagami": {
+        "status": "Live",
+        "tagline": "A floating torii in an infinite void.",
+        "description": "A 3D study in stillness and disturbance. The torii suspended in pure darkness, the lanterns its only warmth. Mouse moves stir the water; sound enters when you ask."
+      },
+      "niwa": {
+        "status": "WIP",
+        "tagline": "A shallow pond, weathered stones, a leaf drifting.",
+        "description": "A karesansui garden translated to WebGL — momiji leaves falling and rotating on the water surface around an old maple. Companion piece to Kagami."
+      }
+    }
+  },
+  work: {
+    "label": "007 — Filmography",
+    "titleLine1": "Every piece,",
+    "titleLine2": "in chronological order.",
+    "intro": "Started {year} · {count} pieces. Commercial work, personal experiments, academic projects, and weekend builds — all in one place. The featured three on the home are the highlights; this is the full reel.",
+    "filters": {
+      "all": "All",
+      "commercial": "Commercial",
+      "personal": "Personal",
+      "academic": "Academic",
+      "experiment": "Experiment"
+    },
+    "piece": "piece",
+    "pieces": "pieces",
+    "footer": "Looking for something specific?",
+    "footerLink": "Ask directly ↗",
+    "readCase": "Read case study →",
+    "open": "Open ↗"
+  },
+  caseStudy: {
+    "builtWith": "Built with",
+    "live": "Live",
+    "repo": "Repository",
+    "previous": "← Previous",
+    "next": "Next →",
+    "bodyNote": ""
+  },
 };

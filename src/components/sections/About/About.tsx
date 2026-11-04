@@ -176,12 +176,12 @@ export default function About() {
               <aside className={styles.now}>
                 <div className={styles.nowHeader}>
                   <span className={styles.nowJp}>現</span>
-                  <span className={styles.nowLabel}>Now · January 2026</span>
+                  <span className={styles.nowLabel}>{t.now.label}</span>
                 </div>
                 <ul className={styles.nowList}>
-                  <li>Building the Yōkai shader gallery — first 3 entries shipping soon.</li>
-                  <li>Reading <em>The Death of the Heart</em> (Bowen) and re-reading Tufte.</li>
-                  <li>Currently obsessed with Three.js post-processing and Japanese paper textures.</li>
+                  {t.now.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
                 </ul>
               </aside>
             </Reveal>

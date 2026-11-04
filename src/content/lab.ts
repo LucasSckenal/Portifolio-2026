@@ -50,7 +50,7 @@ export const LAB_PIECES: LabPiece[] = [
     status: 'WIP',
     tagline: 'A shallow pond, weathered stones, a leaf drifting.',
     description:
-      'A karesansui garden translated to WebGL — three stones arranged by the rule of five, momiji leaves rotating on the water surface, the same night sky reflected below. Companion piece to Kagami.',
+      'A karesansui garden translated to WebGL — momiji leaves falling and rotating on the water surface around an old maple. Companion piece to Kagami.',
     tech: ['Three.js', 'R3F', 'InstancedMesh', 'Custom water shader'],
     href: '/lab/niwa',
     preview: '/lab/niwa/preview.png',

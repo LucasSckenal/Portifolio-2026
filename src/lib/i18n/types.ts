@@ -116,4 +116,58 @@ export type Dictionary = {
     bodyNightExtra: string;
     footerSignalValueNight: string;
   };
+  // About → "Now" card (update monthly)
+  now: {
+    label: string;
+    items: string[];
+  };
+  // Home entry point to the Lab (LabPromo.tsx)
+  labPromo: {
+    label: string;
+    titleLine1: string;
+    titleLine2: string;
+    body: string;
+    cta: string;
+    enter: string;
+  };
+  // /lab gallery page
+  lab: {
+    titleLine1: string;
+    titleLine2: string;
+    intro: string;
+    enter: string;
+    footer: string;
+    pieces: Record<string, { status: string; tagline: string; description: string }>;
+  };
+  // /work filmography page
+  work: {
+    label: string;
+    titleLine1: string;
+    titleLine2: string;
+    // {year} and {count} are replaced at render time
+    intro: string;
+    filters: {
+      all: string;
+      commercial: string;
+      personal: string;
+      academic: string;
+      experiment: string;
+    };
+    piece: string;
+    pieces: string;
+    footer: string;
+    footerLink: string;
+    readCase: string;
+    open: string;
+  };
+  // Case study page chrome
+  caseStudy: {
+    builtWith: string;
+    live: string;
+    repo: string;
+    previous: string;
+    next: string;
+    // Shown above the body when the case text is not in this locale
+    bodyNote: string;
+  };
 };

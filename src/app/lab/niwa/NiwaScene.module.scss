@@ -108,6 +108,56 @@
   margin-bottom: 8px;
 }
 
+// ── Loading veil (NiwaLoader) ───────────────
+.loader {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-2);
+  background: #B0C8DC;
+  color: rgba(14, 13, 11, 0.7);
+  transition: opacity 0.4s ease;
+}
+
+.loaderHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loaderKanji {
+  font-family: var(--font-serif);
+  font-weight: 200;
+  font-size: 4rem;
+  line-height: 1;
+  color: rgba(140, 42, 31, 0.8);
+}
+
+.loaderText {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+}
+
+.loaderBar {
+  position: relative;
+  width: 160px;
+  height: 1px;
+  background: rgba(14, 13, 11, 0.15);
+  overflow: hidden;
+}
+
+.loaderBarFill {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 13, 11, 0.6);
+  transform-origin: left center;
+  transition: transform 0.3s ease;
+}
+
 @media (max-width: 640px) {
   .overlay { padding: var(--s-3); }
   .signature { display: none; }

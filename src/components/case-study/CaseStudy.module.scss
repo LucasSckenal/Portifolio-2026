@@ -248,6 +248,21 @@
 }
 
 // ── Content body ─────────────────────────
+.bodyNote {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--track-mark);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+// Same rhythm as .content so wrapping the sections changes nothing visually
+.contentBody {
+  display: grid;
+  gap: var(--s-5);
+}
+
 .content {
   position: relative;
   z-index: 1;

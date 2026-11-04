@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import SplitText from '@/components/ui/SplitText';
 import { cinema } from '@/lib/easings';
 import type { ArchiveEntry, ArchiveKind } from '@/content/projects';
+import { useT, useLocale } from '@/components/providers/LanguageProvider';
+import { getProjectCopy } from '@/content/projects.i18n';
 import styles from './page.module.scss';
 
 // Director-style filmography of every project. Restraint over imagery —
@@ -13,16 +15,11 @@ import styles from './page.module.scss';
 
 type FilterId = ArchiveKind | 'all';
 
-const filters: Array<{ id: FilterId; label: string }> = [
-  { id: 'all',         label: 'All'         },
-  { id: 'commercial',  label: 'Commercial'  },
-  { id: 'personal',    label: 'Personal'    },
-  { id: 'academic',    label: 'Academic'    },
-  { id: 'experiment',  label: 'Experiment'  },
-];
+const filters: FilterId[] = ['all', 'commercial', 'personal', 'academic', 'experiment'];
 
 export default function WorkArchive({ entries }: { entries: ArchiveEntry[] }) {
   const [filter, setFilter] = useState<FilterId>('all');
+  const t = useT();
 
   const filtered = useMemo(
     () => (filter === 'all' ? entries : entries.filter((e) => e.kind === filter)),
@@ -40,17 +37,17 @@ export default function WorkArchive({ entries }: { entries: ArchiveEntry[] }) {
         {/* ── Header ──────────────────────── */}
         <header className={styles.header}>
           <div className={styles.labelRow}>
-            <span className={styles.label}>007 — Filmography</span>
+            <span className={styles.label}>{t.work.label}</span>
             <span className={styles.divider} aria-hidden />
             <span className={styles.labelJp}>全作品 · Zen-sakuhin</span>
           </div>
 
           <h1 className={styles.title}>
             <span className={styles.titleLine}>
-              <SplitText text="Every piece," by="word" delay={0.1} />
+              <SplitText text={t.work.titleLine1} by="word" delay={0.1} />
             </span>
             <span className={styles.titleLine}>
-              <SplitText text="in chronological order." by="word" delay={0.25} />
+              <SplitText text={t.work.titleLine2} by="word" delay={0.25} />
             </span>
           </h1>
 
@@ -60,10 +57,9 @@ export default function WorkArchive({ entries }: { entries: ArchiveEntry[] }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1, ease: cinema }}
           >
-            Started {startYear} · {entries.length} pieces. Commercial work,
-            personal experiments, academic projects, and weekend builds — all
-            in one place. The featured three on the home are the highlights;
-            this is the full reel.
+            {t.work.intro
+              .replace('{year}', String(startYear))
+              .replace('{count}', String(entries.length))}
           </motion.p>
         </header>
 
@@ -74,23 +70,23 @@ export default function WorkArchive({ entries }: { entries: ArchiveEntry[] }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.8, ease: cinema }}
         >
-          {filters.map((f) => {
-            const isActive = filter === f.id;
+          {filters.map((id) => {
+            const isActive = filter === id;
             return (
               <button
-                key={f.id}
+                key={id}
                 type="button"
-                onClick={() => setFilter(f.id)}
+                onClick={() => setFilter(id)}
                 className={`${styles.filterBtn} ${isActive ? styles.filterBtnActive : ''}`}
                 aria-pressed={isActive}
                 data-cursor
               >
-                {f.label}
+                {t.work.filters[id]}
               </button>
             );
           })}
           <span className={styles.filterCount}>
-            {filtered.length} {filtered.length === 1 ? 'piece' : 'pieces'}
+            {filtered.length} {filtered.length === 1 ? t.work.piece : t.work.pieces}
           </span>
         </motion.nav>
 
@@ -120,9 +116,9 @@ export default function WorkArchive({ entries }: { entries: ArchiveEntry[] }) {
 
         {/* ── Footer ──────────────────────── */}
         <footer className={styles.footerNote}>
-          Looking for something specific?{' '}
+          {t.work.footer}{' '}
           <Link href="/#contact" className={styles.footerLink} data-cursor>
-            Ask directly ↗
+            {t.work.footerLink}
           </Link>
         </footer>
       </div>
@@ -132,8 +128,15 @@ export default function WorkArchive({ entries }: { entries: ArchiveEntry[] }) {
 
 // ── Single filmography row ──
 function Row({ entry }: { entry: ArchiveEntry }) {
+  const t = useT();
+  const { locale } = useLocale();
   const arrow = entry.external ? '↗' : '→';
-  const cursorLabel = entry.external ? 'Open ↗' : 'Read case study →';
+  const cursorLabel = entry.external ? t.work.open : t.work.readCase;
+  // Internal entries point at /work/<slug>; use that slug's translated tagline
+  const slug = !entry.external && entry.href?.startsWith('/work/')
+    ? entry.href.slice('/work/'.length)
+    : undefined;
+  const oneLiner = (slug && getProjectCopy(slug, locale)?.tagline) || entry.oneLiner;
 
   const inner = (
     <>
@@ -142,7 +145,7 @@ function Row({ entry }: { entry: ArchiveEntry }) {
       <span className={styles.cellType}>{entry.type}</span>
       <span className={styles.cellArrow} aria-hidden>{entry.href ? arrow : '—'}</span>
       <span className={styles.cellOneLiner}>
-        <span className={styles.oneLinerMark}>↳</span> {entry.oneLiner}
+        <span className={styles.oneLinerMark}>↳</span> {oneLiner}
       </span>
     </>
   );

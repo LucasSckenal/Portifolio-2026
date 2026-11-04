@@ -6,6 +6,7 @@ import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
 import { LAB_PIECES } from '@/content/lab';
 import { cinema } from '@/lib/easings';
+import { useT } from '@/components/providers/LanguageProvider';
 import styles from './LabPromo.module.scss';
 
 // ── LabPromo — home page entry point for the Lab gallery ───────
@@ -19,32 +20,29 @@ import styles from './LabPromo.module.scss';
 // what's behind the door before clicking.
 
 export default function LabPromo() {
+  const t = useT();
   return (
     <section id="lab-promo" className={styles.section}>
       <div className={styles.inner}>
         {/* ── Header ── */}
         <header className={styles.header}>
           <div className={styles.labelRow}>
-            <span className={styles.label}>↳ Side experiments</span>
+            <span className={styles.label}>{t.labPromo.label}</span>
             <span className={styles.divider} aria-hidden />
             <span className={styles.labelJp}>実験 · Jikken</span>
           </div>
 
           <h2 className={styles.title}>
             <span className={styles.titleLine}>
-              <SplitText text="What I build" by="word" delay={0.1} />
+              <SplitText text={t.labPromo.titleLine1} by="word" delay={0.1} />
             </span>
             <span className={styles.titleLine}>
-              <SplitText text="without a brief." by="word" delay={0.3} />
+              <SplitText text={t.labPromo.titleLine2} by="word" delay={0.3} />
             </span>
           </h2>
 
           <Reveal delay={0.5} amount={0.4}>
-            <p className={styles.body}>
-              Standalone WebGL pieces — built when the client work is shipped
-              and the question becomes &ldquo;what if?&rdquo;. Each one lives on its
-              own full-route, no chrome, no exit signs except the way back.
-            </p>
+            <p className={styles.body}>{t.labPromo.body}</p>
           </Reveal>
         </header>
 
@@ -71,12 +69,14 @@ export default function LabPromo() {
                 href={piece.href}
                 className={styles.piece}
                 data-cursor
-                data-cursor-label={`Enter ${piece.title} ↗`}
+                data-cursor-label={`${t.labPromo.enter} ${piece.title} ↗`}
               >
                 <span className={styles.pieceKanji} aria-hidden>{piece.kanji}</span>
                 <div className={styles.pieceMeta}>
                   <span className={styles.pieceName}>{piece.title}</span>
-                  <span className={styles.pieceTagline}>{piece.tagline}</span>
+                  <span className={styles.pieceTagline}>
+                    {t.lab.pieces[piece.slug]?.tagline ?? piece.tagline}
+                  </span>
                 </div>
                 <span className={styles.pieceArrow} aria-hidden>↗</span>
               </Link>
@@ -91,9 +91,9 @@ export default function LabPromo() {
               href="/lab"
               className={styles.cta}
               data-cursor
-              data-cursor-label="Enter lab →"
+              data-cursor-label={`${t.labPromo.cta} →`}
             >
-              <span>Enter the lab</span>
+              <span>{t.labPromo.cta}</span>
               <span className={styles.ctaArrow} aria-hidden>→</span>
             </Link>
           </Reveal>

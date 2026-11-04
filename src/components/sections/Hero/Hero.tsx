@@ -114,10 +114,10 @@ export default function Hero() {
       );
 
       if (reduced) {
-        gsap.set(
-          [topRowRef.current, bottomRowRef.current, kanjiRef.current],
-          { opacity: 1, y: 0 }
-        );
+        gsap.set([topRowRef.current, bottomRowRef.current], { opacity: 1, y: 0 });
+        // The kanji is a watermark: it rests at the same faint opacity the
+        // scrubbed timeline gives it, never fully opaque over the title.
+        gsap.set(kanjiRef.current, { opacity: 0.16, y: 0 });
         const lines = titleRef.current?.querySelectorAll<HTMLElement>(
           `.${styles.titleInner}`
         );

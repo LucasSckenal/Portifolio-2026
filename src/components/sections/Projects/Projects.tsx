@@ -4,6 +4,7 @@ import SplitText from '@/components/ui/SplitText';
 import Reveal from '@/components/ui/Reveal';
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { useT } from '@/components/providers/LanguageProvider';
+import { useProjectCopy } from '@/lib/hooks/useProjectCopy';
 import ProjectScene from './ProjectScene';
 import { GameMedia, ChatbotMedia, PhantomMedia, NexoMedia, LJMedia, MaFinanceMedia } from './ProjectMedia';
 import GameWorlds from './GameWorlds';
@@ -33,6 +34,9 @@ export default function Projects() {
 // ─────────────────────────────────────────
 function DayBlock() {
   const t = useT();
+  const ma = useProjectCopy('ma-finance-os');
+  const nexo = useProjectCopy('nexo');
+  const lj = useProjectCopy('lj-treinamento-integrado');
   return (
     <>
       {/* ── Section header ─────────────────── */}
@@ -63,11 +67,11 @@ function DayBlock() {
       <ProjectScene
         index="01"
         title="Ma Finance OS"
-        status="Live · In production"
+        status={ma.status}
         year="2026"
         roles={['Product Design', 'Full-Stack', 'AI Integration', 'SaaS']}
         tech={['Next.js 16', 'React 19', 'TypeScript', 'SCSS Modules', 'Firebase', 'Gemini']}
-        description="A minimalist operating system for personal finance — net worth, budgets, goals, and investments tracked in real time, with a Gemini-powered assistant that doesn't just answer questions, it executes actions on your behalf."
+        description={ma.summary}
         jp="間"
         mood="dark"
         align="left"
@@ -88,11 +92,11 @@ function DayBlock() {
       <ProjectScene
         index="02"
         title="Nexo"
-        status="Live · In production"
+        status={nexo.status}
         year="2026"
         roles={['Product Design', 'Full-Stack', 'AI Integration', 'SaaS']}
         tech={['Next.js 16', 'React 19', 'TypeScript', 'Tailwind v4', 'Firebase', 'Gemini']}
-        description="A team workspace where AI is part of the team — Kanban boards, backlog, client and member management, analytics, and a Gemini assistant that drafts tasks and refines text from inside the work, not from a sidebar."
+        description={nexo.summary}
         jp="繋"
         mood="dark"
         align="right"
@@ -121,12 +125,12 @@ function DayBlock() {
       <ProjectScene
         index="03"
         title="LJ Treinamento Integrado"
-        status="Live · Production"
+        status={lj.status}
         year="2026"
         roles={['Brand Web', 'Booking UX', 'Client Work', 'Responsive']}
         tech={['Next.js', 'TypeScript', 'TailwindCSS']}
-        team="Solo · Client: Luis Joris"
-        description="A marketing and booking site for a boutique training studio in Ijuí — max four students per class, single specialist trainer. The site reads like a private practice, not a gym. Free slots link straight to WhatsApp reservations, no friction account creation."
+        team={lj.team}
+        description={lj.summary}
         jp="体"
         mood="light"
         align="left"
@@ -174,6 +178,9 @@ function DayBlock() {
 // ─────────────────────────────────────────
 function NightBlock() {
   const t = useT();
+  const game = useProjectCopy('onde-estao-os-netos');
+  const chat = useProjectCopy('medical-chatbot');
+  const phantom = useProjectCopy('phantom-commerce');
   return (
     <>
       {/* ── Section header ─── */}
@@ -205,12 +212,12 @@ function NightBlock() {
       <ProjectScene
         index="01"
         title="Onde Estão os Netos?"
-        status="v1.0 · In development · PI-4"
+        status={game.status}
         year="2025"
         roles={['Game UI', 'Tower Defense', 'Roguelike', 'Accessibility']}
         tech={['Godot 4.6', 'GDScript', 'CSV-driven balancing']}
-        team="Team of 4 · SENAC · UI / Frontend systems"
-        description="A Tower Defense game where grandparents Afonso and Berta — pulled into an antique board game — must cross six themed worlds to rescue their grandchildren. Day-and-night loop with roguelike power-ups and an in-game AI advisor. Built in Godot 4.6 and designed from the start around accessibility for elderly players."
+        team={game.team}
+        description={game.summary}
         jp="戦"
         mood="dark"
         align="left"
@@ -230,12 +237,12 @@ function NightBlock() {
       <ProjectScene
         index="02"
         title="Medical AI Chatbot"
-        status="Academic · Live demo · PI-3"
+        status={chat.status}
         year="2025"
         roles={['Conversational UX', 'Voice + Text', 'Medical Triage', 'Multilingual']}
         tech={['React', 'Vite', 'Node + Express', 'Firebase']}
-        team="Team of 3 · Unijui · Front-End lead"
-        description="A multilingual medical assistant that turns patient symptoms — spoken or typed — into structured reports for faster clinical triage. Persistent medical profiles, diagnostic history, voice + text input, and full UI theming. React + Vite frontend, Node + Express backend, Firebase Auth + Firestore."
+        team={chat.team}
+        description={chat.summary}
         jp="話"
         mood="light"
         align="right"
@@ -259,12 +266,12 @@ function NightBlock() {
       <ProjectScene
         index="03"
         title="Phantom Commerce"
-        status="Academic · Concept"
+        status={phantom.status}
         year="2025"
         roles={['Ecommerce', 'Motion Design', 'Full-Stack', 'Brand']}
         tech={['Next.js', 'Firebase', 'SCSS', 'Lucide']}
-        team="Team of 3 · Unijui"
-        description="A gaming-focused commerce platform built around premium product presentation, animated interactions, and a glass-deep visual language. The store as exhibit, not as catalogue. Full-stack Next.js with Firebase for auth and Firestore for the product / user data."
+        team={phantom.team}
+        description={phantom.summary}
         jp="幻"
         mood="glass"
         align="right"

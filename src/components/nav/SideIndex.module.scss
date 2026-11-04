@@ -1,7 +1,9 @@
 .sideIndex {
   position: fixed;
   top: 50%;
-  right: var(--s-3);
+  // Sits inside the page gutter: only the dot + number take space, so the
+  // index never covers section content (the gutter is ≥54px from 900px up).
+  right: var(--s-1);
   transform: translateY(-50%);
   z-index: var(--z-nav);
   color: var(--mood-text-light);
@@ -27,7 +29,7 @@
 .link {
   position: relative;
   display: grid;
-  grid-template-columns: 18px auto auto;
+  grid-template-columns: 18px auto;
   align-items: center;
   gap: 10px;
   padding: 6px 4px;
@@ -40,7 +42,7 @@
 
   .label {
     opacity: 0;
-    transform: translateX(-6px);
+    transform: translateX(6px);
     transition:
       opacity 0.5s var(--ease-cinema),
       transform 0.5s var(--ease-cinema);
@@ -63,10 +65,6 @@
     box-shadow: 0 0 10px rgba(140, 42, 31, 0.55);
   }
 
-  .label {
-    opacity: 1;
-    transform: translateX(0);
-  }
 }
 
 // ── Pieces ───────────────────────────────
@@ -87,7 +85,20 @@
   opacity: 0.8;
 }
 
+// Out of flow and to the left of the dot, shown on hover/focus only, so the
+// hidden names no longer widen the index over the content.
 .label {
+  position: absolute;
+  right: calc(100% + 4px);
+  top: 50%;
+  margin-top: -0.5em;
+  line-height: 1;
   font-size: 0.62rem;
   white-space: nowrap;
+  pointer-events: none;
+}
+
+.link:focus-visible .label {
+  opacity: 1;
+  transform: translateX(0);
 }

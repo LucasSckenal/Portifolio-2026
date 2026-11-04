@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { setupGLTFLoader } from '@/lib/gltf-setup';
+import NiwaLoader from './NiwaLoader';
 import styles from './NiwaScene.module.scss';
 
 // One-time DRACO decoder configuration — must run before any useGLTF call
@@ -55,6 +56,7 @@ export default function NiwaClient() {
   return (
     <main className={styles.page}>
       <NiwaScene />
+      <NiwaLoader />
 
       <div className={styles.overlay}>
         <div className={styles.topBar}>
@@ -71,7 +73,7 @@ export default function NiwaClient() {
         </div>
 
         <div className={styles.hint}>
-          <span>Drag to orbit · stones drifting soon · sound TBD</span>
+          <span>Drag to orbit · sound TBD</span>
         </div>
       </div>
     </main>

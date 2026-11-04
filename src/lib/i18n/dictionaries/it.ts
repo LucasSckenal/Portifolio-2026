@@ -118,4 +118,66 @@ export const it: Dictionary = {
     bodyNightExtra: 'Le risposte notturne possono arrivare la mattina dopo.',
     footerSignalValueNight: 'Ore silenziose',
   },
+  now: {
+    "label": "Adesso · Gennaio 2026",
+    "items": [
+      "Sto costruendo la galleria di shader Yōkai — i primi 3 pezzi escono presto.",
+      "Sto leggendo “The Death of the Heart” (Bowen) e rileggendo Tufte.",
+      "Ossessionato dal post-processing in Three.js e dalle texture di carta giapponese."
+    ]
+  },
+  labPromo: {
+    "label": "↳ Esperimenti paralleli",
+    "titleLine1": "Quello che creo",
+    "titleLine2": "senza brief.",
+    "body": "Pezzi WebGL indipendenti — nati quando il lavoro per il cliente è consegnato e la domanda diventa “e se?”. Ognuno vive sulla sua rotta, senza cornice, senza cartelli d’uscita tranne la strada del ritorno.",
+    "cta": "Entra nel lab",
+    "enter": "Entra in"
+  },
+  lab: {
+    "titleLine1": "Esperimenti",
+    "titleLine2": "senza brief.",
+    "intro": "Pezzi WebGL indipendenti — nati quando il lavoro per il cliente è consegnato e la domanda è solo “e se?”. Ognuno è una rotta immersiva completa, senza intestazione, senza cornice, senza cartelli d’uscita tranne il link di ritorno al portfolio.",
+    "enter": "Entra",
+    "footer": "Altri pezzi in lavorazione — shader, bozzetti che reagiscono al suono, studi di tipografia cinetica. Ripassa ogni tanto.",
+    "pieces": {
+      "kagami": {
+        "status": "Online",
+        "tagline": "Un torii sospeso in un vuoto infinito.",
+        "description": "Uno studio 3D su quiete e disturbo. Il torii sospeso nel buio totale, le lanterne come unico calore. Il mouse increspa l’acqua; il suono entra quando lo chiedi."
+      },
+      "niwa": {
+        "status": "In corso",
+        "tagline": "Uno stagno basso, pietre consumate, una foglia alla deriva.",
+        "description": "Un giardino karesansui tradotto in WebGL — foglie di momiji che cadono e ruotano sull’acqua attorno a un vecchio acero. Pezzo gemello di Kagami."
+      }
+    }
+  },
+  work: {
+    "label": "007 — Filmografia",
+    "titleLine1": "Ogni pezzo,",
+    "titleLine2": "in ordine cronologico.",
+    "intro": "Dal {year} · {count} pezzi. Lavori commerciali, esperimenti personali, progetti accademici e progetti del fine settimana — tutto in un posto. I tre della home sono i momenti salienti; questo è il rullo completo.",
+    "filters": {
+      "all": "Tutti",
+      "commercial": "Commerciale",
+      "personal": "Personale",
+      "academic": "Accademico",
+      "experiment": "Esperimento"
+    },
+    "piece": "pezzo",
+    "pieces": "pezzi",
+    "footer": "Cerchi qualcosa di preciso?",
+    "footerLink": "Chiedi direttamente ↗",
+    "readCase": "Leggi il caso →",
+    "open": "Apri ↗"
+  },
+  caseStudy: {
+    "builtWith": "Realizzato con",
+    "live": "Online",
+    "repo": "Repository",
+    "previous": "← Precedente",
+    "next": "Successivo →",
+    "bodyNote": "Il testo completo di questo caso è in inglese."
+  },
 };

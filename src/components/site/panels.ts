@@ -81,6 +81,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'DesignOn',
     note: 'App interno · PWA',
     tone: '#e879f9',
+    icon: '/icons/app/designon.png',
     // screens from a local run with a fictional demo company (no real data, name or logo)
     shots: [{ src: '/projects/designon/inicio.webp', clip: '/projects/designon/panel.mp4' }],
     media: { kind: 'image', src: '/projects/designon/inicio.webp' },
@@ -132,6 +133,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'Medical AI',
     note: 'React · Voz + texto',
     tone: '#2dd4bf',
+    icon: '/icons/app/medical-chatbot.png',
     shots: [{ src: '/projects/chatbot/Chat.png' }],
     media: { kind: 'image', src: '/projects/chatbot/Chat.png' },
   },
@@ -141,6 +143,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'Phantom',
     note: 'Next.js · Firebase',
     tone: '#f472b6',
+    icon: '/icons/app/phantom-commerce.png',
     shots: [{ src: '/projects/PhantomComerce/example_productpage.png' }],
     media: { kind: 'image', src: '/projects/PhantomComerce/example_productpage.png' },
   },

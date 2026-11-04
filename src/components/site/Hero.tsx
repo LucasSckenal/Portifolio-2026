@@ -21,7 +21,8 @@ export default function Hero() {
   const h = t.site.hero;
 
   const spin = () => window.dispatchEvent(new CustomEvent('orbit:spin'));
-  const openFirst = () => window.dispatchEvent(new CustomEvent('orbit:open-first'));
+  // the flat list of every project (the 3D halo stays the experience)
+  const openFirst = () => window.dispatchEvent(new CustomEvent('projects:open'));
 
   return (
     <section className={styles.hero} aria-labelledby="hero-title">

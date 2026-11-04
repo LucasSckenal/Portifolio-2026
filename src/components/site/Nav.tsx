@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
-import { EMAIL, showWork, whatsappHref } from './links';
+import { showWork, whatsappHref } from './links';
 import Versions from './Versions';
 import MobileMenu from './MobileMenu';
+import ProjectsIndex from './ProjectsIndex';
 import styles from './site.module.scss';
 
 export default function Nav() {
@@ -25,8 +26,13 @@ export default function Nav() {
         <button type="button" onClick={() => showWork(router, pathname)}>
           {t.site.nav.work}
         </button>
-        <a href={`mailto:${EMAIL}`}>{t.site.nav.contact}</a>
         <Versions />
+        <label className={styles.lang}>
+          {/* a globe reads as "language" in any language */}
+          <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden>
+            <circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" strokeWidth="1.2" />
+            <path d="M1.8 8h12.4M8 1.6c1.9 2 1.9 10.8 0 12.8M8 1.6c-1.9 2-1.9 10.8 0 12.8" fill="none" stroke="currentColor" strokeWidth="1.2" />
+          </svg>
         <select
           aria-label={t.site.nav.language}
           value={locale}
@@ -38,7 +44,9 @@ export default function Nav() {
             </option>
           ))}
         </select>
+        </label>
       </nav>
+      <ProjectsIndex />
 
       <div className={styles.navEnd}>
         <MobileMenu />

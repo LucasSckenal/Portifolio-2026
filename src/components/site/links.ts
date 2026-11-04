@@ -2,9 +2,9 @@
 // handles — an empty slot stays a quiet hex cell.
 // "Work": on the home page it opens the first project; anywhere else it
 // goes home, where the carousel is
-export function showWork(router: { push: (h: string) => void }, pathname: string | null) {
-  if (pathname === '/') window.dispatchEvent(new CustomEvent('orbit:open-first'));
-  else router.push('/');
+// (opens the flat projects index; the arguments stay for the callers)
+export function showWork(_router?: unknown, _pathname?: string | null) {
+  window.dispatchEvent(new CustomEvent('projects:open'));
 }
 
 export const EMAIL = 'lucaspsckenal@gmail.com';

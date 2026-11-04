@@ -131,6 +131,36 @@
   }
 }
 
+// language picker: globe + code, one hit area
+.lang {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: var(--pill);
+  color: var(--ink-2);
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+
+  svg {
+    position: absolute;
+    left: 13px;
+    pointer-events: none;
+  }
+
+  select {
+    padding-left: 34px !important;
+  }
+
+  &:hover {
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--ink);
+    outline-offset: 1px;
+  }
+}
+
 .navEnd {
   justify-self: end;
   display: flex;

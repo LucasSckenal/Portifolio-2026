@@ -217,6 +217,10 @@ export const en: Dictionary = {
       "archived": "You are viewing an earlier edition",
       "backToCurrent": "See the current one"
     },
+    "projects": {
+      "title": "All projects",
+      "sub": "Everything here in one plain list. Open one to see the full case."
+    },
     "notFound": {
       "label": "Error · 404",
       "title": "This page left the orbit.",

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { LOCALES, localeMeta } from '@/lib/i18n';
 import { EDITIONS } from '@/content/editions';
-import { EMAIL, SOCIALS, showWork } from './links';
+import { SOCIALS, showWork } from './links';
 import styles from './mobileMenu.module.scss';
 
 // Phones and narrow screens: everything the nav pill and the social comb
@@ -67,7 +67,6 @@ export default function MobileMenu() {
           >
             {t.site.nav.work}
           </button>
-          <a href={`mailto:${EMAIL}`}>{t.site.nav.contact}</a>
         </nav>
 
         <p className={styles.label}>{t.site.versions.title}</p>
@@ -83,7 +82,13 @@ export default function MobileMenu() {
           ))}
         </ul>
 
-        <p className={styles.label}>{t.site.nav.language}</p>
+        <p className={styles.label}>
+          <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden style={{ verticalAlign: '-2px', marginRight: 6 }}>
+            <circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" strokeWidth="1.3" />
+            <path d="M1.8 8h12.4M8 1.6c1.9 2 1.9 10.8 0 12.8M8 1.6c-1.9 2-1.9 10.8 0 12.8" fill="none" stroke="currentColor" strokeWidth="1.3" />
+          </svg>
+          {t.site.nav.language}
+        </p>
         <div className={styles.langs}>
           {LOCALES.map((l) => (
             <button key={l} type="button" aria-pressed={l === locale} onClick={() => setLocale(l)}>

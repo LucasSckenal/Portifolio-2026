@@ -217,6 +217,10 @@ export const ja: Dictionary = {
       "archived": "以前の版を表示しています",
       "backToCurrent": "最新版を見る"
     },
+    "projects": {
+      "title": "すべてのプロジェクト",
+      "sub": "シンプルな一覧です。開くと詳しいケースを見られます。"
+    },
     "notFound": {
       "label": "エラー · 404",
       "title": "このページは軌道を外れました。",

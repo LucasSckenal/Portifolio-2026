@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { useT } from '@/components/providers/LanguageProvider';
-import { EMAIL, SOCIALS, whatsappHref } from './links';
+import { SOCIALS } from './links';
 import styles from './comb.module.scss';
 
 // ── Social honeycomb, compact ───────────────────────────────────────
@@ -79,40 +79,14 @@ const ICONS: Record<string, ReactElement> = {
 export default function SocialComb() {
   const t = useT();
   const s = t.site.social;
-  const [copied, setCopied] = useState(false);
-
-  const copyEmail = async (e: React.MouseEvent) => {
-    try {
-      await navigator.clipboard.writeText(EMAIL);
-      e.preventDefault();
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
-    } catch {
-      // no clipboard: the mailto link proceeds
-    }
-  };
-
-  const cells = [
-    ...SOCIALS.map((x) => ({
-      id: x.id as string,
-      label: x.id === 'email' ? (copied ? s.copied : s.copy) : x.label,
-      href: x.href,
-      external: x.id !== 'email',
-      onClick: x.id === 'email' ? copyEmail : undefined,
-    })),
-    {
-      id: 'archive',
-      label: t.site.versions.label,
-      href: '/2026',
-      external: false,
-      onClick: (e: React.MouseEvent) => {
-        // Phones have no nav pill: let the link go straight to the archive
-        if (window.matchMedia('(max-width: 860px)').matches) return;
-        e.preventDefault();
-        window.dispatchEvent(new CustomEvent('versions:open'));
-      },
-    },
-  ];
+  // one cell per real contact; each label says exactly what the cell does
+  const cells = SOCIALS.map((x) => ({
+    id: x.id as string,
+    label: x.label,
+    href: x.href,
+    external: x.id !== 'email',
+    onClick: undefined as ((e: React.MouseEvent) => void) | undefined,
+  }));
 
   return (
     <nav className={styles.comb} aria-label={s.title}>
@@ -153,23 +127,13 @@ export default function SocialComb() {
           );
         })}
 
-        {/* the orb starts a WhatsApp chat for a quote; on hover it shows
-            the WhatsApp mark so it says what it does */}
-        <a
-          href={whatsappHref(t.site.nav.quoteMessage)}
-          target="_blank"
-          rel="noreferrer"
-          className={`${styles.cell} ${styles.center}`}
-          aria-label={`${s.center} · WhatsApp`}
-        >
+        {/* the centre is the comb's jewel, not a button: every action
+            already has its own labelled cell (and "Pedir orçamento" up top) */}
+        <g className={styles.core} aria-hidden>
           <polygon points={hexPoints(0, 0)} />
-          <polygon className={styles.fill} points={hexPoints(0, 0)} />
-          <g className={styles.icon}>
-            <circle r="34" fill="url(#comb-orb)" className={styles.orb} />
-            <circle r="34" fill="url(#comb-shine)" />
-          </g>
-          <g className={styles.label}>{ICONS.whatsapp}</g>
-        </a>
+          <circle r="34" fill="url(#comb-orb)" className={styles.orb} />
+          <circle r="34" fill="url(#comb-shine)" />
+        </g>
       </svg>
     </nav>
   );

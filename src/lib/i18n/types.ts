@@ -185,6 +185,10 @@ export type Dictionary = {
       cardRightTitle: string;
       cardRightBody: string;
       openHint: string;
+      noteWhat: string;
+      noteFocus: string;
+      noteNow: string;
+      noteStatus: string;
       activity: string;
       activityRelease: string;
       liveLabel: string;
@@ -205,6 +209,8 @@ export type Dictionary = {
       center: string;
       copy: string;
       copied: string;
+      clockPlace: string;
+      clockLabel: string;
     };
   };
 };

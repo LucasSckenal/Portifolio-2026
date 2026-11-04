@@ -203,6 +203,10 @@ export const it: Dictionary = {
       "cardRightTitle": "Disponibile per freelance",
       "cardRightBody": "Accetto nuovi progetti, da remoto.",
       "openHint": "Clicca sul progetto per aprirlo.",
+      "noteWhat": "Cosa faccio",
+      "noteFocus": "In primo piano",
+      "noteNow": "Ora",
+      "noteStatus": "Stato",
       "activity": "Ultimo aggiornamento su GitHub:",
       "activityRelease": "Ultima versione rilasciata:",
       "liveLabel": "prodotti online adesso",
@@ -237,7 +241,9 @@ export const it: Dictionary = {
       "body": "Passa il cursore sulle celle — ognuna è una porta.",
       "center": "Parliamone",
       "copy": "Copia email",
-      "copied": "Copiato"
+      "copied": "Copiato",
+      "clockPlace": "Brasile",
+      "clockLabel": "Ora di Lucas in Brasile"
     }
   },
 };

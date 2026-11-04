@@ -203,6 +203,10 @@ export const ja: Dictionary = {
       "cardRightTitle": "フリーランス受付中",
       "cardRightBody": "新しい案件をリモートで受付中。",
       "openHint": "プロジェクトをクリックして開く。",
+      "noteWhat": "やっていること",
+      "noteFocus": "注目",
+      "noteNow": "いま",
+      "noteStatus": "ステータス",
       "activity": "GitHub の最終更新:",
       "activityRelease": "最新リリース:",
       "liveLabel": "つのプロダクトが公開中",
@@ -237,7 +241,9 @@ export const ja: Dictionary = {
       "body": "セルにカーソルを合わせて — どれも扉です。",
       "center": "話しましょう",
       "copy": "メールをコピー",
-      "copied": "コピーしました"
+      "copied": "コピーしました",
+      "clockPlace": "ブラジル",
+      "clockLabel": "ブラジルの現在時刻"
     }
   },
 };

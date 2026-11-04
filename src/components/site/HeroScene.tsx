@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { PerformanceMonitor } from '@react-three/drei/core/PerformanceMonitor';
 import { PANELS, type Panel, type ProjectId } from './panels';
 import { ORBIT, ORBIT_DEFAULTS } from './orbitTuning';
+import { anchors } from './sceneAnchors';
 
 // ── Hero scene ───────────────────────────────────────────────────────
 // The portrait is a relief: a subdivided plane pushed forward by a depth
@@ -501,6 +502,10 @@ function Ring({
     const slug = hover >= 0 ? PANELS[hover].slug : null;
     window.dispatchEvent(new CustomEvent('panel:hover', { detail: slug }));
   }, [hover]);
+  // the leader lines fall back to nothing once the scene is gone
+  useEffect(() => () => {
+    anchors.left = anchors.right = anchors.focus = null;
+  }, []);
   const { gl, camera } = useThree();
   const born = useRef<number | null>(null);
   const flyer = useRef<THREE.Mesh>(null);
@@ -751,6 +756,14 @@ function Ring({
       tmp.set(center[0], center[1], center[2]).project(state.camera);
       gaze.x = hx - tmp.x;
     } else gaze.x = null;
+    // the side notes' leader lines: the ring's edges, and the panel in focus
+    if (tilt.current) {
+      tilt.current.localToWorld(tmp.set(-radius, 0, 0)).project(state.camera);
+      anchors.left = { x: tmp.x, y: tmp.y };
+      tilt.current.localToWorld(tmp.set(radius, 0, 0)).project(state.camera);
+      anchors.right = { x: tmp.x, y: tmp.y };
+    }
+    anchors.focus = hm && !flight.current && !openSlug ? ndcBox(hm, state.camera) : null;
     materials.forEach((m, i) => {
       const u = m.uniforms.uHover;
       u.value += ((hover === i ? 1 : 0) - u.value) * Math.min(1, dt * 10);
@@ -929,6 +942,20 @@ function screenRect(mesh: THREE.Mesh, camera: THREE.Camera, canvas: HTMLCanvasEl
     y0 = Math.min(y0, py); y1 = Math.max(y1, py);
   }
   return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+// The same box in normalised device coordinates (for the leader lines)
+function ndcBox(mesh: THREE.Mesh, camera: THREE.Camera) {
+  const geo = mesh.geometry;
+  if (!geo.boundingBox) geo.computeBoundingBox();
+  const b = geo.boundingBox!;
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (let k = 0; k < 8; k++) {
+    corner.set(k & 1 ? b.max.x : b.min.x, k & 2 ? b.max.y : b.min.y, k & 4 ? b.max.z : b.min.z);
+    corner.applyMatrix4(mesh.matrixWorld).project(camera);
+    x0 = Math.min(x0, corner.x); x1 = Math.max(x1, corner.x);
+    y0 = Math.min(y0, corner.y); y1 = Math.max(y1, corner.y);
+  }
+  return { x0, y0, x1, y1 };
 }
 // Stand-in until a panel's clip exists
 const BLANK = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);

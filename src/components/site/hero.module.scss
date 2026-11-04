@@ -228,89 +228,134 @@
 }
 
 // ── Side notes ───────────────────────────
+// Annotations of the halo, like the callouts on a technical drawing: no
+// card, a hairline rule, a mono label, the title in the headline's serif.
+// Their leader lines (LeaderLines.tsx) carry on from the rule and land on
+// the ring, or on whichever panel the pointer is on.
 .wires {
+  // above the halo: the terminals sit on the panels, not behind them
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
   width: 100%;
   height: 100%;
+  overflow: visible;
   pointer-events: none;
 
   path {
     fill: none;
-    stroke: rgba(13, 13, 13, 0.3);
+    stroke: rgba(13, 13, 13, 0.32);
     stroke-width: 1;
-    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: draw 1.4s var(--ease-out) 1.1s forwards;
+    transition: stroke 0.3s;
+  }
+
+  circle {
+    fill: var(--bg);
+    stroke: rgba(13, 13, 13, 0.5);
+    stroke-width: 1;
+    transition: fill 0.3s, stroke 0.3s;
+    animation: fade 0.4s var(--ease-out) 2.3s both;
+  }
+}
+
+// a panel in focus: the lines firm up and the terminals fill
+.wiresFocus {
+  path {
+    stroke: rgba(13, 13, 13, 0.6);
+  }
+  circle {
+    fill: var(--ink);
+    stroke: var(--ink);
   }
 }
 
 .note {
   position: absolute;
   z-index: 3;
-  width: 210px;
-  padding: 18px 18px 20px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: 0 22px 40px -26px rgba(13, 13, 13, 0.4);
+  width: 236px;
+  padding: 2px 0 2px 16px;
+  border-left: 1px solid rgba(13, 13, 13, 0.32);
   font-size: 0.84rem;
   line-height: 1.45;
   color: var(--ink-2);
 
   strong {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: -0.015em;
     color: var(--ink);
-    font-size: 0.98rem;
-    font-weight: 600;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
+    text-wrap: balance;
   }
 }
 
-// The notes are pinned paper, not buttons: no hover lift (it read as clickable).
+.noteLeft {
+  left: calc(var(--gutter) + 2vw);
+  top: 34%;
+}
+
+.noteRight {
+  right: calc(var(--gutter) + 2vw);
+  top: 43%;
+  padding: 2px 16px 2px 0;
+  border-left: 0;
+  border-right: 1px solid rgba(13, 13, 13, 0.32);
+  text-align: right;
+
+  .noteBody {
+    justify-items: end;
+  }
+}
+
 // They caption the project under the pointer; each change fades in.
 .noteBody {
   display: grid;
-  gap: 6px;
+  gap: 7px;
   justify-items: start;
   animation: noteIn 0.35s var(--ease-out) both;
+}
+
+.noteLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .noteApp {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 4px;
 
   img {
-    border-radius: 6px;
+    border-radius: 5px;
   }
 
   em {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
     font-style: normal;
-    font-size: 0.74rem;
-    letter-spacing: 0.02em;
+    font-size: 0.72rem;
     color: var(--ink-3);
   }
 }
 
-// a project that isn't live: same dot, grey, still
-.liveDot.idleDot {
-  background: #b9b9b6;
-  box-shadow: 0 0 0 4px rgba(13, 13, 13, 0.06);
-
-  &::after {
-    display: none;
-  }
-}
-
 .activity {
-  justify-self: stretch;
+  display: grid;
+  gap: 2px;
   margin-top: 8px;
-  padding-top: 10px;
-  border-top: 1px solid var(--line);
-  font-size: 0.76rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  line-height: 1.5;
   color: var(--ink-3);
-
 }
 
 // the one way from the note to the project it names
@@ -335,37 +380,14 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .noteBody {
-    animation: none;
-  }
-}
-
-.noteLeft {
-  left: calc(var(--gutter) + 2vw);
-  top: 33%;
-  transform: rotate(-4deg);
-}
-
-.noteRight {
-  right: calc(var(--gutter) + 2vw);
-  top: 42%;
-  transform: rotate(4deg);
-}
-
-.noteIcon {
-  color: var(--ink);
-  margin-bottom: 6px;
-}
-
 .liveDot {
   position: relative;
-  width: 8px;
-  height: 8px;
-  margin-bottom: 8px;
+  flex: none;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--live);
-  box-shadow: 0 0 0 4px rgba(47, 179, 107, 0.16);
+  box-shadow: 0 0 0 3px rgba(47, 179, 107, 0.16);
 
   // "open for work" breathes: a ring leaves the dot every few seconds
   &::after {
@@ -375,6 +397,16 @@
     border-radius: 50%;
     background: var(--live);
     animation: pulse 2.6s var(--ease-out) 1.6s infinite;
+  }
+}
+
+// a project that isn't live: same dot, grey, still
+.liveDot.idleDot {
+  background: #b9b9b6;
+  box-shadow: 0 0 0 3px rgba(13, 13, 13, 0.06);
+
+  &::after {
+    display: none;
   }
 }
 
@@ -390,20 +422,6 @@
   }
 }
 
-// the trend line in the left note draws itself once the note lands
-.noteIcon path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw 0.9s var(--ease-out) 1.4s forwards;
-}
-
-// the hairlines tying the notes to the halo draw out of the notes
-.wires path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: draw 1.4s var(--ease-out) 1.1s forwards;
-}
-
 @keyframes draw {
   from {
     stroke-dashoffset: 1;
@@ -414,12 +432,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .noteBody {
+    animation: none;
+  }
   .liveDot::after {
     animation: none;
     opacity: 0;
   }
-  .noteIcon path,
-  .wires path {
+  .wires path,
+  .wires circle {
     animation: none;
     stroke-dashoffset: 0;
   }

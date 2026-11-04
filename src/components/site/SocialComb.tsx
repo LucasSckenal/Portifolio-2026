@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactElement } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { useT } from '@/components/providers/LanguageProvider';
 import { SOCIALS } from './links';
 import styles from './comb.module.scss';
@@ -105,7 +105,10 @@ export default function SocialComb() {
 
         {RING.map(([x, y], i) => {
           const c = cells[i];
-          if (!c) return <polygon key={i} className={styles.empty} points={hexPoints(x, y)} />;
+          if (!c)
+            return (
+              <Clock key={i} x={x} y={y} place={s.clockPlace} label={s.clockLabel} />
+            );
           return (
             <a
               key={c.id}
@@ -136,5 +139,49 @@ export default function SocialComb() {
         </g>
       </svg>
     </nav>
+  );
+}
+
+// ── The spare cell: Lucas's local time ───────────────────────────────
+// Real, useful to a client abroad, and not another button. Brasília time
+// (no daylight saving since 2019). Rendered after mount, so the server
+// never bakes in a stale hour; the colon ticks with the seconds.
+const TZ = 'America/Sao_Paulo';
+
+function Clock({ x, y, place, label }: { x: number; y: number; place: string; label: string }) {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    setNow(new Date());
+    const id = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(id);
+  }, []);
+  const parts = now
+    ? Object.fromEntries(
+        new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+          .formatToParts(now)
+          .map((p) => [p.type, p.value])
+      )
+    : null;
+  const hour = parts ? Number(parts.hour) : 12;
+  const day = hour >= 6 && hour < 18;
+  return (
+    <g className={styles.clock} role="img" aria-label={parts ? `${label}: ${parts.hour}:${parts.minute}` : label}>
+      <polygon points={hexPoints(x, y)} />
+      {parts && (
+        <g className={styles.clockFace} transform={`translate(${x} ${y})`}>
+          {/* day: a full sun; night: a crescent */}
+          <circle className={day ? styles.clockSky : styles.clockMoon} cx={0} cy={-44} r={9} />
+          {!day && <circle className={styles.clockShade} cx={5} cy={-48} r={8} />}
+          <text className={styles.clockTime} y={6} textAnchor="middle" dominantBaseline="central">
+            {parts.hour}
+            <tspan className={now && now.getSeconds() % 2 ? styles.clockTick : undefined}>:</tspan>
+            {parts.minute}
+          </text>
+          <text className={styles.clockPlace} y={50} textAnchor="middle" dominantBaseline="central">
+            {place}
+          </text>
+        </g>
+      )}
+    </g>
   );
 }

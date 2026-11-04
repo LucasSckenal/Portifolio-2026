@@ -203,6 +203,10 @@ export const pt: Dictionary = {
       "cardRightTitle": "Aberto para freela",
       "cardRightBody": "Aceitando projetos novos, remoto.",
       "openHint": "Clique no projeto para abrir.",
+      "noteWhat": "O que eu faço",
+      "noteFocus": "Em foco",
+      "noteNow": "Agora",
+      "noteStatus": "Status",
       "activity": "Última atualização no GitHub:",
       "activityRelease": "Última versão lançada:",
       "liveLabel": "produtos no ar agora",
@@ -237,7 +241,9 @@ export const pt: Dictionary = {
       "body": "Passe o cursor nas células — cada uma é uma porta.",
       "center": "Vamos conversar",
       "copy": "Copiar e-mail",
-      "copied": "Copiado"
+      "copied": "Copiado",
+      "clockPlace": "Brasil",
+      "clockLabel": "Horário do Lucas no Brasil"
     }
   },
 };

@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { getProjectCopy } from '@/content/projects.i18n';
+import LeaderLines from './LeaderLines';
 import Orbit from './Orbit';
 import { SHOWCASE, type ProjectId } from './panels';
 import SocialComb from './SocialComb';
@@ -63,6 +64,8 @@ export default function Hero() {
   }, []);
   const shown = focus ? SHOWCASE.find((p) => p.slug === focus) : undefined;
   const copy = shown ? (getProjectCopy(shown.slug, locale) ?? getProjectCopy(shown.slug, 'en')) : undefined;
+  const leftNote = useRef<HTMLDivElement>(null);
+  const rightNote = useRef<HTMLDivElement>(null);
   const busy = activity ? SHOWCASE.find((p) => p.slug === activity.slug) : undefined;
 
   return (
@@ -96,17 +99,17 @@ export default function Hero() {
 
       <Orbit />
 
-      {/* Side notes, tied to the halo by hairlines */}
-      <svg className={styles.wires} viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden>
-        <path pathLength={1} d="M250 390 C 250 560, 420 640, 560 650" />
-        <path pathLength={1} d="M1190 470 C 1190 600, 1040 660, 900 660" />
-      </svg>
+      {/* Side notes: annotations of the halo, with live leader lines */}
+      <LeaderLines left={leftNote} right={rightNote} />
 
-      <div className={`${styles.note} ${styles.noteLeft}`}>
+      <div ref={leftNote} className={`${styles.note} ${styles.noteLeft}`}>
         {shown ? (
           <div key={shown.slug} className={styles.noteBody}>
+            <span className={styles.noteLabel}>
+              {h.noteFocus} · {String(SHOWCASE.indexOf(shown) + 1).padStart(2, '0')}/{String(SHOWCASE.length).padStart(2, '0')}
+            </span>
             <span className={styles.noteApp}>
-              {shown.icon && <Image src={shown.icon} alt="" width={22} height={22} />}
+              {shown.icon && <Image src={shown.icon} alt="" width={20} height={20} />}
               <em>{shown.note}</em>
             </span>
             <strong>{shown.title}</strong>
@@ -114,36 +117,41 @@ export default function Hero() {
           </div>
         ) : (
           <div key="idle" className={styles.noteBody}>
-            <svg className={styles.noteIcon} width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-              {/* a screen with code on it: web and desktop */}
-              <path pathLength={1} d="M2.5 3.5h13v9h-13zM6.5 15.5h5M7.5 6.5L5.5 8l2 1.5M10.5 6.5l2 1.5-2 1.5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <span className={styles.noteLabel}>{h.noteWhat}</span>
             <strong>{h.cardLeftTitle}</strong>
             <span>{h.cardLeftBody}</span>
           </div>
         )}
       </div>
 
-      <div className={`${styles.note} ${styles.noteRight}`}>
+      <div ref={rightNote} className={`${styles.note} ${styles.noteRight}`}>
         {shown ? (
           <div key={shown.slug} className={styles.noteBody}>
-            <span className={`${styles.liveDot} ${LIVE_SLUGS.has(shown.slug) ? '' : styles.idleDot}`} aria-hidden />
+            <span className={styles.noteLabel}>
+              <span className={`${styles.liveDot} ${LIVE_SLUGS.has(shown.slug) ? '' : styles.idleDot}`} aria-hidden />
+              {h.noteStatus}
+            </span>
             <strong>{copy?.status}</strong>
             <span>{h.openHint}</span>
           </div>
         ) : (
           <div key="idle" className={styles.noteBody}>
-            <span className={styles.liveDot} aria-hidden />
+            <span className={styles.noteLabel}>
+              <span className={styles.liveDot} aria-hidden />
+              {h.noteNow}
+            </span>
             <strong>{h.cardRightTitle}</strong>
             <span>{h.cardRightBody}</span>
             {busy && activity && (
               <span className={styles.activity}>
-                {activity.tag ? h.activityRelease : h.activity}{' '}
-                <Link href={`/work/${busy.slug}`} className={styles.activityLink}>
-                  {busy.short}
-                  {activity.tag && ` ${activity.tag}`}
-                </Link>{' '}
-                · {ago(activity.at, locale)}
+                <span>{activity.tag ? h.activityRelease : h.activity}</span>
+                <span>
+                  <Link href={`/work/${busy.slug}`} className={styles.activityLink}>
+                    {busy.short}
+                    {activity.tag && ` ${activity.tag}`}
+                  </Link>{' '}
+                  · {ago(activity.at, locale)}
+                </span>
               </span>
             )}
           </div>

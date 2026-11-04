@@ -98,14 +98,8 @@
   }
 }
 
-.center {
-  &:hover,
-  &:focus-visible {
-    .icon {
-      opacity: 1;
-      transform: scale(1.08);
-    }
-  }
+.center .label {
+  color: #f2f2ef;
 }
 
 .orb {

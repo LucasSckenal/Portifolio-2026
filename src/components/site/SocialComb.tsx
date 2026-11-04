@@ -2,7 +2,7 @@
 
 import { useState, type ReactElement } from 'react';
 import { useT } from '@/components/providers/LanguageProvider';
-import { EMAIL, SOCIALS } from './links';
+import { EMAIL, SOCIALS, whatsappHref } from './links';
 import styles from './comb.module.scss';
 
 // ── Social honeycomb, compact ───────────────────────────────────────
@@ -153,12 +153,22 @@ export default function SocialComb() {
           );
         })}
 
-        <a href={`mailto:${EMAIL}`} className={`${styles.cell} ${styles.center}`} aria-label={s.center}>
+        {/* the orb starts a WhatsApp chat for a quote; on hover it shows
+            the WhatsApp mark so it says what it does */}
+        <a
+          href={whatsappHref(t.site.nav.quoteMessage)}
+          target="_blank"
+          rel="noreferrer"
+          className={`${styles.cell} ${styles.center}`}
+          aria-label={`${s.center} · WhatsApp`}
+        >
           <polygon points={hexPoints(0, 0)} />
+          <polygon className={styles.fill} points={hexPoints(0, 0)} />
           <g className={styles.icon}>
             <circle r="34" fill="url(#comb-orb)" className={styles.orb} />
             <circle r="34" fill="url(#comb-shine)" />
           </g>
+          <g className={styles.label}>{ICONS.whatsapp}</g>
         </a>
       </svg>
     </nav>

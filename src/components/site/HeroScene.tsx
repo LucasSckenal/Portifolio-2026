@@ -19,10 +19,13 @@ export type OrbitControl = {
   focus: (panelIndex: number) => void;
 };
 
+export type Rect = { x: number; y: number; w: number; h: number };
+
 type Props = {
   reduced: boolean;
   onReady?: () => void;
-  onOpen: (slug: ProjectId, x: number, y: number) => void;
+  onOpen: (slug: ProjectId, from: Rect) => void;
+  openSlug?: ProjectId | null;
   controlRef: React.MutableRefObject<OrbitControl | null>;
 };
 
@@ -229,11 +232,12 @@ function usePanelTextures() {
 const portraitVert = /* glsl */ `
   uniform sampler2D uDepth;
   uniform float uRelief;
+  uniform float uReveal;
   varying vec2 vUv;
   void main() {
     vUv = uv;
     vec3 p = position;
-    p.z += texture2D(uDepth, uv).r * uRelief;
+    p.z += texture2D(uDepth, uv).r * uRelief * uReveal;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
   }
 `;
@@ -265,6 +269,8 @@ const panelFrag = /* glsl */ `
   uniform sampler2D uVideo;
   uniform float uVideoOn;
   uniform float uHover;
+  uniform float uAlpha;
+  uniform float uDim;
   varying vec2 vUv;
   varying vec3 vN;
   varying vec3 vV;
@@ -287,13 +293,15 @@ const panelFrag = /* glsl */ `
       // the inside of the ring: a plain frosted pane
       c = vec4(vec3(0.93), c.a * 0.6);
     }
-    c.rgb += fres * 0.22 + uHover * 0.04;
+    c.rgb += fres * 0.22 + uHover * 0.05;
+    // another panel has focus: this one steps back
+    c.a *= uAlpha * (1.0 - 0.38 * uDim);
     gl_FragColor = c;
     #include <colorspace_fragment>
   }
 `;
 
-function Portrait({ height, y, onReady }: { height: number; y: number; onReady?: () => void }) {
+function Portrait({ height, y, onReady, reduced }: { height: number; y: number; onReady?: () => void; reduced: boolean }) {
   const [map, depth] = useLoader(THREE.TextureLoader, ['/home/retrato-cut.webp', '/home/retrato-depth.png']);
   map.colorSpace = THREE.SRGBColorSpace;
   // textures are in (useLoader suspends until then): the DOM poster can go
@@ -303,9 +311,16 @@ function Portrait({ height, y, onReady }: { height: number; y: number; onReady?:
   }, [onReady]);
   const width = height * PHOTO_ASPECT;
   const uniforms = useMemo(
-    () => ({ uMap: { value: map }, uDepth: { value: depth }, uRelief: { value: height * 0.16 } }),
+    () => ({ uMap: { value: map }, uDepth: { value: depth }, uRelief: { value: height * 0.16 }, uReveal: { value: 0 } }),
     [map, depth, height]
   );
+  // Opening, act 1: the flat photo (same as the DOM poster) swells into relief
+  const born = useRef<number | null>(null);
+  useFrame((state) => {
+    if (born.current === null) born.current = state.clock.elapsedTime;
+    const t = state.clock.elapsedTime - born.current;
+    uniforms.uReveal.value = reduced ? 1 : easeOut(Math.min(1, t / 1.1));
+  });
   return (
     <mesh position={[0, y, 0]} renderOrder={-1}>
       <planeGeometry args={[width, height, 220, 124]} />
@@ -327,8 +342,10 @@ function Ring({
   photoH,
   reduced,
   onOpen,
+  openSlug,
   controlRef,
 }: {
+  openSlug?: ProjectId | null;
   textures: THREE.Texture[];
   radius: number;
   center: [number, number, number];
@@ -354,7 +371,8 @@ function Ring({
     return !c?.saveData;
   }, [reduced]);
   const [hover, setHover] = useState(-1);
-  const { gl } = useThree();
+  const { gl, camera } = useThree();
+  const born = useRef<number | null>(null);
 
   const s = useRef({
     angle: 0.35,
@@ -365,6 +383,10 @@ function Ring({
     lastT: 0,
     moved: 0,
   });
+  // Opening, act 2: the ring arrives spinning and settles to its idle pace
+  useEffect(() => {
+    s.current.velocity = reduced ? 0.2 : 1.5;
+  }, [reduced]);
 
   const height = (radius * ARC) / 1.6; // texture is 640×400
   const geometry = useMemo(() => {
@@ -385,6 +407,8 @@ function Ring({
               uVideo: { value: BLANK },
               uVideoOn: { value: 0 },
               uHover: { value: 0 },
+              uAlpha: { value: 0 },
+              uDim: { value: 0 },
             },
             transparent: true,
             depthWrite: false,
@@ -496,9 +520,32 @@ function Ring({
       const pitch = THREE.MathUtils.degToRad(ORBIT.pitch);
       tilt.current.rotation.x += (pitch + ty - tilt.current.rotation.x) * Math.min(1, dt * 4);
     }
+    if (born.current === null) born.current = state.clock.elapsedTime;
+    const since = state.clock.elapsedTime - born.current;
     materials.forEach((m, i) => {
       const u = m.uniforms.uHover;
       u.value += ((hover === i ? 1 : 0) - u.value) * Math.min(1, dt * 10);
+      const dim = m.uniforms.uDim;
+      dim.value += ((hover >= 0 && hover !== i ? 1 : 0) - dim.value) * Math.min(1, dt * 8);
+
+      // Each panel flies in from beyond the frame onto its slot, one after
+      // another around the ring (reduced motion: a quiet fade in place)
+      const slot = LAYOUT[i];
+      const arrive = easeOut(Math.min(1, Math.max(0, (since - 0.45 - i * 0.07) / (reduced ? 0.4 : 0.8))));
+      const away = reduced ? 0 : 1 - arrive;
+      const hidden = openSlug === PANELS[i].slug;
+      const alpha = m.uniforms.uAlpha;
+      alpha.value += ((hidden ? 0 : arrive) - alpha.value) * Math.min(1, dt * (hidden ? 14 : 18));
+      const r = radius * (1 + away * 1.1 + u.value * 0.07);
+      const mesh0 = meshes.current[i];
+      if (mesh0) {
+        mesh0.position.set(
+          Math.sin(slot.angle) * r,
+          ((slot.row ? -0.56 : 0.56) * 1.1 + slot.drift) * height + away * height * (slot.row ? -1.4 : 1.4),
+          Math.cos(slot.angle) * r
+        );
+        mesh0.scale.setScalar(slot.size * (1 + u.value * 0.05) * (1 - away * 0.35));
+      }
 
       // Animated thumbnail: load on first view, play only while the panel
       // faces the camera, pause the moment it turns away
@@ -546,9 +593,9 @@ function Ring({
               }}
               geometry={geometry}
               material={materials[i]}
-              position={[Math.sin(a) * radius, rowY, Math.cos(a) * radius]}
+              position={[Math.sin(a) * radius * 2, rowY, Math.cos(a) * radius * 2]}
               rotation={[0, a, 0]}
-              scale={size * (hover === i ? 1.05 : 1)}
+              scale={size}
               onPointerOver={(e: ThreeEvent<PointerEvent>) => {
                 e.stopPropagation();
                 setHover(i);
@@ -563,7 +610,7 @@ function Ring({
                 if (s.current.moved > 6) return; // a drag, not a click
                 s.current.velocity = 0;
                 s.current.target = frontAngle(i);
-                onOpen(p.slug, e.nativeEvent.clientX, e.nativeEvent.clientY);
+                onOpen(p.slug, screenRect(e.object as THREE.Mesh, camera, gl.domElement));
               }}
             />
           );
@@ -575,6 +622,26 @@ function Ring({
 }
 
 const tmp = new THREE.Vector3();
+const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+// A mesh's box on screen, in CSS pixels: where the expanded card is born
+const corner = new THREE.Vector3();
+function screenRect(mesh: THREE.Mesh, camera: THREE.Camera, canvas: HTMLCanvasElement): Rect {
+  const geo = mesh.geometry;
+  if (!geo.boundingBox) geo.computeBoundingBox();
+  const b = geo.boundingBox!;
+  const c = canvas.getBoundingClientRect();
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (let k = 0; k < 8; k++) {
+    corner.set(k & 1 ? b.max.x : b.min.x, k & 2 ? b.max.y : b.min.y, k & 4 ? b.max.z : b.min.z);
+    corner.applyMatrix4(mesh.matrixWorld).project(camera);
+    const px = c.left + ((corner.x + 1) / 2) * c.width;
+    const py = c.top + ((1 - corner.y) / 2) * c.height;
+    x0 = Math.min(x0, px); x1 = Math.max(x1, px);
+    y0 = Math.min(y0, py); y1 = Math.max(y1, py);
+  }
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
 // Stand-in until a panel's clip exists
 const BLANK = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
 BLANK.needsUpdate = true;
@@ -592,7 +659,7 @@ function Rig({ reduced }: { reduced: boolean }) {
   return null;
 }
 
-function Stage({ reduced, onOpen, controlRef, onReady }: Props) {
+function Stage({ reduced, onOpen, controlRef, onReady, openSlug }: Props) {
   const { viewport } = useThree();
   const textures = usePanelTextures();
   // The canvas covers the whole hero. The photo sits bottom-aligned and
@@ -606,7 +673,7 @@ function Stage({ reduced, onOpen, controlRef, onReady }: Props) {
 
   return (
     <>
-      <Portrait height={h} y={y} onReady={onReady} />
+      <Portrait height={h} y={y} onReady={onReady} reduced={reduced} />
       {textures && (
         <Ring
           textures={textures}
@@ -615,6 +682,7 @@ function Stage({ reduced, onOpen, controlRef, onReady }: Props) {
           photoH={h}
           reduced={reduced}
           onOpen={onOpen}
+          openSlug={openSlug}
           controlRef={controlRef}
         />
       )}

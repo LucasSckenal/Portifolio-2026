@@ -430,16 +430,32 @@
     0 40px 90px -40px rgba(13, 13, 13, 0.55);
   backdrop-filter: blur(22px) saturate(1.4);
   -webkit-backdrop-filter: blur(22px) saturate(1.4);
-  transform: scale(0.18);
-  opacity: 0;
-  transition:
-    transform 0.6s var(--ease-out),
-    opacity 0.35s var(--ease-out);
+  transform-origin: center;
 }
 
-.overlayShown .expanded {
-  transform: none;
+// Reduced motion: no flight from the panel, a short cross-fade instead
+@media (prefers-reduced-motion: reduce) {
+  .expanded {
+    opacity: 0;
+    transition: opacity 0.18s linear;
+  }
+  .overlayShown .expanded {
+    opacity: 1;
+  }
+}
+
+// What's inside arrives just after the card lands
+.expandedBar,
+.close {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s var(--ease-out) 0.28s, transform 0.4s var(--ease-out) 0.28s;
+}
+
+.overlayShown .expandedBar,
+.overlayShown .close {
   opacity: 1;
+  transform: none;
 }
 
 .expandedMedia {
@@ -533,16 +549,89 @@
   cursor: pointer;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .expanded {
-    transform: none;
-    transition: opacity 0.2s linear;
-  }
-}
 
 // Short screens: give the scene the room
 @media (max-height: 760px) {
   .sub {
     display: none;
+  }
+}
+
+// =========================================
+// Opening choreography (CSS, so it runs even before hydration)
+// The headline rises line by line out of its own mask, the copy follows,
+// the side furniture settles last. Under 1.2 s; reduced motion: fades only.
+// =========================================
+@keyframes line-rise {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(32%);
+  }
+  to {
+    clip-path: inset(0 0 -20% 0);
+    transform: none;
+  }
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.title span,
+.title em {
+  animation: line-rise 0.9s var(--ease-out) both;
+}
+.title span {
+  animation-delay: 0.08s;
+}
+.title em {
+  animation-delay: 0.2s;
+}
+.sub {
+  animation: settle 0.7s var(--ease-out) 0.38s both;
+}
+.actions {
+  animation: settle 0.7s var(--ease-out) 0.48s both;
+}
+.note,
+.live,
+.badge,
+.wires {
+  animation: fade 0.9s var(--ease-out) 0.9s both;
+}
+
+// Press feedback on every pill
+.primary,
+.secondary,
+.viewProject {
+  &:active {
+    transform: scale(0.97);
+    transition-duration: 0.12s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title span,
+  .title em,
+  .sub,
+  .actions {
+    animation-name: fade;
+    animation-duration: 0.5s;
   }
 }

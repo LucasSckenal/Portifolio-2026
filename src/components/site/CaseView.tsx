@@ -52,8 +52,30 @@ function HeroMedia({ slug }: { slug: ProjectId }) {
 }
 
 function Figure({ src, alt, caption, variant }: { src: string; alt: string; caption?: string; variant?: 'wide' | 'mobile' }) {
+  const ref = useRef<HTMLElement>(null);
+  const [armed, setArmed] = useState(false);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    setArmed(true);
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.18 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
-    <figure className={`${styles.figure} ${variant === 'mobile' ? styles.figureMobile : ''}`}>
+    <figure
+      ref={ref}
+      className={`${styles.figure} ${variant === 'mobile' ? styles.figureMobile : ''} ${armed ? styles.armed : ''} ${seen ? styles.seen : ''}`}
+    >
       <div className={styles.frame}>
         <Image src={src} alt={alt} fill sizes={variant === 'mobile' ? '360px' : '(max-width: 900px) 100vw, 1000px'} />
       </div>

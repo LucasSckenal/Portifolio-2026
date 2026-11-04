@@ -123,3 +123,24 @@
   color: var(--ink-3);
   white-space: nowrap;
 }
+
+// Items arrive in order when the sheet opens
+.list li {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.3s var(--ease-out),
+    transform 0.4s var(--ease-out);
+}
+
+.open .list li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--i, 0) * 55ms + 70ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list li {
+    transform: none;
+  }
+}

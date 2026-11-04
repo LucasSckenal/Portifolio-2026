@@ -127,6 +127,7 @@ export default function SocialComb() {
               {...(c.external ? { target: '_blank', rel: 'noreferrer' } : {})}
             >
               <polygon points={hexPoints(x, y)} />
+              <polygon className={styles.fill} points={hexPoints(x, y)} />
               <g className={styles.icon} transform={`translate(${x} ${y})`}>
                 {ICONS[c.id]}
               </g>

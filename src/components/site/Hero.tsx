@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useT } from '@/components/providers/LanguageProvider';
+import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import Orbit from './Orbit';
 import SocialComb from './SocialComb';
 import styles from './hero.module.scss';
@@ -16,6 +16,7 @@ const LIVE = [
 
 export default function Hero() {
   const t = useT();
+  const { locale } = useLocale();
   const h = t.site.hero;
 
   const spin = () => window.dispatchEvent(new CustomEvent('orbit:spin'));
@@ -24,11 +25,14 @@ export default function Hero() {
   return (
     <section className={styles.hero} aria-labelledby="hero-title">
       <div className={styles.copy}>
-        <h1 id="hero-title" className={styles.title}>
+        {/* keyed by language: switching replays the rise as feedback */}
+        <h1 id="hero-title" key={`t-${locale}`} className={styles.title}>
           <span>{h.line1}</span>
           <em>{h.line2}</em>
         </h1>
-        <p className={styles.sub}>{h.sub}</p>
+        <p key={`s-${locale}`} className={styles.sub}>
+          {h.sub}
+        </p>
         <div className={styles.actions}>
           <button type="button" className={styles.primary} onClick={openFirst}>
             {h.primary}

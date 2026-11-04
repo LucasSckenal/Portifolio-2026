@@ -59,8 +59,8 @@ export default function Versions() {
       <div id="versions-list" className={`${styles.pop} ${open ? styles.open : ''}`} hidden={!open}>
         <p className={styles.title}>{v.title}</p>
         <ol className={styles.list}>
-          {EDITIONS.map((e) => (
-            <li key={e.id}>
+          {EDITIONS.map((e, i) => (
+            <li key={e.id} style={{ ['--i' as string]: i }}>
               <Link href={e.href} className={styles.item} aria-current={e.current ? 'page' : undefined} onClick={() => setOpen(false)}>
                 <span className={styles.thumb}>
                   <Image src={e.thumb} alt="" fill sizes="112px" />

@@ -45,17 +45,44 @@
 
   .label {
     fill: #f2f2ef;
+    transform-box: fill-box;
     font: 500 30px/1 var(--font-geist), system-ui, sans-serif;
     opacity: 0;
     transition: opacity 0.3s var(--ease-out);
     pointer-events: none;
   }
 
+  // the lit fill grows out of the cell's centre
+  .fill {
+    fill: #2b2b30;
+    stroke: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.3);
+    opacity: 0;
+    transition:
+      transform 0.38s var(--ease-out),
+      opacity 0.22s var(--ease-out);
+  }
+
+  .label {
+    transform: translateY(8px);
+    transition:
+      opacity 0.3s var(--ease-out),
+      transform 0.38s var(--ease-out);
+  }
+
   &:hover,
   &:focus-visible {
     polygon {
-      fill: #26262a;
       stroke: rgba(242, 242, 239, 0.4);
+    }
+    .fill {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .label {
+      transform: none;
     }
     .icon {
       opacity: 0;

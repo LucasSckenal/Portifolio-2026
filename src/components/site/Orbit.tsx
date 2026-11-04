@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useT } from '@/components/providers/LanguageProvider';
 import { PANELS, PROJECTS, PROJECT_ORDER, type ProjectId } from './panels';
-import type { OrbitControl } from './HeroScene';
+import type { OrbitControl, Rect } from './HeroScene';
 import styles from './hero.module.scss';
 
 const HeroScene = dynamic(() => import('./HeroScene'), { ssr: false });
@@ -21,7 +21,7 @@ function hasWebGL() {
   }
 }
 
-type Open = { slug: ProjectId; x: number; y: number } | null;
+type Open = { slug: ProjectId; from: Rect } | null;
 
 // ── Orbit: the scene plus everything it needs to be a real interface ──
 //   · the WebGL scene (HeroScene) when the device can draw it
@@ -41,6 +41,8 @@ export default function Orbit() {
   const onReady = useCallback(() => setSceneReady(true), []);
   const lastFocus = useRef<HTMLElement | null>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const closing = useRef(false);
 
   useEffect(() => {
     setGl(hasWebGL());
@@ -52,27 +54,59 @@ export default function Orbit() {
     return () => mq.removeEventListener('change', on);
   }, []);
 
-  const openProject = useCallback((slug: ProjectId, x: number, y: number) => {
+  const openProject = useCallback((slug: ProjectId, from: Rect) => {
     lastFocus.current = document.activeElement as HTMLElement;
-    setOpen({ slug, x, y });
+    closing.current = false;
+    setOpen({ slug, from });
   }, []);
 
-  const close = useCallback(() => {
-    setShown(false);
-    window.setTimeout(
-      () => {
-        setOpen(null);
-        lastFocus.current?.focus?.();
-      },
-      reduced ? 0 : 320
-    );
-  }, [reduced]);
+  // FLIP: the transform that lays the card over the panel it came from
+  const fromTransform = (from: Rect) => {
+    const el = cardRef.current;
+    if (!el) return 'none';
+    const to = el.getBoundingClientRect();
+    const sx = Math.max(from.w / to.width, 0.05);
+    const sy = Math.max(from.h / to.height, 0.05);
+    const dx = from.x + from.w / 2 - (to.left + to.width / 2);
+    const dy = from.y + from.h / 2 - (to.top + to.height / 2);
+    return `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+  };
 
-  // Mount → next frame → grow from the click point
+  const close = useCallback(() => {
+    if (closing.current || !open) return;
+    closing.current = true;
+    setShown(false);
+    const finish = () => {
+      setOpen(null);
+      lastFocus.current?.focus?.();
+    };
+    const el = cardRef.current;
+    if (!el || reduced) {
+      window.setTimeout(finish, reduced ? 160 : 0);
+      return;
+    }
+    // back into its panel, faster than it came out
+    el.animate(
+      [{ transform: 'none', opacity: 1 }, { transform: fromTransform(open.from), opacity: 0 }],
+      { duration: 320, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' }
+    ).finished.then(finish, finish);
+  }, [reduced, open]);
+
+  // Mount → the card is born from the panel's box and grows to the centre
   useEffect(() => {
     if (!open) return;
+    const el = cardRef.current;
+    if (el && !reduced) {
+      el.animate(
+        [
+          { transform: fromTransform(open.from), opacity: 0.4, borderRadius: '18px' },
+          { transform: 'none', opacity: 1, borderRadius: '30px' },
+        ],
+        { duration: 560, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+      );
+    }
     const id = requestAnimationFrame(() => setShown(true));
-    const f = window.setTimeout(() => ctaRef.current?.focus(), 60);
+    const f = window.setTimeout(() => ctaRef.current?.focus({ preventScroll: true }), 80);
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close();
     window.addEventListener('keydown', onKey);
     return () => {
@@ -87,7 +121,8 @@ export default function Orbit() {
     const spin = () => control.current?.spin();
     const first = () => {
       control.current?.focus(0);
-      openProject(PANELS[0].slug, window.innerWidth / 2, window.innerHeight * 0.6);
+      const w = 220;
+      openProject(PANELS[0].slug, { x: window.innerWidth / 2 - w / 2, y: window.innerHeight * 0.6, w, h: w * 0.62 });
     };
     window.addEventListener('orbit:spin', spin);
     window.addEventListener('orbit:open-first', first);
@@ -101,7 +136,7 @@ export default function Orbit() {
   const fromLink = (slug: ProjectId) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const r = e.currentTarget.getBoundingClientRect();
-    openProject(slug, r.left + r.width / 2, r.top + r.height / 2);
+    openProject(slug, { x: r.left, y: r.top, w: r.width, h: r.height });
   };
 
   const view = open ? PROJECTS[open.slug] : null;
@@ -115,7 +150,15 @@ export default function Orbit() {
         <Image src="/home/retrato-cut.webp" alt="Lucas Sckenal" fill priority sizes="(max-width: 700px) 175vw, 1200px" />
       </div>
       {gl && tuning && <OrbitTuner />}
-      {gl && <HeroScene reduced={reduced} onOpen={openProject} controlRef={control} onReady={onReady} />}
+      {gl && (
+        <HeroScene
+          reduced={reduced}
+          onOpen={openProject}
+          openSlug={open?.slug ?? null}
+          controlRef={control}
+          onReady={onReady}
+        />
+      )}
 
       {/* Keyboard and screen-reader route to every project. A visible row
           of glass chips when WebGL is unavailable; with the scene it stays
@@ -146,8 +189,8 @@ export default function Orbit() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="panel-title"
+            ref={cardRef}
             className={styles.expanded}
-            style={{ transformOrigin: `${open.x}px ${open.y}px` }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.expandedMedia}>

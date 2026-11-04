@@ -137,6 +137,11 @@
     transform: translateY(-1px);
     box-shadow: 0 10px 24px -12px rgba(13, 13, 13, 0.6);
   }
+
+  &:active {
+    transform: scale(0.97);
+    transition-duration: 0.12s;
+  }
 }
 
 @media (max-width: 860px) {

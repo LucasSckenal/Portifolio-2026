@@ -685,9 +685,18 @@ export const nightProjects: ProjectCase[] = [
 
       {
         type: 'image',
-        src: 'https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png',
-        alt: 'Gameplay during a combat (night) phase',
+        src: '/projects/netos/noite.webp',
+        alt: 'Night phase: Afonso fights beside two towers while the castle holds',
         caption: 'Combat phase — auto-attacking towers, player controls only the tempo.',
+      },
+      {
+        type: 'gallery',
+        images: [
+          { src: '/projects/netos/dia.webp', alt: 'Day phase: two towers built on the first map', caption: 'Day — build and place, no clock running.' },
+          { src: '/projects/netos/cartas.webp', alt: 'Three power-up cards to choose from after a wave', caption: 'After each wave, one card out of three.' },
+          { src: '/projects/netos/historia.webp', alt: 'Illustrated story panel: the grandchildren arrive at the grandparents’ house', caption: 'The story opens as an illustrated comic.' },
+          { src: '/projects/netos/dialogo.webp', alt: 'Afonso speaking in a dialogue box on the first map', caption: 'Afonso and Berta talk the player through each world.' },
+        ],
       },
 
       {

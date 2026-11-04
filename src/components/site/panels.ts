@@ -120,11 +120,10 @@ export const SHOWCASE: Showcase[] = [
     short: 'Netos?',
     note: 'Godot · v4.1 lançado',
     tone: '#60a5fa',
-    shots: [{ src: 'https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png' }],
-    media: {
-      kind: 'image',
-      src: 'https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png',
-    },
+    icon: '/icons/app/netos.png',
+    // v4.1 captures: title screen, day build, night fight, power-up cards
+    shots: [{ src: '/projects/netos/menu.webp', clip: '/projects/netos/panel.mp4' }],
+    media: { kind: 'image', src: '/projects/netos/menu.webp' },
   },
   {
     slug: 'medical-chatbot',

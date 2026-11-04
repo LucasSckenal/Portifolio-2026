@@ -60,19 +60,19 @@ export default function Hero() {
         <path pathLength={1} d="M1190 470 C 1190 600, 1040 660, 900 660" />
       </svg>
 
-      <aside className={`${styles.note} ${styles.noteLeft}`}>
+      <div className={`${styles.note} ${styles.noteLeft}`}>
         <svg className={styles.noteIcon} width="18" height="18" viewBox="0 0 18 18" aria-hidden>
           <path pathLength={1} d="M3 13l4-4 3 3 5-6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <strong>{h.cardLeftTitle}</strong>
         <span>{h.cardLeftBody}</span>
-      </aside>
+      </div>
 
-      <aside className={`${styles.note} ${styles.noteRight}`}>
+      <div className={`${styles.note} ${styles.noteRight}`}>
         <span className={styles.liveDot} aria-hidden />
         <strong>{h.cardRightTitle}</strong>
         <span>{h.cardRightBody}</span>
-      </aside>
+      </div>
 
       <div className={styles.live}>
         <span className={styles.rule} aria-hidden />

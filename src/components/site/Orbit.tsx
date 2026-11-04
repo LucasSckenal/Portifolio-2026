@@ -151,7 +151,7 @@ export default function Orbit() {
           whole picture without WebGL, and the skeleton until the 3D scene
           has its textures. */}
       <div className={`${styles.posterPortrait} ${sceneReady ? styles.posterGone : ''}`}>
-        <Image src="/home/retrato-cut.webp" alt="Lucas Sckenal" fill priority sizes="(max-width: 700px) 175vw, 1200px" />
+        <Image src="/home/head/poster.webp" alt="Lucas Sckenal" fill priority sizes="(max-width: 700px) 175vw, 1200px" />
       </div>
       {gl && tuning && <OrbitTuner />}
       {gl && (

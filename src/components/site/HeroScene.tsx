@@ -238,11 +238,15 @@ const portraitVert = /* glsl */ `
   uniform sampler2D uDepth;
   uniform float uRelief;
   uniform float uReveal;
+  uniform float uFrame;
   varying vec2 vUv;
   void main() {
     vUv = uv;
     vec3 p = position;
-    p.z += texture2D(uDepth, uv).r * uRelief * uReveal;
+    // relief of the frame on screen, from the 5×5 depth atlas
+    vec2 tile = vec2(mod(uFrame, 5.0), floor(uFrame / 5.0));
+    vec2 duv = vec2((tile.x + uv.x) / 5.0, 1.0 - (tile.y + (1.0 - uv.y)) / 5.0);
+    p.z += texture2D(uDepth, duv).r * uRelief * uReveal;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
   }
 `;
@@ -313,26 +317,121 @@ const panelFrag = /* glsl */ `
   }
 `;
 
-function Portrait({ height, y, onReady, reduced }: { height: number; y: number; onReady?: () => void; reduced: boolean }) {
-  const [map, depth] = useLoader(THREE.TextureLoader, ['/home/retrato-cut.webp', '/home/retrato-depth.png']);
-  map.colorSpace = THREE.SRGBColorSpace;
-  // textures are in (useLoader suspends until then): the DOM poster can go
-  useEffect(() => {
-    const id = requestAnimationFrame(() => onReady?.());
-    return () => cancelAnimationFrame(id);
-  }, [onReady]);
+// ── Head frames (scripts/head-frames.mjs) ──
+// 25 cut-out frames of the head turning: 0 = facing right (the original
+// photo), 8 = facing the viewer, 24 = facing left.
+const HEAD = { count: 25, front: 8, w: 1024, h: 576 };
+const headSrc = (k: number) => `/home/head/f${String(k).padStart(2, '0')}.webp`;
+
+function Portrait({
+  height,
+  y,
+  onReady,
+  reduced,
+  lookAhead,
+}: {
+  height: number;
+  y: number;
+  onReady?: () => void;
+  reduced: boolean;
+  lookAhead: boolean;
+}) {
+  const depth = useLoader(THREE.TextureLoader, '/home/head/depth.png');
   const width = height * PHOTO_ASPECT;
+
+  // One canvas texture; the frame on show is drawn into it when it changes
+  const canvas = useMemo(() => {
+    const c = document.createElement('canvas');
+    c.width = HEAD.w;
+    c.height = HEAD.h;
+    return c;
+  }, []);
+  const map = useMemo(() => {
+    const t = new THREE.CanvasTexture(canvas);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }, [canvas]);
+  const frames = useRef<(HTMLImageElement | null)[]>(Array(HEAD.count).fill(null));
+  const shown = useRef(-1);
+  const look = useRef(0); // smoothed frame position
+  const moved = useRef(false); // until the pointer moves, hold the photo's pose
+
+  const draw = (k: number) => {
+    const img = frames.current[k];
+    if (!img) return false;
+    const ctx = canvas.getContext('2d')!;
+    ctx.clearRect(0, 0, HEAD.w, HEAD.h);
+    ctx.drawImage(img, 0, 0, HEAD.w, HEAD.h);
+    map.needsUpdate = true;
+    shown.current = k;
+    uniforms.uFrame.value = k;
+    return true;
+  };
+
+  // Frame 0 first (it is the poster's pose), the rest right after
+  useEffect(() => {
+    let alive = true;
+    const load = (k: number) =>
+      new Promise<void>((resolve) => {
+        const img = new Image();
+        img.decoding = 'async';
+        img.onload = () => {
+          if (alive) frames.current[k] = img;
+          resolve();
+        };
+        img.onerror = () => resolve();
+        img.src = headSrc(k);
+      });
+    load(0).then(() => {
+      if (!alive) return;
+      draw(0);
+      requestAnimationFrame(() => onReady?.());
+      for (let k = 1; k < HEAD.count; k++) load(k);
+    });
+    const onMove = () => (moved.current = true);
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => {
+      alive = false;
+      window.removeEventListener('pointermove', onMove);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const uniforms = useMemo(
-    () => ({ uMap: { value: map }, uDepth: { value: depth }, uRelief: { value: height * 0.16 }, uReveal: { value: 0 } }),
+    () => ({
+      uMap: { value: map },
+      uDepth: { value: depth },
+      uRelief: { value: height * 0.16 },
+      uReveal: { value: 0 },
+      uFrame: { value: 0 },
+    }),
     [map, depth, height]
   );
-  // Opening, act 1: the flat photo (same as the DOM poster) swells into relief
+
   const born = useRef<number | null>(null);
-  useFrame((state) => {
+  useFrame((state, dt) => {
+    // Opening, act 1: the flat photo (same as the DOM poster) swells into relief
     if (born.current === null) born.current = state.clock.elapsedTime;
     const t = state.clock.elapsedTime - born.current;
     uniforms.uReveal.value = reduced ? 1 : easeOut(Math.min(1, t / 1.1));
+
+    // The head follows the pointer: right → turns right, centre → faces
+    // you, left → turns left. A project open in the middle: he looks at it.
+    const x = Math.max(-1, Math.min(1, state.pointer.x));
+    let target = 0;
+    if (lookAhead) target = HEAD.front;
+    else if (moved.current) target = x >= 0 ? HEAD.front * (1 - x) : HEAD.front + (HEAD.count - 1 - HEAD.front) * -x;
+    look.current += (target - look.current) * Math.min(1, dt * (reduced ? 3 : 6));
+
+    // show the nearest frame that has arrived
+    const want = Math.round(look.current);
+    if (want !== shown.current) {
+      for (let d = 0; d < HEAD.count; d++) {
+        if (draw(Math.min(HEAD.count - 1, want + d)) || draw(Math.max(0, want - d))) break;
+      }
+    }
   });
+
   return (
     <mesh position={[0, y, 0]} renderOrder={-1}>
       <planeGeometry args={[width, height, 220, 124]} />
@@ -791,7 +890,7 @@ function Stage({ reduced, onOpen, controlRef, onReady, openSlug, onFlight }: Pro
 
   return (
     <>
-      <Portrait height={h} y={y} onReady={onReady} reduced={reduced} />
+      <Portrait height={h} y={y} onReady={onReady} reduced={reduced} lookAhead={!!openSlug} />
       {textures && (
         <Ring
           textures={textures}

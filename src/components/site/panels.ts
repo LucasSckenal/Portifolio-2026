@@ -72,8 +72,9 @@ export const SHOWCASE: Showcase[] = [
     note: 'CAD / CAM · C++',
     tone: '#3b82f6',
     icon: '/icons/app/kern.png',
-    shots: [{ src: '/projects/kern/tela.webp' }, { src: '/projects/kern/chapa.webp' }],
-    media: { kind: 'image', src: '/projects/kern/tela.webp' },
+    // video built from the real KERN screens (recent files on the live app show client work)
+    shots: [{ src: '/projects/kern/tela.webp', clip: '/projects/kern/panel.mp4' }, { src: '/projects/kern/chapa.webp' }],
+    media: video('kern', '/projects/kern/tela.webp'),
   },
   {
     slug: 'designon',
@@ -84,7 +85,7 @@ export const SHOWCASE: Showcase[] = [
     icon: '/icons/app/designon.png',
     // screens from a local run with a fictional demo company (no real data, name or logo)
     shots: [{ src: '/projects/designon/inicio.webp', clip: '/projects/designon/panel.mp4' }],
-    media: { kind: 'image', src: '/projects/designon/inicio.webp' },
+    media: video('designon', '/projects/designon/preview-poster.webp'),
   },
   {
     slug: 'ma-finance-os',
@@ -125,7 +126,7 @@ export const SHOWCASE: Showcase[] = [
     icon: '/icons/app/netos.png',
     // v4.1 captures: title screen, day build, night fight, power-up cards
     shots: [{ src: '/projects/netos/menu.webp', clip: '/projects/netos/panel.mp4' }],
-    media: { kind: 'image', src: '/projects/netos/menu.webp' },
+    media: video('netos', '/projects/netos/preview-poster.webp'),
   },
   {
     slug: 'medical-chatbot',
@@ -134,8 +135,9 @@ export const SHOWCASE: Showcase[] = [
     note: 'React · Voz + texto',
     tone: '#2dd4bf',
     icon: '/icons/app/medical-chatbot.png',
-    shots: [{ src: '/projects/chatbot/Chat.png' }],
-    media: { kind: 'image', src: '/projects/chatbot/Chat.png' },
+    // the repo's own tutorial recording (PI3-4l/frontend/src/assets/tutorial.mp4)
+    shots: [{ src: '/projects/chatbot/Chat.png', clip: '/projects/chatbot/panel.mp4' }],
+    media: video('chatbot', '/projects/chatbot/preview-poster.webp'),
   },
   {
     slug: 'phantom-commerce',
@@ -144,8 +146,9 @@ export const SHOWCASE: Showcase[] = [
     note: 'Next.js · Firebase',
     tone: '#f472b6',
     icon: '/icons/app/phantom-commerce.png',
-    shots: [{ src: '/projects/PhantomComerce/example_productpage.png' }],
-    media: { kind: 'image', src: '/projects/PhantomComerce/example_productpage.png' },
+    // video built from the real screens (the app needs its private Firebase keys to run)
+    shots: [{ src: '/projects/PhantomComerce/example_productpage.png', clip: '/projects/PhantomComerce/panel.mp4' }],
+    media: video('PhantomComerce', '/projects/PhantomComerce/example_productpage.png'),
   },
 ];
 

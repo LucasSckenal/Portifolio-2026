@@ -1,0 +1,93 @@
+'use client';
+
+import Link from 'next/link';
+import { useLocale } from '@/components/providers/LanguageProvider';
+import type { Locale } from '@/lib/i18n';
+import { EMAIL } from './links';
+import styles from './privacy.module.scss';
+
+// Draft written from what the site actually does (lucas-patterns/legal):
+// no cookies, no analytics, no forms; one local preference; hosting logs;
+// one image served by GitHub. Review before publishing.
+const TEXT: Record<Locale, { title: string; updated: string; back: string; items: Array<[string, string]> }> = {
+  pt: {
+    title: 'Privacidade',
+    updated: 'Atualizado em novembro de 2026',
+    back: 'Voltar',
+    items: [
+      ['O que este site coleta', 'Nada que identifique você. Não há formulários, contas, cookies de rastreamento, analytics nem pixels de anúncio.'],
+      ['O que fica no seu navegador', 'Só o idioma que você escolher (e, na edição 2026, o tema claro ou escuro), salvos no armazenamento local do navegador para lembrar a sua escolha. Não sai do seu aparelho; você pode apagar limpando os dados do site.'],
+      ['Com quem o site conversa', 'O site é hospedado na Vercel, que registra dados técnicos de acesso (como endereço IP e navegador) para entregar as páginas e proteger o serviço. Uma imagem do projeto “Onde Estão os Netos?” é carregada do GitHub. Fontes, vídeos e as demais imagens são servidos pelo próprio site.'],
+      ['Contato', 'Se você me escrever por e-mail, uso a mensagem só para responder. Para pedir acesso, correção ou exclusão de qualquer dado, escreva para o endereço abaixo.'],
+    ],
+  },
+  en: {
+    title: 'Privacy',
+    updated: 'Updated November 2026',
+    back: 'Back',
+    items: [
+      ['What this site collects', 'Nothing that identifies you. There are no forms, accounts, tracking cookies, analytics or ad pixels.'],
+      ['What stays in your browser', 'Only the language you pick (and, in the 2026 edition, the light or dark theme), saved in local storage to remember your choice. It never leaves your device; clearing the site data removes it.'],
+      ['Who the site talks to', 'The site is hosted on Vercel, which logs technical access data (such as IP address and browser) to serve pages and protect the service. One image of the “Onde Estão os Netos?” project loads from GitHub. Fonts, videos and the other images are served by the site itself.'],
+      ['Contact', 'If you email me, I use the message only to reply. To ask for access to, correction or deletion of any data, write to the address below.'],
+    ],
+  },
+  es: {
+    title: 'Privacidad',
+    updated: 'Actualizado en noviembre de 2026',
+    back: 'Volver',
+    items: [
+      ['Qué recoge este sitio', 'Nada que te identifique. No hay formularios, cuentas, cookies de rastreo, analíticas ni píxeles publicitarios.'],
+      ['Qué queda en tu navegador', 'Solo el idioma que elijas (y, en la edición 2026, el tema claro u oscuro), guardado en el almacenamiento local para recordar tu elección. No sale de tu dispositivo; se borra al limpiar los datos del sitio.'],
+      ['Con quién habla el sitio', 'El sitio está alojado en Vercel, que registra datos técnicos de acceso (como IP y navegador) para servir las páginas y proteger el servicio. Una imagen del proyecto “Onde Estão os Netos?” se carga desde GitHub. Fuentes, vídeos y las demás imágenes las sirve el propio sitio.'],
+      ['Contacto', 'Si me escribes por email, uso el mensaje solo para responder. Para pedir acceso, corrección o eliminación de cualquier dato, escribe a la dirección de abajo.'],
+    ],
+  },
+  it: {
+    title: 'Privacy',
+    updated: 'Aggiornato a novembre 2026',
+    back: 'Indietro',
+    items: [
+      ['Cosa raccoglie questo sito', 'Niente che ti identifichi. Non ci sono moduli, account, cookie di tracciamento, analytics né pixel pubblicitari.'],
+      ['Cosa resta nel tuo browser', 'Solo la lingua che scegli (e, nell’edizione 2026, il tema chiaro o scuro), salvata nella memoria locale per ricordare la scelta. Non lascia il tuo dispositivo; si cancella pulendo i dati del sito.'],
+      ['Con chi parla il sito', 'Il sito è ospitato su Vercel, che registra dati tecnici di accesso (come IP e browser) per servire le pagine e proteggere il servizio. Un’immagine del progetto “Onde Estão os Netos?” viene caricata da GitHub. Font, video e le altre immagini sono serviti dal sito stesso.'],
+      ['Contatto', 'Se mi scrivi via email, uso il messaggio solo per rispondere. Per chiedere accesso, correzione o cancellazione di qualsiasi dato, scrivi all’indirizzo qui sotto.'],
+    ],
+  },
+  ja: {
+    title: 'プライバシー',
+    updated: '2026年11月更新',
+    back: '戻る',
+    items: [
+      ['このサイトが集めるもの', 'あなたを特定する情報は何も集めません。フォーム、アカウント、追跡用 Cookie、アクセス解析、広告ピクセルはありません。'],
+      ['ブラウザに残るもの', '選んだ言語（2026年版ではライト／ダークのテーマも）だけを、選択を覚えるためにローカルストレージに保存します。端末の外には出ず、サイトのデータを消去すれば削除されます。'],
+      ['サイトがやり取りする相手', 'サイトは Vercel でホストされており、ページの配信とサービス保護のために技術的なアクセス情報（IP アドレスやブラウザなど）が記録されます。「Onde Estão os Netos?」の画像1枚は GitHub から読み込まれます。フォント、動画、その他の画像はサイト自身が配信します。'],
+      ['連絡先', 'メールをいただいた場合、返信のためだけに使います。データの開示・訂正・削除の依頼は下記のアドレスまでご連絡ください。'],
+    ],
+  },
+};
+
+export default function Privacy() {
+  const { locale } = useLocale();
+  const t = TEXT[locale];
+  return (
+    <div className={styles.scroll}>
+      <article className={styles.page}>
+        <Link href="/" className={styles.back}>
+          ← {t.back}
+        </Link>
+        <h1 className={styles.title}>{t.title}</h1>
+        <p className={styles.updated}>{t.updated}</p>
+        {t.items.map(([h, body]) => (
+          <section key={h} className={styles.block}>
+            <h2>{h}</h2>
+            <p>{body}</p>
+          </section>
+        ))}
+        <a className={styles.email} href={`mailto:${EMAIL}`}>
+          {EMAIL}
+        </a>
+      </article>
+    </div>
+  );
+}

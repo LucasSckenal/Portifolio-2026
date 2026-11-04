@@ -49,7 +49,7 @@ export default function KagamiClient() {
       {/* ── Overlay UI (desktop only) ── */}
       <div className={styles.overlay}>
         <div className={styles.topBar}>
-          <Link href="/" className={styles.back} data-cursor data-cursor-label="Back to portfolio ←">
+          <Link href="/2026" className={styles.back} data-cursor data-cursor-label="Back to portfolio ←">
             <span className={styles.backArrow}>←</span>
             <span>Back to portfolio</span>
           </Link>

@@ -1,0 +1,63 @@
+// The home is one fixed screen; this page scrolls inside it.
+.scroll {
+  height: 100svh;
+  overflow-y: auto;
+}
+
+.page {
+  max-width: 68ch;
+  margin: 0 auto;
+  padding: 120px var(--gutter) 96px;
+}
+
+.back {
+  font-size: 0.85rem;
+  color: var(--ink-3);
+
+  &:hover {
+    color: var(--ink);
+  }
+}
+
+.title {
+  margin: 28px 0 8px;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.updated {
+  margin: 0 0 40px;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+
+.block {
+  margin-top: 32px;
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--ink-2);
+  }
+}
+
+.email {
+  display: inline-block;
+  margin-top: 40px;
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+}

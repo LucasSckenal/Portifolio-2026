@@ -97,7 +97,7 @@ export default function MobileFallback() {
         </div>
 
         {/* ── Back to portfolio CTA ── */}
-        <Link href="/" className={styles.portfolioCta}>
+        <Link href="/2026" className={styles.portfolioCta}>
           <span>← Back to portfolio</span>
         </Link>
       </section>

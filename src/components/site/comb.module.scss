@@ -1,0 +1,106 @@
+// Compact social honeycomb, bottom-right of the single-page hero.
+
+.comb {
+  position: absolute;
+  z-index: 4;
+  right: var(--gutter);
+  bottom: 24px;
+  width: clamp(150px, 15vw, 210px);
+
+  svg {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 16px 26px rgba(13, 13, 13, 0.28));
+  }
+
+  polygon {
+    stroke-linejoin: round;
+  }
+}
+
+.empty {
+  fill: #141416;
+  stroke: rgba(242, 242, 239, 0.08);
+  stroke-width: 3;
+}
+
+.cell {
+  cursor: pointer;
+  outline: none;
+
+  polygon {
+    fill: #121214;
+    stroke: rgba(242, 242, 239, 0.1);
+    stroke-width: 3;
+    transition: fill 0.4s var(--ease-out), stroke 0.4s var(--ease-out);
+  }
+
+  .icon {
+    color: #f2f2ef;
+    transition: opacity 0.3s var(--ease-out);
+  }
+
+  .label {
+    fill: #f2f2ef;
+    font: 500 30px/1 var(--font-geist), system-ui, sans-serif;
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out);
+    pointer-events: none;
+  }
+
+  &:hover,
+  &:focus-visible {
+    polygon {
+      fill: #26262a;
+      stroke: rgba(242, 242, 239, 0.4);
+    }
+    .icon {
+      opacity: 0;
+    }
+    .label {
+      opacity: 1;
+    }
+  }
+
+  &:focus-visible polygon {
+    stroke: #f2f2ef;
+    stroke-width: 5;
+  }
+}
+
+.center {
+  &:hover,
+  &:focus-visible {
+    .icon {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+  }
+}
+
+.orb {
+  transform-origin: 0 0;
+  animation: orb-turn 9s linear infinite;
+}
+
+@keyframes orb-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .comb {
+    width: 118px;
+    bottom: 16px;
+  }
+}

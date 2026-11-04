@@ -1,14 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Noto_Serif_JP } from 'next/font/google';
-import LenisProvider from '@/components/providers/LenisProvider';
-import Grain from '@/components/atmosphere/Grain';
-import Header from '@/components/nav/Header';
-import ConsoleEasterEgg from '@/components/effects/ConsoleEasterEgg';
-import RouteTransition from '@/components/effects/RouteTransition';
-import ScrollProgress from '@/components/effects/ScrollProgress';
-import ThemeTransitionOverlay from '@/components/effects/ThemeTransitionOverlay';
-import Particles from '@/components/atmosphere/Particles';
-import { ThemeProvider } from '@/components/providers/ThemeProvider';
+import { Geist, Geist_Mono, Instrument_Serif, Noto_Serif_JP } from 'next/font/google';
 import { LanguageProvider } from '@/components/providers/LanguageProvider';
 import { personSchema, websiteSchema } from '@/lib/structured-data';
 import './globals.scss';
@@ -22,6 +13,15 @@ const geist = Geist({
 const geistMono = Geist_Mono({
   subsets: ['latin'],
   variable: '--font-geist-mono',
+  display: 'swap',
+});
+
+// Display serif of the 2027 home (roman + italic pairs in the hero headline)
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-display',
   display: 'swap',
 });
 
@@ -52,14 +52,18 @@ const SITE_URL = getSiteUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Lucas Sckenal — Creative Frontend Developer',
+    default: 'Lucas Sckenal — Software & Creative Frontend Developer',
     template: '%s · Lucas Sckenal',
   },
   description:
-    'A creative frontend developer crafting immersive, cinematic interfaces. Game UI, motion design, and premium digital products from Brazil.',
+    'Software developer and creative frontend developer from Brazil. Web apps, sites and native desktop software — Next.js, Rust, C++ — with AI inside.',
   keywords: [
     'Lucas Sckenal',
+    'software developer',
     'creative frontend developer',
+    'desktop software',
+    'Rust',
+    'C++',
     'cinematic web',
     'game UI',
     'motion design',
@@ -76,16 +80,16 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: SITE_URL,
-    title: 'Lucas Sckenal — Cinematic interfaces, game UI, motion.',
+    title: 'Lucas Sckenal — Software and interfaces that stay in your head.',
     description:
-      'Creative frontend developer crafting immersive interfaces and cinematic experiences. Portfolio · MMXXVI.',
+      'Software developer and creative frontend developer from Brazil. Web apps, sites and native desktop software — Next.js, Rust, C++ — with AI inside.',
     siteName: 'Lucas Sckenal · Portfolio',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Lucas Sckenal — Cinematic interfaces, game UI, motion.',
+    title: 'Lucas Sckenal — Software and interfaces that stay in your head.',
     description:
-      'Creative frontend developer crafting immersive interfaces and cinematic experiences.',
+      'Software developer and creative frontend developer from Brazil. Web apps, sites and native desktop software — Next.js, Rust, C++ — with AI inside.',
   },
   robots: {
     index: true,
@@ -112,7 +116,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${geistMono.variable} ${notoSerifJp.variable}`}
+      className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${notoSerifJp.variable}`}
       // Pre-hydration scripts mutate <html> before React hydrates:
       //   · theme-inverted class (saved Night preference)
       //   · lang attribute (user's saved language)
@@ -156,20 +160,10 @@ export default function RootLayout({
           Skip to content
         </a>
 
-        <ThemeProvider>
-          <LanguageProvider>
-            <LenisProvider>
-              <ScrollProgress />
-              <Particles />
-              <Header />
-              <main id="main">{children}</main>
-              <Grain />
-              <ThemeTransitionOverlay />
-              <RouteTransition />
-              <ConsoleEasterEgg />
-            </LenisProvider>
-          </LanguageProvider>
-        </ThemeProvider>
+        {/* Each route group brings its own chrome:
+              (site)    → the current portfolio
+              (arquivo) → the 2026 edition, kept intact at /2026, /work, /lab */}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

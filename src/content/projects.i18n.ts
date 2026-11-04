@@ -18,6 +18,9 @@ export type ProjectCopy = {
 };
 
 type Slug =
+  | 'ilha'
+  | 'kern'
+  | 'designon'
   | 'ma-finance-os'
   | 'nexo'
   | 'lj-treinamento-integrado'
@@ -27,6 +30,24 @@ type Slug =
 
 export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   en: {
+    designon: {
+      status: "Internal · In daily use",
+      tagline: "Stock, requests and cash for one company, in the pocket of whoever is on site.",
+      summary:
+        "An internal app for a visual communication company: stock by floor and area, the crew's material requests and the cash flow, as a PWA on the team's phones.",
+    },
+    ilha: {
+      status: "Personal · Daily use",
+      tagline: "A Dynamic Island for Windows, with an assistant that acts.",
+      summary:
+        "A lightweight notch for Windows in native Rust — music with synced lyrics, notices, agenda, clipboard, focus and water — with Ayla, a voice assistant on Gemini that controls the PC.",
+    },
+    kern: {
+      status: "Desktop · Released builds",
+      tagline: "CAD/CAM for the workshop: from drawing to G-code.",
+      summary:
+        "A 2D/2.5D CAD/CAM app for Windows that prepares CNC router, laser and 3D printing jobs — nesting, toolpaths and G-code in one program.",
+    },
     'ma-finance-os': {
       status: 'Live · In production',
       tagline: 'A minimalist operating system for personal finance — with AI that acts.',
@@ -70,6 +91,24 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   },
 
   pt: {
+    designon: {
+      status: "Interno · Uso diário",
+      tagline: "Estoque, pedidos e caixa de uma empresa, no bolso de quem está na obra.",
+      summary:
+        "Um app interno para uma empresa de comunicação visual: estoque por andar e área, pedidos de material da equipe e o caixa, como PWA no celular do time.",
+    },
+    ilha: {
+      status: "Pessoal · Uso diário",
+      tagline: "Uma Dynamic Island para o Windows, com uma assistente que age.",
+      summary:
+        "Um notch leve para o Windows em Rust nativo — música com letra sincronizada, avisos, agenda, clipboard, foco e água — com a Ayla, assistente de voz no Gemini que comanda o PC.",
+    },
+    kern: {
+      status: "Desktop · Versões publicadas",
+      tagline: "CAD/CAM para a oficina: do desenho ao G-code.",
+      summary:
+        "Um programa CAD/CAM 2D/2.5D para Windows que prepara trabalhos de fresa CNC, laser e impressão 3D — organização na chapa, percursos e G-code num programa só.",
+    },
     'ma-finance-os': {
       status: 'No ar · Em produção',
       tagline: 'Um sistema operacional minimalista para finanças pessoais — com uma IA que age.',
@@ -113,6 +152,24 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   },
 
   es: {
+    designon: {
+      status: "Interno · Uso diario",
+      tagline: "Stock, pedidos y caja de una empresa, en el bolsillo de quien está en obra.",
+      summary:
+        "Una app interna para una empresa de comunicación visual: stock por piso y área, pedidos de material del equipo y la caja, como PWA en el móvil del equipo.",
+    },
+    ilha: {
+      status: "Personal · Uso diario",
+      tagline: "Una Dynamic Island para Windows, con una asistente que actúa.",
+      summary:
+        "Un notch ligero para Windows en Rust nativo — música con letra sincronizada, avisos, agenda, portapapeles, foco y agua — con Ayla, asistente de voz en Gemini que controla el PC.",
+    },
+    kern: {
+      status: "Escritorio · Versiones publicadas",
+      tagline: "CAD/CAM para el taller: del dibujo al G-code.",
+      summary:
+        "Un programa CAD/CAM 2D/2.5D para Windows que prepara trabajos de fresadora CNC, láser e impresión 3D — anidado en la plancha, trayectorias y G-code en un solo programa.",
+    },
     'ma-finance-os': {
       status: 'En línea · En producción',
       tagline: 'Un sistema operativo minimalista para las finanzas personales — con una IA que actúa.',
@@ -156,6 +213,24 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   },
 
   it: {
+    designon: {
+      status: "Interno · Uso quotidiano",
+      tagline: "Magazzino, richieste e cassa di un’azienda, in tasca a chi è in cantiere.",
+      summary:
+        "Un’app interna per un’azienda di comunicazione visiva: magazzino per piano e area, richieste di materiale della squadra e cassa, come PWA sui telefoni del team.",
+    },
+    ilha: {
+      status: "Personale · Uso quotidiano",
+      tagline: "Una Dynamic Island per Windows, con un’assistente che agisce.",
+      summary:
+        "Un notch leggero per Windows in Rust nativo — musica con testi sincronizzati, avvisi, agenda, appunti, focus e acqua — con Ayla, assistente vocale su Gemini che comanda il PC.",
+    },
+    kern: {
+      status: "Desktop · Versioni pubblicate",
+      tagline: "CAD/CAM per l’officina: dal disegno al G-code.",
+      summary:
+        "Un programma CAD/CAM 2D/2.5D per Windows che prepara lavori di fresa CNC, laser e stampa 3D — nesting sulla lastra, percorsi e G-code in un solo programma.",
+    },
     'ma-finance-os': {
       status: 'Online · In produzione',
       tagline: 'Un sistema operativo minimalista per le finanze personali — con un’IA che agisce.',
@@ -199,6 +274,24 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   },
 
   ja: {
+    designon: {
+      status: "社内 · 毎日使用",
+      tagline: "会社の在庫・資材依頼・資金を、現場の人のポケットに。",
+      summary:
+        "看板・サイン制作会社のための社内アプリ。フロアとエリアごとの在庫、チームの資材依頼、資金管理を、スタッフのスマホに入る PWA で。",
+    },
+    ilha: {
+      status: "個人 · 毎日使用",
+      tagline: "Windows のための Dynamic Island と、動いてくれるアシスタント。",
+      summary:
+        "ネイティブ Rust 製の Windows 用ノッチ。同期歌詞つきの音楽、通知、予定、クリップボード、集中、水分記録 — そして PC を操作する Gemini の音声アシスタント、Ayla。",
+    },
+    kern: {
+      status: "デスクトップ · 公開ビルド",
+      tagline: "工房のための CAD/CAM。図面から G-code まで。",
+      summary:
+        "CNC ルーター、レーザー、3D プリントの作業を準備する Windows 用 2D/2.5D CAD/CAM。板取り、ツールパス、G-code をひとつのプログラムで。",
+    },
     'ma-finance-os': {
       status: '公開中 · 運用中',
       tagline: '個人の資産のための、ミニマルなオペレーティングシステム — 動く AI とともに。',

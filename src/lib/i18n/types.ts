@@ -170,4 +170,35 @@ export type Dictionary = {
     // Shown above the body when the case text is not in this locale
     bodyNote: string;
   };
+  // ── 2027 home (src/components/site) ──
+  site: {
+    nav: { work: string; about: string; contact: string; cta: string; language: string };
+    hero: {
+      line1: string;
+      line2: string;
+      sub: string;
+      primary: string;
+      secondary: string;
+      cardLeftTitle: string;
+      cardLeftBody: string;
+      cardRightTitle: string;
+      cardRightBody: string;
+      liveLabel: string;
+      motto: string;
+      badge: string;
+      dragHint: string;
+      viewProject: string;
+      privacy: string;
+      close: string;
+    };
+    versions: { label: string; title: string; current: string; archived: string; backToCurrent: string };
+    social: {
+      label: string;
+      title: string;
+      body: string;
+      center: string;
+      copy: string;
+      copied: string;
+    };
+  };
 };

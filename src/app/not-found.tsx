@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useTheme } from '@/components/providers/ThemeProvider';
+import { ThemeProvider, useTheme } from '@/components/providers/ThemeProvider';
 import styles from './not-found.module.scss';
 
-export default function NotFound() {
+function NotFoundInner() {
   const { inverted } = useTheme();
 
   // The 404 carries the same Day/Night duality as the rest of the site.
@@ -45,5 +45,15 @@ export default function NotFound() {
         </span>
       </div>
     </main>
+  );
+}
+
+// The 404 renders under the root layout only, so it brings its own theme
+// context (it still wears the 2026 look).
+export default function NotFound() {
+  return (
+    <ThemeProvider>
+      <NotFoundInner />
+    </ThemeProvider>
   );
 }

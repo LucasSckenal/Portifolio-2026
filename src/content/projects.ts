@@ -1,3 +1,5 @@
+import { KERN_NAME } from './names';
+
 // =========================================
 // Single source of truth for project data.
 // Used by both the home Projects section and the /work/[slug] case study pages.
@@ -446,6 +448,169 @@ export const projects: ProjectCase[] = [
 ];
 
 // =========================================
+// Lead work (2026 edition two): native desktop software
+// =========================================
+export const leadProjects: ProjectCase[] = [
+  {
+    slug: 'ilha',
+    index: '01',
+    title: 'Ilha',
+    jp: '島',
+    jpLabel: '島 · Island',
+    year: '2026',
+    status: 'Personal · Daily use',
+    tagline: 'A Dynamic Island for Windows, with an assistant that acts.',
+    description:
+      'A lightweight notch at the top of the Windows screen, in native Rust: music with synced lyrics, system notices, agenda, clipboard, focus timer, water tracking and files — and Ayla, a voice and text assistant built on Gemini that controls the PC.',
+    roles: ['Desktop App', 'Native UI', 'AI Assistant', 'Motion'],
+    tech: ['Rust', 'Direct2D', 'Windows APIs', 'Gemini'],
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'Ilha makes Windows behave like a Mac where it matters every day: a notch in the style of the Dynamic Island, built as one native Rust app with no embedded browser and no third-party installer.',
+      },
+      {
+        type: 'image',
+        src: '/projects/ilha/inicio.webp',
+        alt: 'Ilha — home page: clock, weather, today, water and music',
+        caption: 'Home: clock, weather, what is on today, water and the music playing.',
+      },
+      { type: 'heading', text: 'What it does' },
+      {
+        type: 'list',
+        items: [
+          'Music from any player that reports to Windows, with cover, controls and lyrics synced from lrclib.net.',
+          'System notices in place of the Windows ones: volume, brightness, keyboard layout, battery, network, headphones.',
+          'Agenda with reminders that warn ten minutes before and show a Join button for call links.',
+          'Clipboard history in memory, focus timer and stopwatch, water goal with reminders, and files parked on the island.',
+          'Alt+Space search for apps, files, settings, maths and unit conversions.',
+        ],
+      },
+      {
+        type: 'image',
+        src: '/projects/ilha/musica.webp',
+        alt: 'Ilha — music page with synced lyrics',
+        caption: 'Music page: the line being sung, with the full lyrics a click away.',
+      },
+      { type: 'heading', text: 'Ayla, inside the island' },
+      {
+        type: 'paragraph',
+        body:
+          'Say "Ayla" and the request, or tap her eyes on the open island. Direct commands — next song, volume, timers, water, open an app — run locally with no internet. Questions go to Gemini with a short summary of the moment (time, music, focus, water, weather, agenda), so she answers without asking back, and acts on the result.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Her eyes carry the state: wide while listening, narrowed and glancing while thinking, bouncing while speaking, amber with a tilted head when she needs a yes. Idle, they peek out now and then and fall asleep when the PC rests.',
+      },
+    ],
+  },
+  {
+    slug: 'designon',
+    index: '03',
+    title: 'DesignOn',
+    jp: '倉',
+    jpLabel: '倉 · Storehouse',
+    year: '2026',
+    status: 'Internal · In daily use',
+    tagline: 'Stock, requests and cash for one company, in the pocket of whoever is on site.',
+    description:
+      'An internal operations app built for a visual communication company: where every material sits, the team\'s material requests, and the cash flow — installed as a PWA on the crew\'s phones and used at the office desk.',
+    roles: ['Product Design', 'Full-Stack', 'PWA', 'Internal Tool'],
+    tech: ['React', 'Vite', 'Node', 'Supabase', 'Vercel'],
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'DesignOn became the company\'s main app. It joins three things that used to live apart: the physical stock, the material requests of the crew, and the money.',
+      },
+      { type: 'heading', text: 'What it does' },
+      {
+        type: 'list',
+        items: [
+          'Physical stock mapped to the company\'s real floors and areas, with QR labels that open a place or a product straight from the phone camera.',
+          'Material requests from the team, linked to stock, so nobody runs out on site and nobody buys twice.',
+          'Cash flow for the owner: income and expenses, payables and receivables, fixed bills, P&L and profit per job.',
+          'A simple mode for field staff — three tabs: ask for material, the jobs they are on (checklist, pause with a reason, finish with a photo) and me.',
+          'Native notifications for new requests, low stock, ready orders and bills coming due.',
+        ],
+      },
+      { type: 'heading', text: 'Built for the floor, not the office' },
+      {
+        type: 'paragraph',
+        body:
+          'Most use happens one-handed, on a phone, in the warehouse or on site. What the crew marks without signal is kept on the phone and syncs when the connection returns. Money data only ever reaches the administrator\'s device, and finished jobs send their summary and photo to the team chat, keeping only the summary after a week.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Screens are not shown here: the app holds the company\'s real stock and finances.',
+      },
+    ],
+  },
+  {
+    slug: 'kern',
+    index: '02',
+    title: KERN_NAME,
+    jp: '核',
+    jpLabel: '核 · Core',
+    year: '2026',
+    status: 'Desktop · Released builds',
+    tagline: 'CAD/CAM for the workshop: from drawing to G-code.',
+    description:
+      'A 2D/2.5D CAD/CAM desktop app for Windows 11 that prepares files and toolpaths for CNC routers, lasers and 3D printing — ACM, acrylic, MDF, PVC and aluminium sheets.',
+    roles: ['Desktop App', 'CAD / CAM', 'Product Design', 'C++'],
+    tech: ['C++20', 'Qt 6', 'CMake', 'SQLite', 'Clipper2', 'GoogleTest'],
+    href: 'https://github.com/LucasSckenal/kern-releases',
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'One program for the whole workshop job: draw or import, nest the parts on the sheet, generate the toolpaths, check them, and save the G-code — with Router, Laser and 3D Printing as three work areas side by side.',
+      },
+      {
+        type: 'image',
+        src: '/projects/kern/tela.webp',
+        alt: 'KERN — the router work area with a toolpath being simulated',
+        caption: 'Router area: lettering with its cut path, properties and the toolpath simulation.',
+      },
+      { type: 'heading', text: 'How it works' },
+      {
+        type: 'list',
+        items: [
+          'Native editor with layers, snapping, numeric editing, transform tools and centralised undo/redo.',
+          'DXF and SVG import; STL and 3MF go straight to the 3D printing bed.',
+          'CAM operations — profile, pocket and drilling — with tool library and G-code output.',
+          'A .kern project format in readable, versioned JSON: newer versions keep opening old projects.',
+          'Recipes: a repeated job saved once and applied in one click.',
+        ],
+      },
+      {
+        type: 'image',
+        src: '/projects/kern/chapa.webp',
+        alt: 'KERN — parts nested on the sheet',
+        caption: 'Nesting: parts arranged on the sheet before cutting.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Each work area keeps its own file, title, undo history and recent list, so opening a drawing for the router never touches what is on the laser. The start screen shows the three areas, the shop machines and recent drawings with thumbnails.',
+      },
+      {
+        type: 'image',
+        src: '/projects/kern/conferir.webp',
+        alt: 'KERN — checking the job before saving',
+        caption: 'Check before cutting.',
+      },
+    ],
+  },
+];
+
+// =========================================
 // NIGHT PORTFOLIO — academic & experimental work
 // Projects shaped during my degree at SENAC / Unijui, kept here as foundations
 // rather than client deliverables. The toggle reframes them as "after hours" —
@@ -834,7 +999,7 @@ export const nightProjects: ProjectCase[] = [
 ];
 
 // Combined lookup — case study routes serve from either array.
-const allProjects = [...projects, ...nightProjects];
+const allProjects = [...leadProjects, ...projects, ...nightProjects];
 
 export function getProject(slug: string): ProjectCase | undefined {
   return allProjects.find((p) => p.slug === slug);
@@ -844,7 +1009,7 @@ export function getAdjacentProjects(
   slug: string
 ): { prev: ProjectCase; next: ProjectCase } | null {
   // Adjacent navigation stays within the same portfolio (day↔day, night↔night)
-  for (const list of [projects, nightProjects]) {
+  for (const list of [leadProjects, projects, nightProjects]) {
     const i = list.findIndex((p) => p.slug === slug);
     if (i !== -1) {
       return {
@@ -914,7 +1079,17 @@ export function getFilmography(): ArchiveEntry[] {
     oneLiner: p.tagline,
   }));
 
-  return [...featuredDay, ...featuredNight, ...archiveExtras]
+  const lead: ArchiveEntry[] = leadProjects.map((p) => ({
+    year: p.year,
+    title: p.title,
+    type: p.roles.slice(0, 2).join(' · '),
+    kind: 'personal',
+    href: `/work/${p.slug}`,
+    external: false,
+    oneLiner: p.tagline,
+  }));
+
+  return [...lead, ...featuredDay, ...featuredNight, ...archiveExtras]
     // newest first, stable tie-break by title for deterministic order
     .sort((a, b) => {
       if (a.year !== b.year) return b.year.localeCompare(a.year);

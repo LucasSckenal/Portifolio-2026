@@ -10,11 +10,11 @@ import styles from './MobileMenu.module.scss';
 
 // Absolute hrefs so the menu navigates back to home from any route.
 const items = [
-  { label: 'Index',   href: '/#top',      index: '01' },
-  { label: 'About',   href: '/#about',    index: '02' },
-  { label: 'Work',    href: '/#projects', index: '03' },
-  { label: 'Stack',   href: '/#stack',    index: '04' },
-  { label: 'Contact', href: '/#contact',  index: '05' },
+  { label: 'Index',   href: '/2026#top',      index: '01' },
+  { label: 'About',   href: '/2026#about',    index: '02' },
+  { label: 'Work',    href: '/2026#projects', index: '03' },
+  { label: 'Stack',   href: '/2026#stack',    index: '04' },
+  { label: 'Contact', href: '/2026#contact',  index: '05' },
 ];
 
 type Props = {

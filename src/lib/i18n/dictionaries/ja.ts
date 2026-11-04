@@ -180,4 +180,46 @@ export const ja: Dictionary = {
     "next": "次へ →",
     "bodyNote": "このケーススタディの本文は英語です。"
   },
+  site: {
+    "nav": {
+      "work": "作品",
+      "about": "自己紹介",
+      "contact": "連絡先",
+      "cta": "相談する",
+      "language": "言語"
+    },
+    "hero": {
+      "line1": "頭に残る",
+      "line2": "インターフェースを。",
+      "sub": "ルーカスです。ソフトウェアとインターフェースを作っています — Web アプリ、サイト、そして Rust と C++ のネイティブ デスクトップ ソフト。AI を組み込んで。",
+      "primary": "作品を見る",
+      "secondary": "動きを見る",
+      "cardLeftTitle": "Web とデスクトップ",
+      "cardLeftBody": "Web は Next.js、デスクトップは Rust と C++。",
+      "cardRightTitle": "フリーランス受付中",
+      "cardRightBody": "新しい案件をリモートで受付中。",
+      "liveLabel": "つのプロダクトが公開中",
+      "motto": "テンプレートより、意図を。",
+      "badge": "ソフトウェア · フロントエンド · フリーランス · ",
+      "dragHint": "ドラッグで回転",
+      "viewProject": "プロジェクトを見る",
+      "privacy": "プライバシー",
+      "close": "閉じる"
+    },
+    "versions": {
+      "label": "バージョン",
+      "title": "ポートフォリオの歩み",
+      "current": "現在",
+      "archived": "以前の版を表示しています",
+      "backToCurrent": "最新版を見る"
+    },
+    "social": {
+      "label": "ほかの場所",
+      "title": "ここでも会えます。",
+      "body": "セルにカーソルを合わせて — どれも扉です。",
+      "center": "話しましょう",
+      "copy": "メールをコピー",
+      "copied": "コピーしました"
+    }
+  },
 };

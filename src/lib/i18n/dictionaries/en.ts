@@ -180,4 +180,46 @@ export const en: Dictionary = {
     "next": "Next →",
     "bodyNote": ""
   },
+  site: {
+    "nav": {
+      "work": "Work",
+      "about": "About",
+      "contact": "Contact",
+      "cta": "Start a project",
+      "language": "Language"
+    },
+    "hero": {
+      "line1": "Interfaces that",
+      "line2": "stay in your head.",
+      "sub": "I'm Lucas. I build software and interfaces — web apps, sites and native desktop programs in Rust and C++, with AI inside.",
+      "primary": "See the work",
+      "secondary": "Watch it move",
+      "cardLeftTitle": "Web and desktop",
+      "cardLeftBody": "Next.js on the web, Rust and C++ on the desktop.",
+      "cardRightTitle": "Open for freelance",
+      "cardRightBody": "Taking on new projects, remote.",
+      "liveLabel": "products live right now",
+      "motto": "Less template. More intent.",
+      "badge": "SOFTWARE · FRONTEND · FREELANCE · ",
+      "dragHint": "Drag to spin",
+      "viewProject": "See the project",
+      "privacy": "Privacy",
+      "close": "Close"
+    },
+    "versions": {
+      "label": "Versions",
+      "title": "Portfolio history",
+      "current": "Current",
+      "archived": "You are viewing an earlier edition",
+      "backToCurrent": "See the current one"
+    },
+    "social": {
+      "label": "Elsewhere",
+      "title": "Find me around.",
+      "body": "Hover a cell — every one of them is a door.",
+      "center": "Let's talk",
+      "copy": "Copy email",
+      "copied": "Copied"
+    }
+  },
 };

@@ -23,13 +23,13 @@ export default function Header() {
 
   // On any subpage (e.g. /work/[slug]) the logo gains a `←` prefix and
   // acts as the explicit back-to-home action.
-  const isSubpage = pathname !== '/' && pathname !== '';
+  const isSubpage = pathname !== '/2026' && pathname !== '/' && pathname !== '';
 
   const nav = [
-    { label: t.nav.index,   href: '/#top'      },
-    { label: t.nav.about,   href: '/#about'    },
-    { label: t.nav.work,    href: '/#projects' },
-    { label: t.nav.contact, href: '/#contact'  },
+    { label: t.nav.index,   href: '/2026#top'      },
+    { label: t.nav.about,   href: '/2026#about'    },
+    { label: t.nav.work,    href: '/2026#projects' },
+    { label: t.nav.contact, href: '/2026#contact'  },
   ];
   // Lab no longer in the global nav — too crowded at 5 items. Lab is
   // surfaced via the dedicated LabPromo section in the home page flow
@@ -64,7 +64,7 @@ export default function Header() {
             wide screens. Aligns with the visual rhythm of the rest of the site. */}
         <div className={styles.inner}>
           <Link
-            href="/"
+            href="/2026"
             className={`${styles.mark} ${isSubpage ? styles.markBack : ''}`}
             data-cursor
             data-cursor-label={isSubpage ? 'Back to index ←' : undefined}
@@ -93,7 +93,7 @@ export default function Header() {
                 they can switch. Theme toggle (eclipse) right after. */}
             <LanguagePicker />
             <ThemeToggle />
-            <Link href="/#contact" className={styles.cta} data-cursor>
+            <Link href="/2026#contact" className={styles.cta} data-cursor>
               <span>{t.meta.available}</span>
               <span className={styles.dot} aria-hidden />
             </Link>

@@ -137,3 +137,10 @@ html.menu-open body {
     transition-duration: 0.001ms !important;
   }
 }
+
+// 2027 home: the 2026 rules above paint <body> dark; repaint it under the
+// new edition so overscroll and the area behind the nav match the page.
+body:has(.site-v3) {
+  background: #f3f3f3;
+  color: #0d0d0d;
+}

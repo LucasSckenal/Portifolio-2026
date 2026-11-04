@@ -180,4 +180,46 @@ export const it: Dictionary = {
     "next": "Successivo →",
     "bodyNote": "Il testo completo di questo caso è in inglese."
   },
+  site: {
+    "nav": {
+      "work": "Lavori",
+      "about": "Chi sono",
+      "contact": "Contatti",
+      "cta": "Chiedi un preventivo",
+      "language": "Lingua"
+    },
+    "hero": {
+      "line1": "Interfacce che",
+      "line2": "restano in testa.",
+      "sub": "Sono Lucas. Creo software e interfacce — app web, siti e programmi desktop nativi in Rust e C++, con l’IA dentro.",
+      "primary": "Vedi i progetti",
+      "secondary": "Guardali in azione",
+      "cardLeftTitle": "Web e desktop",
+      "cardLeftBody": "Next.js sul web, Rust e C++ sul desktop.",
+      "cardRightTitle": "Disponibile per freelance",
+      "cardRightBody": "Accetto nuovi progetti, da remoto.",
+      "liveLabel": "prodotti online adesso",
+      "motto": "Meno template. Più intenzione.",
+      "badge": "SOFTWARE · FRONTEND · FREELANCE · ",
+      "dragHint": "Trascina per ruotare",
+      "viewProject": "Vedi il progetto",
+      "privacy": "Privacy",
+      "close": "Chiudi"
+    },
+    "versions": {
+      "label": "Versioni",
+      "title": "Storia del portfolio",
+      "current": "Attuale",
+      "archived": "Stai guardando un’edizione precedente",
+      "backToCurrent": "Vedi quella attuale"
+    },
+    "social": {
+      "label": "Altrove",
+      "title": "Trovami qui.",
+      "body": "Passa il cursore sulle celle — ognuna è una porta.",
+      "center": "Parliamone",
+      "copy": "Copia email",
+      "copied": "Copiato"
+    }
+  },
 };

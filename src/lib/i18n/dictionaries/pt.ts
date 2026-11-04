@@ -180,4 +180,46 @@ export const pt: Dictionary = {
     "next": "Próximo →",
     "bodyNote": "O texto completo deste case está em inglês."
   },
+  site: {
+    "nav": {
+      "work": "Trabalhos",
+      "about": "Sobre",
+      "contact": "Contato",
+      "cta": "Pedir orçamento",
+      "language": "Idioma"
+    },
+    "hero": {
+      "line1": "Interfaces que",
+      "line2": "ficam na cabeça.",
+      "sub": "Sou o Lucas. Crio softwares e interfaces — apps web, sites e programas desktop nativos em Rust e C++, com IA dentro.",
+      "primary": "Ver projetos",
+      "secondary": "Ver em ação",
+      "cardLeftTitle": "Web e desktop",
+      "cardLeftBody": "Next.js na web, Rust e C++ no computador.",
+      "cardRightTitle": "Aberto para freela",
+      "cardRightBody": "Aceitando projetos novos, remoto.",
+      "liveLabel": "produtos no ar agora",
+      "motto": "Menos template. Mais intenção.",
+      "badge": "SOFTWARE · FRONTEND · FREELA · ",
+      "dragHint": "Arraste para girar",
+      "viewProject": "Ver o projeto",
+      "privacy": "Privacidade",
+      "close": "Fechar"
+    },
+    "versions": {
+      "label": "Versões",
+      "title": "Histórico do portfólio",
+      "current": "Atual",
+      "archived": "Você está vendo uma versão antiga",
+      "backToCurrent": "Ver a atual"
+    },
+    "social": {
+      "label": "Por aí",
+      "title": "Me encontra aqui.",
+      "body": "Passe o cursor nas células — cada uma é uma porta.",
+      "center": "Vamos conversar",
+      "copy": "Copiar e-mail",
+      "copied": "Copiado"
+    }
+  },
 };

@@ -117,7 +117,7 @@ export default function WorkArchive({ entries }: { entries: ArchiveEntry[] }) {
         {/* ── Footer ──────────────────────── */}
         <footer className={styles.footerNote}>
           {t.work.footer}{' '}
-          <Link href="/#contact" className={styles.footerLink} data-cursor>
+          <Link href="/2026#contact" className={styles.footerLink} data-cursor>
             {t.work.footerLink}
           </Link>
         </footer>

@@ -204,6 +204,7 @@ export const pt: Dictionary = {
       "cardRightBody": "Aceitando projetos novos, remoto.",
       "openHint": "Clique no projeto para abrir.",
       "activity": "Última atualização no GitHub:",
+      "activityRelease": "Última versão lançada:",
       "liveLabel": "produtos no ar agora",
       "motto": "Menos template. Mais intenção.",
       "badge": "SOFTWARE · FRONTEND · FREELA · ",

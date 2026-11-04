@@ -27,7 +27,20 @@ export async function GET() {
     const repos = (await res.json()) as Array<{ name: string; pushed_at: string; fork: boolean }>;
     const hit = repos.find((r) => !r.fork && REPOS.has(r.name.toLowerCase()));
     if (!hit) return NextResponse.json(null);
-    return NextResponse.json({ slug: REPOS.get(hit.name.toLowerCase()), at: hit.pushed_at });
+    const slug = REPOS.get(hit.name.toLowerCase());
+    // When that push was a release (KERN ships from its own releases repo,
+    // so every update there is one), name the version.
+    let tag: string | undefined;
+    const rel = await fetch(`https://api.github.com/repos/${USER}/${hit.name}/releases/latest`, {
+      headers: { Accept: 'application/vnd.github+json', 'User-Agent': 'portfolio-activity' },
+      next: { revalidate },
+    });
+    if (rel.ok) {
+      const r = (await rel.json()) as { tag_name?: string; published_at?: string };
+      const gap = Math.abs(new Date(r.published_at ?? 0).getTime() - new Date(hit.pushed_at).getTime());
+      if (r.tag_name && gap < 2 * 86400_000) tag = r.tag_name;
+    }
+    return NextResponse.json({ slug, at: hit.pushed_at, tag });
   } catch {
     return NextResponse.json(null);
   }

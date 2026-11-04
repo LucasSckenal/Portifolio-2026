@@ -204,6 +204,7 @@ export const en: Dictionary = {
       "cardRightBody": "Taking on new projects, remote.",
       "openHint": "Click the project to open it.",
       "activity": "Last GitHub update:",
+      "activityRelease": "Latest release:",
       "liveLabel": "products live right now",
       "motto": "Less template. More intent.",
       "badge": "SOFTWARE · FRONTEND · FREELANCE · ",

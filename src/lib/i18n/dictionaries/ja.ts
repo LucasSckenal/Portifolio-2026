@@ -204,6 +204,7 @@ export const ja: Dictionary = {
       "cardRightBody": "新しい案件をリモートで受付中。",
       "openHint": "プロジェクトをクリックして開く。",
       "activity": "GitHub の最終更新:",
+      "activityRelease": "最新リリース:",
       "liveLabel": "つのプロダクトが公開中",
       "motto": "テンプレートより、意図を。",
       "badge": "ソフトウェア · フロントエンド · フリーランス · ",

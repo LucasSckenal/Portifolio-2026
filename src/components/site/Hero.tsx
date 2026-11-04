@@ -54,7 +54,7 @@ export default function Hero() {
     return () => window.removeEventListener('panel:hover', on);
   }, []);
   // latest push to one of the showcased repos (server-cached, real data)
-  const [activity, setActivity] = useState<{ slug: ProjectId; at: string } | null>(null);
+  const [activity, setActivity] = useState<{ slug: ProjectId; at: string; tag?: string } | null>(null);
   useEffect(() => {
     fetch('/api/activity')
       .then((r) => (r.ok ? r.json() : null))
@@ -138,7 +138,12 @@ export default function Hero() {
             <span>{h.cardRightBody}</span>
             {busy && activity && (
               <span className={styles.activity}>
-                {h.activity} <b>{busy.short}</b> · {ago(activity.at, locale)}
+                {activity.tag ? h.activityRelease : h.activity}{' '}
+                <Link href={`/work/${busy.slug}`} className={styles.activityLink}>
+                  {busy.short}
+                  {activity.tag && ` ${activity.tag}`}
+                </Link>{' '}
+                · {ago(activity.at, locale)}
               </span>
             )}
           </div>

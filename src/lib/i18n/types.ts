@@ -186,6 +186,7 @@ export type Dictionary = {
       cardRightBody: string;
       openHint: string;
       activity: string;
+      activityRelease: string;
       liveLabel: string;
       motto: string;
       badge: string;

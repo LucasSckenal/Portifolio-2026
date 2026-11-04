@@ -311,9 +311,20 @@
   font-size: 0.76rem;
   color: var(--ink-3);
 
-  b {
-    font-weight: 600;
-    color: var(--ink);
+}
+
+// the one way from the note to the project it names
+.activityLink {
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(13, 13, 13, 0.25);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration-color: currentColor;
   }
 }
 

@@ -21,7 +21,7 @@ _A cinematic Japanese minimalist portfolio crafted in Next.js, GSAP and Framer M
 
 <br/>
 
-[**Live →**](https://lucassckenal.vercel.app) &nbsp;·&nbsp; [**Repository**](https://github.com/LucasSckenal/portfolio-2026) &nbsp;·&nbsp; [**LinkedIn**](https://www.linkedin.com/in/lucassckenal) &nbsp;·&nbsp; [**GitHub**](https://github.com/LucasSckenal)
+[**Live →**](https://portifoliolucassckenal.vercel.app) &nbsp;·&nbsp; [**Repository**](https://github.com/LucasSckenal/portfolio-2026) &nbsp;·&nbsp; [**LinkedIn**](https://www.linkedin.com/in/lucassckenal) &nbsp;·&nbsp; [**GitHub**](https://github.com/LucasSckenal)
 
 </div>
 

@@ -897,8 +897,7 @@ function Stage({ reduced, onOpen, controlRef, onReady, openSlug, onFlight }: Pro
   const narrow = viewport.width < viewport.height;
   const h = Math.min(viewport.height * 0.6, (viewport.width / PHOTO_ASPECT) * (narrow ? 1.75 : 1.12));
   const y = -viewport.height / 2 + h / 2;
-  // portrait screens: the photo is large, so the halo tightens around the head
-  const radius = h * ORBIT_DEFAULTS.radius * (narrow ? 0.66 : 1);
+  const radius = h * ORBIT_DEFAULTS.radius;
   // head centre in the photo ≈ (0.54, 0.40) of the frame, ring at eye level
   const center: [number, number, number] = [h * PHOTO_ASPECT * 0.03, y + h * ORBIT_DEFAULTS.height, 0];
 

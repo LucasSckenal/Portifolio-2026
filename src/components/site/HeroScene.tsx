@@ -17,6 +17,8 @@ import { ORBIT, ORBIT_DEFAULTS } from './orbitTuning';
 export type OrbitControl = {
   spin: () => void;
   focus: (panelIndex: number) => void;
+  // fly panel i to the centre and open it; false when the flight can't run
+  open: (panelIndex: number) => boolean;
 };
 
 export type Rect = { x: number; y: number; w: number; h: number };
@@ -26,6 +28,9 @@ type Props = {
   onReady?: () => void;
   onOpen: (slug: ProjectId, from: Rect) => void;
   openSlug?: ProjectId | null;
+  // a panel is flying between the ring and the centre (the page lifts the
+  // scene above the headline meanwhile)
+  onFlight?: (active: boolean) => void;
   controlRef: React.MutableRefObject<OrbitControl | null>;
 };
 
@@ -253,13 +258,20 @@ const portraitFrag = /* glsl */ `
   }
 `;
 const panelVert = /* glsl */ `
+  uniform float uFlat;
+  uniform float uRadius;
   varying vec2 vUv;
   varying vec3 vN;
   varying vec3 vV;
   void main() {
     vUv = uv;
-    vec4 wp = modelMatrix * vec4(position, 1.0);
-    vN = normalize(mat3(modelMatrix) * normal);
+    // uFlat 0 → the slice of cylinder on the ring; 1 → a flat card
+    vec3 pos = position;
+    float th = atan(pos.x, pos.z + uRadius);
+    pos = mix(pos, vec3(uRadius * th, pos.y, 0.0), uFlat);
+    vec3 nrm = normalize(mix(normal, vec3(0.0, 0.0, 1.0), uFlat));
+    vec4 wp = modelMatrix * vec4(pos, 1.0);
+    vN = normalize(mat3(modelMatrix) * nrm);
     vV = normalize(cameraPosition - wp.xyz);
     gl_Position = projectionMatrix * viewMatrix * wp;
   }
@@ -343,9 +355,11 @@ function Ring({
   reduced,
   onOpen,
   openSlug,
+  onFlight,
   controlRef,
 }: {
   openSlug?: ProjectId | null;
+  onFlight?: (active: boolean) => void;
   textures: THREE.Texture[];
   radius: number;
   center: [number, number, number];
@@ -373,6 +387,49 @@ function Ring({
   const [hover, setHover] = useState(-1);
   const { gl, camera } = useThree();
   const born = useRef<number | null>(null);
+  const flyer = useRef<THREE.Mesh>(null);
+  const flight = useRef<{
+    i: number;
+    phase: 'out' | 'held' | 'back';
+    t: number;
+    mat: THREE.ShaderMaterial;
+  } | null>(null);
+
+  // Panel i leaves the ring: a twin mesh takes its exact world pose and
+  // flies to the centre of the screen while the original fades out.
+  const launch = (i: number) => {
+    const mesh = meshes.current[i];
+    const fm = flyer.current;
+    if (!mesh || !fm || reduced || flight.current) return false;
+    mesh.updateWorldMatrix(true, false);
+    mesh.matrixWorld.decompose(fm.position, fm.quaternion, fm.scale);
+    const src = materials[i].uniforms;
+    const mat = new THREE.ShaderMaterial({
+      vertexShader: panelVert,
+      fragmentShader: panelFrag,
+      uniforms: {
+        uMap: { value: src.uMap.value },
+        uVideo: { value: src.uVideo.value },
+        uVideoOn: { value: src.uVideoOn.value },
+        uHover: { value: 0 },
+        uAlpha: { value: 1 },
+        uDim: { value: 0 },
+        uFlat: { value: 0 },
+        uRadius: { value: radius },
+      },
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    });
+    fm.material = mat;
+    fm.visible = true;
+    flight.current = { i, phase: 'out', t: 0, mat };
+    onFlight?.(true);
+    s.current.velocity = 0;
+    s.current.target = frontAngle(i);
+    return true;
+  };
 
   const s = useRef({
     angle: 0.35,
@@ -409,13 +466,15 @@ function Ring({
               uHover: { value: 0 },
               uAlpha: { value: 0 },
               uDim: { value: 0 },
+              uFlat: { value: 0 },
+              uRadius: { value: radius },
             },
             transparent: true,
             depthWrite: false,
             side: THREE.DoubleSide,
           })
       ),
-    [textures]
+    [textures, radius]
   );
 
   // Release the clip players when the scene goes away
@@ -488,6 +547,7 @@ function Ring({
         s.current.velocity = 0;
         s.current.target = frontAngle(i);
       },
+      open: (i) => launch(i),
     };
   });
 
@@ -533,7 +593,7 @@ function Ring({
       const slot = LAYOUT[i];
       const arrive = easeOut(Math.min(1, Math.max(0, (since - 0.45 - i * 0.07) / (reduced ? 0.4 : 0.8))));
       const away = reduced ? 0 : 1 - arrive;
-      const hidden = openSlug === PANELS[i].slug;
+      const hidden = openSlug === PANELS[i].slug || flight.current?.i === i;
       const alpha = m.uniforms.uAlpha;
       alpha.value += ((hidden ? 0 : arrive) - alpha.value) * Math.min(1, dt * (hidden ? 14 : 18));
       const r = radius * (1 + away * 1.1 + u.value * 0.07);
@@ -576,9 +636,57 @@ function Ring({
       const on = m.uniforms.uVideoOn;
       on.value += ((facing && c.ready ? 1 : 0) - on.value) * Math.min(1, dt * 5);
     });
+
+    // ── The flight: ring slot ⇄ centre of the screen ──
+    const f = flight.current;
+    const fm = flyer.current;
+    if (f && fm) {
+      const cam = state.camera as THREE.PerspectiveCamera;
+      if (f.phase === 'out') f.t = Math.min(1, f.t + dt / 0.72);
+      else if (f.phase === 'back') f.t = Math.max(0, f.t - dt / 0.6);
+      const e = easeInOut(f.t);
+
+      // from: wherever its slot is right now (the ring keeps turning)
+      const home = meshes.current[f.i];
+      if (home) {
+        home.updateWorldMatrix(true, false);
+        home.matrixWorld.decompose(fromP, fromQ, fromS);
+      }
+      // to: centred in front of the camera, facing it, half the view wide
+      const D = cam.position.length() * 0.5;
+      dir.set(0, 0, -1).applyQuaternion(cam.quaternion);
+      toP.copy(cam.position).addScaledVector(dir, D);
+      const viewH = 2 * D * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2));
+      const wantW = Math.min(viewH * cam.aspect * 0.5, viewH * 0.55 * 1.6);
+      toS.setScalar(wantW / (radius * ARC));
+
+      fm.position.lerpVectors(fromP, toP, e);
+      fm.position.y += Math.sin(Math.PI * e) * 0.18; // a small arc, not a straight slide
+      fm.quaternion.slerpQuaternions(fromQ, cam.quaternion, e);
+      fm.scale.lerpVectors(fromS, toS, e);
+      f.mat.uniforms.uFlat.value = e;
+      f.mat.uniforms.uVideoOn.value = materials[f.i].uniforms.uVideoOn.value;
+
+      if (f.phase === 'out' && f.t >= 1) {
+        f.phase = 'held';
+        onOpen(PANELS[f.i].slug, screenRect(fm, cam, gl.domElement));
+      }
+      if (f.phase === 'back' && f.t <= 0) {
+        fm.visible = false;
+        f.mat.dispose();
+        flight.current = null;
+        onFlight?.(false);
+      }
+    }
   });
 
+  // The card closed: the panel flies home
+  useEffect(() => {
+    if (!openSlug && flight.current?.phase === 'held') flight.current.phase = 'back';
+  }, [openSlug]);
+
   return (
+    <>
     <group ref={outer} position={center}>
     <group ref={tilt}>
       <group ref={group}>
@@ -608,6 +716,7 @@ function Ring({
               onClick={(e: ThreeEvent<MouseEvent>) => {
                 e.stopPropagation();
                 if (s.current.moved > 6) return; // a drag, not a click
+                if (launch(i)) return; // the card opens when the panel arrives
                 s.current.velocity = 0;
                 s.current.target = frontAngle(i);
                 onOpen(p.slug, screenRect(e.object as THREE.Mesh, camera, gl.domElement));
@@ -618,10 +727,19 @@ function Ring({
       </group>
     </group>
     </group>
+    <mesh ref={flyer} geometry={geometry} visible={false} renderOrder={20} frustumCulled={false} />
+    </>
   );
 }
 
 const tmp = new THREE.Vector3();
+const dir = new THREE.Vector3();
+const fromP = new THREE.Vector3();
+const toP = new THREE.Vector3();
+const fromS = new THREE.Vector3();
+const toS = new THREE.Vector3();
+const fromQ = new THREE.Quaternion();
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 // A mesh's box on screen, in CSS pixels: where the expanded card is born
@@ -659,7 +777,7 @@ function Rig({ reduced }: { reduced: boolean }) {
   return null;
 }
 
-function Stage({ reduced, onOpen, controlRef, onReady, openSlug }: Props) {
+function Stage({ reduced, onOpen, controlRef, onReady, openSlug, onFlight }: Props) {
   const { viewport } = useThree();
   const textures = usePanelTextures();
   // The canvas covers the whole hero. The photo sits bottom-aligned and
@@ -683,6 +801,7 @@ function Stage({ reduced, onOpen, controlRef, onReady, openSlug }: Props) {
           reduced={reduced}
           onOpen={onOpen}
           openSlug={openSlug}
+          onFlight={onFlight}
           controlRef={controlRef}
         />
       )}

@@ -38,6 +38,7 @@ export default function Orbit() {
   const [shown, setShown] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
   const [tuning, setTuning] = useState(false);
+  const [flying, setFlying] = useState(false);
   const onReady = useCallback(() => setSceneReady(true), []);
   const lastFocus = useRef<HTMLElement | null>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
@@ -48,8 +49,10 @@ export default function Orbit() {
     setGl(hasWebGL());
     setTuning(new URLSearchParams(window.location.search).has('ajustar'));
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(mq.matches);
-    const on = (e: MediaQueryListEvent) => setReduced(e.matches);
+    // ?motion forces full motion (for testing on a reduced-motion machine)
+    const force = new URLSearchParams(window.location.search).has('motion');
+    setReduced(mq.matches && !force);
+    const on = (e: MediaQueryListEvent) => setReduced(e.matches && !force);
     mq.addEventListener('change', on);
     return () => mq.removeEventListener('change', on);
   }, []);
@@ -120,6 +123,7 @@ export default function Orbit() {
   useEffect(() => {
     const spin = () => control.current?.spin();
     const first = () => {
+      if (control.current?.open(0)) return; // flies in and opens on arrival
       control.current?.focus(0);
       const w = 220;
       openProject(PANELS[0].slug, { x: window.innerWidth / 2 - w / 2, y: window.innerHeight * 0.6, w, h: w * 0.62 });
@@ -142,7 +146,7 @@ export default function Orbit() {
   const view = open ? PROJECTS[open.slug] : null;
 
   return (
-    <div className={`${styles.stage} ${open ? styles.stageRaised : ''}`}>
+    <div className={`${styles.stage} ${open || flying ? styles.stageRaised : ''}`}>
       {/* Server-rendered portrait: the page never starts empty. It is the
           whole picture without WebGL, and the skeleton until the 3D scene
           has its textures. */}
@@ -155,6 +159,7 @@ export default function Orbit() {
           reduced={reduced}
           onOpen={openProject}
           openSlug={open?.slug ?? null}
+          onFlight={setFlying}
           controlRef={control}
           onReady={onReady}
         />

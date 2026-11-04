@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useLoader, useThree, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
+import { PerformanceMonitor } from '@react-three/drei/core/PerformanceMonitor';
 import { PANELS, type Panel, type ProjectId } from './panels';
 import { ORBIT, ORBIT_DEFAULTS } from './orbitTuning';
 
@@ -592,6 +593,11 @@ function Ring({
     []
   );
 
+  // wheel and arrows rest while a project is open or a panel is flying
+  const openRef = useRef(false);
+  openRef.current = !!openSlug;
+  const busy = () => openRef.current || !!flight.current;
+
   // Drag anywhere on the canvas spins the ring
   useEffect(() => {
     const el = gl.domElement;
@@ -619,11 +625,40 @@ function Ring({
       st.dragging = false;
       st.velocity = Math.max(-6, Math.min(6, st.velocity));
     };
+    // Wheel / trackpad: the page never scrolls, so the wheel turns the ring
+    const wheel = (e: WheelEvent) => {
+      if (busy()) return;
+      e.preventDefault();
+      const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      st.target = null;
+      st.velocity = Math.max(-6, Math.min(6, st.velocity + d * 0.012));
+    };
+    // Arrow keys step to the next panel either way
+    const key = (e: KeyboardEvent) => {
+      if (busy() || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+      const t = e.target;
+      if (t instanceof Element && t.closest('input, textarea, select, [role="dialog"], [contenteditable="true"]')) return;
+      e.preventDefault();
+      const dir = e.key === 'ArrowRight' ? 1 : -1;
+      const from = st.target ?? st.angle;
+      let best = dir * TAU;
+      LAYOUT.forEach((slot) => {
+        let d = (((-slot.angle - from) % TAU) + TAU) % TAU; // 0..TAU ahead
+        if (dir < 0) d -= TAU; // TAU..0 behind
+        if (Math.abs(d) > 0.05 && Math.abs(d) < Math.abs(best)) best = d;
+      });
+      st.velocity = 0;
+      st.target = from + best;
+    };
+    el.addEventListener('wheel', wheel, { passive: false });
+    window.addEventListener('keydown', key);
     el.addEventListener('pointerdown', down);
     window.addEventListener('pointermove', move, { passive: true });
     window.addEventListener('pointerup', up);
     window.addEventListener('pointercancel', up);
     return () => {
+      el.removeEventListener('wheel', wheel);
+      window.removeEventListener('keydown', key);
       el.removeEventListener('pointerdown', down);
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
@@ -924,16 +959,30 @@ function Stage({ reduced, onOpen, controlRef, onReady, openSlug, onFlight }: Pro
 
 const TOUCH = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
 
+// Pixel ratio steps: the scene starts sharp and steps down a notch when the
+// device can't hold the frame rate (and back up when it recovers).
+const DPR_STEPS = TOUCH ? [1, 1.25, 1.5] : [1, 1.5, 2];
+
 export default function HeroScene(props: Props) {
+  const cap = typeof window === 'undefined' ? 1 : window.devicePixelRatio;
+  const steps = DPR_STEPS.filter((d) => d <= Math.max(1, cap));
+  const [level, setLevel] = useState(steps.length - 1);
   return (
     <Canvas
       // phones: cap the pixel ratio (3× screens cost 4× the pixels of 1.5×)
-      dpr={TOUCH ? [1, 1.5] : [1, 2]}
+      dpr={steps[level]}
       camera={{ position: [0, 0.15, 7], fov: 30 }}
       gl={{ antialias: !TOUCH, alpha: true, powerPreference: 'high-performance' }}
       style={{ position: 'absolute', inset: 0, touchAction: 'pan-y' }}
     >
-      <Stage {...props} />
+      <PerformanceMonitor
+        onDecline={() => setLevel((l) => Math.max(0, l - 1))}
+        onIncline={() => setLevel((l) => Math.min(steps.length - 1, l + 1))}
+        flipflops={3}
+        onFallback={() => setLevel(0)}
+      >
+        <Stage {...props} />
+      </PerformanceMonitor>
     </Canvas>
   );
 }

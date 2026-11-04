@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import type { CaseSection, ProjectCase } from '@/content/projects';
+import { caseSectionsPt } from '@/content/projects.pt';
 import { useProjectCopy } from '@/lib/hooks/useProjectCopy';
 import { EMAIL } from './links';
 import { PROJECTS, PROJECT_ORDER, SHOWCASE, type ProjectId } from './panels';
@@ -142,6 +143,8 @@ export default function CaseView({ project }: { project: ProjectCase }) {
   const { locale } = useLocale();
   const copy = useProjectCopy(project.slug);
   const slug = project.slug as ProjectId;
+  // the body in the visitor's language when it exists, else English + a note
+  const translated = locale === 'pt' ? caseSectionsPt[project.slug] : undefined;
 
   const i = PROJECT_ORDER.indexOf(slug);
   const prev = SHOWCASE[(i - 1 + SHOWCASE.length) % SHOWCASE.length];
@@ -187,12 +190,12 @@ export default function CaseView({ project }: { project: ProjectCase }) {
         <HeroMedia slug={slug} />
 
         <div className={styles.body} lang="en">
-          {locale !== 'en' && t.caseStudy.bodyNote && (
+          {locale !== 'en' && !translated && t.caseStudy.bodyNote && (
             <p className={styles.bodyNote} lang={locale}>
               {t.caseStudy.bodyNote}
             </p>
           )}
-          {project.sections.map((s, k) => (
+          {(translated ?? project.sections).map((s, k) => (
             <Section key={k} s={s} />
           ))}
         </div>

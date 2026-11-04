@@ -61,7 +61,7 @@ export default function ProjectsIndex() {
         aria-labelledby="projects-title"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className={styles.head}>
+        <div className={styles.head}>
           <div>
             <h2 id="projects-title" className={styles.title}>
               {p.title}
@@ -73,7 +73,7 @@ export default function ProjectsIndex() {
               <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.6" />
             </svg>
           </button>
-        </header>
+        </div>
 
         <ul className={styles.grid}>
           {SHOWCASE.map((s, i) => {

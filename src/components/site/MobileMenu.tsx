@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { LOCALES, localeMeta } from '@/lib/i18n';
 import { EDITIONS } from '@/content/editions';
-import { EMAIL, SOCIALS } from './links';
+import { EMAIL, SOCIALS, showWork } from './links';
 import styles from './mobileMenu.module.scss';
 
 // Phones and narrow screens: everything the nav pill and the social comb
@@ -14,6 +15,8 @@ export default function MobileMenu() {
   const t = useT();
   const { locale, setLocale } = useLocale();
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
   const root = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
 
@@ -59,7 +62,7 @@ export default function MobileMenu() {
             type="button"
             onClick={() => {
               setOpen(false);
-              window.dispatchEvent(new CustomEvent('orbit:open-first'));
+              showWork(router, pathname);
             }}
           >
             {t.site.nav.work}
@@ -88,6 +91,10 @@ export default function MobileMenu() {
             </button>
           ))}
         </div>
+
+        <Link href="/privacidade" className={styles.privacy} onClick={() => setOpen(false)}>
+          {t.site.hero.privacy}
+        </Link>
 
         <div className={styles.socials}>
           {SOCIALS.map((s) => (

@@ -144,3 +144,50 @@ body:has(.site-v3) {
   background: #f3f3f3;
   color: #0d0d0d;
 }
+
+// ── Card → case page morph (lib/viewMorph.ts) ─────────────────────
+// The opened card's picture and title fly to the case page's hero frame
+// and title; the rest of the page lifts in behind them.
+::view-transition-group(case-media),
+::view-transition-group(case-title) {
+  animation-duration: 0.75s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+// both snapshots keep their proportions while the frame changes shape
+::view-transition-old(case-media),
+::view-transition-new(case-media) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+
+::view-transition-old(root) {
+  animation: vt-out 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
+}
+
+@keyframes vt-out {
+  to {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes vt-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:not(.force-motion)::view-transition-group(*),
+  html:not(.force-motion)::view-transition-old(*),
+  html:not(.force-motion)::view-transition-new(*) {
+    animation: none !important;
+  }
+}

@@ -4,6 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { MORPH, morphTo } from '@/lib/viewMorph';
 import { useT } from '@/components/providers/LanguageProvider';
 import { PANELS, PROJECTS, PROJECT_ORDER, type ProjectId } from './panels';
 import type { OrbitControl, Rect } from './HeroScene';
@@ -30,6 +32,7 @@ type Open = { slug: ProjectId; from: Rect } | null;
 //   · the expanded glass panel: the project, and one action — see it
 export default function Orbit() {
   const t = useT();
+  const router = useRouter();
   const h = t.site.hero;
   const control = useRef<OrbitControl | null>(null);
   const [gl, setGl] = useState<boolean | null>(null);
@@ -198,7 +201,7 @@ export default function Orbit() {
             className={styles.expanded}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className={styles.expandedMedia}>
+            <div className={styles.expandedMedia} style={{ viewTransitionName: MORPH.media }}>
               {view.media.kind === 'video' ? (
                 <video autoPlay={!reduced} muted loop playsInline poster={view.media.poster} aria-hidden>
                   {view.media.sources.map((s) => (
@@ -212,10 +215,20 @@ export default function Orbit() {
               )}
             </div>
             <div className={styles.expandedBar}>
-              <h2 id="panel-title" className={styles.expandedTitle}>
+              <h2 id="panel-title" className={styles.expandedTitle} style={{ viewTransitionName: MORPH.title }}>
                 {view.title}
               </h2>
-              <Link ref={ctaRef} href={`/work/${open.slug}`} className={styles.viewProject}>
+              <Link
+                ref={ctaRef}
+                href={`/work/${open.slug}`}
+                className={styles.viewProject}
+                onClick={(e) => {
+                  // the card grows into the case page (plain link without JS)
+                  if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                  e.preventDefault();
+                  morphTo(router, `/work/${open.slug}`);
+                }}
+              >
                 {h.viewProject}
                 <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
                   <path d="M2 7h10M8 3l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" />

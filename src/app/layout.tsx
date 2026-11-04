@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Instrument_Serif, Noto_Serif_JP } from 'next/font/google';
+import { cookies, headers } from 'next/headers';
 import { LanguageProvider } from '@/components/providers/LanguageProvider';
+import { DEFAULT_LOCALE, LOCALES, localeMeta, type Locale } from '@/lib/i18n';
 import { personSchema, websiteSchema } from '@/lib/structured-data';
 import './globals.scss';
 
@@ -108,14 +110,29 @@ export const viewport = {
   colorScheme: 'dark',
 };
 
-export default function RootLayout({
+// The page arrives in the visitor's language: their saved choice (cookie)
+// first, then the browser's Accept-Language. No English flash for a
+// Portuguese visitor while the client catches up.
+async function serverLocale(): Promise<Locale> {
+  const saved = (await cookies()).get('lang')?.value as Locale | undefined;
+  if (saved && LOCALES.includes(saved)) return saved;
+  const accept = (await headers()).get('accept-language') ?? '';
+  for (const part of accept.split(',')) {
+    const code = part.trim().slice(0, 2).toLowerCase() as Locale;
+    if (LOCALES.includes(code)) return code;
+  }
+  return DEFAULT_LOCALE;
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await serverLocale();
   return (
     <html
-      lang="en"
+      lang={localeMeta[locale].htmlLang}
       className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable} ${notoSerifJp.variable}`}
       // Pre-hydration scripts mutate <html> before React hydrates:
       //   · theme-inverted class (saved Night preference)
@@ -163,7 +180,7 @@ export default function RootLayout({
         {/* Each route group brings its own chrome:
               (site)    → the current portfolio
               (arquivo) → the 2026 edition, kept intact at /2026, /2026/work, /lab */}
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider initial={locale}>{children}</LanguageProvider>
       </body>
     </html>
   );

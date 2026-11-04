@@ -50,15 +50,35 @@ function resolveInitialLocale(): Locale {
   return DEFAULT_LOCALE;
 }
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // SSR-safe default; client effect overrides if a preference exists
-  const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
+const saveCookie = (l: Locale) => {
+  // a year; read by the root layout so the server renders this language
+  document.cookie = `lang=${l}; path=/; max-age=31536000; samesite=lax`;
+};
+
+export function LanguageProvider({
+  children,
+  initial = DEFAULT_LOCALE,
+}: {
+  children: React.ReactNode;
+  // the language the server rendered (root layout: cookie, then Accept-Language)
+  initial?: Locale;
+}) {
+  const [locale, setLocaleState] = useState<Locale>(initial);
 
   useEffect(() => {
-    const initial = resolveInitialLocale();
-    if (initial !== DEFAULT_LOCALE) setLocaleState(initial);
-    document.documentElement.lang = localeMeta[initial].htmlLang;
-  }, []);
+    // an older saved choice that only lives in localStorage wins once,
+    // and moves into the cookie so the server renders it from now on
+    const resolved = resolveInitialLocale();
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    if (stored && resolved !== initial) setLocaleState(resolved);
+    if (stored) saveCookie(resolved);
+    document.documentElement.lang = localeMeta[stored ? resolved : initial].htmlLang;
+  }, [initial]);
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next);
@@ -67,6 +87,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore
     }
+    saveCookie(next);
     document.documentElement.lang = localeMeta[next].htmlLang;
   }, []);
 

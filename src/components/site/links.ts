@@ -1,5 +1,12 @@
 // Real contact points only. Add X / Behance here when Lucas confirms the
 // handles — an empty slot stays a quiet hex cell.
+// "Work": on the home page it opens the first project; anywhere else it
+// goes home, where the carousel is
+export function showWork(router: { push: (h: string) => void }, pathname: string | null) {
+  if (pathname === '/') window.dispatchEvent(new CustomEvent('orbit:open-first'));
+  else router.push('/');
+}
+
 export const EMAIL = 'lucaspsckenal@gmail.com';
 
 // +55 55 98414-5158, digits only for wa.me

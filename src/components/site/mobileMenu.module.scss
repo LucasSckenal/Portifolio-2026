@@ -187,3 +187,13 @@
     font-weight: 500;
   }
 }
+
+.privacy {
+  justify-self: start;
+  margin: 2px 6px 0;
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line);
+}

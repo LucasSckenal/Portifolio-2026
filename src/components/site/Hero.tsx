@@ -56,13 +56,13 @@ export default function Hero() {
 
       {/* Side notes, tied to the halo by hairlines */}
       <svg className={styles.wires} viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden>
-        <path d="M250 390 C 250 560, 420 640, 560 650" />
-        <path d="M1190 470 C 1190 600, 1040 660, 900 660" />
+        <path pathLength={1} d="M250 390 C 250 560, 420 640, 560 650" />
+        <path pathLength={1} d="M1190 470 C 1190 600, 1040 660, 900 660" />
       </svg>
 
       <aside className={`${styles.note} ${styles.noteLeft}`}>
         <svg className={styles.noteIcon} width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-          <path d="M3 13l4-4 3 3 5-6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <path pathLength={1} d="M3 13l4-4 3 3 5-6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <strong>{h.cardLeftTitle}</strong>
         <span>{h.cardLeftBody}</span>

@@ -1,15 +1,18 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
-import { EMAIL, whatsappHref } from './links';
+import { EMAIL, showWork, whatsappHref } from './links';
 import Versions from './Versions';
 import MobileMenu from './MobileMenu';
 import styles from './site.module.scss';
 
 export default function Nav() {
   const t = useT();
+  const router = useRouter();
+  const pathname = usePathname();
   const { locale, setLocale } = useLocale();
 
   return (
@@ -19,7 +22,7 @@ export default function Nav() {
       </Link>
 
       <nav className={styles.pill} aria-label="Main">
-        <button type="button" onClick={() => window.dispatchEvent(new CustomEvent('orbit:open-first'))}>
+        <button type="button" onClick={() => showWork(router, pathname)}>
           {t.site.nav.work}
         </button>
         <a href={`mailto:${EMAIL}`}>{t.site.nav.contact}</a>

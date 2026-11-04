@@ -217,6 +217,13 @@ export const ja: Dictionary = {
       "archived": "以前の版を表示しています",
       "backToCurrent": "最新版を見る"
     },
+    "notFound": {
+      "label": "エラー · 404",
+      "title": "このページは軌道を外れました。",
+      "body": "移動したか、名前が変わったか、もともと存在しないページです。プロジェクトはすべてここにあります。",
+      "home": "トップへ戻る",
+      "projects": "プロジェクトへ直接"
+    },
     "social": {
       "label": "ほかの場所",
       "title": "ここでも会えます。",

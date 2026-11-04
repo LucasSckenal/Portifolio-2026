@@ -1,179 +1,143 @@
-.notFound {
-  position: relative;
-  min-height: 100vh;
-  background: var(--bg-deep);
-  color: var(--on-dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: var(--s-5) var(--gutter);
-  transition:
-    background 1.2s var(--ease-cinema),
-    color 1.2s var(--ease-cinema);
-}
-
-// Night 404 — locked dark with cooler radial cast + lantern accent
-.night {
-  background: #0A0810;
-  color: var(--mood-text-light);
-
-  .kanji   { color: var(--mood-text-light); }
-  .label   { color: var(--accent-night); }
-  .ctaDot  { background: var(--accent-night); box-shadow: 0 0 8px rgba(232, 154, 79, 0.6); }
-  .cta::after { background: var(--accent-night); }
-  .body, .titleLine:nth-child(2) { color: rgba(242, 239, 233, 0.78); }
-}
-
-// Drifting "迷" kanji (mayoi = lost)
-.kanji {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--font-serif);
-  font-weight: 200;
-  font-size: clamp(28rem, 60vw, 48rem);
-  line-height: 0.85;
-  color: var(--on-dark);
-  opacity: 0.05;
-  user-select: none;
-  pointer-events: none;
-  letter-spacing: -0.05em;
-  animation: drift 60s ease-in-out infinite alternate;
-}
-
-@keyframes drift {
-  from { transform: translate(-52%, -50%); }
-  to   { transform: translate(-48%, -52%); }
-}
-
-.inner {
-  position: relative;
-  z-index: 1;
-  max-width: 640px;
+// 404 — current edition. Tokens come from the .site shell (site.module.scss).
+.page {
+  height: 100%;
+  overflow-y: auto;
   display: grid;
-  gap: var(--s-3);
-  text-align: left;
+  align-content: center;
+  justify-items: center;
+  gap: 0;
+  padding: 120px var(--gutter) 64px;
+  text-align: center;
 }
 
 .label {
-  font-family: var(--font-mono);
-  font-size: var(--t-xs);
-  letter-spacing: var(--track-mark);
-  text-transform: uppercase;
-  color: var(--accent);
-  opacity: 0.85;
+  margin: 0 0 18px;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
 }
 
 .title {
   margin: 0;
-  font-family: var(--font-serif);
-  font-weight: 200;
-  font-size: clamp(3rem, 7vw, 5.5rem);
-  line-height: 1.02;
-  letter-spacing: var(--track-tight);
-}
-
-.titleLine {
-  display: block;
-
-  &:nth-child(2) {
-    font-style: italic;
-    padding-left: 1.2em;
-    color: rgba(242, 239, 233, 0.78);
-  }
+  max-width: 14ch;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  animation: rise 0.9s var(--ease-out) both;
 }
 
 .body {
-  font-family: var(--font-sans);
-  font-weight: 300;
-  font-size: var(--t-md);
+  margin: 20px 0 0;
+  max-width: 42ch;
+  font-size: 1rem;
   line-height: 1.55;
-  letter-spacing: var(--track-snug);
-  color: rgba(242, 239, 233, 0.65);
-  max-width: 52ch;
-  margin: var(--s-2) 0 var(--s-3);
+  color: var(--ink-2);
+  animation: rise 0.9s var(--ease-out) 0.12s both;
 }
 
-// ── CTA ──────────────────────────────────
-.cta {
+.home {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding-block: var(--s-2);
-  font-family: var(--font-mono);
-  font-size: var(--t-xs);
-  letter-spacing: var(--track-mark);
-  text-transform: uppercase;
-  color: var(--on-dark);
-  position: relative;
-  width: fit-content;
+  justify-content: center;
+  gap: 8px;
+  height: var(--btn-h);
+  padding: 0 var(--btn-px);
+  margin-top: 28px;
+  border-radius: var(--pill);
+  background: var(--ink);
+  color: var(--bg) !important;
+  font: 500 var(--btn-fs) / 1 var(--font-geist), system-ui, sans-serif;
+  white-space: nowrap;
+  transition: transform 0.3s var(--ease-out);
+  animation: rise 0.9s var(--ease-out) 0.22s both;
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 100%;
-    bottom: 8px;
-    height: 1px;
-    background: var(--accent);
-    transition: right 0.7s var(--ease-cinema);
+  &:hover svg {
+    transform: translateX(3px);
   }
 
-  &:hover::after { right: 0; }
-  &:hover .ctaArrow { transform: translate(4px, -4px); }
+  svg {
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
-.ctaDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px rgba(140, 42, 31, 0.6);
-  animation: pulse 2.4s ease-in-out infinite;
+.or {
+  margin: 48px 0 14px;
+  font-size: 0.78rem;
+  color: var(--ink-3);
 }
 
-.ctaArrow {
-  display: inline-block;
-  transition: transform 0.5s var(--ease-cinema);
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50%      { opacity: 1; transform: scale(1.2); }
-}
-
-// ── Signature ────────────────────────────
-.signature {
+.projects {
   display: flex;
-  align-items: center;
-  gap: var(--s-3);
-  margin-top: var(--s-5);
-  padding-top: var(--s-3);
-  border-top: 1px solid rgba(242, 239, 233, 0.10);
-  opacity: 0.5;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: rise 0.9s var(--ease-out) 0.32s both;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+    padding: 0 14px 0 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--pill);
+    background: var(--surface);
+    font-size: 0.84rem;
+    color: var(--ink);
+    transition:
+      transform 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out);
+
+    &:hover,
+    &:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(13, 13, 13, 0.25);
+    }
+  }
 }
 
-.signatureJp {
-  font-family: var(--font-serif);
-  font-weight: 200;
-  font-size: 1.2rem;
-  letter-spacing: 0.08em;
+.icon,
+.mono {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
-.signatureLine {
-  flex: 1;
-  height: 1px;
-  background: rgba(242, 239, 233, 0.15);
+.mono {
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  color: var(--bg);
+  font: 500 0.7rem/1 var(--font-geist), system-ui, sans-serif;
 }
 
-.signatureLabel {
-  font-family: var(--font-mono);
-  font-size: var(--t-xs);
-  letter-spacing: var(--track-mark);
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kanji, .ctaDot { animation: none; }
+  .title,
+  .body,
+  .home,
+  .projects {
+    animation: none;
+  }
 }

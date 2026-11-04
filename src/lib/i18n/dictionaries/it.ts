@@ -217,6 +217,13 @@ export const it: Dictionary = {
       "archived": "Stai guardando un’edizione precedente",
       "backToCurrent": "Vedi quella attuale"
     },
+    "notFound": {
+      "label": "Errore · 404",
+      "title": "Questa pagina è uscita dall’orbita.",
+      "body": "È stata spostata, rinominata o non è mai esistita. I progetti sono ancora tutti qui.",
+      "home": "Torna all’inizio",
+      "projects": "Oppure vai dritto a un progetto"
+    },
     "social": {
       "label": "Altrove",
       "title": "Trovami qui.",

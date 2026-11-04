@@ -193,6 +193,7 @@ export type Dictionary = {
       close: string;
     };
     versions: { label: string; title: string; current: string; archived: string; backToCurrent: string };
+    notFound: { label: string; title: string; body: string; home: string; projects: string };
     social: {
       label: string;
       title: string;

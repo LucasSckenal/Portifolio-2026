@@ -1,59 +1,54 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
-import { ThemeProvider, useTheme } from '@/components/providers/ThemeProvider';
+import { useT } from '@/components/providers/LanguageProvider';
+import Nav from '@/components/site/Nav';
+import { SHOWCASE } from '@/components/site/panels';
+import site from '@/components/site/site.module.scss';
 import styles from './not-found.module.scss';
 
-function NotFoundInner() {
-  const { inverted } = useTheme();
-
-  // The 404 carries the same Day/Night duality as the rest of the site.
-  //   Day   → 迷 (mayoi · lost)
-  //   Night → 闇 (yami · darkness / unknown)
-  const kanji = inverted ? '闇' : '迷';
-  const title = inverted
-    ? ['Lost in', 'the darkness.']
-    : ['You wandered', 'off the path.'];
-  const body = inverted
-    ? "The page you're looking for is somewhere in the dark — or never existed. Either way, the lanterns are out."
-    : "The page you're looking for has either moved, been renamed, or simply never existed. Quiet either way.";
-
+// 404 in the current edition: same ground, nav and type as the home page,
+// a way back, and every project one click away.
+export default function NotFound() {
+  const t = useT();
+  const n = t.site.notFound;
   return (
-    <main className={`${styles.notFound} ${inverted ? styles.night : ''}`}>
-      <div className={styles.kanji} aria-hidden>{kanji}</div>
-
-      <div className={styles.inner}>
-        <span className={styles.label}>Error · 404</span>
-
-        <h1 className={styles.title}>
-          <span className={styles.titleLine}>{title[0]}</span>
-          <span className={styles.titleLine}>{title[1]}</span>
-        </h1>
-
-        <p className={styles.body}>{body}</p>
-
-        <Link href="/" className={styles.cta} data-cursor>
-          <span className={styles.ctaDot} aria-hidden />
-          <span>{inverted ? 'Return to the lanterns' : 'Return to the start'}</span>
-          <span className={styles.ctaArrow}>↗</span>
+    <div className={`${site.site} site-v3`}>
+      <Nav />
+      <main id="main" className={styles.page}>
+        <p className={styles.label}>{n.label}</p>
+        <h1 className={styles.title}>{n.title}</h1>
+        <p className={styles.body}>{n.body}</p>
+        <Link href="/" className={styles.home}>
+          {n.home}
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
+            <path d="M2 7h10M8 3l4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
         </Link>
 
-        <span className={styles.signature}>
-          <span className={styles.signatureJp}>{inverted ? '夜行' : '静寂'}</span>
-          <span className={styles.signatureLine} />
-          <span className={styles.signatureLabel}>2026</span>
-        </span>
-      </div>
-    </main>
-  );
-}
-
-// The 404 renders under the root layout only, so it brings its own theme
-// context (it still wears the 2026 look).
-export default function NotFound() {
-  return (
-    <ThemeProvider>
-      <NotFoundInner />
-    </ThemeProvider>
+        <p className={styles.or}>{n.projects}</p>
+        <ul className={styles.projects}>
+          {SHOWCASE.map((p) => {
+            return (
+              <li key={p.slug}>
+                <Link href={`/work/${p.slug}`}>
+                  {p.icon ? (
+                    <span className={styles.icon}>
+                      <Image src={p.icon} alt="" fill sizes="22px" />
+                    </span>
+                  ) : (
+                    <span className={styles.mono} aria-hidden>
+                      {p.title.charAt(0)}
+                    </span>
+                  )}
+                  {p.title}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </main>
+    </div>
   );
 }

@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import type { CaseSection, ProjectCase } from '@/content/projects';
 import { caseSectionsPt } from '@/content/projects.pt';
+import { MORPH, pageArrived } from '@/lib/viewMorph';
 import { useProjectCopy } from '@/lib/hooks/useProjectCopy';
 import { EMAIL, whatsappHref } from './links';
 import { PROJECTS, PROJECT_ORDER, SHOWCASE, type ProjectId } from './panels';
@@ -35,7 +36,7 @@ function HeroMedia({ slug }: { slug: ProjectId }) {
   if (!media) return null;
   return (
     <div className={styles.heroMedia}>
-      <div className={styles.frame}>
+      <div className={styles.frame} style={{ viewTransitionName: MORPH.media }}>
         {media.kind === 'video' ? (
           <video ref={ref} muted loop playsInline preload="metadata" poster={media.poster} aria-hidden>
             {media.sources.map((s) => (
@@ -143,6 +144,8 @@ export default function CaseView({ project }: { project: ProjectCase }) {
   const { locale } = useLocale();
   const copy = useProjectCopy(project.slug);
   const slug = project.slug as ProjectId;
+  // a card morphing in from the home page waits for this first frame
+  useLayoutEffect(() => pageArrived(), []);
   // the body in the visitor's language when it exists, else English + a note
   const translated = locale === 'pt' ? caseSectionsPt[project.slug] : undefined;
 
@@ -161,7 +164,9 @@ export default function CaseView({ project }: { project: ProjectCase }) {
             <span className={styles.dot} aria-hidden />
             {copy?.status ?? project.status} · {project.year}
           </p>
-          <h1 className={styles.title}>{project.title}</h1>
+          <h1 className={styles.title} style={{ viewTransitionName: MORPH.title }}>
+            {project.title}
+          </h1>
           <p className={styles.tagline}>{copy?.tagline ?? project.tagline}</p>
           <ul className={styles.chips}>
             {project.roles.map((r) => (

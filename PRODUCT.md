@@ -60,6 +60,14 @@ Lucas is not only a frontend developer: he ships complete software end to end â€
 4. Respect every language equally: no section may silently fall back to English.
 5. The past stays visible: earlier versions of the portfolio are kept, not erased.
 
+## Project Presentation Rules (Lucas, 2026-11-04)
+
+Every project shown on the site follows these three rules. A project missing one is not finished.
+
+1. **A video to present it.** Each project has a presentation video: the 5 s loop on its carousel panel (`public/projects/<slug>/panel.mp4`, 640Ã—400, 24 fps, H.264, no audio) and a video as its main media (expanded card and case page hero). Recorded from the real app; for private apps, from a demo with invented data.
+2. **A favicon (app icon).** Each project has its own icon, cut to the shared tile (`public/icons/app/<slug>.png`, 192 px, 23% corner, glyph centred with the same margin). The site itself keeps its favicon (`src/app/icon.png`, `favicon.ico`, `apple-icon.png`). Use the project's real icon; never invent a logo, and never use a client's or employer's logo without Lucas's OK.
+3. **Keep the site's aesthetic.** New pages, sections and assets follow the current edition: light #f3f3f3 ground, ink #0d0d0d, Instrument Serif display with Geist text, glass panels, the shared pill buttons (`--btn-*`), dark #121214 tiles, and the comb's gradient orb as the only accent. No new palettes, fonts or component styles per project.
+
 ## Accessibility & Inclusion
 
 - Must work fully with reduced motion (a real bug in the 2026 version came from that path).

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
-import { EMAIL } from './links';
+import { EMAIL, whatsappHref } from './links';
 import Versions from './Versions';
 import MobileMenu from './MobileMenu';
 import styles from './site.module.scss';
@@ -39,7 +39,7 @@ export default function Nav() {
 
       <div className={styles.navEnd}>
         <MobileMenu />
-        <a className={styles.cta} href={`mailto:${EMAIL}`}>
+        <a className={styles.cta} href={whatsappHref(t.site.nav.quoteMessage)} target="_blank" rel="noreferrer">
         {t.site.nav.cta}
         <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden>
           <path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" strokeWidth="1.4" />

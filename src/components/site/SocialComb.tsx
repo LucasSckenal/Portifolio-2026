@@ -46,6 +46,23 @@ const ICONS: Record<string, ReactElement> = {
       d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"
     />
   ),
+  whatsapp: (
+    <g fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">
+      {/* round bubble with its tail bottom-left, a handset inside */}
+      <path d="M-14.5 14.5 -17 21l7-2.2A19 19 0 1 0 -14.5 14.5z" />
+      <path
+        strokeWidth="2.6"
+        d="M-6.5 -8.5c-1.5 1-2 3-.8 5.6 1.6 3.4 4.3 6.1 7.7 7.7 2.6 1.2 4.6.7 5.6-.8l-.8-2.2-3.6-1.4-1.8 1.6c-1.8-.8-3.6-2.6-4.4-4.4l1.6-1.8-1.4-3.6z"
+      />
+    </g>
+  ),
+  instagram: (
+    <g fill="none" stroke="currentColor" strokeWidth="3.2">
+      <rect x="-19" y="-19" width="38" height="38" rx="11" />
+      <circle r="9" />
+      <circle cx="10.5" cy="-10.5" r="1.6" fill="currentColor" stroke="none" />
+    </g>
+  ),
   email: (
     <g fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinejoin="round">
       <rect x="-21" y="-15" width="42" height="30" rx="5" />

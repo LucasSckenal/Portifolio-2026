@@ -7,7 +7,7 @@ import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import type { CaseSection, ProjectCase } from '@/content/projects';
 import { caseSectionsPt } from '@/content/projects.pt';
 import { useProjectCopy } from '@/lib/hooks/useProjectCopy';
-import { EMAIL } from './links';
+import { EMAIL, whatsappHref } from './links';
 import { PROJECTS, PROJECT_ORDER, SHOWCASE, type ProjectId } from './panels';
 import styles from './case.module.scss';
 
@@ -213,6 +213,9 @@ export default function CaseView({ project }: { project: ProjectCase }) {
 
         <footer className={styles.contact}>
           <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+          <a className={styles.contactAlt} href={whatsappHref(t.site.nav.quoteMessage)} target="_blank" rel="noreferrer">
+            WhatsApp ↗
+          </a>
         </footer>
       </article>
     </div>

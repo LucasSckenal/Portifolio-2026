@@ -188,7 +188,8 @@ export const ja: Dictionary = {
       "cta": "相談する",
       "language": "言語",
       "back": "戻る",
-      "menu": "メニュー"
+      "menu": "メニュー",
+      "quoteMessage": "こんにちは、Lucasさん。プロジェクトの見積もりをお願いしたいです。"
     },
     "hero": {
       "line1": "頭に残る",

@@ -188,7 +188,8 @@ export const it: Dictionary = {
       "cta": "Chiedi un preventivo",
       "language": "Lingua",
       "back": "Indietro",
-      "menu": "Menu"
+      "menu": "Menu",
+      "quoteMessage": "Ciao Lucas, vorrei un preventivo per un progetto."
     },
     "hero": {
       "line1": "Interfacce che",

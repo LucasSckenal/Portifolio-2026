@@ -1,10 +1,18 @@
-// Real contact points only. Add Instagram / X / WhatsApp / Behance here
-// when Lucas confirms the handles — an empty slot stays a quiet hex cell.
+// Real contact points only. Add X / Behance here when Lucas confirms the
+// handles — an empty slot stays a quiet hex cell.
 export const EMAIL = 'lucaspsckenal@gmail.com';
 
-export type SocialId = 'github' | 'linkedin' | 'email';
+// +55 55 98414-5158, digits only for wa.me
+export const WHATSAPP = '5555984145158';
+// Opens a chat with the first line already written (the visitor can edit it)
+export const whatsappHref = (text?: string) =>
+  `https://wa.me/${WHATSAPP}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
+
+export type SocialId = 'whatsapp' | 'instagram' | 'github' | 'linkedin' | 'email';
 
 export const SOCIALS: Array<{ id: SocialId; label: string; href: string }> = [
+  { id: 'whatsapp', label: 'WhatsApp', href: whatsappHref() },
+  { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/lucas.sckenal' },
   { id: 'github', label: 'GitHub', href: 'https://github.com/LucasSckenal' },
   { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/lucassckenal' },
   { id: 'email', label: 'E-mail', href: `mailto:${EMAIL}` },

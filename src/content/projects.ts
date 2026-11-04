@@ -547,9 +547,31 @@ export const leadProjects: ProjectCase[] = [
           'Most use happens one-handed, on a phone, in the warehouse or on site. What the crew marks without signal is kept on the phone and syncs when the connection returns. Money data only ever reaches the administrator\'s device, and finished jobs send their summary and photo to the team chat, keeping only the summary after a week.',
       },
       {
+        type: 'image',
+        src: '/projects/designon/producao.webp',
+        alt: 'Production board: jobs moving from approved to delivered',
+        caption: 'Production: every job in one stage; the crew moves it on from the phone.',
+      },
+      {
+        type: 'gallery',
+        images: [
+          { src: '/projects/designon/pedidos.webp', alt: 'Material requests from the crew with their status', caption: 'Requests: what the crew asked for, and whether it is all in stock.' },
+          { src: '/projects/designon/locais.webp', alt: 'Map of the floors and areas with what each one holds', caption: 'Locations: floors, areas and shelves, with what sits on each.' },
+          { src: '/projects/designon/caixa.webp', alt: 'Cash summary with income, expenses and the month result', caption: 'Cash: what came in, what went out, what is still to receive and pay.' },
+          { src: '/projects/designon/estoque.webp', alt: 'Stock list with low items flagged', caption: 'Stock: where each material is, with the low ones flagged.' },
+        ],
+      },
+      {
+        type: 'gallery',
+        images: [
+          { src: '/projects/designon/celular-inicio.webp', alt: 'Home screen on a phone', caption: 'On the phone, the same app.', variant: 'mobile' },
+          { src: '/projects/designon/celular-pedidos.webp', alt: 'Requests on a phone', caption: 'Requests in the field.', variant: 'mobile' },
+        ],
+      },
+      {
         type: 'paragraph',
         body:
-          'Screens are not shown here: the app holds the company\'s real stock and finances.',
+          'The screens here run on a demo company with invented materials, jobs and values; the real stock and finances stay private.',
       },
     ],
   },

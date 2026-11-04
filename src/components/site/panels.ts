@@ -81,8 +81,9 @@ export const SHOWCASE: Showcase[] = [
     short: 'DesignOn',
     note: 'App interno · PWA',
     tone: '#e879f9',
-    shots: [],
-    media: { kind: 'note', text: 'Estoque, pedidos e caixa de uma empresa num app só — no bolso de quem está na obra.' },
+    // screens from a local run with a fictional demo company (no real data, name or logo)
+    shots: [{ src: '/projects/designon/inicio.webp', clip: '/projects/designon/panel.mp4' }],
+    media: { kind: 'image', src: '/projects/designon/inicio.webp' },
   },
   {
     slug: 'ma-finance-os',

@@ -77,8 +77,30 @@ export const caseSectionsPt: Record<string, CaseSection[]> = {
         'A maior parte do uso acontece com uma mão só, no celular, no depósito ou na obra. O que a equipe marca sem sinal fica guardado no celular e sincroniza quando a conexão volta. Os dados de dinheiro só chegam ao aparelho do administrador, e os serviços finalizados mandam o resumo e a foto para o grupo da equipe, guardando só o resumo depois de uma semana.',
     },
     {
+      type: 'image',
+      src: '/projects/designon/producao.webp',
+      alt: 'Quadro de produção: obras passando de aprovado a entregue',
+      caption: 'Produção: cada obra numa etapa; a equipe avança pelo celular.',
+    },
+    {
+      type: 'gallery',
+      images: [
+        { src: '/projects/designon/pedidos.webp', alt: 'Pedidos de material da equipe com o status de cada um', caption: 'Pedidos: o que a equipe pediu e se tem tudo no estoque.' },
+        { src: '/projects/designon/locais.webp', alt: 'Mapa dos andares e áreas com o que cada um guarda', caption: 'Locais: andares, áreas e prateleiras, com o que tem em cada um.' },
+        { src: '/projects/designon/caixa.webp', alt: 'Resumo do caixa com entradas, saídas e o resultado do mês', caption: 'Caixa: o que entrou, o que saiu, o que falta receber e pagar.' },
+        { src: '/projects/designon/estoque.webp', alt: 'Lista do estoque com os itens baixos marcados', caption: 'Estoque: onde está cada material, com os que estão acabando marcados.' },
+      ],
+    },
+    {
+      type: 'gallery',
+      images: [
+        { src: '/projects/designon/celular-inicio.webp', alt: 'Tela inicial no celular', caption: 'No celular, o mesmo app.', variant: 'mobile' },
+        { src: '/projects/designon/celular-pedidos.webp', alt: 'Pedidos no celular', caption: 'Pedidos na obra.', variant: 'mobile' },
+      ],
+    },
+    {
       type: 'paragraph',
-      body: 'As telas não aparecem aqui: o app guarda o estoque e as finanças reais da empresa.',
+      body: 'As telas aqui rodam com uma empresa de demonstração, com materiais, obras e valores inventados; o estoque e as finanças reais continuam privados.',
     },
   ],
 

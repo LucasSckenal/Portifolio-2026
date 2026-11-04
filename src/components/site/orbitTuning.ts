@@ -13,9 +13,9 @@ export type OrbitTuning = {
 };
 
 export const ORBIT_DEFAULTS: OrbitTuning = {
-  roll: 11,
-  pitch: -8,
-  height: 0.15,
+  roll: 6,
+  pitch: -33,
+  height: -0.04,
   radius: 0.44,
 };
 

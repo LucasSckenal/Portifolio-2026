@@ -117,7 +117,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
       {adjacents && (
         <nav className={styles.footerNav} aria-label="Adjacent projects">
           <Link
-            href={`/work/${adjacents.prev.slug}`}
+            href={`/2026/work/${adjacents.prev.slug}`}
             className={styles.navLink}
             data-cursor
             data-cursor-label="Previous case →"
@@ -126,7 +126,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
             <span className={styles.navTitle}>{adjacents.prev.title}</span>
           </Link>
           <Link
-            href={`/work/${adjacents.next.slug}`}
+            href={`/2026/work/${adjacents.next.slug}`}
             className={`${styles.navLink} ${styles.navLinkRight}`}
             data-cursor
             data-cursor-label="Next case →"

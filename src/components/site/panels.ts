@@ -28,7 +28,8 @@ type Showcase = {
   short: string; // name on the glass card
   note: string;
   tone: string;
-  shots: Shot[]; // screen tiles in the orbit (0–2 is plenty)
+  icon?: string; // the app's own icon; without one the card draws a monogram
+  shots: Shot[]; // first one is the card's screen (its clip plays while facing you)
   media: ProjectView['media'];
 };
 
@@ -57,6 +58,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'Ilha',
     note: 'Rust · Ayla',
     tone: '#38bdf8',
+    icon: '/icons/ilha.png',
     shots: [
       { src: '/projects/ilha/inicio.webp', clip: '/projects/ilha/panel.mp4' },
       { src: '/projects/ilha/musica.webp' },
@@ -69,6 +71,7 @@ export const SHOWCASE: Showcase[] = [
     short: KERN_NAME,
     note: 'CAD / CAM · C++',
     tone: '#3b82f6',
+    icon: '/icons/kern.png',
     shots: [{ src: '/projects/kern/tela.webp' }, { src: '/projects/kern/chapa.webp' }],
     media: { kind: 'image', src: '/projects/kern/tela.webp' },
   },
@@ -87,6 +90,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'Ma Finance',
     note: 'SaaS · Gemini',
     tone: '#9be15d',
+    icon: '/icons/ma-finance-os.png',
     shots: [{ src: '/projects/ma-finance-os/dashboard.png', clip: '/projects/ma-finance-os/panel.mp4' }],
     media: video('ma-finance-os', '/projects/ma-finance-os/dashboard.png', 'Preview'),
   },
@@ -96,6 +100,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'Nexo',
     note: 'Kanban · Gemini',
     tone: '#a78bfa',
+    icon: '/icons/nexo.png',
     shots: [{ src: '/projects/nexo/Kanbam.png', clip: '/projects/nexo/panel.mp4' }],
     media: video('nexo', '/projects/nexo/Kanbam.png'),
   },
@@ -105,6 +110,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'LJ Studio',
     note: 'Next.js · WhatsApp',
     tone: '#fb923c',
+    icon: '/icons/lj.png',
     shots: [{ src: '/projects/lj/hero.png', clip: '/projects/lj/panel.mp4' }],
     media: video('lj', '/projects/lj/hero.png'),
   },
@@ -114,7 +120,7 @@ export const SHOWCASE: Showcase[] = [
     short: 'Netos?',
     note: 'Godot · Tower Defense',
     tone: '#60a5fa',
-    shots: [],
+    shots: [{ src: 'https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png' }],
     media: {
       kind: 'image',
       src: 'https://raw.githubusercontent.com/LucasSckenal/pi-4/main/docs/screenshots/gameplay_noite.png',
@@ -142,26 +148,26 @@ export const SHOWCASE: Showcase[] = [
 
 // ── Derived ──────────────────────────────
 
-export type Panel =
-  | { kind: 'label'; slug: ProjectId; title: string; note: string; tone: string }
-  | { kind: 'image'; slug: ProjectId; src: string; clip?: string };
+// One glass card per project: icon, name and note on top, its screen below.
+export type Panel = {
+  slug: ProjectId;
+  title: string;
+  note: string;
+  tone: string;
+  icon?: string;
+  shot?: string;
+  clip?: string;
+};
 
-// Each project's glass card first, then its screens. Interleaving by round
-// keeps the leading projects spread around the ring instead of bunched.
-export const PANELS: Panel[] = (() => {
-  const queues = SHOWCASE.map((p) => [
-    { kind: 'label' as const, slug: p.slug, title: p.short, note: p.note, tone: p.tone },
-    ...p.shots.map((s) => ({ kind: 'image' as const, slug: p.slug, ...s })),
-  ]);
-  const out: Panel[] = [];
-  for (let round = 0; queues.some((q) => q.length); round++) {
-    for (const q of queues) {
-      const next = q.shift();
-      if (next) out.push(next);
-    }
-  }
-  return out;
-})();
+export const PANELS: Panel[] = SHOWCASE.map((p) => ({
+  slug: p.slug,
+  title: p.short,
+  note: p.note,
+  tone: p.tone,
+  icon: p.icon,
+  shot: p.shots[0]?.src,
+  clip: p.shots[0]?.clip,
+}));
 
 export const PROJECTS = Object.fromEntries(
   SHOWCASE.map((p) => [p.slug, { title: p.title, media: p.media }])

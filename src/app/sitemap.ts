@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { projects, nightProjects } from '@/content/projects';
+import { leadProjects, projects, nightProjects } from '@/content/projects';
 import { LAB_PIECES } from '@/content/lab';
 
 // Auto-generated sitemap.xml at /sitemap.xml
@@ -25,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${base}/work`,
+      url: `${base}/2026`,
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.9,
@@ -38,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     // ── Case studies (day + night portfolios) ──
-    ...[...projects, ...nightProjects].map((p) => ({
+    ...[...leadProjects, ...projects, ...nightProjects].map((p) => ({
       url: `${base}/work/${p.slug}`,
       lastModified: now,
       changeFrequency: 'monthly' as const,

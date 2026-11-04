@@ -159,7 +159,7 @@ function DayBlock() {
         <Reveal>
           <p className={styles.footerNote}>{t.projects.moreLine}</p>
           <a
-            href="/work"
+            href="/2026/work"
             className={styles.footerCta}
             data-cursor
             data-cursor-label={t.projects.moreLink}
@@ -290,7 +290,7 @@ function NightBlock() {
         <Reveal>
           <p className={styles.footerNote}>{t.projectsNight.moreLine}</p>
           <a
-            href="/work"
+            href="/2026/work"
             className={styles.footerCta}
             data-cursor
             data-cursor-label={t.projectsNight.moreLink}

@@ -10,7 +10,7 @@ import { EDITIONS } from '@/content/editions';
 export default function ArchiveBadge() {
   const pathname = usePathname();
   const t = useT();
-  const edition = EDITIONS.find((e) => !e.current && e.href === pathname);
+  const edition = EDITIONS.find((e) => !e.current && (pathname === e.href || pathname?.startsWith(`${e.href}/`)));
   if (!edition) return null;
 
   return (

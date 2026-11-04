@@ -139,7 +139,7 @@ export default function ProjectScene({
         {/* Media side — click goes to case study when available */}
         {caseSlug ? (
           <Link
-            href={`/work/${caseSlug}`}
+            href={`/2026/work/${caseSlug}`}
             ref={mediaRef as unknown as React.RefObject<HTMLAnchorElement>}
             className={styles.mediaSlot}
             onMouseMove={handleMouseMove}
@@ -236,7 +236,7 @@ export default function ProjectScene({
               <div className={styles.actions}>
                 {caseSlug && (
                   <Link
-                    href={`/work/${caseSlug}`}
+                    href={`/2026/work/${caseSlug}`}
                     className={`${styles.view} ${styles.viewCase}`}
                     data-cursor
                     data-cursor-label="Read case study →"

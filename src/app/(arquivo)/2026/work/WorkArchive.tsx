@@ -133,8 +133,8 @@ function Row({ entry }: { entry: ArchiveEntry }) {
   const arrow = entry.external ? '↗' : '→';
   const cursorLabel = entry.external ? t.work.open : t.work.readCase;
   // Internal entries point at /work/<slug>; use that slug's translated tagline
-  const slug = !entry.external && entry.href?.startsWith('/work/')
-    ? entry.href.slice('/work/'.length)
+  const slug = !entry.external && entry.href?.startsWith('/2026/work/')
+    ? entry.href.slice('/2026/work/'.length)
     : undefined;
   const oneLiner = (slug && getProjectCopy(slug, locale)?.tagline) || entry.oneLiner;
 

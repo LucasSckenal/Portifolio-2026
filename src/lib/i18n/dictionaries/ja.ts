@@ -186,7 +186,8 @@ export const ja: Dictionary = {
       "about": "自己紹介",
       "contact": "連絡先",
       "cta": "相談する",
-      "language": "言語"
+      "language": "言語",
+      "back": "戻る"
     },
     "hero": {
       "line1": "頭に残る",

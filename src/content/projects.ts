@@ -1062,7 +1062,7 @@ export function getFilmography(): ArchiveEntry[] {
       title: p.title,
       type: p.roles.slice(0, 2).join(' · '),
       kind,
-      href: `/work/${p.slug}`,
+      href: `/2026/work/${p.slug}`,
       external: false,
       oneLiner: p.tagline,
     };
@@ -1074,7 +1074,7 @@ export function getFilmography(): ArchiveEntry[] {
     title: p.title,
     type: p.roles.slice(0, 2).join(' · '),
     kind: 'academic',
-    href: `/work/${p.slug}`,
+    href: `/2026/work/${p.slug}`,
     external: false,
     oneLiner: p.tagline,
   }));
@@ -1084,7 +1084,7 @@ export function getFilmography(): ArchiveEntry[] {
     title: p.title,
     type: p.roles.slice(0, 2).join(' · '),
     kind: 'personal',
-    href: `/work/${p.slug}`,
+    href: `/2026/work/${p.slug}`,
     external: false,
     oneLiner: p.tagline,
   }));

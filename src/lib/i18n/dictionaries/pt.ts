@@ -186,7 +186,8 @@ export const pt: Dictionary = {
       "about": "Sobre",
       "contact": "Contato",
       "cta": "Pedir orçamento",
-      "language": "Idioma"
+      "language": "Idioma",
+      "back": "Voltar"
     },
     "hero": {
       "line1": "Interfaces que",

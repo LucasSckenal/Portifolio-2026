@@ -106,7 +106,21 @@ function glassBase(ctx: CanvasRenderingContext2D, W: number, H: number) {
   ctx.restore();
 }
 
-function drawLabel(p: Extract<Panel, { kind: 'label' }>, font: string) {
+// Card layout on its 640×400 texture (the shader uses the same screen rect)
+const SCREEN = { x: 18, y: 128, w: 604, h: 254, r: 26 };
+
+const loadImage = (src: string) =>
+  new Promise<HTMLImageElement | null>((resolve) => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src.startsWith('http') || src.endsWith('.png') || src.endsWith('.webp')
+      ? `/_next/image?url=${encodeURIComponent(src)}&w=640&q=80`
+      : src;
+  });
+
+function drawCard(p: Panel, icon: HTMLImageElement | null, shot: HTMLImageElement | null, font: string) {
   const W = 640;
   const H = 400;
   const c = document.createElement('canvas');
@@ -115,42 +129,64 @@ function drawLabel(p: Extract<Panel, { kind: 'label' }>, font: string) {
   const ctx = c.getContext('2d')!;
   glassBase(ctx, W, H);
 
-  // app icon
-  roundRect(ctx, 58, 116, 96, 96, 28);
-  const ig = ctx.createLinearGradient(58, 116, 154, 212);
-  ig.addColorStop(0, p.tone);
-  ig.addColorStop(1, 'rgba(255,255,255,0.75)');
-  ctx.fillStyle = ig;
-  ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.9)';
-  ctx.beginPath();
-  ctx.arc(106, 164, 18, 0, Math.PI * 2);
-  ctx.fill();
+  // icon: the app's own, or a monogram in the project's tone
+  const ix = 30;
+  const iy = 28;
+  const is = 76;
+  ctx.save();
+  roundRect(ctx, ix, iy, is, is, 22);
+  ctx.clip();
+  if (icon) {
+    ctx.fillStyle = '#111';
+    ctx.fillRect(ix, iy, is, is);
+    const k = Math.min(is / icon.width, is / icon.height) * 0.86;
+    const w = icon.width * k;
+    const h = icon.height * k;
+    ctx.drawImage(icon, ix + (is - w) / 2, iy + (is - h) / 2, w, h);
+  } else {
+    const g = ctx.createLinearGradient(ix, iy, ix + is, iy + is);
+    g.addColorStop(0, p.tone);
+    g.addColorStop(1, '#111');
+    ctx.fillStyle = g;
+    ctx.fillRect(ix, iy, is, is);
+    ctx.fillStyle = '#fff';
+    ctx.font = `600 40px ${font}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(p.title.charAt(0), ix + is / 2, iy + is / 2 + 2);
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'alphabetic';
+  }
+  ctx.restore();
 
   ctx.fillStyle = '#111';
-  ctx.font = `600 58px ${font}`;
-  ctx.fillText(p.title, 186, 172);
+  ctx.font = `600 40px ${font}`;
+  ctx.fillText(p.title, 128, 66);
   ctx.fillStyle = 'rgba(17,17,17,0.5)';
-  ctx.font = `500 32px ${font}`;
-  ctx.fillText(p.note, 188, 222);
-  return c;
-}
+  ctx.font = `500 24px ${font}`;
+  ctx.fillText(p.note, 129, 100);
 
-function drawImage(img: HTMLImageElement) {
-  const W = 640;
-  const H = 400;
-  const c = document.createElement('canvas');
-  c.width = W;
-  c.height = H;
-  const ctx = c.getContext('2d')!;
-  glassBase(ctx, W, H);
-  const pad = 18;
-  roundRect(ctx, pad, pad, W - pad * 2, H - pad * 2, 32);
+  // screen
+  const { x, y, w, h, r } = SCREEN;
   ctx.save();
+  roundRect(ctx, x, y, w, h, r);
   ctx.clip();
-  // cover, anchored top-left like a screen capture
-  const s = Math.max((W - pad * 2) / img.width, (H - pad * 2) / img.height);
-  ctx.drawImage(img, pad, pad, img.width * s, img.height * s);
+  ctx.fillStyle = '#121214';
+  ctx.fillRect(x, y, w, h);
+  if (shot) {
+    const k = Math.max(w / shot.width, h / shot.height);
+    ctx.drawImage(shot, x, y, shot.width * k, shot.height * k); // cover, anchored top-left
+  } else {
+    // no screen can be shown (internal work): interface as shapes, no data
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.fillRect(x + 20, y + 20, 120, h - 40);
+    const bars = [0.62, 0.44, 0.78, 0.36, 0.55];
+    bars.forEach((b, k) => {
+      ctx.fillStyle = k === 0 ? p.tone : 'rgba(255,255,255,0.14)';
+      roundRect(ctx, x + 160, y + 26 + k * 42, (w - 190) * b, 18, 9);
+      ctx.fill();
+    });
+  }
   ctx.restore();
   return c;
 }
@@ -164,17 +200,13 @@ function usePanelTextures() {
       const fam = getComputedStyle(document.documentElement).getPropertyValue('--font-geist').trim() || 'system-ui';
       const font = `${fam}, system-ui, sans-serif`;
       const canvases = await Promise.all(
-        PANELS.map(
-          (p) =>
-            new Promise<HTMLCanvasElement>((resolve) => {
-              if (p.kind === 'label') return resolve(drawLabel(p, font));
-              const img = new Image();
-              img.decoding = 'async';
-              img.onload = () => resolve(drawImage(img));
-              img.onerror = () => resolve(drawLabel({ kind: 'label', slug: p.slug, title: '—', note: '', tone: '#ccc' }, font));
-              img.src = `/_next/image?url=${encodeURIComponent(p.src)}&w=640&q=80`;
-            })
-        )
+        PANELS.map(async (p) => {
+          const [icon, shot] = await Promise.all([
+            p.icon ? loadImage(p.icon) : Promise.resolve(null),
+            p.shot ? loadImage(p.shot) : Promise.resolve(null),
+          ]);
+          return drawCard(p, icon, shot, font);
+        })
       );
       if (!alive) return;
       setTextures(
@@ -241,10 +273,11 @@ const panelFrag = /* glsl */ `
     // Live clip inside the screen inset (same rounded rect the canvas drew)
     if (uVideoOn > 0.001 && gl_FrontFacing) {
       vec2 px = vec2(vUv.x * 640.0, (1.0 - vUv.y) * 400.0);
-      vec2 d = abs(px - vec2(320.0, 200.0)) - (vec2(302.0, 182.0) - 32.0);
-      float sd = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0) - 32.0;
+      // SCREEN = 18,128 · 604×254 · r26; the 16:10 clip covers its width
+      vec2 d = abs(px - vec2(320.0, 255.0)) - (vec2(302.0, 127.0) - 26.0);
+      float sd = length(max(d, 0.0)) + min(max(d.x, d.y), 0.0) - 26.0;
       if (sd < 0.0) {
-        vec2 vu = (px - 18.0) / vec2(604.0, 364.0);
+        vec2 vu = vec2((px.x - 18.0) / 604.0, (px.y - 128.0) / 377.5);
         vec3 vc = texture2D(uVideo, vec2(vu.x, 1.0 - vu.y)).rgb;
         c.rgb = mix(c.rgb, vc, uVideoOn);
       }
@@ -471,7 +504,7 @@ function Ring({
       // faces the camera, pause the moment it turns away
       const p = PANELS[i];
       const mesh = meshes.current[i];
-      if (p.kind !== 'image' || !p.clip || !mesh || !clipsAllowed) return;
+      if (!p.clip || !mesh || !clipsAllowed) return;
       mesh.getWorldPosition(tmp);
       const facing = tmp.z - center[2] > radius * 0.25 && !document.hidden;
       let c = clips.current[i];

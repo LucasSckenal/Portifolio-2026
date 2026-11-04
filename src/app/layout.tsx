@@ -162,7 +162,7 @@ export default function RootLayout({
 
         {/* Each route group brings its own chrome:
               (site)    → the current portfolio
-              (arquivo) → the 2026 edition, kept intact at /2026, /work, /lab */}
+              (arquivo) → the 2026 edition, kept intact at /2026, /2026/work, /lab */}
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

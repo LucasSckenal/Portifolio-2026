@@ -203,7 +203,7 @@ export default function Orbit() {
           >
             <div className={styles.expandedMedia} style={{ viewTransitionName: MORPH.media }}>
               {view.media.kind === 'video' ? (
-                <video autoPlay={!reduced} muted loop playsInline poster={view.media.poster} aria-hidden>
+                <video autoPlay={!reduced} controls={reduced} muted loop playsInline poster={view.media.poster} aria-hidden={!reduced}>
                   {view.media.sources.map((s) => (
                     <source key={s.src} src={s.src} type={s.type} />
                   ))}

@@ -199,7 +199,7 @@ export const ja: Dictionary = {
       "primary": "作品を見る",
       "secondary": "動きを見る",
       "cardLeftTitle": "Web とデスクトップ",
-      "cardLeftBody": "Web は Next.js、デスクトップは Rust と C++。",
+      "cardLeftBody": "KERN と Ilha はデスクトップで、Nexo と Ma Finance はブラウザで動きます。",
       "cardRightTitle": "フリーランス受付中",
       "cardRightBody": "新しい案件をリモートで受付中。",
       "liveLabel": "つのプロダクトが公開中",

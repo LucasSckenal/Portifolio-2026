@@ -199,7 +199,7 @@ export const it: Dictionary = {
       "primary": "Vedi i progetti",
       "secondary": "Guardali in azione",
       "cardLeftTitle": "Web e desktop",
-      "cardLeftBody": "Next.js sul web, Rust e C++ sul desktop.",
+      "cardLeftBody": "KERN e Ilha girano sul desktop; Nexo e Ma Finance, nel browser.",
       "cardRightTitle": "Disponibile per freelance",
       "cardRightBody": "Accetto nuovi progetti, da remoto.",
       "liveLabel": "prodotti online adesso",

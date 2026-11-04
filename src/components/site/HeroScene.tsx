@@ -488,12 +488,13 @@ function Ring({
     const v = parseFloat(new URLSearchParams(window.location.search).get('orbit') ?? '');
     return Number.isFinite(v) ? v : null;
   }, []);
-  // Panel clips: never for reduced-motion or data-saver visitors
+  // Panel clips: never for data-saver visitors. Reduced motion keeps them,
+  // but only the panel you point at plays (nothing moves on its own).
   const clipsAllowed = useMemo(() => {
-    if (typeof navigator === 'undefined' || reduced) return false;
+    if (typeof navigator === 'undefined') return false;
     const c = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     return !c?.saveData;
-  }, [reduced]);
+  }, []);
   const [hover, setHover] = useState(-1);
   const { gl, camera } = useThree();
   const born = useRef<number | null>(null);
@@ -771,12 +772,13 @@ function Ring({
       }
 
       // Animated thumbnail: load on first view, play only while the panel
-      // faces the camera, pause the moment it turns away
+      // faces the camera (reduced motion: while you point at it), pause the
+      // moment it turns away
       const p = PANELS[i];
       const mesh = meshes.current[i];
       if (!p.clip || !mesh || !clipsAllowed) return;
       mesh.getWorldPosition(tmp);
-      const facing = i === lead && tmp.z - center[2] > radius * 0.25 && !document.hidden;
+      const facing = (reduced ? hover === i : i === lead && tmp.z - center[2] > radius * 0.25) && !document.hidden;
       let c = clips.current[i];
       if (facing && !c) {
         const video = document.createElement('video');

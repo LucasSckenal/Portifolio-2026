@@ -63,7 +63,8 @@ export default function Hero() {
 
       <div className={`${styles.note} ${styles.noteLeft}`}>
         <svg className={styles.noteIcon} width="18" height="18" viewBox="0 0 18 18" aria-hidden>
-          <path pathLength={1} d="M3 13l4-4 3 3 5-6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          {/* a screen with code on it: web and desktop */}
+          <path pathLength={1} d="M2.5 3.5h13v9h-13zM6.5 15.5h5M7.5 6.5L5.5 8l2 1.5M10.5 6.5l2 1.5-2 1.5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <strong>{h.cardLeftTitle}</strong>
         <span>{h.cardLeftBody}</span>

@@ -238,7 +238,7 @@
 
   path {
     fill: none;
-    stroke: rgba(13, 13, 13, 0.16);
+    stroke: rgba(13, 13, 13, 0.3);
     stroke-width: 1;
     vector-effect: non-scaling-stroke;
   }
@@ -255,9 +255,9 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: 0 22px 40px -26px rgba(13, 13, 13, 0.4);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   line-height: 1.45;
-  color: var(--ink-3);
+  color: var(--ink-2);
 
   strong {
     color: var(--ink);
@@ -268,21 +268,7 @@
   }
 }
 
-.note {
-  transition:
-    transform 0.5s var(--ease-out),
-    box-shadow 0.5s var(--ease-out);
-
-  // a note you point at straightens up and lifts off the page
-  &:hover {
-    transform: rotate(0deg) translateY(-4px);
-    box-shadow: 0 30px 50px -28px rgba(13, 13, 13, 0.45);
-  }
-
-  &:hover .noteIcon path {
-    animation: draw 0.8s var(--ease-out) both;
-  }
-}
+// The notes are pinned paper, not buttons: no hover lift (it read as clickable).
 
 .noteLeft {
   left: calc(var(--gutter) + 2vw);

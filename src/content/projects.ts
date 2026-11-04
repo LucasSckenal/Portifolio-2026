@@ -38,6 +38,8 @@ export type ProjectCase = {
   team?: string;
   href?: string;
   live?: string;
+  // 'download' when the live link is a release to install, not a site
+  liveKind?: 'site' | 'download';
   mood: 'dark' | 'light' | 'glass';
   sections: CaseSection[];
 };
@@ -627,15 +629,18 @@ export const nightProjects: ProjectCase[] = [
     title: 'Onde Estão os Netos?',
     jp: '戦',
     jpLabel: '戦 · Battle',
-    year: '2025',
-    status: 'v1.0 · In development',
+    year: '2025–2026',
+    status: 'v4.1 · Released · Windows & Android',
     tagline: 'A Tower Defense built for the player we never see.',
     description:
       'Two grandparents pulled into an antique board game must cross six perilous worlds to rescue their grandchildren. Built in Godot 4.6, designed from day one around accessibility for elderly players.',
     roles: ['Game UI', 'Tower Defense', 'Roguelike', 'Accessibility'],
-    tech: ['Godot 4.6', 'GDScript', 'CSV-driven balancing'],
+    tech: ['Godot 4.6', 'GDScript', 'CSV-driven balancing', 'Windows', 'Android'],
     team: 'Team of 4 · SENAC · UI / Frontend systems',
     href: 'https://github.com/LucasSckenal/pi-4',
+    // finished game: the main button downloads the latest release
+    live: 'https://github.com/LucasSckenal/pi-4/releases/latest',
+    liveKind: 'download',
     mood: 'dark',
     sections: [
       {

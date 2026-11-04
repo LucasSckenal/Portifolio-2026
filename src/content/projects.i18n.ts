@@ -68,7 +68,7 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       team: 'Solo · Client: Luis Joris',
     },
     'onde-estao-os-netos': {
-      status: 'v1.0 · In development · PI-4',
+      status: 'v4.1 · Released · PI-4',
       tagline: 'A Tower Defense built for the player we never see.',
       summary:
         'A Tower Defense game where grandparents Afonso and Berta — pulled into an antique board game — must cross six themed worlds to rescue their grandchildren. Day-and-night loop with roguelike power-ups and an in-game AI advisor. Built in Godot 4.6 and designed from the start around accessibility for elderly players.',
@@ -129,7 +129,7 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       team: 'Solo · Cliente: Luis Joris',
     },
     'onde-estao-os-netos': {
-      status: 'v1.0 · Em desenvolvimento · PI-4',
+      status: 'v4.1 · Lançado · PI-4',
       tagline: 'Um Tower Defense feito para o jogador que a gente nunca vê.',
       summary:
         'Um jogo Tower Defense em que os avós Afonso e Berta — puxados para dentro de um jogo de tabuleiro antigo — precisam atravessar seis mundos temáticos para resgatar os netos. Ciclo de dia e noite com power-ups roguelike e um conselheiro de IA dentro do jogo. Feito em Godot 4.6 e pensado desde o início para a acessibilidade de jogadores idosos.',
@@ -190,7 +190,7 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       team: 'Solo · Cliente: Luis Joris',
     },
     'onde-estao-os-netos': {
-      status: 'v1.0 · En desarrollo · PI-4',
+      status: 'v4.1 · Publicado · PI-4',
       tagline: 'Un Tower Defense hecho para el jugador que nunca vemos.',
       summary:
         'Un juego Tower Defense en el que los abuelos Afonso y Berta — atrapados en un antiguo juego de mesa — deben cruzar seis mundos temáticos para rescatar a sus nietos. Ciclo de día y noche con potenciadores roguelike y un consejero de IA dentro del juego. Hecho en Godot 4.6 y pensado desde el inicio para la accesibilidad de jugadores mayores.',
@@ -251,7 +251,7 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       team: 'Solo · Cliente: Luis Joris',
     },
     'onde-estao-os-netos': {
-      status: 'v1.0 · In sviluppo · PI-4',
+      status: 'v4.1 · Pubblicato · PI-4',
       tagline: 'Un Tower Defense pensato per il giocatore che non vediamo mai.',
       summary:
         'Un gioco Tower Defense in cui i nonni Afonso e Berta — risucchiati in un antico gioco da tavolo — devono attraversare sei mondi a tema per salvare i nipoti. Ciclo giorno-notte con potenziamenti roguelike e un consigliere IA nel gioco. Realizzato in Godot 4.6 e progettato fin dall’inizio per l’accessibilità dei giocatori anziani.',
@@ -312,7 +312,7 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       team: '個人制作 · クライアント: Luis Joris',
     },
     'onde-estao-os-netos': {
-      status: 'v1.0 · 開発中 · PI-4',
+      status: 'v4.1 · リリース済み · PI-4',
       tagline: '見えないプレイヤーのために作ったタワーディフェンス。',
       summary:
         '古いボードゲームに引き込まれた祖父母アフォンソとベルタが、孫を救うために6つのテーマ世界を越えていくタワーディフェンス。昼と夜のループ、ローグライクの強化、ゲーム内の AI アドバイザー。Godot 4.6 で制作し、最初から高齢のプレイヤーのアクセシビリティを軸に設計。',

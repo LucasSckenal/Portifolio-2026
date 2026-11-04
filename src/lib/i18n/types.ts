@@ -164,6 +164,7 @@ export type Dictionary = {
   caseStudy: {
     builtWith: string;
     live: string;
+    download: string;
     repo: string;
     previous: string;
     next: string;

@@ -143,12 +143,12 @@ function drawCard(p: Panel, icon: HTMLImageElement | null, shot: HTMLImageElemen
   const iy = 28;
   const is = 76;
   ctx.save();
-  roundRect(ctx, ix, iy, is, is, 22);
+  roundRect(ctx, ix, iy, is, is, 18); // same corner as the icon tiles
   ctx.clip();
   if (icon) {
     ctx.fillStyle = '#111';
     ctx.fillRect(ix, iy, is, is);
-    const k = Math.min(is / icon.width, is / icon.height) * 0.86;
+    const k = Math.min(is / icon.width, is / icon.height); // tile fills the box
     const w = icon.width * k;
     const h = icon.height * k;
     ctx.drawImage(icon, ix + (is - w) / 2, iy + (is - h) / 2, w, h);

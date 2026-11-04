@@ -175,6 +175,7 @@ export const ja: Dictionary = {
   caseStudy: {
     "builtWith": "使用技術",
     "live": "公開中",
+    "download": "ダウンロード",
     "repo": "リポジトリ",
     "previous": "← 前へ",
     "next": "次へ →",

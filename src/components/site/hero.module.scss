@@ -346,9 +346,9 @@
   display: block;
   width: 34px;
   height: 34px;
-  border-radius: 10px;
+  border-radius: 8px; // the icon tiles' own corner (23%)
   overflow: hidden;
-  background: var(--surface);
+  background: #121214;
   box-shadow:
     0 0 0 1px var(--line),
     0 6px 14px -8px rgba(13, 13, 13, 0.45);

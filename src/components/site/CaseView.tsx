@@ -175,7 +175,7 @@ export default function CaseView({ project }: { project: ProjectCase }) {
             <div className={styles.actions}>
               {project.live && (
                 <a className={styles.primary} href={project.live} target="_blank" rel="noreferrer">
-                  {t.caseStudy.live} ↗
+                  {project.liveKind === 'download' ? `${t.caseStudy.download} ↓` : `${t.caseStudy.live} ↗`}
                 </a>
               )}
               {project.href && (

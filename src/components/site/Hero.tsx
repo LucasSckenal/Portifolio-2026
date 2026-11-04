@@ -10,9 +10,9 @@ import styles from './hero.module.scss';
 // Projects that are actually live today (live URLs in content/projects.ts):
 // their app icons, each one opening the live product
 const LIVE = [
-  { icon: '/icons/ma-finance-os.png', name: 'Ma Finance OS', href: 'https://project-organization-finaces.vercel.app/' },
-  { icon: '/icons/nexo.png', name: 'Nexo', href: 'https://nexo-8yq8.vercel.app/' },
-  { icon: '/icons/lj.png', name: 'LJ Treinamento Integrado', href: 'https://lj-nu.vercel.app/' },
+  { icon: '/icons/app/ma-finance-os.png', name: 'Ma Finance OS', href: 'https://project-organization-finaces.vercel.app/' },
+  { icon: '/icons/app/nexo.png', name: 'Nexo', href: 'https://nexo-8yq8.vercel.app/' },
+  { icon: '/icons/app/lj.png', name: 'LJ Treinamento Integrado', href: 'https://lj-nu.vercel.app/' },
 ];
 
 export default function Hero() {

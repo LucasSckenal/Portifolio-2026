@@ -79,7 +79,7 @@ export default function CaseStudy({ project }: { project: ProjectCase }) {
                 data-cursor-label="Open Live ↗"
               >
                 <span className={styles.heroCtaDot} aria-hidden />
-                <span>{t.caseStudy.live}</span>
+                <span>{project.liveKind === 'download' ? t.caseStudy.download : t.caseStudy.live}</span>
                 <span className={styles.heroCtaArrow}>↗</span>
               </a>
             )}

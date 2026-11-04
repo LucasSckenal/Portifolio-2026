@@ -175,6 +175,7 @@ export const en: Dictionary = {
   caseStudy: {
     "builtWith": "Built with",
     "live": "Live",
+    "download": "Download",
     "repo": "Repository",
     "previous": "← Previous",
     "next": "Next →",

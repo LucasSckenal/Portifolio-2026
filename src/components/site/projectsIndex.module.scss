@@ -1,5 +1,11 @@
 // Flat projects index: a glass sheet over the page, one card per project.
+@use './tokens' as *;
+
 .backdrop {
+  @include site-tokens;
+  color: var(--ink);
+  font-family: var(--font-geist), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
   position: fixed;
   inset: 0;
   z-index: 120;

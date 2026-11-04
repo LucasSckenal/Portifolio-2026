@@ -3,33 +3,10 @@
 // Light, monochrome ground; the only colour on the page is the work.
 // =========================================
 
-.site {
-  --bg: #f3f3f3; // matches the portrait's paper-white ground
-  --surface: #ffffff;
-  --ink: #0d0d0d;
-  --ink-2: #4a4a48;
-  --ink-3: #6e6e6b;
-  --line: rgba(13, 13, 13, 0.1);
-  --dark: #0e0e10;
-  --dark-2: #19191c;
-  --on-dark: #f2f2ef;
-  --on-dark-2: #a3a3a0;
-  --on-dark-line: rgba(242, 242, 239, 0.14);
-  --live: #2fb36b;
-  --radius: 18px;
-  --pill: 999px;
-  --gutter: clamp(16px, 4vw, 56px);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  // one size for every pill button on the site
-  --btn-h: 44px;
-  --btn-px: 20px;
-  --btn-fs: 0.86rem;
+@use './tokens' as *;
 
-  @media (max-width: 760px) {
-    --btn-h: 40px;
-    --btn-px: 16px;
-    --btn-fs: 0.8rem;
-  }
+.site {
+  @include site-tokens;
 
   height: 100svh;
   overflow: hidden;

@@ -20,6 +20,16 @@
   --pill: 999px;
   --gutter: clamp(16px, 4vw, 56px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  // one size for every pill button on the site
+  --btn-h: 44px;
+  --btn-px: 20px;
+  --btn-fs: 0.86rem;
+
+  @media (max-width: 760px) {
+    --btn-h: 40px;
+    --btn-px: 16px;
+    --btn-fs: 0.8rem;
+  }
 
   height: 100svh;
   overflow: hidden;
@@ -132,12 +142,14 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 20px;
+  height: var(--btn-h);
+  padding: 0 var(--btn-px);
   background: var(--ink);
   color: var(--bg) !important;
   border-radius: var(--pill);
-  font-size: 0.85rem;
+  font-size: var(--btn-fs);
   font-weight: 500;
+  white-space: nowrap;
   transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
 
   &:hover {
@@ -167,12 +179,7 @@
   .wordmark {
     font-size: 0.92rem;
   }
-  .cta {
-    padding: 10px 13px;
-    font-size: 0.76rem;
-
-    svg {
-      display: none;
-    }
+  .cta svg {
+    display: none;
   }
 }

@@ -29,6 +29,12 @@
   transform: translate(-50%, 0);
 }
 
+// Closed means gone: never an invisible layer catching clicks
+.pop:not(.open) {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .title {
   margin: 2px 6px 10px;
   font-size: 0.75rem;

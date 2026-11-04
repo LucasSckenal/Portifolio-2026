@@ -56,10 +56,18 @@
 }
 
 .actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  // two equal columns, as wide as the wider pill
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
   gap: 10px;
+
+  // both pills take the width of the wider one
+  > * {
+    width: 100%;
+  }
   margin-top: 26px;
 }
 
@@ -68,10 +76,13 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 46px;
-  padding: 0 22px;
+  justify-content: center;
+  height: var(--btn-h);
+  min-width: 168px;
+  padding: 0 var(--btn-px);
   border-radius: var(--pill);
-  font: 500 0.88rem/1 var(--font-geist), system-ui, sans-serif;
+  font: 500 var(--btn-fs) / 1 var(--font-geist), system-ui, sans-serif;
+  white-space: nowrap;
   cursor: pointer;
   transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), background 0.3s;
 }
@@ -515,8 +526,8 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 48px;
-  padding: 0 24px;
+  height: var(--btn-h);
+  padding: 0 var(--btn-px);
   border-radius: var(--pill);
   background: var(--ink);
   color: var(--bg);

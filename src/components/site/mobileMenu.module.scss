@@ -12,13 +12,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 40px;
-  padding: 0 16px;
+  height: var(--btn-h);
+  padding: 0 var(--btn-px);
   border: 1px solid var(--line);
   border-radius: var(--pill);
   background: var(--surface);
   color: var(--ink);
-  font: 500 0.82rem/1 var(--font-geist), system-ui, sans-serif;
+  font: 500 var(--btn-fs) / 1 var(--font-geist), system-ui, sans-serif;
   cursor: pointer;
 
   &:active {
@@ -72,6 +72,17 @@
 .open {
   opacity: 1;
   transform: none;
+}
+
+// Closed means gone: `display: grid` above would otherwise override the
+// hidden attribute and leave an invisible sheet catching taps on the page.
+.sheet:not(.open) {
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.25s var(--ease-out),
+    transform 0.4s var(--ease-out),
+    visibility 0s linear 0.4s;
 }
 
 .links {

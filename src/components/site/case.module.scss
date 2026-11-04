@@ -110,10 +110,10 @@
 .secondary {
   display: inline-flex;
   align-items: center;
-  height: 44px;
-  padding: 0 20px;
+  height: var(--btn-h);
+  padding: 0 var(--btn-px);
   border-radius: var(--pill);
-  font-size: 0.86rem;
+  font-size: var(--btn-fs);
   font-weight: 500;
   transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
 

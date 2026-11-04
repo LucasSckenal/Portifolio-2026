@@ -7,11 +7,12 @@ import Orbit from './Orbit';
 import SocialComb from './SocialComb';
 import styles from './hero.module.scss';
 
-// Projects that are actually live today (live URLs in content/projects.ts)
+// Projects that are actually live today (live URLs in content/projects.ts):
+// their app icons, each one opening the live product
 const LIVE = [
-  { src: '/projects/ma-finance-os/dashboard.png', alt: 'Ma Finance OS' },
-  { src: '/projects/nexo/Dashboard.png', alt: 'Nexo' },
-  { src: '/projects/lj/hero.png', alt: 'LJ Treinamento Integrado' },
+  { icon: '/icons/ma-finance-os.png', name: 'Ma Finance OS', href: 'https://project-organization-finaces.vercel.app/' },
+  { icon: '/icons/nexo.png', name: 'Nexo', href: 'https://nexo-8yq8.vercel.app/' },
+  { icon: '/icons/lj.png', name: 'LJ Treinamento Integrado', href: 'https://lj-nu.vercel.app/' },
 ];
 
 export default function Hero() {
@@ -80,9 +81,9 @@ export default function Hero() {
         </p>
         <div className={styles.faces}>
           {LIVE.map((p) => (
-            <span key={p.alt} className={styles.faceDot}>
-              <Image src={p.src} alt={p.alt} fill sizes="32px" />
-            </span>
+            <a key={p.name} className={styles.faceDot} href={p.href} target="_blank" rel="noreferrer" title={p.name}>
+              <Image src={p.icon} alt={p.name} fill sizes="34px" />
+            </a>
           ))}
         </div>
         <Link href="/privacidade" className={styles.privacy}>

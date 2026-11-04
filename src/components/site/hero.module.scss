@@ -337,21 +337,38 @@
 
 .faces {
   display: flex;
+  gap: 6px;
 }
 
+// each live product as its own app icon, opening the live site
 .faceDot {
   position: relative;
-  width: 30px;
-  height: 30px;
-  margin-right: -8px;
-  border-radius: 50%;
+  display: block;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
   overflow: hidden;
-  border: 2px solid var(--bg);
-  background: var(--ink);
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 6px 14px -8px rgba(13, 13, 13, 0.45);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
 
   img {
     object-fit: cover;
-    object-position: top left;
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-3px);
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 12px 20px -10px rgba(13, 13, 13, 0.5);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
   }
 }
 

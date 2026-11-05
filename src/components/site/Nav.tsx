@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
@@ -15,6 +16,17 @@ export default function Nav() {
   const router = useRouter();
   const pathname = usePathname();
   const { locale, setLocale } = useLocale();
+  // "About" lives on the home page: elsewhere it goes home first
+  const [aboutOn, setAboutOn] = useState(false);
+  useEffect(() => {
+    const on = (e: Event) => setAboutOn((e as CustomEvent<boolean>).detail);
+    window.addEventListener('about:state', on);
+    return () => window.removeEventListener('about:state', on);
+  }, []);
+  const about = () => {
+    if (pathname === '/') window.dispatchEvent(new CustomEvent('about:toggle'));
+    else router.push('/?sobre');
+  };
 
   return (
     <header className={styles.nav}>
@@ -25,6 +37,9 @@ export default function Nav() {
       <nav className={styles.pill} aria-label="Main">
         <button type="button" onClick={() => showWork(router, pathname)}>
           {t.site.nav.work}
+        </button>
+        <button type="button" aria-pressed={aboutOn} onClick={about}>
+          {t.site.about.nav}
         </button>
         <Versions />
         <label className={styles.lang}>

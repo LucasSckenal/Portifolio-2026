@@ -202,6 +202,15 @@ export type Dictionary = {
     versions: { label: string; title: string; current: string; archived: string; backToCurrent: string };
     projects: { title: string; sub: string };
     notFound: { label: string; title: string; body: string; home: string; projects: string };
+    about: {
+      nav: string;
+      label: string;
+      title: string;
+      body: string;
+      offLabel: string;
+      offTitle: string;
+      offBody: string;
+    };
     social: {
       label: string;
       title: string;

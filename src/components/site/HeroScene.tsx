@@ -504,8 +504,9 @@ function Ring({
   }, [hover]);
   // the leader lines fall back to nothing once the scene is gone
   useEffect(() => () => {
-    anchors.left = anchors.right = anchors.focus = null;
+    anchors.left = anchors.right = anchors.focus = anchors.faceL = anchors.faceR = null;
   }, []);
+  const faceHover = useRef(false);
   const { gl, camera } = useThree();
   const born = useRef<number | null>(null);
   const flyer = useRef<THREE.Mesh>(null);
@@ -764,6 +765,23 @@ function Ring({
       anchors.right = { x: tmp.x, y: tmp.y };
     }
     anchors.focus = hm && !flight.current && !openSlug ? ndcBox(hm, state.camera) : null;
+    // the portrait's face: where the "About me" lines land, and a hover zone
+    // (away from any panel) that brings the About notes up
+    if (outer.current && !openSlug) {
+      outer.current.localToWorld(tmp.set(-radius * FACE.side, FACE.y * radius, radius * 0.3)).project(state.camera);
+      anchors.faceL = { x: tmp.x, y: tmp.y };
+      outer.current.localToWorld(tmp.set(radius * FACE.side, FACE.y * radius, radius * 0.3)).project(state.camera);
+      anchors.faceR = { x: tmp.x, y: tmp.y };
+      const fx = (anchors.faceL.x + anchors.faceR.x) / 2;
+      const fy = anchors.faceL.y;
+      const half = (anchors.faceR.x - anchors.faceL.x) / 2;
+      const p = state.pointer;
+      const onFace = hover < 0 && !s.current.dragging && Math.abs(p.x - fx) < half && Math.abs(p.y - fy) < half * 1.6 * state.viewport.aspect;
+      if (onFace !== faceHover.current) {
+        faceHover.current = onFace;
+        window.dispatchEvent(new CustomEvent('face:hover', { detail: onFace }));
+      }
+    } else anchors.faceL = anchors.faceR = null;
     materials.forEach((m, i) => {
       const u = m.uniforms.uHover;
       u.value += ((hover === i ? 1 : 0) - u.value) * Math.min(1, dt * 10);
@@ -915,6 +933,8 @@ function Ring({
   );
 }
 
+// the face in the portrait, in ring radii from the ring's centre
+const FACE = { side: 0.32, y: 0.15 };
 const tmp = new THREE.Vector3();
 const dir = new THREE.Vector3();
 const fromP = new THREE.Vector3();

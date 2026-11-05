@@ -92,7 +92,8 @@
     color: var(--ink-2);
     transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
 
-    &:hover {
+    &:hover,
+    &[aria-pressed='true'] {
       background: var(--bg);
       color: var(--ink);
     }

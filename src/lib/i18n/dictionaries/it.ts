@@ -235,6 +235,15 @@ export const it: Dictionary = {
       "home": "Torna all’inizio",
       "projects": "Oppure vai dritto a un progetto"
     },
+    "about": {
+      "nav": "Chi sono",
+      "label": "Chi sono",
+      "title": "Dal sud del Brasile.",
+      "body": "Studio Informatica all'Unijuí, in Rio Grande do Sul, e programmo da più di 5 anni. Ho iniziato con un programma di borse di studio di Compass UOL.",
+      "offLabel": "Fuori dal codice",
+      "offTitle": "Giochi soulslike.",
+      "offBody": "Morire, capire lo schema, riprovare. Con il codice è lo stesso."
+    },
     "social": {
       "label": "Altrove",
       "title": "Trovami qui.",

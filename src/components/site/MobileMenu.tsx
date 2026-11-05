@@ -67,6 +67,16 @@ export default function MobileMenu() {
           >
             {t.site.nav.work}
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              if (pathname === '/') window.dispatchEvent(new CustomEvent('about:toggle'));
+              else router.push('/?sobre');
+            }}
+          >
+            {t.site.about.nav}
+          </button>
         </nav>
 
         <p className={styles.label}>{t.site.versions.title}</p>

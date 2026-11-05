@@ -235,6 +235,15 @@ export const en: Dictionary = {
       "home": "Back to the start",
       "projects": "Or go straight to a project"
     },
+    "about": {
+      "nav": "About",
+      "label": "About me",
+      "title": "From southern Brazil.",
+      "body": "I study Computer Science at Unijuí, in Rio Grande do Sul, and have been coding for over 5 years. I started in a scholarship program at Compass UOL.",
+      "offLabel": "Away from code",
+      "offTitle": "Soulslike games.",
+      "offBody": "Die, learn the pattern, try again. Code works the same way."
+    },
     "social": {
       "label": "Elsewhere",
       "title": "Find me around.",

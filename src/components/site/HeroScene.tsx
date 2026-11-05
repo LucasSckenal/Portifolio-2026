@@ -34,6 +34,8 @@ type Props = {
   // scene above the headline meanwhile)
   onFlight?: (active: boolean) => void;
   controlRef: React.MutableRefObject<OrbitControl | null>;
+  // another scene has the screen (the About arena): stop drawing this one
+  paused?: boolean;
 };
 
 const PHOTO_ASPECT = 1600 / 900;
@@ -119,7 +121,7 @@ function glassBase(ctx: CanvasRenderingContext2D, W: number, H: number) {
 // Card layout on its 640×400 texture (the shader uses the same screen rect)
 const SCREEN = { x: 18, y: 128, w: 604, h: 254, r: 26 };
 
-const loadImage = (src: string) =>
+export const loadImage = (src: string) =>
   new Promise<HTMLImageElement | null>((resolve) => {
     const img = new Image();
     img.decoding = 'async';
@@ -130,7 +132,7 @@ const loadImage = (src: string) =>
       : src;
   });
 
-function drawCard(p: Panel, icon: HTMLImageElement | null, shot: HTMLImageElement | null, font: string) {
+export function drawCard(p: Panel, icon: HTMLImageElement | null, shot: HTMLImageElement | null, font: string) {
   const W = 640;
   const H = 400;
   const c = document.createElement('canvas');
@@ -1038,6 +1040,7 @@ export default function HeroScene(props: Props) {
   const [level, setLevel] = useState(steps.length - 1);
   return (
     <Canvas
+      frameloop={props.paused ? 'never' : 'always'}
       // phones: cap the pixel ratio (3× screens cost 4× the pixels of 1.5×)
       dpr={steps[level]}
       camera={{ position: [0, 0.15, 7], fov: 30 }}

@@ -249,7 +249,31 @@ export const en: Dictionary = {
         { "label": "Studies", "value": "Computer Science at Unijuí" },
         { "label": "Code", "value": "For over 5 years" },
         { "label": "Start", "value": "Compass UOL scholarship program" }
-      ]
+      ],
+      "arena": {
+        "title": "Win to know me",
+        "intro": "This armor keeps everything I know about myself. Only those who beat it find out.",
+        "keys": "Space: roll the instant the blow lands · J or click: attack when its guard opens",
+        "touch": "Roll the instant the blow lands · attack when its guard opens",
+        "start": "Fight",
+        "skip": "Skip",
+        "died": "You died",
+        "retry": "Try again",
+        "won": "Armor defeated",
+        "wonBody": "It dropped everything it was keeping.",
+        "reveal": "See everything about me",
+        "boss": "The Empty Armor",
+        "attack": "Attack",
+        "dodge": "Roll",
+        "scenery": "The scenery is my projects and my last year on GitHub.",
+        "loading": "Building the arena…",
+        "fight": "Fight",
+        "blocked": "Blocked",
+        "crit": "Critical",
+        "dodged": "Dodged",
+        "portrait": "A portrait of",
+        "skipCine": "Tap or press any key to skip"
+      }
     },
     "social": {
       "label": "Elsewhere",

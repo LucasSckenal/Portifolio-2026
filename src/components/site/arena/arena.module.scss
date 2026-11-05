@@ -1,0 +1,509 @@
+@use '../tokens' as *;
+
+// "Win to know me": a short film and a duel, in black and white
+
+$white: #f2f2ef;
+$black: #0d0d0d;
+
+.root {
+  @include site-tokens;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #6d6e72;
+  color: $white;
+  font-family: var(--font-geist), system-ui, sans-serif;
+  animation: arena-in 0.8s var(--ease-out) both;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+}
+
+.canvas {
+  position: absolute !important;
+  inset: 0;
+  touch-action: none;
+}
+
+@keyframes arena-in {
+  from {
+    opacity: 0;
+  }
+}
+
+// ── letterbox ──
+.barTop,
+.barBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 11vh;
+  background: $black;
+  z-index: 2;
+  transition: transform 0.9s var(--ease-out);
+  pointer-events: none;
+}
+.barTop {
+  top: 0;
+  transform: translateY(-100%);
+}
+.barBottom {
+  bottom: 0;
+  transform: translateY(100%);
+}
+.cinema .barTop,
+.cinema .barBottom {
+  transform: none;
+}
+
+// ── opening credits ──
+.credits {
+  position: absolute;
+  left: clamp(24px, 7vw, 120px);
+  bottom: calc(11vh + 6vh);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.credit {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  max-width: 34ch;
+  animation: credit 1.75s var(--ease-out) both;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.45);
+
+  span {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(242, 242, 239, 0.72);
+  }
+
+  strong {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(1.8rem, 4.2vw, 3.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    color: $white;
+  }
+
+  em {
+    display: block;
+    margin-top: 8px;
+    font-family: var(--font-geist), system-ui, sans-serif;
+    font-style: normal;
+    font-size: 0.98rem;
+    line-height: 1.45;
+    color: rgba(242, 242, 239, 0.8);
+  }
+}
+
+@keyframes credit {
+  0% {
+    opacity: 0;
+    translate: 0 8px;
+    filter: blur(6px);
+  }
+  22%,
+  78% {
+    opacity: 1;
+    translate: none;
+    filter: none;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+// mid-fight, the last fact: top left, quieter, longer
+.lateCredit {
+  position: absolute;
+  top: 70px;
+  left: var(--gutter);
+  z-index: 3;
+  animation: credit 4.6s var(--ease-out) both;
+
+  strong {
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+  }
+}
+
+// the armor's name, centred, with a rule drawing under it
+.title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  animation: credit 2.6s var(--ease-out) both;
+
+  strong {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 7vw, 5.4rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $white;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  i {
+    width: min(60vw, 520px);
+    height: 1px;
+    background: $white;
+    transform-origin: center;
+    animation: rule 1.4s var(--ease-out) 0.2s both;
+  }
+}
+
+@keyframes rule {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.skipHint {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(5.5vh - 0.5em);
+  z-index: 3;
+  margin: 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: rgba(242, 242, 239, 0.55);
+}
+
+// ── HUD ──
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pips {
+  position: absolute;
+  top: 28px;
+  left: var(--gutter);
+  display: flex;
+  gap: 8px;
+
+  i {
+    width: 28px;
+    height: 10px;
+    border: 1px solid $white;
+    transform: skewX(-20deg);
+  }
+
+  .pipOn {
+    background: $white;
+  }
+}
+
+.boss {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  width: min(620px, calc(100% - 2 * var(--gutter)));
+  transform: translateX(-50%);
+
+  span {
+    display: block;
+    margin-bottom: 8px;
+    font-family: var(--font-display), Georgia, serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.bar {
+  height: 7px;
+  background: rgba(13, 13, 13, 0.55);
+  border: 1px solid rgba(242, 242, 239, 0.6);
+
+  i {
+    display: block;
+    height: 100%;
+    background: $white;
+    transition: width 0.35s var(--ease-out);
+  }
+}
+
+.word {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  translate: -50% 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $white;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+  animation: word 0.9s var(--ease-out) both;
+}
+
+@keyframes word {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  20% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+
+// ── the two buttons ──
+.buttons {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 96px;
+  z-index: 4;
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+
+  button {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 4px;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    border: 1px solid rgba(242, 242, 239, 0.7);
+    background: rgba(13, 13, 13, 0.35);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: $white;
+    font: 600 0.82rem var(--font-geist), system-ui, sans-serif;
+    cursor: pointer;
+    touch-action: none;
+    transition: transform 0.12s var(--ease-out), background 0.2s;
+
+    &:active {
+      transform: scale(0.92);
+    }
+  }
+
+  .attackBtn {
+    width: 100px;
+    height: 100px;
+    background: $white;
+    color: $black;
+  }
+
+  kbd {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    opacity: 0.6;
+  }
+}
+
+// ── corner ──
+.corner {
+  position: absolute;
+  top: 20px;
+  right: var(--gutter);
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+}
+
+.skip,
+.close {
+  height: 40px;
+  border: 1px solid rgba(242, 242, 239, 0.4);
+  border-radius: var(--pill);
+  background: rgba(13, 13, 13, 0.35);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: $white;
+  font: 500 0.84rem var(--font-geist), system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.skip {
+  padding: 0 18px;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  padding: 0;
+}
+
+// ── before the fight ──
+.card {
+  position: absolute;
+  left: 50%;
+  bottom: 9vh;
+  z-index: 4;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: min(540px, calc(100% - 2 * var(--gutter)));
+  padding: 28px 28px 30px;
+  transform: translateX(-50%);
+  text-align: center;
+  border-radius: 24px;
+  background: rgba(13, 13, 13, 0.62);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(242, 242, 239, 0.14);
+  animation: up 0.6s var(--ease-out) both;
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    line-height: 1;
+  }
+
+  p {
+    margin: 0;
+    max-width: 42ch;
+    line-height: 1.5;
+    color: rgba(242, 242, 239, 0.8);
+  }
+}
+
+@keyframes up {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+.kicker {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(242, 242, 239, 0.6);
+}
+
+.keys {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.74rem !important;
+}
+
+.primary {
+  height: var(--btn-h);
+  margin-top: 6px;
+  padding: 0 calc(var(--btn-px) + 6px);
+  border: 0;
+  border-radius: var(--pill);
+  background: $white;
+  color: $black;
+  font: 600 0.94rem var(--font-geist), system-ui, sans-serif;
+  cursor: pointer;
+}
+
+// ── death and victory: the screen fades to black around a word ──
+.died,
+.won {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 18px;
+  text-align: center;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.88));
+  animation: fade 1.4s ease both;
+
+  h2 {
+    margin: 0;
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 8vw, 5.6rem);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: $white;
+    animation: grow 3s var(--ease-out) both;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(242, 242, 239, 0.75);
+    font-size: 1.05rem;
+  }
+}
+
+.won {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes grow {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 700px) {
+  .buttons {
+    bottom: 92px;
+
+    button {
+      width: 76px;
+      height: 76px;
+    }
+
+    .attackBtn {
+      width: 92px;
+      height: 92px;
+    }
+  }
+
+  .boss {
+    bottom: 30px;
+  }
+
+  .credits {
+    bottom: calc(11vh + 3vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .card,
+  .died,
+  .won,
+  .died h2,
+  .won h2 {
+    animation: none;
+  }
+  .credit,
+  .title {
+    animation-name: fade;
+    filter: none;
+  }
+}

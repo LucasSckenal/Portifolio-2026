@@ -212,6 +212,30 @@ export type Dictionary = {
       offBody: string;
       teaser: string;
       facts: Array<{ label: string; value: string }>;
+      arena: {
+        title: string;
+        intro: string;
+        keys: string;
+        touch: string;
+        start: string;
+        skip: string;
+        died: string;
+        retry: string;
+        won: string;
+        wonBody: string;
+        reveal: string;
+        boss: string;
+        attack: string;
+        dodge: string;
+        scenery: string;
+        loading: string;
+        fight: string;
+        blocked: string;
+        crit: string;
+        dodged: string;
+        portrait: string;
+        skipCine: string;
+      };
     };
     social: {
       label: string;

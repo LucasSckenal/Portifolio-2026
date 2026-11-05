@@ -249,7 +249,31 @@ export const pt: Dictionary = {
         { "label": "Formação", "value": "Ciência da Computação na Unijuí" },
         { "label": "Código", "value": "Há mais de 5 anos" },
         { "label": "Começo", "value": "Programa de bolsas da Compass UOL" }
-      ]
+      ],
+      "arena": {
+        "title": "Vença para me conhecer",
+        "intro": "Esta armadura guarda tudo o que eu sei sobre mim. Só quem a vencer descobre.",
+        "keys": "Espaço: rolar no instante do golpe · J ou clique: atacar quando ela abrir a guarda",
+        "touch": "Role no instante do golpe · ataque quando ela abrir a guarda",
+        "start": "Lutar",
+        "skip": "Pular",
+        "died": "Você morreu",
+        "retry": "Tentar de novo",
+        "won": "Armadura vencida",
+        "wonBody": "Ela deixou cair tudo o que guardava.",
+        "reveal": "Ver tudo sobre mim",
+        "boss": "A Armadura Vazia",
+        "attack": "Atacar",
+        "dodge": "Rolar",
+        "scenery": "O cenário são os meus projetos e o meu GitHub do último ano.",
+        "loading": "Montando a arena…",
+        "fight": "Lutar",
+        "blocked": "Bloqueado",
+        "crit": "Crítico",
+        "dodged": "Esquivou",
+        "portrait": "Um retrato de",
+        "skipCine": "Toque ou aperte qualquer tecla para pular"
+      }
     },
     "social": {
       "label": "Por aí",

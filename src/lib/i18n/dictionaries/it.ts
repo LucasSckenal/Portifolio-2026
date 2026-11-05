@@ -249,7 +249,31 @@ export const it: Dictionary = {
         { "label": "Studi", "value": "Informatica all'Unijuí" },
         { "label": "Codice", "value": "Da più di 5 anni" },
         { "label": "Inizio", "value": "Borse di studio Compass UOL" }
-      ]
+      ],
+      "arena": {
+        "title": "Vinci per conoscermi",
+        "intro": "Questa armatura custodisce tutto ciò che so di me. Solo chi la sconfigge lo scopre.",
+        "keys": "Spazio: rotola nell'istante del colpo · J o clic: attacca quando apre la guardia",
+        "touch": "Rotola nell'istante del colpo · attacca quando apre la guardia",
+        "start": "Combatti",
+        "skip": "Salta",
+        "died": "Sei morto",
+        "retry": "Riprova",
+        "won": "Armatura sconfitta",
+        "wonBody": "Ha lasciato cadere tutto ciò che custodiva.",
+        "reveal": "Scopri tutto su di me",
+        "boss": "L'Armatura Vuota",
+        "attack": "Attacca",
+        "dodge": "Rotola",
+        "scenery": "Lo scenario sono i miei progetti e il mio ultimo anno su GitHub.",
+        "loading": "Preparo l'arena…",
+        "fight": "Combatti",
+        "blocked": "Parato",
+        "crit": "Critico",
+        "dodged": "Schivato",
+        "portrait": "Un ritratto di",
+        "skipCine": "Tocca o premi un tasto per saltare"
+      }
     },
     "social": {
       "label": "Altrove",

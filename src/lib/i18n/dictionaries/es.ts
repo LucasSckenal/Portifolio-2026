@@ -249,7 +249,31 @@ export const es: Dictionary = {
         { "label": "Formación", "value": "Ciencias de la Computación en Unijuí" },
         { "label": "Código", "value": "Hace más de 5 años" },
         { "label": "Inicio", "value": "Programa de becas de Compass UOL" }
-      ]
+      ],
+      "arena": {
+        "title": "Vence para conocerme",
+        "intro": "Esta armadura guarda todo lo que sé de mí. Solo quien la venza lo descubre.",
+        "keys": "Espacio: rodar justo en el golpe · J o clic: atacar cuando abra la guardia",
+        "touch": "Rueda justo en el golpe · ataca cuando abra la guardia",
+        "start": "Luchar",
+        "skip": "Saltar",
+        "died": "Has muerto",
+        "retry": "Intentar de nuevo",
+        "won": "Armadura vencida",
+        "wonBody": "Dejó caer todo lo que guardaba.",
+        "reveal": "Ver todo sobre mí",
+        "boss": "La Armadura Vacía",
+        "attack": "Atacar",
+        "dodge": "Rodar",
+        "scenery": "El escenario son mis proyectos y mi último año en GitHub.",
+        "loading": "Montando la arena…",
+        "fight": "Luchar",
+        "blocked": "Bloqueado",
+        "crit": "Crítico",
+        "dodged": "Esquivado",
+        "portrait": "Un retrato de",
+        "skipCine": "Toca o pulsa cualquier tecla para saltar"
+      }
     },
     "social": {
       "label": "Por ahí",

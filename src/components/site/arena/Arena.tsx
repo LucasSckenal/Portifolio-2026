@@ -53,8 +53,8 @@ export default function Arena({ onReveal, onClose }: { onReveal: () => void; onC
     game.current = newGame();
     setHp({ p: P_HP, b: B_HP });
     setLate(false);
-    cine.current.awaken = 0;
-    setPhase('awaken');
+    // it's already awake: straight back into the duel
+    setPhase('fight');
   };
 
   // keys: Space/K/L roll · J/Enter attack · any key skips the opening

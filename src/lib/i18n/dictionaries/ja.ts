@@ -273,6 +273,68 @@ export const ja: Dictionary = {
         "dodged": "回避",
         "portrait": "ポートレート",
         "skipCine": "タップまたは任意のキーでスキップ"
+      },
+      "map": {
+        "title": "旅人の道",
+        "hintTouch": "地面をタップして歩く",
+        "hintKeys": "地面をクリックするか WASD で歩く",
+        "next": "道をたどる",
+        "list": "一覧で見る",
+        "listTitle": "道のり、ひとつずつ",
+        "map": "地図に戻る",
+        "got": "入手",
+        "carry": "所持品",
+        "enter": "闘技場に入る",
+        "back": "道に戻る",
+        "project": "プロジェクトを見る",
+        "won": "撃破",
+        "arenaIntro": "胸に剣が刺さったまま、鎧がひざまずいて待っている。剣を抜けば目を覚ます。",
+        "flag": "村に旗が掲げられた。",
+        "nothing": "身ひとつ",
+        "stops": [
+          {
+            "place": "村",
+            "title": "ブラジル",
+            "body": "ここが私のふるさと。ルーカスです。ソフトウェアとインターフェースを作っています。",
+            "item": ""
+          },
+          {
+            "place": "塔",
+            "title": "Unijuí · 2023",
+            "body": "2023年、Unijuí のコンピュータサイエンス学科に入学。",
+            "item": "ランタン"
+          },
+          {
+            "place": "野営地",
+            "title": "Compass UOL · 2023",
+            "body": "Compass UOL の奨学金プログラムで働き始めました。",
+            "item": "旅のマント"
+          },
+          {
+            "place": "隊商",
+            "title": "Coral · 2023",
+            "body": "Compass での最後のプロジェクト。チーム CodeVerse で作ったファッション EC サイト。",
+            "item": "商人の袋"
+          },
+          {
+            "place": "工房",
+            "title": "COV · 2025",
+            "body": "Projeto Integrador III で3人チームで作った、AI 搭載の医療アシスタント。Unijuí の第26回 Jornada de Extensão で発表。",
+            "item": "盾"
+          },
+          {
+            "place": "酒場",
+            "title": "GuessQuest · 2025",
+            "body": "JavaFX で作ったアーケードクイズ。一枚の画像からゲームを当てる。Unijuí で2人で制作。",
+            "item": "ゲームのコイン"
+          },
+          {
+            "place": "闘技場",
+            "title": "空の鎧",
+            "body": "ソウルライクが大好きです。道の終わりで、鎧が待っている。",
+            "item": "剣"
+          }
+        ]
       }
     },
     "social": {

@@ -273,6 +273,68 @@ export const pt: Dictionary = {
         "dodged": "Esquivou",
         "portrait": "Um retrato de",
         "skipCine": "Toque ou aperte qualquer tecla para pular"
+      },
+      "map": {
+        "title": "A estrada do Visitante",
+        "hintTouch": "Toque no chão para andar",
+        "hintKeys": "Clique no chão ou use WASD para andar",
+        "next": "Seguir a estrada",
+        "list": "Ver tudo em lista",
+        "listTitle": "A estrada, parada por parada",
+        "map": "Voltar ao mapa",
+        "got": "Obtido",
+        "carry": "Na bolsa",
+        "enter": "Entrar na arena",
+        "back": "Voltar à estrada",
+        "project": "Ver o projeto",
+        "won": "Vencida",
+        "arenaIntro": "A armadura espera de joelhos com uma espada cravada no peito. Arranque a espada e ela acorda.",
+        "flag": "Uma bandeira foi erguida na vila.",
+        "nothing": "Só a roupa do corpo",
+        "stops": [
+          {
+            "place": "A vila",
+            "title": "Brasil",
+            "body": "É daqui que eu venho. Sou o Lucas: crio softwares e interfaces.",
+            "item": ""
+          },
+          {
+            "place": "A torre",
+            "title": "Unijuí · 2023",
+            "body": "Em 2023 entrei em Ciência da Computação na Unijuí.",
+            "item": "Lanterna"
+          },
+          {
+            "place": "O acampamento",
+            "title": "Compass UOL · 2023",
+            "body": "Comecei a trabalhar num programa de bolsas da Compass UOL.",
+            "item": "Capa de viajante"
+          },
+          {
+            "place": "A caravana",
+            "title": "Coral · 2023",
+            "body": "Meu último projeto na Compass: um e-commerce de moda feito em equipe, a CodeVerse.",
+            "item": "Bolsa de mercador"
+          },
+          {
+            "place": "A oficina",
+            "title": "COV · 2025",
+            "body": "Um assistente médico com IA, feito em equipe de três no Projeto Integrador III. Apresentado na XXVI Jornada de Extensão da Unijuí.",
+            "item": "Escudo"
+          },
+          {
+            "place": "A taverna",
+            "title": "GuessQuest · 2025",
+            "body": "Um quiz de fliperama em JavaFX: acerte o jogo por uma única imagem. Feito em dupla na Unijuí.",
+            "item": "Ficha de fliperama"
+          },
+          {
+            "place": "A arena",
+            "title": "A Armadura Vazia",
+            "body": "Eu amo jogos souls-like. No fim da estrada, uma armadura espera.",
+            "item": "Espada"
+          }
+        ]
       }
     },
     "social": {

@@ -236,6 +236,26 @@ export type Dictionary = {
         portrait: string;
         skipCine: string;
       };
+      // "Sobre" as a walk: a village, a road, one stop per experience
+      map: {
+        title: string;
+        hintTouch: string;
+        hintKeys: string;
+        next: string;
+        list: string;
+        listTitle: string;
+        map: string;
+        got: string;
+        carry: string;
+        enter: string;
+        back: string;
+        project: string;
+        won: string;
+        arenaIntro: string;
+        flag: string;
+        nothing: string;
+        stops: Array<{ place: string; title: string; body: string; item: string }>;
+      };
     };
     social: {
       label: string;

@@ -18,15 +18,27 @@ import styles from './arena.module.scss';
 
 type Word = { text: string; id: number } | null;
 
-export default function Arena({ onReveal, onClose }: { onReveal: () => void; onClose: () => void }) {
+export default function Arena({
+  onReveal,
+  onClose,
+  fromMap = false,
+  onWon,
+}: {
+  onReveal: () => void;
+  onClose: () => void;
+  // entered from the map's gate: the facts were told on the road, so the
+  // opening is only the flight in and the armor's name
+  fromMap?: boolean;
+  onWon?: () => void;
+}) {
   const t = useT();
   const a = t.site.about;
   const ar = a.arena;
-  const credits = useMemo(() => [{ label: ar.portrait, value: 'Lucas Sckenal' }, ...a.facts], [a.facts, ar.portrait]);
+  const credits = useMemo(() => (fromMap ? [] : [{ label: ar.portrait, value: 'Lucas Sckenal' }, ...a.facts]), [a.facts, ar.portrait, fromMap]);
   const game = useRef<Game>(newGame());
   const input = useRef<Input>({ roll: false, attack: false });
   const phaseRef = useRef<Phase>('cine');
-  const cine = useRef({ t: 0, skip: false, awaken: 0 });
+  const cine = useRef({ t: fromMap ? TITLE_AT - 3 : 0, skip: false, awaken: 0 });
   const [phase, setPhaseState] = useState<Phase>('cine');
   const [hp, setHp] = useState({ p: P_HP, b: B_HP });
   const [credit, setCredit] = useState(-1);
@@ -98,6 +110,7 @@ export default function Arena({ onReveal, onClose }: { onReveal: () => void; onC
     }
     if (ev.won) {
       phaseRef.current = 'won';
+      onWon?.();
       window.setTimeout(() => setPhaseState('won'), 2600);
     }
   };
@@ -213,7 +226,7 @@ export default function Arena({ onReveal, onClose }: { onReveal: () => void; onC
       )}
 
       <div className={styles.corner} onPointerDown={(e) => e.stopPropagation()}>
-        {phase !== 'won' && (
+        {phase !== 'won' && !fromMap && (
           <button type="button" className={styles.skip} onClick={onReveal}>
             {ar.skip}
           </button>
@@ -229,7 +242,7 @@ export default function Arena({ onReveal, onClose }: { onReveal: () => void; onC
         <div className={styles.card}>
           <span className={styles.kicker}>{a.label}</span>
           <h2>{ar.title}</h2>
-          <p>{ar.intro}</p>
+          <p>{fromMap ? a.map.arenaIntro : ar.intro}</p>
           <p className={styles.keys}>{touch ? ar.touch : ar.keys}</p>
           <button ref={focusRef} type="button" className={styles.primary} onClick={fight}>
             {ar.fight}
@@ -251,7 +264,7 @@ export default function Arena({ onReveal, onClose }: { onReveal: () => void; onC
           <h2>{ar.won}</h2>
           <p>{ar.wonBody}</p>
           <button ref={focusRef} type="button" className={styles.primary} onClick={onReveal}>
-            {ar.reveal}
+            {fromMap ? a.map.back : ar.reveal}
           </button>
         </div>
       )}

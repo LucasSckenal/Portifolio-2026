@@ -273,6 +273,68 @@ export const en: Dictionary = {
         "dodged": "Dodged",
         "portrait": "A portrait of",
         "skipCine": "Tap or press any key to skip"
+      },
+      "map": {
+        "title": "The Wanderer's road",
+        "hintTouch": "Tap the ground to walk",
+        "hintKeys": "Click the ground or use WASD to walk",
+        "next": "Follow the road",
+        "list": "See it all as a list",
+        "listTitle": "The road, stop by stop",
+        "map": "Back to the map",
+        "got": "Obtained",
+        "carry": "Carried",
+        "enter": "Enter the arena",
+        "back": "Back to the road",
+        "project": "See the project",
+        "won": "Defeated",
+        "arenaIntro": "The armor kneels with a sword through its chest. Pull the sword out and it wakes.",
+        "flag": "A banner now flies over the village.",
+        "nothing": "Only the clothes on his back",
+        "stops": [
+          {
+            "place": "The village",
+            "title": "Brazil",
+            "body": "This is where I come from. I'm Lucas: I build software and interfaces.",
+            "item": ""
+          },
+          {
+            "place": "The tower",
+            "title": "Unijuí · 2023",
+            "body": "In 2023 I started Computer Science at Unijuí.",
+            "item": "Lantern"
+          },
+          {
+            "place": "The camp",
+            "title": "Compass UOL · 2023",
+            "body": "I started working in a scholarship program at Compass UOL.",
+            "item": "Traveller's cape"
+          },
+          {
+            "place": "The caravan",
+            "title": "Coral · 2023",
+            "body": "My last project at Compass: a fashion e-commerce built as a team, CodeVerse.",
+            "item": "Merchant's pouch"
+          },
+          {
+            "place": "The workshop",
+            "title": "COV · 2025",
+            "body": "A medical assistant with AI, built by a team of three in Projeto Integrador III. Presented at Unijuí's XXVI Jornada de Extensão.",
+            "item": "Shield"
+          },
+          {
+            "place": "The tavern",
+            "title": "GuessQuest · 2025",
+            "body": "An arcade quiz in JavaFX: name the game from a single image. Built as a pair at Unijuí.",
+            "item": "Arcade token"
+          },
+          {
+            "place": "The arena",
+            "title": "The Empty Armor",
+            "body": "I love souls-like games. At the end of the road, an armor is waiting.",
+            "item": "Sword"
+          }
+        ]
       }
     },
     "social": {

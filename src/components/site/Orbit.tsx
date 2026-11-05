@@ -9,12 +9,11 @@ import { MORPH, morphTo } from '@/lib/viewMorph';
 import { useT } from '@/components/providers/LanguageProvider';
 import { PANELS, PROJECTS, PROJECT_ORDER, type PanelId, type ProjectId } from './panels';
 import type { OrbitControl, Rect } from './HeroScene';
-import AboutDiagram from './AboutDiagram';
 import styles from './hero.module.scss';
 
 const HeroScene = dynamic(() => import('./HeroScene'), { ssr: false });
 const OrbitTuner = dynamic(() => import('./OrbitTuner'), { ssr: false });
-const Arena = dynamic(() => import('./arena/Arena'), { ssr: false });
+const Journey = dynamic(() => import('./journey/Journey'), { ssr: false });
 
 function hasWebGL() {
   try {
@@ -45,7 +44,6 @@ export default function Orbit() {
   const [tuning, setTuning] = useState(false);
   const [flying, setFlying] = useState(false);
   // About: first the fight ("die to know me"), then the drawing with every fact
-  const [aboutStage, setAboutStage] = useState<'arena' | 'diagram'>('arena');
   const onReady = useCallback(() => setSceneReady(true), []);
   const lastFocus = useRef<HTMLElement | null>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
@@ -68,7 +66,6 @@ export default function Orbit() {
   const openProject = useCallback((slug: PanelId, from: Rect) => {
     lastFocus.current = document.activeElement as HTMLElement;
     closing.current = false;
-    setAboutStage('arena');
     setOpen({ slug, from });
   }, []);
 
@@ -195,7 +192,7 @@ export default function Orbit() {
           onFlight={setFlying}
           controlRef={control}
           onReady={onReady}
-          paused={open?.slug === 'about' && aboutStage === 'arena'}
+          paused={open?.slug === 'about'}
         />
       )}
 
@@ -231,12 +228,7 @@ export default function Orbit() {
         </span>
       )}
 
-      {open?.slug === 'about' &&
-        (aboutStage === 'arena' ? (
-          <Arena onReveal={() => setAboutStage('diagram')} onClose={close} />
-        ) : (
-          <AboutDiagram shown={shown} onClose={close} />
-        ))}
+      {open?.slug === 'about' && <Journey onClose={close} />}
 
       {open && view && (
         <div className={`${styles.overlay} ${shown ? styles.overlayShown : ''}`} onClick={close} role="presentation">

@@ -273,6 +273,68 @@ export const it: Dictionary = {
         "dodged": "Schivato",
         "portrait": "Un ritratto di",
         "skipCine": "Tocca o premi un tasto per saltare"
+      },
+      "map": {
+        "title": "La strada del Viandante",
+        "hintTouch": "Tocca il terreno per camminare",
+        "hintKeys": "Clicca sul terreno o usa WASD per camminare",
+        "next": "Segui la strada",
+        "list": "Vedi tutto in elenco",
+        "listTitle": "La strada, tappa per tappa",
+        "map": "Torna alla mappa",
+        "got": "Ottenuto",
+        "carry": "Nella borsa",
+        "enter": "Entra nell'arena",
+        "back": "Torna alla strada",
+        "project": "Vedi il progetto",
+        "won": "Sconfitta",
+        "arenaIntro": "L'armatura attende in ginocchio con una spada piantata nel petto. Estrai la spada e si sveglia.",
+        "flag": "Ora una bandiera sventola sul villaggio.",
+        "nothing": "Solo i vestiti che ha addosso",
+        "stops": [
+          {
+            "place": "Il villaggio",
+            "title": "Brasile",
+            "body": "Vengo da qui. Sono Lucas: creo software e interfacce.",
+            "item": ""
+          },
+          {
+            "place": "La torre",
+            "title": "Unijuí · 2023",
+            "body": "Nel 2023 ho iniziato Informatica all'Unijuí.",
+            "item": "Lanterna"
+          },
+          {
+            "place": "L'accampamento",
+            "title": "Compass UOL · 2023",
+            "body": "Ho iniziato a lavorare in un programma di borse di studio di Compass UOL.",
+            "item": "Mantello da viaggio"
+          },
+          {
+            "place": "La carovana",
+            "title": "Coral · 2023",
+            "body": "Il mio ultimo progetto in Compass: un e-commerce di moda fatto in squadra, CodeVerse.",
+            "item": "Borsa da mercante"
+          },
+          {
+            "place": "L'officina",
+            "title": "COV · 2025",
+            "body": "Un assistente medico con IA, fatto in un team di tre nel Projeto Integrador III. Presentato alla XXVI Jornada de Extensão dell'Unijuí.",
+            "item": "Scudo"
+          },
+          {
+            "place": "La taverna",
+            "title": "GuessQuest · 2025",
+            "body": "Un quiz da sala giochi in JavaFX: indovina il gioco da una sola immagine. Fatto in coppia all'Unijuí.",
+            "item": "Gettone"
+          },
+          {
+            "place": "L'arena",
+            "title": "L'Armatura Vuota",
+            "body": "Amo i giochi souls-like. In fondo alla strada, un'armatura aspetta.",
+            "item": "Spada"
+          }
+        ]
       }
     },
     "social": {

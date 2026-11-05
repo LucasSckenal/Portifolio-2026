@@ -273,6 +273,68 @@ export const es: Dictionary = {
         "dodged": "Esquivado",
         "portrait": "Un retrato de",
         "skipCine": "Toca o pulsa cualquier tecla para saltar"
+      },
+      "map": {
+        "title": "El camino del Visitante",
+        "hintTouch": "Toca el suelo para caminar",
+        "hintKeys": "Haz clic en el suelo o usa WASD para caminar",
+        "next": "Seguir el camino",
+        "list": "Verlo todo en lista",
+        "listTitle": "El camino, parada por parada",
+        "map": "Volver al mapa",
+        "got": "Obtenido",
+        "carry": "En la bolsa",
+        "enter": "Entrar a la arena",
+        "back": "Volver al camino",
+        "project": "Ver el proyecto",
+        "won": "Vencida",
+        "arenaIntro": "La armadura espera de rodillas con una espada clavada en el pecho. Arranca la espada y despierta.",
+        "flag": "Una bandera ondea ahora sobre la aldea.",
+        "nothing": "Solo la ropa puesta",
+        "stops": [
+          {
+            "place": "La aldea",
+            "title": "Brasil",
+            "body": "De aquí vengo. Soy Lucas: creo software e interfaces.",
+            "item": ""
+          },
+          {
+            "place": "La torre",
+            "title": "Unijuí · 2023",
+            "body": "En 2023 empecé Ciencias de la Computación en Unijuí.",
+            "item": "Linterna"
+          },
+          {
+            "place": "El campamento",
+            "title": "Compass UOL · 2023",
+            "body": "Empecé a trabajar en un programa de becas de Compass UOL.",
+            "item": "Capa de viajero"
+          },
+          {
+            "place": "La caravana",
+            "title": "Coral · 2023",
+            "body": "Mi último proyecto en Compass: un e-commerce de moda hecho en equipo, CodeVerse.",
+            "item": "Bolsa de mercader"
+          },
+          {
+            "place": "El taller",
+            "title": "COV · 2025",
+            "body": "Un asistente médico con IA, hecho en un equipo de tres en el Projeto Integrador III. Presentado en la XXVI Jornada de Extensão de la Unijuí.",
+            "item": "Escudo"
+          },
+          {
+            "place": "La taberna",
+            "title": "GuessQuest · 2025",
+            "body": "Un quiz de arcade en JavaFX: adivina el juego con una sola imagen. Hecho en pareja en la Unijuí.",
+            "item": "Ficha de arcade"
+          },
+          {
+            "place": "La arena",
+            "title": "La Armadura Vacía",
+            "body": "Amo los juegos souls-like. Al final del camino, una armadura espera.",
+            "item": "Espada"
+          }
+        ]
       }
     },
     "social": {

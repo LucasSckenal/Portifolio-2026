@@ -1,0 +1,412 @@
+@use '../tokens' as *;
+
+// "Sobre" as a walk: overcast greys, white cards, the site's type
+
+$ink: #111112;
+$paper: #f4f4f1;
+
+.root {
+  @include site-tokens;
+  position: fixed;
+  inset: 0;
+  z-index: 299;
+  background: #c9c9c4;
+  color: $ink;
+  font-family: var(--font-geist), system-ui, sans-serif;
+  animation: map-in 0.7s var(--ease-out) both;
+  overflow: hidden;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@keyframes map-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.canvas {
+  position: absolute !important;
+  inset: 0;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.kicker {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 18, 0.55);
+}
+
+// ── top bar ──
+.top {
+  position: absolute;
+  top: 16px;
+  left: var(--gutter);
+  right: var(--gutter);
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+
+  > * {
+    pointer-events: auto;
+  }
+}
+
+.titleBox {
+  display: grid;
+  gap: 4px;
+  padding: 12px 16px 13px;
+  border-radius: 16px;
+  background: rgba(244, 244, 241, 0.78);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+
+  strong {
+    font: 400 1.35rem/1.1 var(--font-display), Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+.progress {
+  display: flex;
+  gap: 5px;
+  margin-top: 4px;
+
+  i {
+    width: 18px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(17, 17, 18, 0.18);
+    transition: background 0.4s;
+  }
+
+  i.on {
+    background: $ink;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.ghost,
+.close {
+  height: 40px;
+  border: 1px solid rgba(17, 17, 18, 0.14);
+  border-radius: var(--pill);
+  background: rgba(244, 244, 241, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: $ink;
+  font: 500 0.84rem var(--font-geist), system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.ghost {
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  padding: 0;
+}
+
+// ── what he carries ──
+.carry {
+  position: absolute;
+  top: 118px;
+  left: var(--gutter);
+  z-index: 2;
+  max-width: min(420px, calc(100% - 2 * var(--gutter)));
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(17, 17, 18, 0.75);
+
+  span {
+    display: block;
+    margin-bottom: 2px;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(17, 17, 18, 0.5);
+  }
+}
+
+// ── the moment you get something ──
+.gain {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  z-index: 4;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  animation: gain 2.6s var(--ease-out) both;
+
+  span {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(17, 17, 18, 0.6);
+  }
+
+  strong {
+    font: 400 clamp(1.8rem, 4vw, 2.6rem) / 1 var(--font-display), Georgia, serif;
+    padding: 0 18px 10px;
+    border-bottom: 1px solid $ink;
+  }
+}
+
+@keyframes gain {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+    letter-spacing: 0.04em;
+  }
+  14%,
+  78% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -6px);
+  }
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  bottom: 96px;
+  z-index: 2;
+  margin: 0;
+  padding: 8px 14px;
+  transform: translateX(-50%);
+  border-radius: var(--pill);
+  background: rgba(17, 17, 18, 0.72);
+  color: $paper;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+// ── the card for where you are ──
+.card {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 24px;
+  z-index: 3;
+  display: grid;
+  gap: 8px;
+  width: min(420px, calc(100% - 2 * var(--gutter)));
+  padding: 20px 22px 22px;
+  border-radius: 20px;
+  background: rgba(244, 244, 241, 0.9);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.45);
+  animation: card-in 0.5s var(--ease-out) both;
+
+  h2 {
+    margin: 0;
+    font: 400 1.7rem/1.05 var(--font-display), Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(17, 17, 18, 0.78);
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.item {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.74rem !important;
+  letter-spacing: 0.04em;
+
+  strong {
+    font-weight: 600;
+    color: $ink;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.primary,
+.ghostDark {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: var(--pill);
+  font: 500 0.86rem var(--font-geist), system-ui, sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.primary {
+  border: 0;
+  background: $ink;
+  color: $paper;
+}
+
+.ghostDark {
+  border: 1px solid rgba(17, 17, 18, 0.2);
+  background: transparent;
+  color: $ink;
+}
+
+// ── follow the road ──
+.next {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 24px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--pill);
+  background: $ink;
+  color: $paper;
+  font: 500 0.92rem var(--font-geist), system-ui, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 16px 40px -18px rgba(0, 0, 0, 0.6);
+
+  span {
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  &:hover span {
+    transform: translateX(3px);
+  }
+}
+
+// ── everything as a list ──
+.list {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow-y: auto;
+  padding: 130px var(--gutter) 60px;
+  background: #ecece9;
+
+  h2 {
+    max-width: 720px;
+    margin: 0 auto 28px;
+    font: 400 clamp(1.8rem, 4vw, 2.6rem) / 1.05 var(--font-display), Georgia, serif;
+  }
+
+  ol {
+    display: grid;
+    gap: 0;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    gap: 6px;
+    padding: 22px 0;
+    border-top: 1px solid rgba(17, 17, 18, 0.12);
+  }
+
+  h3 {
+    margin: 0;
+    font: 400 1.5rem/1.1 var(--font-display), Georgia, serif;
+  }
+
+  p {
+    margin: 0;
+    max-width: 60ch;
+    line-height: 1.55;
+    color: rgba(17, 17, 18, 0.75);
+  }
+}
+
+@media (max-width: 720px) {
+  .ghost {
+    padding: 0 12px;
+    font-size: 0.78rem;
+  }
+
+  .titleBox strong {
+    font-size: 1.1rem;
+  }
+
+  .carry {
+    top: 104px;
+  }
+
+  .card {
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 84px;
+    width: auto;
+    padding: 16px 18px 18px;
+
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+
+  .next {
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 18px;
+    justify-content: center;
+  }
+
+  .hint {
+    bottom: 150px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .card,
+  .gain {
+    animation-duration: 0.01s;
+  }
+}

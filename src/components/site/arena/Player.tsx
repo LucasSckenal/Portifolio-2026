@@ -3,7 +3,7 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { ATK_T, ROLL_T, type Game, type Phase } from './game';
+import { ATK_T, ROLL_T, newGame, type Game, type Phase } from './game';
 import { AW, CLOSE, DIST } from './timeline';
 import Trail from './Trail';
 import { hilt } from './shared';
@@ -206,15 +206,34 @@ function cape() {
   return sh;
 }
 
+// What the wanderer has picked up on the road. In the arena he has it all.
+export type Gear = { lantern: boolean; cape: boolean; bag: boolean; shield: boolean; token: boolean; sword: boolean };
+export const FULL_GEAR: Gear = { lantern: true, cape: true, bag: true, shield: true, token: true, sword: true };
+// Walking the map instead of fighting: where he is, where he faces, how fast
+export type Drive = { x: number; z: number; yaw: number; speed: number; gear: Gear; flash: number };
+
 export default function Player({
-  game,
-  phase,
-  cine,
+  game: gameIn,
+  phase: phaseIn,
+  cine: cineIn,
+  drive,
 }: {
-  game: React.RefObject<Game>;
-  phase: React.RefObject<Phase>;
-  cine: React.RefObject<{ t: number; skip: boolean; awaken: number }>;
+  game?: React.RefObject<Game>;
+  phase?: React.RefObject<Phase>;
+  cine?: React.RefObject<{ t: number; skip: boolean; awaken: number }>;
+  drive?: React.RefObject<Drive>;
 }) {
+  const ownGame = useRef<Game>(newGame());
+  const ownPhase = useRef<Phase>('fight');
+  const ownCine = useRef({ t: 0, skip: false, awaken: 0 });
+  const game = gameIn ?? ownGame;
+  const phase = phaseIn ?? ownPhase;
+  const cine = cineIn ?? ownCine;
+  const lantern = useRef<THREE.Group>(null);
+  const bag = useRef<THREE.Group>(null);
+  const token = useRef<THREE.Mesh>(null);
+  const shield = useRef<THREE.Mesh>(null);
+  const glow = useRef<THREE.PointLight>(null);
   const root = useRef<THREE.Group>(null);
   const tumble = useRef<THREE.Group>(null);
   const hips = useRef<THREE.Group>(null);
@@ -245,7 +264,8 @@ export default function Player({
     const t = clock.elapsedTime;
     const r = root.current;
     if (!r || !hips.current || !tumble.current) return;
-    r.visible = ph !== 'cine';
+    const dv = drive?.current;
+    r.visible = dv ? true : ph !== 'cine';
 
     // where you stand: on the circle, facing the armor
     let dist = DIST;
@@ -258,7 +278,15 @@ export default function Player({
     let grip = 0;
     let slide = 0; // how far the blade has come out of the chest
 
-    if (ph === 'ready') {
+    if (dv) {
+      // on the road: a walk that scales with speed, the guard when still
+      const br = Math.sin(t * 2.2);
+      const rest: Pose = dv.gear.sword
+        ? { ...IDLE, hipsY: 0.9 + br * 0.012 }
+        : { ...IDLE, hipsY: 0.9 + br * 0.012, shR: [-0.1, 0, -0.1], elR: [-0.25, 0, 0], chest: [0, 0, 0], head: [0, 0, 0] };
+      target = dv.speed > 0.05 ? mix(rest, walk(t, 1), Math.min(1, dv.speed)) : rest;
+      rate = 12;
+    } else if (ph === 'ready') {
       target = { ...IDLE, shR: [-0.1, 0, -0.1], elR: [-0.2, 0, 0], chest: [0, 0, 0], head: [0, 0, 0] }; // unarmed, waiting
     } else if (ph === 'awaken') {
       const a = cine.current.awaken;
@@ -326,11 +354,26 @@ export default function Player({
       j.current[name]?.rotation.set(a[0], a[1], a[2]);
     }
 
-    const ang = p.ang;
-    const d = dist - (c.fwd ?? 0);
-    r.position.set(Math.sin(ang) * d, 0, Math.cos(ang) * d);
-    const face = ang + Math.PI + turn;
-    yaw.current += Math.atan2(Math.sin(face - yaw.current), Math.cos(face - yaw.current)) * (1 - Math.exp(-dt * 22));
+    if (dv) {
+      r.position.set(dv.x, 0, dv.z);
+      yaw.current += Math.atan2(Math.sin(dv.yaw - yaw.current), Math.cos(dv.yaw - yaw.current)) * (1 - Math.exp(-dt * 10));
+      swordOn = dv.gear.sword;
+    } else {
+      const ang = p.ang;
+      const d = dist - (c.fwd ?? 0);
+      r.position.set(Math.sin(ang) * d, 0, Math.cos(ang) * d);
+      const face = ang + Math.PI + turn;
+      yaw.current += Math.atan2(Math.sin(face - yaw.current), Math.cos(face - yaw.current)) * (1 - Math.exp(-dt * 22));
+    }
+    // the gear he has picked up so far
+    const gear = dv ? dv.gear : FULL_GEAR;
+    if (cloak.current) cloak.current.visible = gear.cape;
+    if (lantern.current) lantern.current.visible = gear.lantern;
+    if (bag.current) bag.current.visible = gear.bag;
+    if (token.current) token.current.visible = gear.token;
+    if (shield.current) shield.current.visible = gear.shield;
+    if (glow.current) glow.current.intensity = gear.lantern ? 0.9 + Math.sin(t * 7) * 0.08 + (dv ? dv.flash * 3 : 0) : 0;
+    m.cloth.emissive.setScalar(dv ? dv.flash * 0.6 : 0);
     r.rotation.y = yaw.current;
     hips.current.position.y = c.hipsY ?? 0.9;
     tumble.current.rotation.x = tumbleX;
@@ -392,6 +435,31 @@ export default function Player({
               <mesh castShadow material={m.dark}>
                 <cylinderGeometry args={[0.17, 0.2, 0.14, 6]} />
               </mesh>
+              {/* a lantern on the left hip */}
+              <group ref={lantern} position={[-0.21, -0.12, 0.06]} visible={false}>
+                <mesh position={[0, 0.1, 0]} material={m.dark}>
+                  <torusGeometry args={[0.035, 0.008, 4, 8]} />
+                </mesh>
+                <mesh position={[0, 0.06, 0]} material={m.dark}>
+                  <cylinderGeometry args={[0.035, 0.05, 0.03, 6]} />
+                </mesh>
+                <mesh position={[0, -0.01, 0]} material={m.blade}>
+                  <cylinderGeometry args={[0.04, 0.04, 0.1, 6]} />
+                </mesh>
+                <mesh position={[0, -0.07, 0]} material={m.dark}>
+                  <cylinderGeometry args={[0.05, 0.04, 0.025, 6]} />
+                </mesh>
+                <pointLight ref={glow} distance={3.2} decay={2} intensity={0} color="#ffffff" />
+              </group>
+              {/* a merchant's pouch on the right hip */}
+              <group ref={bag} position={[0.19, -0.1, -0.06]} rotation={[0, -0.4, 0]} visible={false}>
+                <mesh castShadow material={m.cloak}>
+                  <boxGeometry args={[0.13, 0.15, 0.08]} />
+                </mesh>
+                <mesh position={[0, 0.05, 0.03]} rotation={[0.35, 0, 0]} material={m.dark}>
+                  <boxGeometry args={[0.135, 0.07, 0.03]} />
+                </mesh>
+              </group>
               {/* legs */}
               {(['L', 'R'] as const).map((s) => (
                 <group key={s} ref={set(`th${s}` as J)} position={[s === 'L' ? -0.1 : 0.1, -0.04, 0]}>
@@ -416,6 +484,10 @@ export default function Player({
                   </mesh>
                   <mesh position={[0, -0.08, 0]} castShadow material={m.dark}>
                     <cylinderGeometry args={[0.16, 0.16, 0.06, 6]} />
+                  </mesh>
+                  {/* the arcade token, on a cord at the chest */}
+                  <mesh ref={token} position={[0, 0.27, 0.165]} rotation={[Math.PI / 2, 0, 0]} visible={false} material={m.blade}>
+                    <cylinderGeometry args={[0.04, 0.04, 0.012, 10]} />
                   </mesh>
                   {/* a short cape from the shoulders, ragged at the hem */}
                   <group ref={cloak} position={[0, 0.34, -0.17]}>
@@ -448,7 +520,7 @@ export default function Player({
                       <mesh position={[0, -0.13, 0]} castShadow material={m.dark}>
                         <cylinderGeometry args={[0.048, 0.04, 0.27, 5]} />
                       </mesh>
-                      <mesh position={[-0.06, -0.16, 0]} rotation={[0, 0, Math.PI / 2]} castShadow material={m.cloth}>
+                      <mesh ref={shield} position={[-0.06, -0.16, 0]} rotation={[0, 0, Math.PI / 2]} castShadow material={m.cloth}>
                         <cylinderGeometry args={[0.2, 0.2, 0.04, 8]} />
                       </mesh>
                     </group>

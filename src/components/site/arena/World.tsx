@@ -111,9 +111,7 @@ export default function World({
       if (ph === 'awaken') {
         const step_ = Math.min(raw, 0.25);
         const before = c.awaken;
-        // play-tests can pin the awakening to one instant
-        const pin = (c as { hold?: number }).hold;
-        c.awaken = typeof pin === 'number' ? pin : c.awaken + step_;
+        c.awaken += step_;
         if (before < AW.pull && c.awaken >= AW.pull) {
           // the sword comes out: a burst and a jolt
           g.spark = { at: 0, t: -c.awaken, big: true };

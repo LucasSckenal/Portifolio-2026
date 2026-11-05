@@ -77,11 +77,6 @@ export default function Arena({ onReveal, onClose }: { onReveal: () => void; onC
     return () => window.removeEventListener('keydown', down);
   }, [onClose, skipCine]);
 
-  // ?arenadebug: expose the duel's state to automated play-tests
-  useEffect(() => {
-    if (window.location.search.includes('arenadebug')) (window as unknown as { __arena: unknown }).__arena = { game, input, phase: phaseRef, cine };
-  }, []);
-
   useEffect(() => {
     if (phase === 'ready' || phase === 'dead' || phase === 'won') focusRef.current?.focus({ preventScroll: true });
   }, [phase]);

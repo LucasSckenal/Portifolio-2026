@@ -173,6 +173,8 @@ export default function Armor({
   const torso = useRef<THREE.Group>(null);
   const helm = useRef<THREE.Group>(null);
   const slit = useRef<THREE.Mesh>(null);
+  const eyes = useRef<THREE.Group>(null);
+  const eyeLight = useRef<THREE.PointLight>(null);
   const arm = useRef<THREE.Group>(null);
   const haft = useRef<THREE.Group>(null);
   const armL = useRef<THREE.Group>(null);
@@ -186,7 +188,7 @@ export default function Armor({
   const mass = useRef<THREE.Group>(null);
   const bladeA = useRef<THREE.Object3D>(null);
   const bladeB = useRef<THREE.Object3D>(null);
-  const s = useRef<P & { form: number; face: number; shield: number }>({ ...G, ax: -0.15, wr: 1.57, lax: 0.15, form: 0, face: 0, shield: 0 });
+  const s = useRef<P & { form: number; face: number; shield: number; tell: number }>({ ...G, ax: -0.15, wr: 1.57, lax: 0.15, form: 0, face: 0, shield: 0, tell: 0 });
   // which part of which blow we're in, since when, and the pose it started from
   const an = useRef({ key: '', t: 0, from: { ...G } as P, trail: false });
   // the axe held in the floor: its world placement while stuck, the last heave seen
@@ -200,7 +202,10 @@ export default function Armor({
       dark: flat('#1c1d21', { metalness: 0.2, roughness: 0.7 }),
       cloth: flat('#2a2b2f', { metalness: 0, roughness: 0.9, side: THREE.DoubleSide }),
       void: new THREE.MeshStandardMaterial({ color: '#050506', flatShading: true, roughness: 1, metalness: 0 }),
-      eye: new THREE.MeshBasicMaterial({ color: '#ffffff' }),
+      eye: new THREE.MeshBasicMaterial({ color: '#ffffff', toneMapped: false }),
+      // the red bloom round the slit when a blow is coming
+      red: new THREE.MeshBasicMaterial({ color: '#ff2a1a', toneMapped: false }),
+      glow: new THREE.MeshBasicMaterial({ color: '#ff2a1a', transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }),
       blade: flat('#d9dadc', { metalness: 0.7, roughness: 0.25 }),
       plume: new THREE.MeshStandardMaterial({ color: '#e4e4e0', flatShading: true, roughness: 0.95, side: THREE.DoubleSide }),
       sword: new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#ffffff', emissiveIntensity: 0.35, flatShading: true, metalness: 0.6, roughness: 0.25 }),
@@ -458,10 +463,21 @@ export default function Armor({
     m.plate.emissive.set('#ffffff');
     m.plate.emissiveIntensity = b.flash * 0.5 + b.blocked * 0.25;
     const eyeOn = ph === 'cine' || ph === 'ready' ? 0.15 : ph === 'awaken' ? clamp01((a - AW.pull) / 1.0) : 1;
-    m.eye.color.setScalar(0.15 + eyeOn * 0.85 * (b.state === 'down' ? Math.max(0, 1 - b.st) : 1));
-    // the slit flares at the top of every windup: the tell
-    const tell = live && (b.state === 'hold' || (b.state === 'wind' && windup(g) > 0.7)) ? 1 : 0;
-    if (slit.current) slit.current.scale.y = damp(slit.current.scale.y, 1 + tell * 1.8, 18, dt);
+    // the tell: the eye burns red as a blow gathers, brightest just before it lands
+    const w = windup(g);
+    const tell = !live ? 0 : b.state === 'hold' ? 1 : b.state === 'wind' ? clamp01((w - 0.3) / 0.45) : b.state === 'strike' ? 0.5 : 0;
+    st.tell = damp(st.tell, tell, tell > st.tell ? 14 : 6, dt);
+    const T = st.tell;
+    const flick = 1 + Math.sin(time * 38) * 0.08 * T;
+    const lum = 0.15 + eyeOn * 0.85 * (b.state === 'down' ? Math.max(0, 1 - b.st) : 1);
+    // the slit goes dark so the two red eyes inside it read
+    m.eye.color.setScalar(lerp(lum, 0.06, T));
+    m.glow.opacity = T * 0.45 * flick;
+    if (eyes.current) {
+      eyes.current.visible = T > 0.01;
+      eyes.current.scale.setScalar(0.4 + T * 0.6 * flick);
+    }
+    if (eyeLight.current) eyeLight.current.intensity = T * 0.5 * flick;
 
     // ── second form: the emptiness breaks out ──
     const form = b.form === 2 && b.state !== 'down' ? (b.state === 'roar' ? clamp01(b.st / 2.4) : 1) : b.state === 'down' ? Math.max(0, 1 - b.st) * st.form : 0;
@@ -574,6 +590,20 @@ export default function Armor({
               <mesh ref={slit} position={[0, 0.04, 0.29]} material={m.eye}>
                 <boxGeometry args={[0.34, 0.045, 0.04]} />
               </mesh>
+              {/* two red eyes that light up when a blow is coming */}
+              <group ref={eyes} visible={false}>
+                {[-1, 1].map((sx) => (
+                  <group key={sx} position={[sx * 0.075, 0.04, 0.315]}>
+                    <mesh material={m.red}>
+                      <sphereGeometry args={[0.036, 10, 8]} />
+                    </mesh>
+                    <mesh position={[0, 0, 0.012]} material={m.glow}>
+                      <circleGeometry args={[0.06, 16]} />
+                    </mesh>
+                  </group>
+                ))}
+              </group>
+              <pointLight ref={eyeLight} position={[0, 0.04, 0.5]} color="#ff2a1a" intensity={0} distance={3.2} decay={2} />
               {/* horns: out from the temples, then up */}
               {[-1, 1].map((sx) => (
                 <group key={sx} position={[sx * 0.27, 0.16, 0]}>

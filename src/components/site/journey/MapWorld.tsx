@@ -299,7 +299,7 @@ function Nature({ m }: { m: M }) {
   const trunks = useRef<THREE.InstancedMesh>(null);
   const rocks = useRef<THREE.InstancedMesh>(null);
   const hills = useRef<THREE.InstancedMesh>(null);
-  const N = 300;
+  const N = 200;
   const R = 60;
   const H = 34;
   useEffect(() => {
@@ -315,11 +315,11 @@ function Nature({ m }: { m: M }) {
       if (n % 2 === 0) {
         const p = ROAD[Math.floor(r() * ROAD.length)];
         const a = r() * Math.PI * 2;
-        const d = 4.5 + r() * 9;
+        const d = 5.5 + r() * 10;
         x = p.x + Math.cos(a) * d;
         z = p.z + Math.sin(a) * d;
       }
-      if (!free(x, z, 3.4, 7.5)) continue;
+      if (!free(x, z, 3.4, 9)) continue;
       const s = 0.8 + r() * 0.9;
       o.position.set(x, 1.1 * s + 0.6 * s, z);
       o.rotation.set(0, r() * 6, 0);

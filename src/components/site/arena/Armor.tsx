@@ -122,6 +122,23 @@ const RECOVER: Partial<Record<Pose, number>> = { bury: 0.86, whirl: 0.82 };
 const LEAP_CROUCH = P_({ ax: -1.3, wr: 2.2, crouch: 0.5, lean: 0.3, lax: -1.4 });
 const ROAR = P_({ ax: -2.6, wr: 1.0, lean: -0.42, crouch: -0.05, lax: -2.3, twist: 0 });
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+// the stuck axe: three heaves, each harder, before it tears free
+const TUGS: Array<[number, number]> = [
+  [0.2, 0.55],
+  [0.48, 0.8],
+  [0.76, 1],
+];
+function heaveAt(u: number) {
+  let h = 0;
+  for (const [c, k] of TUGS) {
+    // a quick heave back, a slow slump forward
+    const x = u < c ? (u - (c - 0.06)) / 0.06 : 1 - (u - c) / 0.14;
+    h = Math.max(h, k * Math.max(0, Math.min(1, x)));
+  }
+  return h;
+}
+const DOWN = new THREE.Vector3(0, -1, 0);
+const pinTmp = { O: new THREE.Vector3(), D: new THREE.Vector3(), S: new THREE.Vector3(), P: new THREE.Vector3(), v: new THREE.Vector3(), q: new THREE.Quaternion() };
 const easeIn2 = (t: number) => t * t;
 const smooth = (t: number) => t * t * (3 - 2 * t);
 
@@ -172,6 +189,9 @@ export default function Armor({
   const s = useRef<P & { form: number; face: number; shield: number }>({ ...G, ax: -0.15, wr: 1.57, lax: 0.15, form: 0, face: 0, shield: 0 });
   // which part of which blow we're in, since when, and the pose it started from
   const an = useRef({ key: '', t: 0, from: { ...G } as P, trail: false });
+  // the axe held in the floor: its world placement while stuck, the last heave seen
+  const pin = useRef({ on: false, mat: new THREE.Matrix4(), tug: -1 });
+  const debris = useRef<THREE.Group>(null);
 
   const m = useMemo(
     () => ({
@@ -278,12 +298,22 @@ export default function Armor({
         const from = RECOVER[b.blow] ?? 0.45;
         const r = smooth(clamp01((b.st - b.dur * from) / (b.dur * (1 - from))));
         if (b.blow === 'bury') {
-          // it wrestles the shaft: heaves back, slips, heaves again
-          const tug = Math.max(0, Math.sin(time * 6.5));
-          F.lean = F.lean - tug * 0.28;
-          F.ax = F.ax - tug * 0.12;
-          F.crouch = F.crouch + tug * 0.06;
-          F.twist = Math.sin(time * 3.1) * 0.12;
+          // it wrestles the haft: braces, heaves back with its whole weight,
+          // slumps over it, and heaves again, harder each time
+          const u = clamp01(b.st / (b.dur * from));
+          const hv = heaveAt(u);
+          F.lean = F.lean + 0.06 - hv * 0.62;
+          F.crouch = F.crouch + 0.04 + hv * 0.16;
+          F.stepZ = F.stepZ - hv * 0.4;
+          F.twist = hv * 0.14 + Math.sin(time * 34) * 0.012 * hv;
+          F.lax = F.lax - hv * 0.4;
+          // each heave jolts the floor
+          const n = TUGS.findIndex(([c]) => Math.abs(u - c) < 0.02);
+          if (n >= 0 && n !== pin.current.tug) {
+            pin.current.tug = n;
+            g.shake = Math.max(g.shake, 0.1 + n * 0.06);
+            g.spark = { at: 2, t: g.t + 0.001 * (n + 1), big: false };
+          }
         } else if (b.blow === 'whirl') {
           // spent: heaving for breath
           F.crouch = F.crouch + Math.sin(time * 5) * 0.04;
@@ -292,8 +322,15 @@ export default function Armor({
         target = mixP(F, G, r);
         // a wrench as it tears the blade out of the floor
         if (r > 0 && r < 0.35 && (b.blow === 'slam' || b.blow === 'leap')) target.lean -= Math.sin((r / 0.35) * Math.PI) * 0.12;
+        // torn free: it staggers back with the blade
+        if (r > 0 && r < 0.45 && b.blow === 'bury') {
+          const k = Math.sin((r / 0.45) * Math.PI);
+          target.lean -= k * 0.5;
+          target.stepZ -= k * 0.5;
+          target.ax -= k * 0.9;
+        }
       }
-      rate = t < B.tF ? 60 : 9;
+      rate = t < B.tF ? 60 : b.blow === 'bury' ? 20 : 9;
     } else {
       // idle: it circles, weight rolling from foot to foot
       target = { ...G, turn: Math.sin(time * 0.9) * 0.06, crouch: G.crouch + Math.abs(Math.sin(time * 1.8)) * 0.03 };
@@ -342,6 +379,66 @@ export default function Armor({
       le.rotation.set(lerp(-0.9, -1.4 - st.shield * 0.15, up), 0, 0);
     }
 
+    // ── the buried axe stays where it went in; the arm holds on to it ──
+    const hf = haft.current;
+    const pinned = live && b.blow === 'bury' && b.state === 'open' && A.t >= B.tF && b.st < b.dur * (RECOVER.bury ?? 0.86);
+    if (hf) {
+      const P_ = pin.current;
+      if (pinned) {
+        root.current.updateMatrixWorld(true);
+        if (!P_.on) {
+          P_.on = true;
+          P_.tug = -1;
+          P_.mat.copy(hf.matrixWorld);
+          if (bladeB.current && debris.current) {
+            bladeB.current.getWorldPosition(halberdTip);
+            debris.current.position.set(halberdTip.x, 0, halberdTip.z);
+          }
+        }
+        const { O, D: dir, S, P, v, q } = pinTmp;
+        O.setFromMatrixPosition(P_.mat);
+        dir.set(0, 1, 0).transformDirection(P_.mat);
+        arm.current.getWorldPosition(S);
+        // the hand slides along the haft to wherever the arm can reach it
+        const L = 1.16;
+        v.subVectors(S, O);
+        const along = dir.dot(v);
+        const h = L * L - (v.lengthSq() - along * along);
+        let sAt = along;
+        if (h > 0) {
+          const r1 = along - Math.sqrt(h);
+          const r2 = along + Math.sqrt(h);
+          sAt = Math.abs(r1) < Math.abs(r2) ? r1 : r2;
+        }
+        sAt = Math.min(1.2, Math.max(-0.5, sAt));
+        P.copy(O).addScaledVector(dir, sAt);
+        torso.current.getWorldQuaternion(q);
+        v.subVectors(P, S).normalize().applyQuaternion(q.invert());
+        arm.current.quaternion.setFromUnitVectors(DOWN, v);
+        arm.current.updateMatrixWorld(true);
+        hf.matrixAutoUpdate = false;
+        hf.matrix.copy(arm.current.matrixWorld).invert().multiply(P_.mat);
+        hf.matrixWorldNeedsUpdate = true;
+        hf.updateMatrixWorld(true);
+      } else if (P_.on) {
+        // torn out: earth and sparks where the blade was
+        P_.on = false;
+        hf.matrixAutoUpdate = true;
+        g.spark = { at: 2, t: g.t + 0.0005, big: true };
+        g.quake = 1;
+        g.shake = Math.max(g.shake, 0.4);
+        g.kick = Math.max(g.kick, 0.5);
+      }
+    }
+    if (debris.current) {
+      debris.current.visible = pin.current.on;
+      if (pin.current.on) {
+        // the cracked earth heaves with every pull
+        const u = clamp01(b.st / (b.dur * (RECOVER.bury ?? 0.86)));
+        debris.current.scale.setScalar(1 + heaveAt(u) * 0.25);
+      }
+    }
+
     // ── live points for the rest of the scene ──
     bossPos.copy(root.current.position).setY(0);
     if (impaled.current) {
@@ -350,7 +447,7 @@ export default function Armor({
       impaled.current.getWorldQuaternion(hilt.quat);
       hilt.axis.set(0, 1, 0).applyQuaternion(hilt.quat);
     }
-    if (bladeB.current && A.trail) {
+    if (bladeB.current && (A.trail || pin.current.on)) {
       bladeB.current.updateWorldMatrix(true, false);
       bladeB.current.getWorldPosition(halberdTip);
     }
@@ -614,6 +711,28 @@ export default function Armor({
             </group>
           </group>
         </group>
+      </group>
+      {/* cracked, heaved-up earth round the stuck blade */}
+      <group ref={debris} visible={false}>
+        <mesh position={[0, 0.015, 0]} rotation={[-Math.PI / 2, 0, 0]} material={m.dark}>
+          <circleGeometry args={[0.75, 7]} />
+        </mesh>
+        {[0, 1, 2, 3, 4, 5, 6].map((i) => {
+          const a = (i / 7) * Math.PI * 2 + 0.3;
+          const d = 0.45 + (i % 3) * 0.18;
+          return (
+            <mesh
+              key={i}
+              position={[Math.cos(a) * d, 0.07, Math.sin(a) * d]}
+              rotation={[i, i * 1.7, i * 0.6]}
+              scale={[1, 0.6, 1]}
+              castShadow
+              material={m.plate}
+            >
+              <icosahedronGeometry args={[0.1 + (i % 2) * 0.06, 0]} />
+            </mesh>
+          );
+        })}
       </group>
       <Trail
         base={bladeA}

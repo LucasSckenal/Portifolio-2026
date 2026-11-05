@@ -229,7 +229,11 @@ function Sparks({ game, phase }: { game: React.RefObject<Game>; phase: React.Ref
       const dx = Math.sin(g.p.ang);
       const dz = Math.cos(g.p.ang);
       const pulling = phase.current === 'awaken';
-      const o = pulling ? v(hilt.pos.x, hilt.pos.y, hilt.pos.z) : g.spark.at === 0 ? v(dx * 0.7, 2.1, dz * 0.7) : v(dx * DIST, 1.1, dz * DIST);
+      const o = pulling
+        ? v(hilt.pos.x, hilt.pos.y, hilt.pos.z)
+        : g.spark.at === 2
+          ? v(halberdTip.x, Math.max(0.15, halberdTip.y), halberdTip.z)
+          : g.spark.at === 0 ? v(dx * 0.7, 2.1, dz * 0.7) : v(dx * DIST, 1.1, dz * DIST);
       const power = g.spark.big ? 7 : 4.5;
       for (let i = 0; i < N; i++) {
         pos.setXYZ(i, o.x, o.y, o.z);

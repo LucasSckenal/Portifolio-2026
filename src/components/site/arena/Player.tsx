@@ -175,21 +175,45 @@ function at(keys: Array<[number, Pose]>, t: number): Pose {
   }
   return keys[keys.length - 1][1];
 }
-function walk(t: number, amt: number): Pose {
-  const s = Math.sin(t * 9) * 0.55 * amt;
+// standing at ease on the road: legs straight, arms hanging
+const EASE: Pose = {
+  hipsY: 0.91,
+  thL: [-0.04, 0, 0.05],
+  knL: [0.08, 0, 0],
+  thR: [0.04, 0, -0.05],
+  knR: [0.08, 0, 0],
+  spine: [0.04, 0, 0],
+  chest: [0, 0, 0],
+  head: [0, 0, 0],
+  shR: [0.04, 0, -0.1],
+  elR: [-0.18, 0, 0],
+  shL: [0.04, 0, 0.1],
+  elL: [-0.18, 0, 0],
+};
+
+// a walk cycle: each leg swings forward with the knee bent and plants
+// straight; arms swing against the legs; the chest counter-turns and the
+// hips dip at each footfall. `amt` scales the stride (0 still, 1 full).
+function walk(t: number, amt: number, armed = false): Pose {
+  const ph = t * 10;
+  const s = Math.sin(ph);
+  const c = Math.cos(ph);
+  const A = 0.5 * amt;
   return {
-    ...IDLE,
-    hipsY: 0.92 + Math.abs(Math.cos(t * 9)) * 0.03 * amt,
-    thL: [-0.1 - s, 0, 0.04],
-    knL: [0.3 + Math.max(0, s) * 0.9, 0, 0],
-    thR: [-0.1 + s, 0, -0.04],
-    knR: [0.3 + Math.max(0, -s) * 0.9, 0, 0],
-    chest: [0.05, 0, 0],
-    head: [0, 0, 0],
-    shR: [-0.15 + s * 0.4, 0, -0.15],
-    elR: [-0.4, 0, 0],
-    shL: [-0.15 - s * 0.4, 0, 0.15],
-    elL: [-0.4, 0, 0],
+    hipsY: 0.9 + Math.cos(ph * 2) * 0.022 * amt,
+    // left leg forward when sin > 0; the knee bends on the way through
+    thL: [-A * s, 0, 0.05],
+    knL: [0.1 + 0.95 * amt * Math.max(0, c), 0, 0],
+    thR: [A * s, 0, -0.05],
+    knR: [0.1 + 0.95 * amt * Math.max(0, -c), 0, 0],
+    spine: [0.07 * amt, 0, 0],
+    chest: [0, 0.12 * s * amt, 0],
+    head: [0, -0.1 * s * amt, 0],
+    // arms opposite the legs
+    shL: [0.38 * s * amt, 0, 0.1],
+    elL: [-0.2 - 0.2 * amt * Math.max(0, -s), 0, 0],
+    shR: armed ? [-0.15 - 0.2 * s * amt, 0, -0.12] : [-0.38 * s * amt, 0, -0.1],
+    elR: armed ? [-0.55, 0, 0] : [-0.2 - 0.2 * amt * Math.max(0, s), 0, 0],
   };
 }
 
@@ -281,11 +305,10 @@ export default function Player({
     if (dv) {
       // on the road: a walk that scales with speed, the guard when still
       const br = Math.sin(t * 2.2);
-      const rest: Pose = dv.gear.sword
-        ? { ...IDLE, hipsY: 0.9 + br * 0.012 }
-        : { ...IDLE, hipsY: 0.9 + br * 0.012, shR: [-0.1, 0, -0.1], elR: [-0.25, 0, 0], chest: [0, 0, 0], head: [0, 0, 0] };
-      target = dv.speed > 0.05 ? mix(rest, walk(t, 1), Math.min(1, dv.speed)) : rest;
-      rate = 12;
+      const rest: Pose = { ...EASE, hipsY: 0.91 + br * 0.006, spine: [0.04 + br * 0.01, 0, 0] };
+      if (dv.gear.sword) rest.elR = [-0.5, 0, 0];
+      target = dv.speed > 0.05 ? walk(t, Math.min(1, dv.speed), dv.gear.sword) : rest;
+      rate = dv.speed > 0.05 ? 30 : 10;
     } else if (ph === 'ready') {
       target = { ...IDLE, shR: [-0.1, 0, -0.1], elR: [-0.2, 0, 0], chest: [0, 0, 0], head: [0, 0, 0] }; // unarmed, waiting
     } else if (ph === 'awaken') {

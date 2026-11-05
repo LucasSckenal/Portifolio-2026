@@ -141,8 +141,8 @@ export function newGame() {
     freeze: 0,
     /** camera punch (0–1), decays */
     kick: 0,
-    /** a burst of sparks: where (0 armor, 1 you) and when */
-    spark: null as null | { at: 0 | 1; t: number; big: boolean },
+    /** a burst of sparks: where (0 armor, 1 you, 2 the halberd's blade) and when */
+    spark: null as null | { at: 0 | 1 | 2; t: number; big: boolean },
     /** a heavy blow hit the floor (dust ring), 1 → 0 */
     quake: 0,
     /** last floating word and when */

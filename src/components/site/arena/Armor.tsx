@@ -123,8 +123,8 @@ const LEAP_CROUCH = P_({ ax: -1.3, wr: 2.2, crouch: 0.5, lean: 0.3, lax: -1.4 })
 const ROAR = P_({ ax: -2.6, wr: 1.0, lean: -0.42, crouch: -0.05, lax: -2.3, twist: 0 });
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 // the off hand: upper arm and forearm, reaching for the haft
-const UP_L = 0.6;
-const LOW_L = 0.6;
+const UP_L = 0.78;
+const LOW_L = 0.78;
 const DOWN = new THREE.Vector3(0, -1, 0);
 const ik = {
   S: new THREE.Vector3(),
@@ -501,14 +501,14 @@ export default function Armor({
             </mesh>
             {/* the off arm: shoulder, elbow, gauntlet */}
             <group ref={armL} position={[-0.8, 1.0, 0.1]}>
-              <mesh position={[0, -0.3, 0]} castShadow material={m.dark}>
-                <boxGeometry args={[0.24, 0.62, 0.26]} />
+              <mesh position={[0, -0.39, 0]} castShadow material={m.dark}>
+                <boxGeometry args={[0.24, 0.8, 0.26]} />
               </mesh>
-              <group ref={elL} position={[0, -0.6, 0]}>
-                <mesh position={[0, -0.26, 0]} castShadow material={m.dark}>
-                  <boxGeometry args={[0.21, 0.54, 0.23]} />
+              <group ref={elL} position={[0, -0.78, 0]}>
+                <mesh position={[0, -0.34, 0]} castShadow material={m.dark}>
+                  <boxGeometry args={[0.21, 0.7, 0.23]} />
                 </mesh>
-                <mesh position={[0, -0.58, 0]} castShadow material={m.plate}>
+                <mesh position={[0, -0.75, 0]} castShadow material={m.plate}>
                   <boxGeometry args={[0.2, 0.14, 0.24]} />
                 </mesh>
               </group>
@@ -530,10 +530,10 @@ export default function Armor({
 
             {/* the halberd, from the shoulder */}
             <group ref={arm} position={[0.8, 1.0, 0.05]} rotation-order="YXZ">
-              <mesh position={[0, -0.42, 0]} castShadow material={m.dark}>
-                <boxGeometry args={[0.24, 0.9, 0.26]} />
+              <mesh position={[0, -0.58, 0]} castShadow material={m.dark}>
+                <boxGeometry args={[0.24, 1.2, 0.26]} />
               </mesh>
-              <group ref={haft} position={[0, -0.88, 0.08]} rotation={[Math.PI / 2, 0, 0]}>
+              <group ref={haft} position={[0, -1.16, 0.08]} rotation={[Math.PI / 2, 0, 0]}>
                 <mesh position={[0, 0.9, 0]} castShadow material={m.dark}>
                   <cylinderGeometry args={[0.05, 0.05, 3.6, 5]} />
                 </mesh>

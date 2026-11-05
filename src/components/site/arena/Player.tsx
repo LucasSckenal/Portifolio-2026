@@ -138,7 +138,9 @@ const a0 = (c: React.RefObject<{ awaken: number }>) => c.current.awaken;
 const UPPER = 0.29; // shoulder → elbow
 const LOWER = 0.3; // elbow → hand (where the sword sits)
 const DOWN = new THREE.Vector3(0, -1, 0);
-const SWORD_REST = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, 0));
+// held forward and up, not hanging: the blade rises out of the fist
+const SWORD_TILT = 2.5;
+const SWORD_REST = new THREE.Quaternion().setFromEuler(new THREE.Euler(SWORD_TILT, 0, 0));
 const SWORD_AT = new THREE.Vector3(0, -0.3, 0);
 const tmp = {
   S: new THREE.Vector3(),
@@ -460,7 +462,7 @@ export default function Player({
                       <mesh position={[0, -0.13, 0]} castShadow material={m.dark}>
                         <cylinderGeometry args={[0.048, 0.04, 0.27, 5]} />
                       </mesh>
-                      <group ref={sword} position={[0, -0.3, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                      <group ref={sword} position={[0, -0.3, 0]} rotation={[SWORD_TILT, 0, 0]}>
                         <mesh position={[0, 0.0, 0]} castShadow material={m.dark}>
                           <boxGeometry args={[0.24, 0.04, 0.05]} />
                         </mesh>

@@ -122,6 +122,25 @@ const RECOVER: Partial<Record<Pose, number>> = { bury: 0.86, whirl: 0.82 };
 const LEAP_CROUCH = P_({ ax: -1.3, wr: 2.2, crouch: 0.5, lean: 0.3, lax: -1.4 });
 const ROAR = P_({ ax: -2.6, wr: 1.0, lean: -0.42, crouch: -0.05, lax: -2.3, twist: 0 });
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+// the off hand: upper arm and forearm, reaching for the haft
+const UP_L = 0.6;
+const LOW_L = 0.6;
+const DOWN = new THREE.Vector3(0, -1, 0);
+const ik = {
+  S: new THREE.Vector3(),
+  H: new THREE.Vector3(),
+  D: new THREE.Vector3(),
+  T: new THREE.Vector3(),
+  E: new THREE.Vector3(),
+  d: new THREE.Vector3(),
+  v: new THREE.Vector3(),
+  pole: new THREE.Vector3(),
+  q: new THREE.Quaternion(),
+  qp: new THREE.Quaternion(),
+  qs: new THREE.Quaternion(),
+  qi: new THREE.Quaternion(),
+  e: new THREE.Euler(),
+};
 const easeIn2 = (t: number) => t * t;
 const smooth = (t: number) => t * t * (3 - 2 * t);
 
@@ -142,6 +161,7 @@ export default function Armor({
   const arm = useRef<THREE.Group>(null);
   const haft = useRef<THREE.Group>(null);
   const armL = useRef<THREE.Group>(null);
+  const elL = useRef<THREE.Group>(null);
   const thighL = useRef<THREE.Group>(null);
   const thighR = useRef<THREE.Group>(null);
   const shinL = useRef<THREE.Group>(null);
@@ -151,7 +171,7 @@ export default function Armor({
   const mass = useRef<THREE.Group>(null);
   const bladeA = useRef<THREE.Object3D>(null);
   const bladeB = useRef<THREE.Object3D>(null);
-  const s = useRef<P & { form: number; face: number }>({ ...G, ax: -0.15, wr: 1.57, lax: 0.15, form: 0, face: 0 });
+  const s = useRef<P & { form: number; face: number; two: number }>({ ...G, ax: -0.15, wr: 1.57, lax: 0.15, form: 0, face: 0, two: 0 });
   // which part of which blow we're in, since when, and the pose it started from
   const an = useRef({ key: '', t: 0, from: { ...G } as P, trail: false });
 
@@ -309,10 +329,56 @@ export default function Armor({
       thighR.current.rotation.x = lerp(-c * 0.9 - lunge * 0.6, 0.4, kneel);
       shinR.current.rotation.x = lerp(c * 1.4 + lunge * 0.3, 1.55, kneel);
     }
-    arm.current.rotation.set(st.ax, st.ay, st.az);
+    // both hands on the haft whenever it fights; one hangs while it kneels or roars
+    st.two = damp(st.two, live && b.state !== 'roar' ? 1 : 0, 8, dt);
+    // the weapon hand rolls in toward the middle of the body to meet the other
+    arm.current.rotation.set(st.ax, st.ay, st.az - 0.65 * st.two);
     arm.current.position.z = 0.05 + st.reach;
     if (haft.current) haft.current.rotation.x = st.wr;
-    if (armL.current) armL.current.rotation.set(st.lax, 0, -0.1 + Math.max(0, st.lax) * 0.4);
+    const la = armL.current;
+    const le = elL.current;
+    if (la && le) {
+      la.rotation.set(st.lax, 0, -0.1 + Math.max(0, st.lax) * 0.4);
+      le.rotation.set(-0.25, 0, 0);
+      le.scale.y = 1;
+      if (st.two > 0.01 && haft.current && la.parent) {
+        const { S, H, D, T, E, d, v, pole, q, qp, qs, qi } = ik;
+        root.current.updateMatrixWorld(true);
+        la.getWorldPosition(S);
+        haft.current.getWorldPosition(H);
+        haft.current.getWorldQuaternion(q);
+        D.set(0, 1, 0).applyQuaternion(q);
+        // grip the shaft where it passes nearest the shoulder, a fist apart from the other hand
+        let sp = Math.min(1.2, Math.max(-0.75, D.dot(v.subVectors(S, H))));
+        if (Math.abs(sp) < 0.32) sp = sp < 0 ? -0.32 : 0.32;
+        T.copy(H).addScaledVector(D, sp);
+        d.subVectors(T, S);
+        // the gauntlet always closes on the haft: past full reach the forearm gives a little
+        const dl = d.length();
+        const low = Math.max(LOW_L, Math.min(dl - UP_L + 0.002, LOW_L * 1.6));
+        // too far even so (a wide windup, a full lunge): the off hand lets go
+        const hold = st.two * clamp01((UP_L + LOW_L * 1.6 + 0.2 - dl) / 0.2);
+        le.scale.y = 1 + (low / LOW_L - 1) * hold;
+        const len = Math.min(Math.max(dl, 0.05), UP_L + low - 0.002);
+        d.normalize();
+        // elbow out to the side and down
+        root.current.getWorldQuaternion(q);
+        pole.set(-1, -0.8, 0).applyQuaternion(q);
+        pole.addScaledVector(d, -pole.dot(d)).normalize();
+        const cosA = (UP_L * UP_L + len * len - low * low) / (2 * UP_L * len);
+        const ang = Math.acos(Math.min(1, Math.max(-1, cosA)));
+        E.copy(S).addScaledVector(d, Math.cos(ang) * UP_L).addScaledVector(pole, Math.sin(ang) * UP_L);
+        la.parent.getWorldQuaternion(qp);
+        qi.copy(qp).invert();
+        q.setFromUnitVectors(DOWN, v.subVectors(E, S).normalize().applyQuaternion(qi));
+        la.quaternion.slerp(q, hold);
+        qs.copy(qp).multiply(la.quaternion);
+        E.set(0, -UP_L, 0).applyQuaternion(qs).add(S);
+        qi.copy(qs).invert();
+        q.setFromUnitVectors(DOWN, v.subVectors(T, E).normalize().applyQuaternion(qi));
+        le.quaternion.slerp(q, hold);
+      }
+    }
 
     // ── live points for the rest of the scene ──
     bossPos.copy(root.current.position).setY(0);
@@ -433,11 +499,19 @@ export default function Armor({
             <mesh position={[0, 0.25, -0.62]} rotation={[0.16, 0, 0]} castShadow material={m.cloth}>
               <planeGeometry args={[1.5, 2.3, 2, 4]} />
             </mesh>
-            {/* the other arm, hanging */}
-            <group ref={armL} position={[-0.9, 1.0, 0.1]}>
-              <mesh position={[0, -0.45, 0]} castShadow material={m.dark}>
-                <boxGeometry args={[0.24, 0.95, 0.26]} />
+            {/* the off arm: shoulder, elbow, gauntlet */}
+            <group ref={armL} position={[-0.8, 1.0, 0.1]}>
+              <mesh position={[0, -0.3, 0]} castShadow material={m.dark}>
+                <boxGeometry args={[0.24, 0.62, 0.26]} />
               </mesh>
+              <group ref={elL} position={[0, -0.6, 0]}>
+                <mesh position={[0, -0.26, 0]} castShadow material={m.dark}>
+                  <boxGeometry args={[0.21, 0.54, 0.23]} />
+                </mesh>
+                <mesh position={[0, -0.58, 0]} castShadow material={m.plate}>
+                  <boxGeometry args={[0.2, 0.14, 0.24]} />
+                </mesh>
+              </group>
             </group>
 
             {/* the sword through its chest, hilt toward whoever comes */}
@@ -455,7 +529,7 @@ export default function Armor({
             </group>
 
             {/* the halberd, from the shoulder */}
-            <group ref={arm} position={[0.9, 1.0, 0.05]} rotation-order="YXZ">
+            <group ref={arm} position={[0.8, 1.0, 0.05]} rotation-order="YXZ">
               <mesh position={[0, -0.42, 0]} castShadow material={m.dark}>
                 <boxGeometry args={[0.24, 0.9, 0.26]} />
               </mesh>

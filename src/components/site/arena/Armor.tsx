@@ -31,7 +31,7 @@ type P = {
 };
 const KEYS = ['ax', 'ay', 'az', 'wr', 'reach', 'stepZ', 'lean', 'twist', 'lift', 'crouch', 'lash', 'turn', 'lax'] as const;
 // guard: halberd low and forward in both hands, weight sunk
-const G: P = { ax: -0.55, ay: 0.2, az: 0, wr: 1.6, reach: 0, stepZ: 0, lean: 0.1, twist: -0.18, lift: 0, crouch: 0.08, lash: 0, turn: 0, lax: -0.75 };
+const G: P = { ax: -0.4, ay: 0.15, az: 0, wr: 2.6, reach: 0, stepZ: 0, lean: 0.1, twist: -0.18, lift: 0, crouch: 0.08, lash: 0, turn: 0, lax: -0.75 };
 const P_ = (o: Partial<P>): P => ({ ...G, ...o });
 const mixP = (a: P, b: P, k: number): P => {
   const o = { ...a };
@@ -47,8 +47,8 @@ const BLOWS = {
   slam: {
     // both hands high, leaning back on its heels; then it falls with the whole body
     W: P_({ ax: -2.95, wr: 0.75, lean: -0.3, twist: 0.12, crouch: -0.08, stepZ: -0.2, lax: -2.75 }),
-    S: P_({ ax: -1.1, wr: 3.45, lean: 0.45, twist: -0.05, crouch: 0.34, stepZ: 0.8, lax: -1.25 }),
-    F: P_({ ax: -0.98, wr: 3.42, lean: 0.52, twist: -0.08, crouch: 0.4, stepZ: 0.85, lax: -1.15 }),
+    S: P_({ ax: -1.1, wr: 3.75, lean: 0.45, twist: -0.05, crouch: 0.34, stepZ: 0.8, lax: -1.25 }),
+    F: P_({ ax: -0.98, wr: 3.7, lean: 0.52, twist: -0.08, crouch: 0.4, stepZ: 0.85, lax: -1.15 }),
     tS: 0.07,
     tF: 0.3,
   },
@@ -70,7 +70,7 @@ const BLOWS = {
   },
   thrust: {
     // drawn back low, like a spear; then the lunge
-    W: P_({ ax: -0.75, wr: 2.3, reach: -0.5, twist: 0.55, turn: 0.25, crouch: 0.32, lean: -0.05, stepZ: -0.35, lax: -1.2 }),
+    W: P_({ ax: -1.0, wr: 2.55, reach: -0.15, twist: 0.55, turn: 0.25, crouch: 0.32, lean: -0.05, stepZ: -0.35, lax: -1.2 }),
     S: P_({ ax: -1.55, wr: 3.1, reach: 0.75, twist: -0.25, turn: -0.05, crouch: 0.3, lean: 0.35, stepZ: 1.5, lax: -1.4 }),
     F: P_({ ax: -1.5, wr: 3.1, reach: 0.65, twist: -0.3, turn: -0.08, crouch: 0.28, lean: 0.38, stepZ: 1.55, lax: -1.3 }),
     tS: 0.06,
@@ -87,8 +87,8 @@ const BLOWS = {
   leap: {
     // up into the air, halberd overhead, and down on you
     W: P_({ ax: -2.95, wr: 0.75, lean: -0.25, lift: 3.2, stepZ: 1.1, crouch: 0, lax: -2.7 }),
-    S: P_({ ax: -1.1, wr: 3.45, lean: 0.5, lift: 0, stepZ: 1.4, crouch: 0.48, lax: -1.2 }),
-    F: P_({ ax: -1.0, wr: 3.42, lean: 0.55, lift: 0, stepZ: 1.4, crouch: 0.5, lax: -1.1 }),
+    S: P_({ ax: -1.1, wr: 3.75, lean: 0.5, lift: 0, stepZ: 1.4, crouch: 0.48, lax: -1.2 }),
+    F: P_({ ax: -1.0, wr: 3.7, lean: 0.55, lift: 0, stepZ: 1.4, crouch: 0.5, lax: -1.1 }),
     tS: 0.06,
     tF: 0.3,
   },
@@ -104,8 +104,8 @@ const BLOWS = {
 // bury: the slam with everything behind it; the blade goes deep and sticks
 BLOWS.bury = {
   W: P_({ ax: -3.05, wr: 0.6, lean: -0.4, twist: 0.15, crouch: -0.12, stepZ: -0.3, lax: -2.9 }),
-  S: P_({ ax: -0.85, wr: 3.6, lean: 0.62, twist: -0.05, crouch: 0.48, stepZ: 0.9, lax: -0.95 }),
-  F: P_({ ax: -0.8, wr: 3.6, lean: 0.66, twist: -0.08, crouch: 0.5, stepZ: 0.9, lax: -0.9 }),
+  S: P_({ ax: -0.85, wr: 3.9, lean: 0.62, twist: -0.05, crouch: 0.48, stepZ: 0.9, lax: -0.95 }),
+  F: P_({ ax: -0.8, wr: 3.85, lean: 0.66, twist: -0.08, crouch: 0.5, stepZ: 0.9, lax: -0.9 }),
   tS: 0.06,
   tF: 0.25,
 };
@@ -122,27 +122,25 @@ const RECOVER: Partial<Record<Pose, number>> = { bury: 0.86, whirl: 0.82 };
 const LEAP_CROUCH = P_({ ax: -1.3, wr: 2.2, crouch: 0.5, lean: 0.3, lax: -1.4 });
 const ROAR = P_({ ax: -2.6, wr: 1.0, lean: -0.42, crouch: -0.05, lax: -2.3, twist: 0 });
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-// the off hand: upper arm and forearm, reaching for the haft
-const UP_L = 0.78;
-const LOW_L = 0.78;
-const DOWN = new THREE.Vector3(0, -1, 0);
-const ik = {
-  S: new THREE.Vector3(),
-  H: new THREE.Vector3(),
-  D: new THREE.Vector3(),
-  T: new THREE.Vector3(),
-  E: new THREE.Vector3(),
-  d: new THREE.Vector3(),
-  v: new THREE.Vector3(),
-  pole: new THREE.Vector3(),
-  q: new THREE.Quaternion(),
-  qp: new THREE.Quaternion(),
-  qs: new THREE.Quaternion(),
-  qi: new THREE.Quaternion(),
-  e: new THREE.Euler(),
-};
 const easeIn2 = (t: number) => t * t;
 const smooth = (t: number) => t * t * (3 - 2 * t);
+
+// the axe blade: a crescent edge, flat and thin
+const axeHead = (() => {
+  const sh = new THREE.Shape();
+  sh.moveTo(0.04, 0.26);
+  sh.lineTo(0.38, 0.4);
+  sh.lineTo(0.66, 0.5);
+  sh.lineTo(0.55, 0.15);
+  sh.lineTo(0.53, -0.15);
+  sh.lineTo(0.66, -0.52);
+  sh.lineTo(0.36, -0.36);
+  sh.lineTo(0.04, -0.2);
+  sh.closePath();
+  const g = new THREE.ExtrudeGeometry(sh, { depth: 0.04, bevelEnabled: false });
+  g.translate(0, 0, -0.02);
+  return g;
+})();
 
 export default function Armor({
   game,
@@ -171,7 +169,7 @@ export default function Armor({
   const mass = useRef<THREE.Group>(null);
   const bladeA = useRef<THREE.Object3D>(null);
   const bladeB = useRef<THREE.Object3D>(null);
-  const s = useRef<P & { form: number; face: number; two: number }>({ ...G, ax: -0.15, wr: 1.57, lax: 0.15, form: 0, face: 0, two: 0 });
+  const s = useRef<P & { form: number; face: number; shield: number }>({ ...G, ax: -0.15, wr: 1.57, lax: 0.15, form: 0, face: 0, shield: 0 });
   // which part of which blow we're in, since when, and the pose it started from
   const an = useRef({ key: '', t: 0, from: { ...G } as P, trail: false });
 
@@ -184,6 +182,7 @@ export default function Armor({
       void: new THREE.MeshStandardMaterial({ color: '#050506', flatShading: true, roughness: 1, metalness: 0 }),
       eye: new THREE.MeshBasicMaterial({ color: '#ffffff' }),
       blade: flat('#d9dadc', { metalness: 0.7, roughness: 0.25 }),
+      plume: new THREE.MeshStandardMaterial({ color: '#e4e4e0', flatShading: true, roughness: 0.95, side: THREE.DoubleSide }),
       sword: new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#ffffff', emissiveIntensity: 0.35, flatShading: true, metalness: 0.6, roughness: 0.25 }),
     }),
     []
@@ -329,55 +328,18 @@ export default function Armor({
       thighR.current.rotation.x = lerp(-c * 0.9 - lunge * 0.6, 0.4, kneel);
       shinR.current.rotation.x = lerp(c * 1.4 + lunge * 0.3, 1.55, kneel);
     }
-    // both hands on the haft whenever it fights; one hangs while it kneels or roars
-    st.two = damp(st.two, live && b.state !== 'roar' ? 1 : 0, 8, dt);
-    // the weapon hand rolls in toward the middle of the body to meet the other
-    arm.current.rotation.set(st.ax, st.ay, st.az - 0.65 * st.two);
-    arm.current.position.z = 0.05 + st.reach;
+    arm.current.rotation.set(st.ax, st.ay, st.az);
+    arm.current.position.z = 0.1 + st.reach;
     if (haft.current) haft.current.rotation.x = st.wr;
+    // the shield arm: forearm across the front, shield up; it jerks higher to
+    // take a blow you threw at the wrong time
     const la = armL.current;
     const le = elL.current;
     if (la && le) {
-      la.rotation.set(st.lax, 0, -0.1 + Math.max(0, st.lax) * 0.4);
-      le.rotation.set(-0.25, 0, 0);
-      le.scale.y = 1;
-      if (st.two > 0.01 && haft.current && la.parent) {
-        const { S, H, D, T, E, d, v, pole, q, qp, qs, qi } = ik;
-        root.current.updateMatrixWorld(true);
-        la.getWorldPosition(S);
-        haft.current.getWorldPosition(H);
-        haft.current.getWorldQuaternion(q);
-        D.set(0, 1, 0).applyQuaternion(q);
-        // grip the shaft where it passes nearest the shoulder, a fist apart from the other hand
-        let sp = Math.min(1.2, Math.max(-0.75, D.dot(v.subVectors(S, H))));
-        if (Math.abs(sp) < 0.32) sp = sp < 0 ? -0.32 : 0.32;
-        T.copy(H).addScaledVector(D, sp);
-        d.subVectors(T, S);
-        // the gauntlet always closes on the haft: past full reach the forearm gives a little
-        const dl = d.length();
-        const low = Math.max(LOW_L, Math.min(dl - UP_L + 0.002, LOW_L * 1.6));
-        // too far even so (a wide windup, a full lunge): the off hand lets go
-        const hold = st.two * clamp01((UP_L + LOW_L * 1.6 + 0.2 - dl) / 0.2);
-        le.scale.y = 1 + (low / LOW_L - 1) * hold;
-        const len = Math.min(Math.max(dl, 0.05), UP_L + low - 0.002);
-        d.normalize();
-        // elbow out to the side and down
-        root.current.getWorldQuaternion(q);
-        pole.set(-1, -0.8, 0).applyQuaternion(q);
-        pole.addScaledVector(d, -pole.dot(d)).normalize();
-        const cosA = (UP_L * UP_L + len * len - low * low) / (2 * UP_L * len);
-        const ang = Math.acos(Math.min(1, Math.max(-1, cosA)));
-        E.copy(S).addScaledVector(d, Math.cos(ang) * UP_L).addScaledVector(pole, Math.sin(ang) * UP_L);
-        la.parent.getWorldQuaternion(qp);
-        qi.copy(qp).invert();
-        q.setFromUnitVectors(DOWN, v.subVectors(E, S).normalize().applyQuaternion(qi));
-        la.quaternion.slerp(q, hold);
-        qs.copy(qp).multiply(la.quaternion);
-        E.set(0, -UP_L, 0).applyQuaternion(qs).add(S);
-        qi.copy(qs).invert();
-        q.setFromUnitVectors(DOWN, v.subVectors(T, E).normalize().applyQuaternion(qi));
-        le.quaternion.slerp(q, hold);
-      }
+      const up = live ? 1 : 0;
+      st.shield = damp(st.shield, b.blocked > 0.2 ? 1 : 0, 25, dt);
+      la.rotation.set(lerp(0.15, -0.3 + st.lax * 0.1 - st.shield * 0.6, up), 0, lerp(-0.1, -0.15, up));
+      le.rotation.set(lerp(-0.9, -1.4 - st.shield * 0.15, up), 0, 0);
     }
 
     // ── live points for the rest of the scene ──
@@ -449,8 +411,16 @@ export default function Armor({
                 <mesh position={[0, -0.45, 0]} castShadow material={m.steel}>
                   <boxGeometry args={[0.3, 0.9, 0.36]} />
                 </mesh>
-                <mesh position={[0, -0.92, 0.1]} castShadow material={m.dark}>
-                  <boxGeometry args={[0.32, 0.14, 0.56]} />
+                {/* knee cop */}
+                <mesh position={[0, 0, 0.17]} scale={[1, 0.85, 0.75]} castShadow material={m.steel}>
+                  <icosahedronGeometry args={[0.21, 0]} />
+                </mesh>
+                {/* sabaton, pointed */}
+                <mesh position={[0, -0.92, 0.08]} castShadow material={m.plate}>
+                  <boxGeometry args={[0.3, 0.14, 0.46]} />
+                </mesh>
+                <mesh position={[0, -0.93, 0.44]} rotation={[Math.PI / 2, Math.PI / 4, 0]} castShadow material={m.steel}>
+                  <coneGeometry args={[0.15, 0.32, 4]} />
                 </mesh>
               </group>
             </group>
@@ -470,6 +440,16 @@ export default function Armor({
             <mesh position={[0, 1.34, 0]} castShadow material={m.dark}>
               <cylinderGeometry args={[0.3, 0.42, 0.18, 8]} />
             </mesh>
+            {/* belt, and a long tabard hanging from it */}
+            <mesh position={[0, 0.4, 0]} castShadow material={m.dark}>
+              <cylinderGeometry args={[0.57, 0.57, 0.11, 8]} />
+            </mesh>
+            <mesh position={[0, -0.25, 0.6]} rotation={[0.05, 0, 0]} castShadow material={m.cloth}>
+              <planeGeometry args={[0.42, 1.25, 1, 3]} />
+            </mesh>
+            <mesh position={[0, -0.05, 0.615]} rotation={[0.05, 0, Math.PI / 4]} material={m.plate}>
+              <boxGeometry args={[0.16, 0.16, 0.02]} />
+            </mesh>
             {[-1, 1].map((sx) => (
               <group key={sx} position={[sx * 0.8, 1.16, 0]}>
                 <mesh scale={[1, 0.62, 1.05]} castShadow material={m.steel}>
@@ -477,6 +457,9 @@ export default function Armor({
                 </mesh>
                 <mesh position={[sx * 0.08, -0.22, 0]} scale={[1, 0.4, 1]} castShadow material={m.plate}>
                   <icosahedronGeometry args={[0.38, 0]} />
+                </mesh>
+                <mesh position={[sx * 0.18, 0.28, 0]} rotation={[0, 0, -sx * 0.5]} castShadow material={m.steel}>
+                  <coneGeometry args={[0.07, 0.3, 4]} />
                 </mesh>
               </group>
             ))}
@@ -494,23 +477,65 @@ export default function Armor({
               <mesh ref={slit} position={[0, 0.04, 0.29]} material={m.eye}>
                 <boxGeometry args={[0.34, 0.045, 0.04]} />
               </mesh>
+              {/* horns: out from the temples, then up */}
+              {[-1, 1].map((sx) => (
+                <group key={sx} position={[sx * 0.27, 0.16, 0]}>
+                  <mesh position={[sx * 0.15, 0.04, 0]} rotation={[0, 0, -sx * 1.25]} castShadow material={m.steel}>
+                    <cylinderGeometry args={[0.05, 0.08, 0.32, 5]} />
+                  </mesh>
+                  <mesh position={[sx * 0.3, 0.26, 0]} rotation={[0, 0, sx * 0.35]} castShadow material={m.steel}>
+                    <coneGeometry args={[0.055, 0.42, 5]} />
+                  </mesh>
+                </group>
+              ))}
+              {/* plume, falling back from the crown */}
+              {[-0.12, 0, 0.12].map((x, i) => (
+                <mesh key={x} position={[x * 0.6, 0.38, -0.32]} rotation={[-2.05 - i * 0.12, 0, x * 1.5]} castShadow material={m.plume}>
+                  <coneGeometry args={[0.1, 0.85 - i * 0.12, 4]} />
+                </mesh>
+              ))}
             </group>
             {/* tattered cloak */}
             <mesh position={[0, 0.25, -0.62]} rotation={[0.16, 0, 0]} castShadow material={m.cloth}>
               <planeGeometry args={[1.5, 2.3, 2, 4]} />
             </mesh>
-            {/* the off arm: shoulder, elbow, gauntlet */}
-            <group ref={armL} position={[-0.8, 1.0, 0.1]}>
-              <mesh position={[0, -0.39, 0]} castShadow material={m.dark}>
-                <boxGeometry args={[0.24, 0.8, 0.26]} />
+            {/* the shield arm: upper arm, couter, forearm across the front, the round shield */}
+            <group ref={armL} position={[-0.92, 1.0, 0.1]}>
+              <mesh position={[0, -0.38, 0]} castShadow material={m.dark}>
+                <boxGeometry args={[0.24, 0.76, 0.26]} />
               </mesh>
               <group ref={elL} position={[0, -0.78, 0]}>
-                <mesh position={[0, -0.34, 0]} castShadow material={m.dark}>
-                  <boxGeometry args={[0.21, 0.7, 0.23]} />
+                <mesh scale={[1, 0.9, 1.1]} castShadow material={m.steel}>
+                  <icosahedronGeometry args={[0.16, 0]} />
                 </mesh>
-                <mesh position={[0, -0.75, 0]} castShadow material={m.plate}>
-                  <boxGeometry args={[0.2, 0.14, 0.24]} />
+                <mesh position={[0, -0.32, 0]} castShadow material={m.plate}>
+                  <boxGeometry args={[0.21, 0.62, 0.23]} />
                 </mesh>
+                {/* the shield faces out along the forearm: a wide disc, a raised rim, a spike */}
+                <group position={[0.22, -0.72, 0]}>
+                  <mesh castShadow material={m.steel}>
+                    <cylinderGeometry args={[0.74, 0.74, 0.08, 10]} />
+                  </mesh>
+                  <mesh position={[0, -0.05, 0]} castShadow material={m.plate}>
+                    <cylinderGeometry args={[0.52, 0.6, 0.05, 10]} />
+                  </mesh>
+                  <mesh position={[0, -0.09, 0]} castShadow material={m.steel}>
+                    <cylinderGeometry args={[0.2, 0.26, 0.06, 8]} />
+                  </mesh>
+                  <mesh position={[0, -0.32, 0]} rotation={[Math.PI, 0, 0]} castShadow material={m.blade}>
+                    <coneGeometry args={[0.16, 0.48, 6]} />
+                  </mesh>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                    <mesh
+                      key={i}
+                      position={[Math.cos((i / 8) * Math.PI * 2) * 0.66, -0.06, Math.sin((i / 8) * Math.PI * 2) * 0.66]}
+                      castShadow
+                      material={m.dark}
+                    >
+                      <icosahedronGeometry args={[0.045, 0]} />
+                    </mesh>
+                  ))}
+                </group>
               </group>
             </group>
 
@@ -528,26 +553,44 @@ export default function Armor({
               </mesh>
             </group>
 
-            {/* the halberd, from the shoulder */}
-            <group ref={arm} position={[0.8, 1.0, 0.05]} rotation-order="YXZ">
-              <mesh position={[0, -0.58, 0]} castShadow material={m.dark}>
-                <boxGeometry args={[0.24, 1.2, 0.26]} />
+            {/* the weapon arm and its long axe */}
+            <group ref={arm} position={[0.92, 1.0, 0.05]} rotation-order="YXZ">
+              <mesh position={[0, -0.3, 0]} castShadow material={m.dark}>
+                <boxGeometry args={[0.24, 0.62, 0.26]} />
               </mesh>
-              <group ref={haft} position={[0, -1.16, 0.08]} rotation={[Math.PI / 2, 0, 0]}>
-                <mesh position={[0, 0.9, 0]} castShadow material={m.dark}>
-                  <cylinderGeometry args={[0.05, 0.05, 3.6, 5]} />
+              <mesh position={[0, -0.6, 0]} scale={[1, 0.9, 1.1]} castShadow material={m.steel}>
+                <icosahedronGeometry args={[0.16, 0]} />
+              </mesh>
+              <mesh position={[0, -0.88, 0]} castShadow material={m.plate}>
+                <boxGeometry args={[0.21, 0.56, 0.23]} />
+              </mesh>
+              <mesh position={[0, -1.16, 0]} castShadow material={m.steel}>
+                <boxGeometry args={[0.24, 0.16, 0.27]} />
+              </mesh>
+              <group ref={haft} position={[0, -1.16, 0.06]} rotation={[Math.PI / 2, 0, 0]}>
+                <mesh position={[0, 0.75, 0]} castShadow material={m.dark}>
+                  <cylinderGeometry args={[0.045, 0.045, 2.7, 6]} />
                 </mesh>
-                <mesh position={[0.26, 2.45, 0]} castShadow material={m.blade}>
-                  <boxGeometry args={[0.5, 0.62, 0.04]} />
+                {/* bands on the haft, a spike at the butt */}
+                {[0.5, 1.15].map((y) => (
+                  <mesh key={y} position={[0, y, 0]} castShadow material={m.steel}>
+                    <cylinderGeometry args={[0.07, 0.07, 0.08, 6]} />
+                  </mesh>
+                ))}
+                <mesh position={[0, -0.72, 0]} rotation={[Math.PI, 0, 0]} castShadow material={m.steel}>
+                  <coneGeometry args={[0.06, 0.22, 5]} />
                 </mesh>
-                <mesh position={[-0.16, 2.45, 0]} rotation={[0, 0, Math.PI / 2]} castShadow material={m.blade}>
-                  <coneGeometry args={[0.08, 0.32, 4]} />
+                {/* the head: a broad crescent, a smaller beak behind, a spike on top */}
+                <mesh position={[0, 1.78, 0]} geometry={axeHead} castShadow material={m.blade} />
+                <mesh position={[0, 1.78, 0]} rotation={[0, Math.PI, 0]} scale={[0.6, 0.62, 1]} geometry={axeHead} castShadow material={m.blade} />
+                <mesh position={[0, 1.78, 0]} castShadow material={m.steel}>
+                  <boxGeometry args={[0.14, 0.42, 0.12]} />
                 </mesh>
-                <mesh position={[0, 2.95, 0]} castShadow material={m.blade}>
-                  <coneGeometry args={[0.07, 0.55, 4]} />
+                <mesh position={[0, 2.3, 0]} castShadow material={m.blade}>
+                  <coneGeometry args={[0.07, 0.62, 4]} />
                 </mesh>
-                <object3D ref={bladeA} position={[0.4, 2.2, 0]} />
-                <object3D ref={bladeB} position={[0, 3.2, 0]} />
+                <object3D ref={bladeA} position={[0.5, 1.62, 0]} />
+                <object3D ref={bladeB} position={[0.05, 2.55, 0]} />
               </group>
             </group>
 

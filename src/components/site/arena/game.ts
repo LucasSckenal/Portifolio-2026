@@ -9,10 +9,10 @@
 
 export type Phase = 'cine' | 'ready' | 'awaken' | 'fight' | 'dead' | 'won';
 /** how a single blow looks (the scene animates each one) */
-export type Pose = 'slam' | 'sweepR' | 'sweepL' | 'thrust' | 'spin' | 'leap' | 'lash';
+export type Pose = 'slam' | 'sweepR' | 'sweepL' | 'thrust' | 'spin' | 'leap' | 'lash' | 'bury' | 'whirl' | 'wave';
 
 export const P_HP = 3;
-export const B_HP = 10;
+export const B_HP = 14;
 
 export const ROLL_T = 0.42;
 const ROLL_SAFE: [number, number] = [0.03, 0.31]; // invulnerable part of the roll
@@ -37,6 +37,9 @@ const FORM1: Move[] = [
   { name: 'late', hits: [{ pose: 'slam', wind: 0.85, hold: true }], open: 1.15, weight: 1 },
   // a full turn of the body with the blade out
   { name: 'spin', hits: [{ pose: 'spin', wind: 1.0 }], open: 1.3, weight: 2 },
+  // everything it has into the floor: the halberd sticks, and while it
+  // wrestles it free you get to hit it again and again
+  { name: 'bury', hits: [{ pose: 'bury', wind: 1.25 }], open: 3.0, weight: 2 },
   { name: 'sweep', hits: [{ pose: 'sweepR', wind: 0.75 }], open: 1.05, weight: 3 },
   { name: 'thrust', hits: [{ pose: 'thrust', wind: 0.55 }], open: 1.0, weight: 2 },
   {
@@ -74,6 +77,29 @@ const FORM2: Move[] = [
     weight: 2,
   },
   { name: 'slam', hits: [{ pose: 'slam', wind: 0.8, hold: true }], open: 0.95, weight: 1 },
+  // it spins and spins: one roll per turn, then it stands there spent
+  {
+    name: 'whirlwind',
+    hits: [
+      { pose: 'whirl', wind: 0.95 },
+      { pose: 'whirl', wind: 0.42 },
+      { pose: 'whirl', wind: 0.42 },
+      { pose: 'whirl', wind: 0.42 },
+      { pose: 'whirl', wind: 0.42 },
+    ],
+    open: 2.7,
+    weight: 2,
+  },
+  // the leap, and a shockwave out across the floor: roll as it reaches you
+  {
+    name: 'shock',
+    hits: [
+      { pose: 'leap', wind: 1.15, hold: true },
+      { pose: 'wave', wind: 0.62 },
+    ],
+    open: 1.3,
+    weight: 2,
+  },
   {
     name: 'whirl',
     hits: [
@@ -211,7 +237,7 @@ export function step(g: Game, input: Input, dt: number): Events {
           b.state = 'down';
           b.st = 0;
           ev.won = true;
-        } else if (crit) b.st = Math.max(b.st, b.dur - 0.25); // a clean hit knocks it out of the opening
+        } else if (crit && b.dur < 1.6) b.st = Math.max(b.st, b.dur - 0.25); // a clean hit knocks it out of a short opening
       } else if (b.state !== 'down') {
         // guard up: the blade glances off and you're left open
         b.blocked = 1;
@@ -247,8 +273,8 @@ export function step(g: Game, input: Input, dt: number): Events {
     if (b.st <= dt + 1e-6) {
       const into = ROLL_T - p.roll; // seconds since the roll started
       const safe = p.roll > 0 && into >= ROLL_SAFE[0] && into <= ROLL_SAFE[1];
-      const heavy = b.blow === 'slam' || b.blow === 'leap' || b.blow === 'spin';
-      g.shake = Math.max(g.shake, heavy ? 0.45 : 0.22);
+      const heavy = b.blow === 'slam' || b.blow === 'leap' || b.blow === 'spin' || b.blow === 'bury';
+      g.shake = Math.max(g.shake, b.blow === 'bury' ? 0.7 : heavy ? 0.45 : b.blow === 'wave' ? 0.3 : 0.22);
       if (heavy) g.quake = 1;
       if (safe) {
         g.word = { kind: 'dodged', t: g.t };

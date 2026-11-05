@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { step, windup, type Events, type Game, type Input, type Phase } from './game';
 import { AW, CINE_END, DIST } from './timeline';
 import Armor from './Armor';
-import { halberdTip, hilt } from './shared';
+import { bossPos, halberdTip, hilt } from './shared';
 import Player from './Player';
 import Scenery, { FOG } from './Scenery';
 
@@ -155,6 +155,7 @@ export default function World({
       <Armor game={game} phase={phase} cine={cine} />
       <Sparks game={game} phase={phase} />
       <Dust game={game} />
+      <Shock game={game} />
     </>
   );
 }
@@ -282,5 +283,53 @@ function Dust({ game }: { game: React.RefObject<Game> }) {
     <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} material={mat} visible={false}>
       <ringGeometry args={[0.7, 1, 18]} />
     </mesh>
+  );
+}
+
+// The shockwave from the leap: a ring of light and a low wall running out
+// across the floor from where it landed. It reaches you exactly when the
+// blow lands, so the roll is timed to the ring, not the armor.
+function Shock({ game }: { game: React.RefObject<Game> }) {
+  const grp = useRef<THREE.Group>(null);
+  const st = useRef({ r: 0, life: 0 });
+  const mats = useMemo(
+    () => ({
+      ring: new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, depthWrite: false, side: THREE.DoubleSide }),
+      wall: new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, depthWrite: false, side: THREE.DoubleSide }),
+    }),
+    []
+  );
+  useFrame((_, raw) => {
+    const dt = Math.min(raw, 1 / 20);
+    const g = game.current;
+    const b = g.b;
+    const s = st.current;
+    const G = grp.current;
+    if (!G) return;
+    if (b.blow === 'wave' && b.state === 'wind') {
+      const px = Math.sin(g.p.ang) * DIST;
+      const pz = Math.cos(g.p.ang) * DIST;
+      const d = Math.hypot(px - bossPos.x, pz - bossPos.z);
+      s.r = 0.6 + (d - 0.6) * windup(g);
+      s.life = 1;
+      G.position.set(bossPos.x, 0, bossPos.z);
+    } else if (s.life > 0) {
+      s.r += dt * 9;
+      s.life = Math.max(0, s.life - dt * 2.2);
+    }
+    G.visible = s.life > 0.01;
+    G.scale.set(Math.max(0.01, s.r), 1 + (1 - s.life) * 0.5, Math.max(0.01, s.r));
+    mats.ring.opacity = 0.9 * s.life;
+    mats.wall.opacity = 0.32 * s.life;
+  });
+  return (
+    <group ref={grp} visible={false}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.06, 0]} material={mats.ring}>
+        <ringGeometry args={[0.9, 1, 48]} />
+      </mesh>
+      <mesh position={[0, 0.22, 0]} material={mats.wall}>
+        <cylinderGeometry args={[1, 1, 0.44, 48, 1, true]} />
+      </mesh>
+    </group>
   );
 }

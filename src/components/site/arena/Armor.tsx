@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { windup, type Game, type Phase, type Pose } from './game';
 import { AW } from './timeline';
 import Trail from './Trail';
-import { halberdTip, hilt } from './shared';
+import { bossPos, halberdTip, hilt } from './shared';
 
 // The Empty Armor, low poly. A nod to a certain first boss, in its own form:
 // it waits on its knees with a sword through its chest and wakes when you
@@ -43,7 +43,7 @@ const wrap = (x: number) => Math.atan2(Math.sin(x), Math.cos(x));
 // W: top of the windup · S: the instant of contact (at tS s) · F: where the
 // swing ends (at tF s), weapon buried or thrown wide; then it hangs there
 // for part of the opening and hauls itself back to guard
-const BLOWS: Record<Pose, { W: P; S: P; F: P; tS: number; tF: number }> = {
+const BLOWS = {
   slam: {
     // both hands high, leaning back on its heels; then it falls with the whole body
     W: P_({ ax: -2.95, wr: 0.75, lean: -0.3, twist: 0.12, crouch: -0.08, stepZ: -0.2, lax: -2.75 }),
@@ -100,7 +100,25 @@ const BLOWS: Record<Pose, { W: P; S: P; F: P; tS: number; tF: number }> = {
     tS: 0.05,
     tF: 0.22,
   },
+} as Record<Pose, { W: P; S: P; F: P; tS: number; tF: number }>;
+// bury: the slam with everything behind it; the blade goes deep and sticks
+BLOWS.bury = {
+  W: P_({ ax: -3.05, wr: 0.6, lean: -0.4, twist: 0.15, crouch: -0.12, stepZ: -0.3, lax: -2.9 }),
+  S: P_({ ax: -0.85, wr: 3.6, lean: 0.62, twist: -0.05, crouch: 0.48, stepZ: 0.9, lax: -0.95 }),
+  F: P_({ ax: -0.8, wr: 3.6, lean: 0.66, twist: -0.08, crouch: 0.5, stepZ: 0.9, lax: -0.9 }),
+  tS: 0.06,
+  tF: 0.25,
 };
+// whirl: arm out, blade level; the body turns (worked out live from where it is)
+const WHIRL = P_({ ax: -1.5, ay: 0.1, wr: 3.1, twist: -0.1, crouch: 0.28, lean: 0.12, stepZ: 0.5, lax: 0.6 });
+// spent after the whirlwind: bent over, halberd dragging, heaving
+const TIRED = P_({ ax: -0.35, wr: 2.75, ay: 0.3, lean: 0.55, crouch: 0.42, twist: 0.1, stepZ: 0.5, lax: 0.2 });
+BLOWS.whirl = { W: WHIRL, S: WHIRL, F: TIRED, tS: 0.05, tF: 0.5 };
+// wave: it stays down where it landed while the shock runs out across the floor
+BLOWS.wave = { W: BLOWS.leap.F, S: P_({ ...BLOWS.leap.F, crouch: 0.55, lean: 0.6 }), F: BLOWS.leap.F, tS: 0.05, tF: 0.2 };
+// how far into the opening it starts to recover (the rest is your window)
+const RECOVER: Partial<Record<Pose, number>> = { bury: 0.86, whirl: 0.82 };
+
 const LEAP_CROUCH = P_({ ax: -1.3, wr: 2.2, crouch: 0.5, lean: 0.3, lax: -1.4 });
 const ROAR = P_({ ax: -2.6, wr: 1.0, lean: -0.42, crouch: -0.05, lax: -2.3, twist: 0 });
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -215,7 +233,11 @@ export default function Armor({
     } else if (b.state === 'wind') {
       // the raise is quick and the top is long: it hangs there, and you wait
       const w = windup(g);
-      if (b.blow === 'leap') {
+      if (b.blow === 'whirl') {
+        // the first coils up the other way; the rest keep turning
+        const coil = b.i === 0 ? 1.3 * easeOut(clamp01(w / 0.8)) : -w * 1.6;
+        target = { ...mixP(A.from, WHIRL, easeOut(clamp01(w / 0.5))), turn: A.from.turn + coil };
+      } else if (b.blow === 'leap') {
         target = w < 0.4 ? mixP(A.from, LEAP_CROUCH, smooth(w / 0.4)) : mixP(LEAP_CROUCH, B.W, Math.sin(clamp01((w - 0.4) / 0.6) * Math.PI * 0.5));
       } else target = mixP(A.from, B.W, easeOut(clamp01(w / 0.8)));
       // the steel strains at the top
@@ -230,10 +252,24 @@ export default function Armor({
         t < B.tS
           ? mixP(A.from, B.S, easeIn2(t / B.tS))
           : mixP(B.S, B.F, easeOut(clamp01((t - B.tS) / (B.tF - B.tS))));
+      if (b.blow === 'whirl' && t < 0.45) target = { ...WHIRL, turn: A.from.turn - Math.PI * 2 * easeOut(t / 0.45) };
       if (b.state === 'open' && t >= B.tF) {
         // buried, then hauled back to guard in the second half of the opening
-        const F = { ...B.F, turn: wrap(B.F.turn) };
-        const r = smooth(clamp01((b.st - b.dur * 0.45) / (b.dur * 0.55)));
+        const F = { ...B.F, turn: b.blow === 'whirl' ? 0 : wrap(B.F.turn) };
+        const from = RECOVER[b.blow] ?? 0.45;
+        const r = smooth(clamp01((b.st - b.dur * from) / (b.dur * (1 - from))));
+        if (b.blow === 'bury') {
+          // it wrestles the shaft: heaves back, slips, heaves again
+          const tug = Math.max(0, Math.sin(time * 6.5));
+          F.lean = F.lean - tug * 0.28;
+          F.ax = F.ax - tug * 0.12;
+          F.crouch = F.crouch + tug * 0.06;
+          F.twist = Math.sin(time * 3.1) * 0.12;
+        } else if (b.blow === 'whirl') {
+          // spent: heaving for breath
+          F.crouch = F.crouch + Math.sin(time * 5) * 0.04;
+          F.lean = F.lean + Math.sin(time * 5) * 0.05;
+        }
         target = mixP(F, G, r);
         // a wrench as it tears the blade out of the floor
         if (r > 0 && r < 0.35 && (b.blow === 'slam' || b.blow === 'leap')) target.lean -= Math.sin((r / 0.35) * Math.PI) * 0.12;
@@ -244,7 +280,7 @@ export default function Armor({
       target = { ...G, turn: Math.sin(time * 0.9) * 0.06, crouch: G.crouch + Math.abs(Math.sin(time * 1.8)) * 0.03 };
       rate = 5;
     }
-    A.trail = live && hitting && A.t < B.tF + 0.04 && b.blow !== 'lash';
+    A.trail = live && hitting && A.t < (b.blow === 'whirl' ? 0.45 : B.tF + 0.04) && b.blow !== 'lash' && b.blow !== 'wave';
 
     // ease toward it; a whole turn (the spin) is unwound without spinning back
     while (st.turn - target.turn > Math.PI) st.turn -= Math.PI * 2;
@@ -279,6 +315,7 @@ export default function Armor({
     if (armL.current) armL.current.rotation.set(st.lax, 0, -0.1 + Math.max(0, st.lax) * 0.4);
 
     // ── live points for the rest of the scene ──
+    bossPos.copy(root.current.position).setY(0);
     if (impaled.current) {
       impaled.current.updateWorldMatrix(true, false);
       impaled.current.getWorldPosition(hilt.pos);

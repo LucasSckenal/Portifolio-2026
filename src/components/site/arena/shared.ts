@@ -10,3 +10,4 @@ export const hilt = {
   axis: new THREE.Vector3(0, 0, -1),
 };
 export const halberdTip = new THREE.Vector3(0, 0, 2.2);
+export const bossPos = new THREE.Vector3();

@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { ATK_T, ROLL_T, type Game, type Phase } from './game';
 import { AW, CLOSE, DIST } from './timeline';
 import Trail from './Trail';
+import { hilt } from './shared';
 
 // The wanderer: a hooded, low-poly figure on real joints (hips, spine,
 // chest, head, shoulders, elbows, hips, knees), animated by blending poses.
@@ -133,6 +134,24 @@ const REACH: Pose = { ...IDLE, hipsY: 0.88, spine: [0.2, 0, 0], chest: [0.1, 0.1
 const PULL: Pose = { ...REACH, hipsY: 0.82, spine: [-0.3, 0, 0], chest: [-0.25, 0.35, 0], head: [-0.1, -0.2, 0], shR: [-1.1, 0, -0.35], elR: [-1.3, 0, 0], shL: [-0.6, 0, 0.5], elL: [-0.9, 0, 0], thL: [-0.2, 0, 0.06], thR: [0.7, 0, -0.06], knR: [0.6, 0, 0] };
 
 const smooth = (t: number) => t * t * (3 - 2 * t);
+const a0 = (c: React.RefObject<{ awaken: number }>) => c.current.awaken;
+const UPPER = 0.29; // shoulder → elbow
+const LOWER = 0.3; // elbow → hand (where the sword sits)
+const DOWN = new THREE.Vector3(0, -1, 0);
+const SWORD_REST = new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, 0));
+const SWORD_AT = new THREE.Vector3(0, -0.3, 0);
+const tmp = {
+  S: new THREE.Vector3(),
+  T: new THREE.Vector3(),
+  E: new THREE.Vector3(),
+  d: new THREE.Vector3(),
+  pole: new THREE.Vector3(),
+  q: new THREE.Quaternion(),
+  qc: new THREE.Quaternion(),
+  qs: new THREE.Quaternion(),
+  qe: new THREE.Quaternion(),
+  qi: new THREE.Quaternion(),
+};
 const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const JOINTS: J[] = ['spine', 'chest', 'head', 'shL', 'elL', 'shR', 'elR', 'thL', 'knL', 'thR', 'knR'];
@@ -233,12 +252,16 @@ export default function Player({
     let tumbleX = 0;
     let turn = 0;
     let swordOn = ph !== 'ready' && ph !== 'cine';
+    // reaching for the hilt in the armor's chest: 0 = free arm, 1 = hand on it
+    let grip = 0;
+    let slide = 0; // how far the blade has come out of the chest
 
     if (ph === 'ready') {
       target = { ...IDLE, shR: [-0.1, 0, -0.1], elR: [-0.2, 0, 0], chest: [0, 0, 0], head: [0, 0, 0] }; // unarmed, waiting
     } else if (ph === 'awaken') {
       const a = cine.current.awaken;
-      swordOn = a >= AW.pull - 0.1;
+      swordOn = a >= AW.grip;
+      grip = smooth(clamp01((a - AW.walkEnd) / (AW.grip - AW.walkEnd))) * (1 - smooth(clamp01((a - AW.pull) / 0.3)));
       if (a < AW.walkEnd) {
         dist = DIST - (DIST - CLOSE) * ease(a / AW.walkEnd);
         target = walk(t, 1);
@@ -246,15 +269,19 @@ export default function Player({
         dist = CLOSE;
         target = mix(IDLE, REACH, smooth(clamp01((a - AW.walkEnd) / (AW.grip - AW.walkEnd))));
       } else if (a < AW.pull) {
-        dist = CLOSE;
-        target = mix(REACH, PULL, ease(clamp01((a - AW.grip) / (AW.pull - AW.grip))));
+        // strain first (it barely moves), then the yank
+        const k = clamp01((a - AW.grip) / (AW.pull - AW.grip));
+        slide = k < 0.6 ? 0.1 * smooth(k / 0.6) : 0.1 + 1.0 * Math.pow((k - 0.6) / 0.4, 2);
+        dist = CLOSE + slide * 0.85;
+        target = mix(REACH, PULL, ease(k));
         rate = 24;
       } else if (a < AW.backEnd) {
         // a hop back, sword in hand
         const k = clamp01((a - AW.pull) / (AW.backEnd - AW.pull));
-        dist = CLOSE + (DIST - CLOSE) * ease(k);
+        slide = 1.1 + k * 0.6;
+        const from = CLOSE + 1.1 * 0.85;
+        dist = from + (DIST - from) * ease(k);
         target = mix(PULL, IDLE, smooth(k));
-        hips.current.position.y += Math.sin(k * Math.PI) * 0.2;
       } else target = IDLE;
     } else if (p.hp <= 0) {
       target = DEAD;
@@ -305,7 +332,49 @@ export default function Player({
     r.rotation.y = yaw.current;
     hips.current.position.y = c.hipsY ?? 0.9;
     tumble.current.rotation.x = tumbleX;
-    if (sword.current) sword.current.visible = swordOn;
+    if (ph === 'awaken' && a0(cine) >= AW.pull && a0(cine) < AW.backEnd) {
+      const k = clamp01((a0(cine) - AW.pull) / (AW.backEnd - AW.pull));
+      hips.current.position.y += Math.sin(k * Math.PI) * 0.2;
+    }
+    const sw = sword.current;
+    if (sw) {
+      sw.visible = swordOn;
+      sw.position.copy(SWORD_AT);
+      sw.quaternion.copy(SWORD_REST);
+    }
+    // the hand meets the hilt: a two-bone reach for the right arm, and the
+    // blade takes the exact place of the one in the armor's chest
+    const shR = j.current.shR;
+    const elR = j.current.elR;
+    if (grip > 0.001 && sw && shR && elR && shR.parent) {
+      const { S, T, E, d, pole, q, qc, qs, qe, qi } = tmp;
+      r.updateMatrixWorld(true);
+      shR.getWorldPosition(S);
+      T.copy(hilt.pos).addScaledVector(hilt.axis, -slide);
+      d.subVectors(T, S);
+      const len = Math.min(Math.max(d.length(), 0.05), UPPER + LOWER - 0.002);
+      d.normalize();
+      // the elbow bends down and out
+      pole.set(Math.cos(r.rotation.y), -1.2, -Math.sin(r.rotation.y));
+      pole.addScaledVector(d, -pole.dot(d)).normalize();
+      const cosA = (UPPER * UPPER + len * len - LOWER * LOWER) / (2 * UPPER * len);
+      const A = Math.acos(Math.min(1, Math.max(-1, cosA)));
+      E.copy(S).addScaledVector(d, Math.cos(A) * UPPER).addScaledVector(pole, Math.sin(A) * UPPER);
+      shR.parent.getWorldQuaternion(qc);
+      // shoulder
+      q.setFromUnitVectors(DOWN, E.clone().sub(S).normalize().applyQuaternion(qi.copy(qc).invert()));
+      shR.quaternion.slerp(q, grip);
+      qs.copy(qc).multiply(shR.quaternion);
+      // elbow, from where the elbow really is now
+      E.set(0, -UPPER, 0).applyQuaternion(qs).add(S);
+      q.setFromUnitVectors(DOWN, T.clone().sub(E).normalize().applyQuaternion(qi.copy(qs).invert()));
+      elR.quaternion.slerp(q, grip);
+      qe.copy(qs).multiply(elR.quaternion);
+      // the sword: same place and angle as the one it replaces
+      qi.copy(qe).invert();
+      sw.position.lerp(T.clone().sub(E).applyQuaternion(qi), grip);
+      sw.quaternion.slerp(qi.multiply(hilt.quat), grip);
+    }
     if (cloak.current) cloak.current.rotation.x = 0.12 + Math.sin(t * 1.7) * 0.05 + (p.roll > 0 ? 0.5 : 0) + (p.atk > 0 ? 0.25 : 0);
     // blink while you can't be hurt after a hit
     r.visible = r.visible && (p.hurt <= 0 || p.hp <= 0 || Math.floor(t * 18) % 2 === 0);

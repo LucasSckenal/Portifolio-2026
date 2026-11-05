@@ -6,6 +6,7 @@ import * as THREE from 'three';
 import { step, windup, type Events, type Game, type Input, type Phase } from './game';
 import { AW, CINE_END, DIST } from './timeline';
 import Armor from './Armor';
+import { halberdTip, hilt } from './shared';
 import Player from './Player';
 import Scenery, { FOG } from './Scenery';
 
@@ -110,7 +111,9 @@ export default function World({
       if (ph === 'awaken') {
         const step_ = Math.min(raw, 0.25);
         const before = c.awaken;
-        c.awaken += step_;
+        // play-tests can pin the awakening to one instant
+        const pin = (c as { hold?: number }).hold;
+        c.awaken = typeof pin === 'number' ? pin : c.awaken + step_;
         if (before < AW.pull && c.awaken >= AW.pull) {
           // the sword comes out: a burst and a jolt
           g.spark = { at: 0, t: -c.awaken, big: true };
@@ -227,7 +230,7 @@ function Sparks({ game, phase }: { game: React.RefObject<Game>; phase: React.Ref
       const dx = Math.sin(g.p.ang);
       const dz = Math.cos(g.p.ang);
       const pulling = phase.current === 'awaken';
-      const o = pulling ? v(0, 1.75, 0.55) : g.spark.at === 0 ? v(dx * 0.7, 2.1, dz * 0.7) : v(dx * DIST, 1.1, dz * DIST);
+      const o = pulling ? v(hilt.pos.x, hilt.pos.y, hilt.pos.z) : g.spark.at === 0 ? v(dx * 0.7, 2.1, dz * 0.7) : v(dx * DIST, 1.1, dz * DIST);
       const power = g.spark.big ? 7 : 4.5;
       for (let i = 0; i < N; i++) {
         pos.setXYZ(i, o.x, o.y, o.z);
@@ -270,8 +273,8 @@ function Dust({ game }: { game: React.RefObject<Game> }) {
     if (!r.visible) return;
     const k = 1 - q;
     const leap = g.b.blow === 'leap';
-    const reach = leap ? 0.4 : 2.2;
-    r.position.set(Math.sin(g.b.face) * reach, 0.07, Math.cos(g.b.face) * reach);
+    // the ring opens where the blade met the floor, and stays there
+    if (q > 0.97) r.position.set(halberdTip.x, 0.07, halberdTip.z);
     r.scale.setScalar(0.3 + k * (leap ? 5 : 3));
     mat.opacity = q * 0.7;
   });

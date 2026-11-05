@@ -79,7 +79,7 @@ export default function Arena({ onReveal, onClose }: { onReveal: () => void; onC
 
   // ?arenadebug: expose the duel's state to automated play-tests
   useEffect(() => {
-    if (window.location.search.includes('arenadebug')) (window as unknown as { __arena: unknown }).__arena = { game, input, phase: phaseRef };
+    if (window.location.search.includes('arenadebug')) (window as unknown as { __arena: unknown }).__arena = { game, input, phase: phaseRef, cine };
   }, []);
 
   useEffect(() => {

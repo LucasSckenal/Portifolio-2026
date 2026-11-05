@@ -9,7 +9,7 @@
 
 export type Phase = 'cine' | 'ready' | 'awaken' | 'fight' | 'dead' | 'won';
 /** how a single blow looks (the scene animates each one) */
-export type Pose = 'slam' | 'sweepR' | 'sweepL' | 'thrust' | 'leap' | 'lash';
+export type Pose = 'slam' | 'sweepR' | 'sweepL' | 'thrust' | 'spin' | 'leap' | 'lash';
 
 export const P_HP = 3;
 export const B_HP = 10;
@@ -33,6 +33,10 @@ type Move = { name: string; hits: Hit[]; open: number; weight: number };
 // first form: a knight's halberd work
 const FORM1: Move[] = [
   { name: 'slam', hits: [{ pose: 'slam', wind: 0.95 }], open: 1.15, weight: 3 },
+  // the raised halberd hangs before it falls: roll on the fall, not the raise
+  { name: 'late', hits: [{ pose: 'slam', wind: 0.85, hold: true }], open: 1.15, weight: 1 },
+  // a full turn of the body with the blade out
+  { name: 'spin', hits: [{ pose: 'spin', wind: 1.0 }], open: 1.3, weight: 2 },
   { name: 'sweep', hits: [{ pose: 'sweepR', wind: 0.75 }], open: 1.05, weight: 3 },
   { name: 'thrust', hits: [{ pose: 'thrust', wind: 0.55 }], open: 1.0, weight: 2 },
   {
@@ -70,6 +74,15 @@ const FORM2: Move[] = [
     weight: 2,
   },
   { name: 'slam', hits: [{ pose: 'slam', wind: 0.8, hold: true }], open: 0.95, weight: 1 },
+  {
+    name: 'whirl',
+    hits: [
+      { pose: 'sweepR', wind: 0.5 },
+      { pose: 'spin', wind: 0.55 },
+    ],
+    open: 1.05,
+    weight: 2,
+  },
   { name: 'thrust', hits: [{ pose: 'thrust', wind: 0.42 }], open: 0.9, weight: 1 },
 ];
 
@@ -234,7 +247,7 @@ export function step(g: Game, input: Input, dt: number): Events {
     if (b.st <= dt + 1e-6) {
       const into = ROLL_T - p.roll; // seconds since the roll started
       const safe = p.roll > 0 && into >= ROLL_SAFE[0] && into <= ROLL_SAFE[1];
-      const heavy = b.blow === 'slam' || b.blow === 'leap';
+      const heavy = b.blow === 'slam' || b.blow === 'leap' || b.blow === 'spin';
       g.shake = Math.max(g.shake, heavy ? 0.45 : 0.22);
       if (heavy) g.quake = 1;
       if (safe) {

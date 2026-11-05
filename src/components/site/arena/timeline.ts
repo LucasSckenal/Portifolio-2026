@@ -18,4 +18,4 @@ export const AW = {
 
 // the duel: the armor at the centre, you on a circle round it
 export const DIST = 3.1;
-export const CLOSE = 1.25; // how near you walk to pull the sword
+export const CLOSE = 1.5; // how near you walk to pull the sword

@@ -71,7 +71,7 @@ export default function MobileMenu() {
             type="button"
             onClick={() => {
               setOpen(false);
-              if (pathname === '/') window.dispatchEvent(new CustomEvent('about:toggle'));
+              if (pathname === '/') window.dispatchEvent(new CustomEvent('orbit:open-about'));
               else router.push('/?sobre');
             }}
           >

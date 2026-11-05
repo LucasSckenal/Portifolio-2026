@@ -242,7 +242,14 @@ export const en: Dictionary = {
       "body": "I study Computer Science at Unijuí, in Rio Grande do Sul, and have been coding for over 5 years. I started in a scholarship program at Compass UOL.",
       "offLabel": "Away from code",
       "offTitle": "Soulslike games.",
-      "offBody": "Die, learn the pattern, try again. Code works the same way."
+      "offBody": "Die, learn the pattern, try again. Code works the same way.",
+      "teaser": "The person behind the projects.",
+      "facts": [
+        { "label": "Origin", "value": "Rio Grande do Sul, Brazil" },
+        { "label": "Studies", "value": "Computer Science at Unijuí" },
+        { "label": "Code", "value": "For over 5 years" },
+        { "label": "Start", "value": "Compass UOL scholarship program" }
+      ]
     },
     "social": {
       "label": "Elsewhere",

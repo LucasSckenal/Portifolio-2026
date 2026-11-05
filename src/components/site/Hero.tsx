@@ -7,8 +7,7 @@ import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { getProjectCopy } from '@/content/projects.i18n';
 import LeaderLines from './LeaderLines';
 import Orbit from './Orbit';
-import { SHOWCASE, type ProjectId } from './panels';
-import { anchors } from './sceneAnchors';
+import { SHOWCASE, type PanelId, type ProjectId } from './panels';
 import SocialComb from './SocialComb';
 import styles from './hero.module.scss';
 
@@ -49,9 +48,9 @@ export default function Hero() {
   const openFirst = () => window.dispatchEvent(new CustomEvent('projects:open'));
 
   // the side notes caption the project under the pointer (desktop only)
-  const [focus, setFocus] = useState<ProjectId | null>(null);
+  const [focus, setFocus] = useState<PanelId | null>(null);
   useEffect(() => {
-    const on = (e: Event) => setFocus((e as CustomEvent<ProjectId | null>).detail);
+    const on = (e: Event) => setFocus((e as CustomEvent<PanelId | null>).detail);
     window.addEventListener('panel:hover', on);
     return () => window.removeEventListener('panel:hover', on);
   }, []);
@@ -63,40 +62,23 @@ export default function Hero() {
       .then((a) => a?.slug && setActivity(a))
       .catch(() => {});
   }, []);
-  // "About me": pinned from the nav, or while the pointer rests on his face
-  const [aboutPinned, setAboutPinned] = useState(false);
-  const [onFace, setOnFace] = useState(false);
-  useEffect(() => {
-    const face = (e: Event) => setOnFace((e as CustomEvent<boolean>).detail);
-    const toggle = () => setAboutPinned((v) => !v);
-    const key = (e: KeyboardEvent) => e.key === 'Escape' && setAboutPinned(false);
-    // arriving from another page's "About" (/?sobre)
-    if (new URLSearchParams(window.location.search).has('sobre')) setAboutPinned(true);
-    window.addEventListener('face:hover', face);
-    window.addEventListener('about:toggle', toggle);
-    window.addEventListener('keydown', key);
-    return () => {
-      window.removeEventListener('face:hover', face);
-      window.removeEventListener('about:toggle', toggle);
-      window.removeEventListener('keydown', key);
-    };
-  }, []);
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent('about:state', { detail: aboutPinned }));
-  }, [aboutPinned]);
   const shown = focus ? SHOWCASE.find((p) => p.slug === focus) : undefined;
   const copy = shown ? (getProjectCopy(shown.slug, locale) ?? getProjectCopy(shown.slug, 'en')) : undefined;
-  const about = !shown && (aboutPinned || onFace);
+  const aboutFocus = focus === 'about';
+  // About open: the ring steps back and the copy and notes make room
+  const [aboutOpen, setAboutOpen] = useState(false);
   useEffect(() => {
-    anchors.about = about;
-  }, [about]);
+    const on = (e: Event) => setAboutOpen((e as CustomEvent<boolean>).detail);
+    window.addEventListener('about:state', on);
+    return () => window.removeEventListener('about:state', on);
+  }, []);
   const a = t.site.about;
   const leftNote = useRef<HTMLDivElement>(null);
   const rightNote = useRef<HTMLDivElement>(null);
   const busy = activity ? SHOWCASE.find((p) => p.slug === activity.slug) : undefined;
 
   return (
-    <section className={styles.hero} aria-labelledby="hero-title">
+    <section className={`${styles.hero} ${aboutOpen ? styles.heroAbout : ''}`} aria-labelledby="hero-title">
       <div className={styles.copy}>
         {/* keyed by language: switching replays the rise as feedback */}
         <h1 id="hero-title" key={`t-${locale}`} className={styles.title}>
@@ -142,11 +124,11 @@ export default function Hero() {
             <strong>{shown.title}</strong>
             <span>{copy?.tagline}</span>
           </div>
-        ) : about ? (
+        ) : aboutFocus ? (
           <div key="about" className={styles.noteBody}>
-            <span className={styles.noteLabel}>{a.label}</span>
-            <strong>{a.title}</strong>
-            <span>{a.body}</span>
+            <span className={styles.noteLabel}>{h.noteFocus}</span>
+            <strong>{a.label}</strong>
+            <span>{a.teaser}</span>
           </div>
         ) : (
           <div key="idle" className={styles.noteBody}>
@@ -167,11 +149,14 @@ export default function Hero() {
             <strong>{copy?.status}</strong>
             <span>{h.openHint}</span>
           </div>
-        ) : about ? (
+        ) : aboutFocus ? (
           <div key="about" className={styles.noteBody}>
-            <span className={styles.noteLabel}>{a.offLabel}</span>
-            <strong>{a.offTitle}</strong>
-            <span>{a.offBody}</span>
+            <span className={styles.noteLabel}>
+              <span className={styles.liveDot} aria-hidden />
+              {h.noteNow}
+            </span>
+            <strong>{h.cardRightTitle}</strong>
+            <span>{h.openHint}</span>
           </div>
         ) : (
           <div key="idle" className={styles.noteBody}>
@@ -196,24 +181,6 @@ export default function Hero() {
           </div>
         )}
       </div>
-
-      {/* narrow screens have no side notes: "About" opens as one card */}
-      {aboutPinned && (
-        <div className={styles.aboutCard} role="dialog" aria-label={a.label}>
-          <button type="button" className={styles.aboutClose} onClick={() => setAboutPinned(false)} aria-label={h.close}>
-            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden>
-              <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </button>
-          <span className={styles.noteLabel}>{a.label}</span>
-          <strong>{a.title}</strong>
-          <p>{a.body}</p>
-          <span className={styles.noteLabel}>{a.offLabel}</span>
-          <p>
-            <b>{a.offTitle}</b> {a.offBody}
-          </p>
-        </div>
-      )}
 
       <div className={styles.live}>
         <span className={styles.rule} aria-hidden />

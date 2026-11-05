@@ -12,9 +12,6 @@ export const anchors: {
   right: Point | null;
   /** the pointed-at panel's screen box, when there is one */
   focus: { x0: number; y0: number; x1: number; y1: number } | null;
-  /** either side of Lucas's face in the portrait */
-  faceL: Point | null;
-  faceR: Point | null;
-  /** set by the page: the notes are showing "About me", aim at the face */
-  about: boolean;
-} = { left: null, right: null, focus: null, faceL: null, faceR: null, about: false };
+  /** "About me" is open: points on Lucas's head (HEAD_POINTS order) */
+  head: Point[] | null;
+} = { left: null, right: null, focus: null, head: null };

@@ -154,9 +154,12 @@ export const SHOWCASE: Showcase[] = [
 
 // ── Derived ──────────────────────────────
 
+// Every card on the ring: the projects, plus one about Lucas himself.
+export type PanelId = ProjectId | 'about';
+
 // One glass card per project: icon, name and note on top, its screen below.
 export type Panel = {
-  slug: ProjectId;
+  slug: PanelId;
   title: string;
   note: string;
   tone: string;
@@ -165,7 +168,17 @@ export type Panel = {
   clip?: string;
 };
 
-export const PANELS: Panel[] = SHOWCASE.map((p) => ({
+// "About me" rides the ring like a project; it opens into the bio, not a case
+export const ABOUT_PANEL: Panel = {
+  slug: 'about',
+  title: 'Lucas Sckenal',
+  note: 'Unijuí · RS',
+  tone: '#8a8a8a',
+  icon: '/icons/app/lucas.webp',
+  shot: '/home/about-panel.webp',
+};
+
+const projectPanels: Panel[] = SHOWCASE.map((p) => ({
   slug: p.slug,
   title: p.short,
   note: p.note,
@@ -174,6 +187,8 @@ export const PANELS: Panel[] = SHOWCASE.map((p) => ({
   shot: p.shots[0]?.src,
   clip: p.shots[0]?.clip,
 }));
+// second on the ring: near the front when the page opens, after the lead project
+export const PANELS: Panel[] = [projectPanels[0], ABOUT_PANEL, ...projectPanels.slice(1)];
 
 export const PROJECTS = Object.fromEntries(
   SHOWCASE.map((p) => [p.slug, { title: p.title, media: p.media }])

@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale, useT } from '@/components/providers/LanguageProvider';
 import { LOCALES, localeMeta, type Locale } from '@/lib/i18n';
@@ -16,15 +15,9 @@ export default function Nav() {
   const router = useRouter();
   const pathname = usePathname();
   const { locale, setLocale } = useLocale();
-  // "About" lives on the home page: elsewhere it goes home first
-  const [aboutOn, setAboutOn] = useState(false);
-  useEffect(() => {
-    const on = (e: Event) => setAboutOn((e as CustomEvent<boolean>).detail);
-    window.addEventListener('about:state', on);
-    return () => window.removeEventListener('about:state', on);
-  }, []);
+  // "Sobre" opens the About card on the ring; from another page, home first
   const about = () => {
-    if (pathname === '/') window.dispatchEvent(new CustomEvent('about:toggle'));
+    if (pathname === '/') window.dispatchEvent(new CustomEvent('orbit:open-about'));
     else router.push('/?sobre');
   };
 
@@ -38,7 +31,7 @@ export default function Nav() {
         <button type="button" onClick={() => showWork(router, pathname)}>
           {t.site.nav.work}
         </button>
-        <button type="button" aria-pressed={aboutOn} onClick={about}>
+        <button type="button" onClick={about}>
           {t.site.about.nav}
         </button>
         <Versions />

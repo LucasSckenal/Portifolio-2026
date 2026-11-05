@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useLoader, useThree, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import { PerformanceMonitor } from '@react-three/drei/core/PerformanceMonitor';
-import { PANELS, type Panel, type ProjectId } from './panels';
+import { PANELS, type Panel, type PanelId } from './panels';
 import { ORBIT, ORBIT_DEFAULTS } from './orbitTuning';
 import { anchors } from './sceneAnchors';
 
@@ -28,8 +28,8 @@ export type Rect = { x: number; y: number; w: number; h: number };
 type Props = {
   reduced: boolean;
   onReady?: () => void;
-  onOpen: (slug: ProjectId, from: Rect) => void;
-  openSlug?: ProjectId | null;
+  onOpen: (slug: PanelId, from: Rect) => void;
+  openSlug?: PanelId | null;
   // a panel is flying between the ring and the centre (the page lifts the
   // scene above the headline meanwhile)
   onFlight?: (active: boolean) => void;
@@ -469,7 +469,7 @@ function Ring({
   onFlight,
   controlRef,
 }: {
-  openSlug?: ProjectId | null;
+  openSlug?: PanelId | null;
   onFlight?: (active: boolean) => void;
   textures: THREE.Texture[];
   radius: number;
@@ -504,11 +504,11 @@ function Ring({
   }, [hover]);
   // the leader lines fall back to nothing once the scene is gone
   useEffect(() => () => {
-    anchors.left = anchors.right = anchors.focus = anchors.faceL = anchors.faceR = null;
+    anchors.left = anchors.right = anchors.focus = anchors.head = null;
   }, []);
-  const faceHover = useRef(false);
   const { gl, camera } = useThree();
   const born = useRef<number | null>(null);
+  const aboutK = useRef(0);
   const flyer = useRef<THREE.Mesh>(null);
   const flight = useRef<{
     i: number;
@@ -765,23 +765,15 @@ function Ring({
       anchors.right = { x: tmp.x, y: tmp.y };
     }
     anchors.focus = hm && !flight.current && !openSlug ? ndcBox(hm, state.camera) : null;
-    // the portrait's face: where the "About me" lines land, and a hover zone
-    // (away from any panel) that brings the About notes up
-    if (outer.current && !openSlug) {
-      outer.current.localToWorld(tmp.set(-radius * FACE.side, FACE.y * radius, radius * 0.3)).project(state.camera);
-      anchors.faceL = { x: tmp.x, y: tmp.y };
-      outer.current.localToWorld(tmp.set(radius * FACE.side, FACE.y * radius, radius * 0.3)).project(state.camera);
-      anchors.faceR = { x: tmp.x, y: tmp.y };
-      const fx = (anchors.faceL.x + anchors.faceR.x) / 2;
-      const fy = anchors.faceL.y;
-      const half = (anchors.faceR.x - anchors.faceL.x) / 2;
-      const p = state.pointer;
-      const onFace = hover < 0 && !s.current.dragging && Math.abs(p.x - fx) < half && Math.abs(p.y - fy) < half * 1.6 * state.viewport.aspect;
-      if (onFace !== faceHover.current) {
-        faceHover.current = onFace;
-        window.dispatchEvent(new CustomEvent('face:hover', { detail: onFace }));
-      }
-    } else anchors.faceL = anchors.faceR = null;
+    // About me: the ring steps back and the page annotates his head
+    const aboutOpen = openSlug === 'about';
+    aboutK.current += ((aboutOpen ? 1 : 0) - aboutK.current) * Math.min(1, dt * (reduced ? 12 : 4));
+    if (aboutOpen && outer.current) {
+      anchors.head = HEAD_POINTS.map(([x, y, z]) => {
+        outer.current!.localToWorld(tmp.set(x * radius, y * radius, z * radius)).project(state.camera);
+        return { x: tmp.x, y: tmp.y };
+      });
+    } else anchors.head = null;
     materials.forEach((m, i) => {
       const u = m.uniforms.uHover;
       u.value += ((hover === i ? 1 : 0) - u.value) * Math.min(1, dt * 10);
@@ -793,10 +785,10 @@ function Ring({
       const slot = LAYOUT[i];
       const arrive = easeOut(Math.min(1, Math.max(0, (since - 0.45 - i * 0.07) / (reduced ? 0.4 : 0.8))));
       const away = reduced ? 0 : 1 - arrive;
-      const hidden = openSlug === PANELS[i].slug || flight.current?.i === i;
+      const hidden = openSlug === PANELS[i].slug || openSlug === 'about' || flight.current?.i === i;
       const alpha = m.uniforms.uAlpha;
       alpha.value += ((hidden ? 0 : arrive) - alpha.value) * Math.min(1, dt * (hidden ? 14 : 18));
-      const r = radius * (1 + away * 1.1 + u.value * 0.07);
+      const r = radius * (1 + away * 1.1 + u.value * 0.07 + aboutK.current * 0.9);
       const mesh0 = meshes.current[i];
       if (mesh0) {
         mesh0.position.set(
@@ -917,7 +909,7 @@ function Ring({
               onClick={(e: ThreeEvent<MouseEvent>) => {
                 e.stopPropagation();
                 if (s.current.moved > 6) return; // a drag, not a click
-                if (launch(i)) return; // the card opens when the panel arrives
+                if (p.slug !== 'about' && launch(i)) return; // the card opens when the panel arrives
                 s.current.velocity = 0;
                 s.current.target = frontAngle(i);
                 onOpen(p.slug, screenRect(e.object as THREE.Mesh, camera, gl.domElement));
@@ -933,8 +925,15 @@ function Ring({
   );
 }
 
-// the face in the portrait, in ring radii from the ring's centre
-const FACE = { side: 0.32, y: 0.15 };
+// Points on the portrait's head for the About annotations, in ring radii
+// from the ring's centre (order matches the facts, then "away from code")
+const HEAD_POINTS: Array<[number, number, number]> = [
+  [-0.3, 0.55, 0.3], // temple: origin
+  [-0.55, 0.05, 0], // ear: studies
+  [0.25, 0.22, 0.45], // eye: code
+  [0.05, 0.95, 0], // crown: start
+  [0.2, -0.42, 0.35], // chin: soulslike
+];
 const tmp = new THREE.Vector3();
 const dir = new THREE.Vector3();
 const fromP = new THREE.Vector3();

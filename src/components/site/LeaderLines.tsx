@@ -7,8 +7,7 @@ import styles from './hero.module.scss';
 // The side notes are annotations, and these are their leader lines: each one
 // carries on from the note's rule and lands on the halo. With nothing in
 // focus they rest on the ring's edges; point at a panel and both lines glide
-// over and hold it from either side, following it as the ring turns. On
-// "About me" they land on either side of Lucas's face in the portrait.
+// over and hold it from either side, following it as the ring turns.
 // Drawn straight into the DOM every frame: nothing here re-renders.
 export default function LeaderLines({
   left,
@@ -53,12 +52,9 @@ export default function LeaderLines({
       const k = Math.min(1, ((t - last) / 1000) * 9);
       last = t;
       const f = anchors.focus;
-      const face = !f && anchors.about && anchors.faceL && anchors.faceR;
       const want: (Point | null)[] = f
         ? [px({ x: f.x0, y: (f.y0 + f.y1) / 2 }), px({ x: f.x1, y: (f.y0 + f.y1) / 2 })]
-        : face
-          ? [px(anchors.faceL!), px(anchors.faceR!)]
-          : [anchors.left && px(anchors.left), anchors.right && px(anchors.right)];
+        : [anchors.left && px(anchors.left), anchors.right && px(anchors.right)];
       for (let i = 0; i < 2; i++) {
         const s = starts[i];
         const w = want[i];
@@ -85,7 +81,7 @@ export default function LeaderLines({
         dot.setAttribute('cy', c.y.toFixed(1));
         path.style.opacity = dot.style.opacity = '';
       }
-      el.classList.toggle(styles.wiresFocus, !!f || !!face);
+      el.classList.toggle(styles.wiresFocus, !!f);
     };
     raf = requestAnimationFrame(tick);
     return () => {

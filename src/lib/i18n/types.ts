@@ -210,6 +210,8 @@ export type Dictionary = {
       offLabel: string;
       offTitle: string;
       offBody: string;
+      teaser: string;
+      facts: Array<{ label: string; value: string }>;
     };
     social: {
       label: string;

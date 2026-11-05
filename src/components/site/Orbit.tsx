@@ -7,8 +7,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { MORPH, morphTo } from '@/lib/viewMorph';
 import { useT } from '@/components/providers/LanguageProvider';
-import { PANELS, PROJECTS, PROJECT_ORDER, type ProjectId } from './panels';
+import { PANELS, PROJECTS, PROJECT_ORDER, type PanelId, type ProjectId } from './panels';
 import type { OrbitControl, Rect } from './HeroScene';
+import AboutDiagram from './AboutDiagram';
 import styles from './hero.module.scss';
 
 const HeroScene = dynamic(() => import('./HeroScene'), { ssr: false });
@@ -23,7 +24,7 @@ function hasWebGL() {
   }
 }
 
-type Open = { slug: ProjectId; from: Rect } | null;
+type Open = { slug: PanelId; from: Rect } | null;
 
 // ── Orbit: the scene plus everything it needs to be a real interface ──
 //   · the WebGL scene (HeroScene) when the device can draw it
@@ -45,6 +46,7 @@ export default function Orbit() {
   const onReady = useCallback(() => setSceneReady(true), []);
   const lastFocus = useRef<HTMLElement | null>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const closing = useRef(false);
 
@@ -60,11 +62,25 @@ export default function Orbit() {
     return () => mq.removeEventListener('change', on);
   }, []);
 
-  const openProject = useCallback((slug: ProjectId, from: Rect) => {
+  const openProject = useCallback((slug: PanelId, from: Rect) => {
     lastFocus.current = document.activeElement as HTMLElement;
     closing.current = false;
     setOpen({ slug, from });
   }, []);
+
+  // the page around the ring quiets down while About is open
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('about:state', { detail: open?.slug === 'about' }));
+  }, [open]);
+
+  // arriving from another page's "Sobre" (/?sobre): open it once there is a stage
+  const askedAbout = useRef(false);
+  useEffect(() => {
+    if (askedAbout.current || gl === null || (gl && !sceneReady)) return;
+    if (!new URLSearchParams(window.location.search).has('sobre')) return;
+    askedAbout.current = true;
+    window.setTimeout(() => window.dispatchEvent(new CustomEvent('orbit:open-about')), gl ? 900 : 0);
+  }, [gl, sceneReady]);
 
   // FLIP: the transform that lays the card over the panel it came from
   const fromTransform = (from: Rect) => {
@@ -112,7 +128,7 @@ export default function Orbit() {
       );
     }
     const id = requestAnimationFrame(() => setShown(true));
-    const f = window.setTimeout(() => ctaRef.current?.focus({ preventScroll: true }), 80);
+    const f = window.setTimeout(() => (ctaRef.current ?? closeRef.current)?.focus({ preventScroll: true }), 80);
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && close();
     window.addEventListener('keydown', onKey);
     return () => {
@@ -125,28 +141,38 @@ export default function Orbit() {
   // Hero buttons talk to the ring through window events
   useEffect(() => {
     const spin = () => control.current?.spin();
-    const first = () => {
-      if (control.current?.open(0)) return; // flies in and opens on arrival
-      control.current?.focus(0);
+    const openAt = (i: number) => {
+      if (control.current?.open(i)) return; // flies in and opens on arrival
+      control.current?.focus(i);
       const w = 220;
-      openProject(PANELS[0].slug, { x: window.innerWidth / 2 - w / 2, y: window.innerHeight * 0.6, w, h: w * 0.62 });
+      openProject(PANELS[i].slug, { x: window.innerWidth / 2 - w / 2, y: window.innerHeight * 0.6, w, h: w * 0.62 });
+    };
+    const first = () => openAt(0);
+    // "Sobre" in the nav opens the About card, wherever the ring has it
+    // (no flight: the ring itself steps back for it)
+    const about = () => {
+      control.current?.focus(PANELS.findIndex((p) => p.slug === 'about'));
+      openProject('about', { x: window.innerWidth / 2 - 110, y: window.innerHeight * 0.6, w: 220, h: 136 });
     };
     window.addEventListener('orbit:spin', spin);
     window.addEventListener('orbit:open-first', first);
+    window.addEventListener('orbit:open-about', about);
     return () => {
       window.removeEventListener('orbit:spin', spin);
       window.removeEventListener('orbit:open-first', first);
+      window.removeEventListener('orbit:open-about', about);
     };
   }, [openProject]);
 
   // Real links (they work without JS); with JS they open the glass panel
-  const fromLink = (slug: ProjectId) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const fromLink = (slug: PanelId) => (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const r = e.currentTarget.getBoundingClientRect();
     openProject(slug, { x: r.left, y: r.top, w: r.width, h: r.height });
   };
 
-  const view = open ? PROJECTS[open.slug] : null;
+  const view = open && open.slug !== 'about' ? PROJECTS[open.slug] : null;
+  const a = t.site.about;
 
   return (
     <div className={`${styles.stage} ${open || flying ? styles.stageRaised : ''}`}>
@@ -183,6 +209,15 @@ export default function Orbit() {
             </a>
           </li>
         ))}
+        <li>
+          <a
+            href="/?sobre"
+            onClick={fromLink('about')}
+            onFocus={() => control.current?.focus(PANELS.findIndex((p) => p.slug === 'about'))}
+          >
+            {a.label}
+          </a>
+        </li>
       </ul>
 
       {gl && (
@@ -190,6 +225,8 @@ export default function Orbit() {
           {h.dragHint}
         </span>
       )}
+
+      {open?.slug === 'about' && <AboutDiagram shown={shown} onClose={close} />}
 
       {open && view && (
         <div className={`${styles.overlay} ${shown ? styles.overlayShown : ''}`} onClick={close} role="presentation">
@@ -235,7 +272,7 @@ export default function Orbit() {
                 </svg>
               </Link>
             </div>
-            <button type="button" className={styles.close} onClick={close} aria-label={h.close}>
+            <button ref={closeRef} type="button" className={styles.close} onClick={close} aria-label={h.close}>
               <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>
                 <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.6" />
               </svg>

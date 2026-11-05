@@ -242,7 +242,14 @@ export const it: Dictionary = {
       "body": "Studio Informatica all'Unijuí, in Rio Grande do Sul, e programmo da più di 5 anni. Ho iniziato con un programma di borse di studio di Compass UOL.",
       "offLabel": "Fuori dal codice",
       "offTitle": "Giochi soulslike.",
-      "offBody": "Morire, capire lo schema, riprovare. Con il codice è lo stesso."
+      "offBody": "Morire, capire lo schema, riprovare. Con il codice è lo stesso.",
+      "teaser": "La persona dietro i progetti.",
+      "facts": [
+        { "label": "Origine", "value": "Rio Grande do Sul, Brasile" },
+        { "label": "Studi", "value": "Informatica all'Unijuí" },
+        { "label": "Codice", "value": "Da più di 5 anni" },
+        { "label": "Inizio", "value": "Borse di studio Compass UOL" }
+      ]
     },
     "social": {
       "label": "Altrove",

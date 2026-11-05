@@ -242,7 +242,14 @@ export const es: Dictionary = {
       "body": "Estudio Ciencias de la Computación en Unijuí, en Rio Grande do Sul, y programo hace más de 5 años. Empecé en un programa de becas de Compass UOL.",
       "offLabel": "Fuera del código",
       "offTitle": "Juegos soulslike.",
-      "offBody": "Morir, entender el patrón, intentarlo otra vez. Con el código pasa lo mismo."
+      "offBody": "Morir, entender el patrón, intentarlo otra vez. Con el código pasa lo mismo.",
+      "teaser": "La persona detrás de los proyectos.",
+      "facts": [
+        { "label": "Origen", "value": "Rio Grande do Sul, Brasil" },
+        { "label": "Formación", "value": "Ciencias de la Computación en Unijuí" },
+        { "label": "Código", "value": "Hace más de 5 años" },
+        { "label": "Inicio", "value": "Programa de becas de Compass UOL" }
+      ]
     },
     "social": {
       "label": "Por ahí",

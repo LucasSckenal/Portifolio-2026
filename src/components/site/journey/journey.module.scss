@@ -126,13 +126,18 @@ $paper: #f4f4f1;
 // ── what he carries ──
 .carry {
   position: absolute;
-  top: 118px;
+  top: 128px;
   left: var(--gutter);
   z-index: 2;
   max-width: min(420px, calc(100% - 2 * var(--gutter)));
   margin: 0;
+  padding: 8px 12px 9px;
+  border-radius: 12px;
+  background: rgba(244, 244, 241, 0.78);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   font-size: 0.82rem;
-  color: rgba(17, 17, 18, 0.75);
+  color: rgba(17, 17, 18, 0.8);
 
   span {
     display: block;
@@ -376,7 +381,9 @@ $paper: #f4f4f1;
   }
 
   .carry {
-    top: 104px;
+    top: 112px;
+    padding: 6px 10px 7px;
+    font-size: 0.76rem;
   }
 
   .card {

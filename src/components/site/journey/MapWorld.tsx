@@ -215,6 +215,8 @@ export default function MapWorld({
       </mesh>
       <Road m={m} />
       <Nature m={m} />
+      <Roadside m={m} />
+      <Fluff walker={walker} />
 
       <Village m={m} won={won} />
       <Tower m={m} />
@@ -245,6 +247,11 @@ function makeMaterials() {
     cloth: flat('#efefea', { side: THREE.DoubleSide }),
     darkCloth: flat('#3b3c41', { side: THREE.DoubleSide }),
     leaf: flat('#3e3f44'),
+    crown: flat('#5c5d62'),
+    bush: flat('#6e6f73'),
+    tuft: flat('#5f6064', { side: THREE.DoubleSide }),
+    flower: new THREE.MeshBasicMaterial({ color: '#f6f6f2' }),
+    patch: new THREE.MeshStandardMaterial({ color: '#ffffff', flatShading: true, roughness: 1, transparent: true, opacity: 0.55, depthWrite: false }),
     trunk: flat('#55565b'),
     metal: flat('#8d9097', { metalness: 0.5, roughness: 0.4 }),
     glow: new THREE.MeshBasicMaterial({ color: '#ffffff' }),
@@ -295,84 +302,405 @@ function Road({ m }: { m: M }) {
 
 // ── trees, rocks and hills, kept off the road and the stops ──
 function Nature({ m }: { m: M }) {
-  const trees = useRef<THREE.InstancedMesh>(null);
+  const pines = useRef<THREE.InstancedMesh>(null);
+  const crowns = useRef<THREE.InstancedMesh>(null);
   const trunks = useRef<THREE.InstancedMesh>(null);
+  const bushes = useRef<THREE.InstancedMesh>(null);
+  const grass = useRef<THREE.InstancedMesh>(null);
+  const flowers = useRef<THREE.InstancedMesh>(null);
   const rocks = useRef<THREE.InstancedMesh>(null);
+  const patches = useRef<THREE.InstancedMesh>(null);
   const hills = useRef<THREE.InstancedMesh>(null);
-  const N = 200;
-  const R = 60;
-  const H = 34;
+  const NP = 190; // pines
+  const NC = 110; // round trees
+  const NB = 200; // bushes
+  const NG = 1600; // grass tufts
+  const NF = 700; // little white flowers
+  const NR = 80; // rocks
+  const NPa = 70; // ground patches
+  const H = 34; // hills
   useEffect(() => {
     const r = rng(7);
     const o = new THREE.Object3D();
-    const free = (x: number, z: number, road: number, stop: number) =>
-      nearestRoad(x, z).d > road && STOPS.every((s) => Math.hypot(siteOf(s).x - x, siteOf(s).z - z) > stop && Math.hypot(s.x - x, s.z - z) > stop);
-    let n = 0;
-    for (let tries = 0; n < N && tries < 4000; tries++) {
-      // half of them hug the road a few steps off it, the rest scatter
-      let x = (r() * 2 - 1) * 34;
-      let z = 14 - r() * 120;
-      if (n % 2 === 0) {
-        const p = ROAD[Math.floor(r() * ROAD.length)];
-        const a = r() * Math.PI * 2;
-        const d = 5.5 + r() * 10;
-        x = p.x + Math.cos(a) * d;
-        z = p.z + Math.sin(a) * d;
+    // keep clear of the road, the arrival rings and the buildings; the
+    // village square gets more room than the rest
+    const clear = (x: number, z: number, road: number, stop: number) =>
+      Math.abs(x) < BOUNDS.x + 6 &&
+      nearestRoad(x, z).d > road &&
+      STOPS.every((s, i) => {
+        const k = i === 0 ? 1.6 : 1;
+        return Math.hypot(siteOf(s).x - x, siteOf(s).z - z) > stop * k && Math.hypot(s.x - x, s.z - z) > Math.min(stop, 5) * k;
+      });
+    const put = (im: THREE.InstancedMesh | null, i: number) => {
+      o.updateMatrix();
+      im?.setMatrixAt(i, o.matrix);
+    };
+
+    // trees grow in groves, set back from the road and clear of every stop
+    const groves: Array<[number, number]> = [];
+    for (let tries = 0; groves.length < 26 && tries < 3000; tries++) {
+      const p = ROAD[Math.floor(r() * ROAD.length)];
+      const a = r() * Math.PI * 2;
+      const d = 6.5 + r() * 11;
+      const x = p.x + Math.cos(a) * d;
+      const z = p.z + Math.sin(a) * d;
+      if (clear(x, z, 5.5, 8)) groves.push([x, z]);
+    }
+    const spot = (near: number) => {
+      for (let tries = 0; tries < 60; tries++) {
+        let x: number;
+        let z: number;
+        if (r() < near && groves.length) {
+          const [gx, gz] = groves[Math.floor(r() * groves.length)];
+          const a = r() * Math.PI * 2;
+          const d = Math.sqrt(r()) * 5.5;
+          x = gx + Math.cos(a) * d;
+          z = gz + Math.sin(a) * d;
+        } else {
+          x = (r() * 2 - 1) * 36;
+          z = 16 - r() * 124;
+        }
+        if (clear(x, z, 3.2, 6)) return [x, z] as const;
       }
-      if (!free(x, z, 3.4, 9)) continue;
+      return null;
+    };
+    let ti = 0;
+    let pi = 0;
+    let ci = 0;
+    let bi = 0;
+    let gi = 0;
+    let fi = 0;
+    for (let i = 0; i < NP; i++) {
+      const p = spot(0.7);
+      if (!p) continue;
       const s = 0.8 + r() * 0.9;
-      o.position.set(x, 1.1 * s + 0.6 * s, z);
+      o.position.set(p[0], 1.7 * s, p[1]);
       o.rotation.set(0, r() * 6, 0);
       o.scale.set(s, s * (0.9 + r() * 0.5), s);
-      o.updateMatrix();
-      trees.current?.setMatrixAt(n, o.matrix);
+      put(pines.current, pi++);
       o.position.y = 0.45 * s;
       o.scale.set(s, s, s);
-      o.updateMatrix();
-      trunks.current?.setMatrixAt(n, o.matrix);
-      n++;
+      put(trunks.current, ti++);
     }
+    for (let i = 0; i < NC; i++) {
+      const p = spot(0.6);
+      if (!p) continue;
+      const s = 0.8 + r() * 0.6;
+      o.position.set(p[0], 1.75 * s, p[1]);
+      o.rotation.set(r(), r() * 6, r());
+      o.scale.set(s * (1 + r() * 0.3), s * (0.85 + r() * 0.3), s);
+      put(crowns.current, ci++);
+      o.position.y = 0.6 * s;
+      o.rotation.set(0, 0, 0);
+      o.scale.set(s, s * 1.4, s);
+      put(trunks.current, ti++);
+    }
+    if (trunks.current) trunks.current.count = ti;
+    if (pines.current) pines.current.count = pi;
+    if (crowns.current) crowns.current.count = ci;
+    // bushes: along the road's edges and round the groves
+    for (let i = 0; i < NB; i++) {
+      let p: readonly [number, number] | null = null;
+      if (i % 2) {
+        const q = ROAD[Math.floor(r() * ROAD.length)];
+        const a = r() * Math.PI * 2;
+        const x = q.x + Math.cos(a) * (2.6 + r() * 3);
+        const z = q.z + Math.sin(a) * (2.6 + r() * 3);
+        if (clear(x, z, 2.3, 4.2)) p = [x, z];
+      } else p = spot(0.8);
+      if (!p) continue;
+      const s = 0.35 + r() * 0.45;
+      o.position.set(p[0], s * 0.45, p[1]);
+      o.rotation.set(r() * 3, r() * 3, r() * 3);
+      o.scale.set(s * 1.3, s * 0.9, s * 1.1);
+      put(bushes.current, bi++);
+    }
+    // grass tufts everywhere but the road, thicker near it
+    for (let i = 0; i < NG; i++) {
+      let x: number;
+      let z: number;
+      if (r() < 0.55) {
+        const q = ROAD[Math.floor(r() * ROAD.length)];
+        const a = r() * Math.PI * 2;
+        const d = 1.9 + r() * 7;
+        x = q.x + Math.cos(a) * d;
+        z = q.z + Math.sin(a) * d;
+      } else {
+        x = (r() * 2 - 1) * 36;
+        z = 16 - r() * 124;
+      }
+      if (nearestRoad(x, z).d < 1.75) continue;
+      const s = 0.2 + r() * 0.22;
+      o.position.set(x, s * 0.8, z);
+      o.rotation.set((r() - 0.5) * 0.4, r() * 6, (r() - 0.5) * 0.4);
+      o.scale.set(s, s * (1.6 + r()), s);
+      put(grass.current, gi++);
+    }
+    for (let i = 0; i < NF; i++) {
+      const q = ROAD[Math.floor(r() * ROAD.length)];
+      const a = r() * Math.PI * 2;
+      const d = 2 + r() * 10;
+      const x = q.x + Math.cos(a) * d + (r() - 0.5) * 0.6;
+      const z = q.z + Math.sin(a) * d + (r() - 0.5) * 0.6;
+      if (nearestRoad(x, z).d < 1.8) continue;
+      o.position.set(x, 0.14 + r() * 0.08, z);
+      o.rotation.set(0, 0, 0);
+      o.scale.setScalar(0.04 + r() * 0.035);
+      put(flowers.current, fi++);
+    }
+    if (bushes.current) bushes.current.count = bi;
+    if (grass.current) grass.current.count = gi;
+    if (flowers.current) flowers.current.count = fi;
     let k = 0;
-    for (let tries = 0; k < R && tries < 3000; tries++) {
-      const x = (r() * 2 - 1) * 30;
+    for (let tries = 0; k < NR && tries < 3000; tries++) {
+      const x = (r() * 2 - 1) * 32;
       const z = 12 - r() * 116;
-      if (!free(x, z, 2.2, 5)) continue;
+      if (!clear(x, z, 2.2, 5)) continue;
       const s = 0.25 + r() * 0.55;
       o.position.set(x, s * 0.3, z);
       o.rotation.set(r() * 3, r() * 3, r() * 3);
       o.scale.set(s * 1.3, s * 0.7, s);
-      o.updateMatrix();
-      rocks.current?.setMatrixAt(k++, o.matrix);
+      put(rocks.current, k++);
+    }
+    if (rocks.current) rocks.current.count = k;
+    // the ground isn't one grey: soft patches of lighter and darker earth
+    for (let i = 0; i < NPa; i++) {
+      const x = (r() * 2 - 1) * 34;
+      const z = 14 - r() * 120;
+      const s = 2.5 + r() * 6;
+      o.position.set(x, 0.008 + (i % 3) * 0.002, z);
+      o.rotation.set(-Math.PI / 2, 0, r() * 6);
+      o.scale.set(s, s * (0.5 + r() * 0.5), 1);
+      put(patches.current, i);
+      patches.current?.setColorAt(i, new THREE.Color(i % 2 ? '#b1b2b3' : '#9a9b9e'));
     }
     // hills ring the land, so its edge never shows
     for (let i = 0; i < H; i++) {
       const side = i % 2 ? 1 : -1;
       const z = 16 - (i >> 1) * 7.5;
       const s = 7 + r() * 6;
-      o.position.set(side * (38 + r() * 6), -s * 0.35, z);
+      o.position.set(side * (40 + r() * 6), -s * 0.35, z);
       o.rotation.set(0, r() * 6, 0);
       o.scale.set(s, s * (0.5 + r() * 0.3), s);
-      o.updateMatrix();
-      hills.current?.setMatrixAt(i, o.matrix);
+      put(hills.current, i);
     }
-    for (const im of [trees.current, trunks.current, rocks.current, hills.current]) if (im) im.instanceMatrix.needsUpdate = true;
+    for (const im of [pines, crowns, trunks, bushes, grass, flowers, rocks, patches, hills]) {
+      if (!im.current) continue;
+      im.current.instanceMatrix.needsUpdate = true;
+      if (im.current.instanceColor) im.current.instanceColor.needsUpdate = true;
+      // its bounds were taken before anything was placed: retake them, or
+      // everything away from the village gets culled
+      im.current.computeBoundingSphere();
+    }
   }, []);
   return (
     <>
-      <instancedMesh ref={trees} args={[undefined, undefined, N]} castShadow material={m.leaf}>
+      <instancedMesh ref={pines} args={[undefined, undefined, NP]} castShadow material={m.leaf}>
         <coneGeometry args={[0.95, 2.6, 6]} />
       </instancedMesh>
-      <instancedMesh ref={trunks} args={[undefined, undefined, N]} castShadow material={m.trunk}>
+      <instancedMesh ref={crowns} args={[undefined, undefined, NC]} castShadow material={m.crown}>
+        <icosahedronGeometry args={[1.05, 0]} />
+      </instancedMesh>
+      <instancedMesh ref={trunks} args={[undefined, undefined, NP + NC]} castShadow material={m.trunk}>
         <cylinderGeometry args={[0.12, 0.16, 0.9, 5]} />
       </instancedMesh>
-      <instancedMesh ref={rocks} args={[undefined, undefined, R]} castShadow receiveShadow material={m.stone}>
+      <instancedMesh ref={bushes} args={[undefined, undefined, NB]} castShadow receiveShadow material={m.bush}>
         <icosahedronGeometry args={[1, 0]} />
+      </instancedMesh>
+      <instancedMesh ref={grass} args={[undefined, undefined, NG]} material={m.tuft}>
+        <coneGeometry args={[0.5, 1, 3]} />
+      </instancedMesh>
+      <instancedMesh ref={flowers} args={[undefined, undefined, NF]} material={m.flower}>
+        <icosahedronGeometry args={[1, 0]} />
+      </instancedMesh>
+      <instancedMesh ref={rocks} args={[undefined, undefined, NR]} castShadow receiveShadow material={m.stone}>
+        <icosahedronGeometry args={[1, 0]} />
+      </instancedMesh>
+      <instancedMesh ref={patches} args={[undefined, undefined, NPa]} receiveShadow material={m.patch}>
+        <circleGeometry args={[1, 9]} />
       </instancedMesh>
       <instancedMesh ref={hills} args={[undefined, undefined, H]} receiveShadow material={m.grass}>
         <icosahedronGeometry args={[1, 1]} />
       </instancedMesh>
     </>
   );
+}
+
+// ── the road's edges: stones, stretches of fence, lamp posts, signs ──
+function Roadside({ m }: { m: M }) {
+  const stones = useRef<THREE.InstancedMesh>(null);
+  const posts = useRef<THREE.InstancedMesh>(null);
+  const rails = useRef<THREE.InstancedMesh>(null);
+  const poles = useRef<THREE.InstancedMesh>(null);
+  const heads = useRef<THREE.InstancedMesh>(null);
+  const NS = 360;
+  const NPo = 140;
+  const NL = 14;
+  // which stretches of road get a fence, and on which side
+  const FENCES: Array<[number, number, 1 | -1]> = [
+    [30, 70, 1],
+    [95, 130, -1],
+    [160, 200, 1],
+    [225, 255, -1],
+    [290, 330, 1],
+    [345, 372, -1],
+  ];
+  const signs = useMemo(
+    () =>
+      STOPS.slice(0, -1).map((s, i) => {
+        const at = Math.min(ROAD.length - 2, STOP_AT[i] + 16);
+        const p = ROAD[at];
+        const q = ROAD[at + 1];
+        const ang = Math.atan2(q.x - p.x, q.z - p.z);
+        const side = i % 2 ? 1 : -1;
+        return { x: p.x + Math.cos(ang) * 2.1 * side, z: p.z - Math.sin(ang) * 2.1 * side, ang };
+      }),
+    []
+  );
+  useEffect(() => {
+    const r = rng(23);
+    const o = new THREE.Object3D();
+    const dirAt = (i: number) => {
+      const a = ROAD[Math.max(0, i - 1)];
+      const b = ROAD[Math.min(ROAD.length - 1, i + 1)];
+      return Math.atan2(b.x - a.x, b.z - a.z);
+    };
+    // stones line both edges, unevenly
+    let n = 0;
+    for (let i = 2; i < ROAD.length - 2 && n < NS; i += 2) {
+      if (STOPS.some((s) => Math.hypot(s.x - ROAD[i].x, s.z - ROAD[i].z) < 3)) continue;
+      for (const side of [-1, 1]) {
+        if (r() < 0.45 || n >= NS) continue;
+        const a = dirAt(i);
+        const d = 1.55 + r() * 0.35;
+        o.position.set(ROAD[i].x + Math.cos(a) * d * side, 0.05, ROAD[i].z - Math.sin(a) * d * side);
+        o.rotation.set(r(), r() * 6, r());
+        const s = 0.12 + r() * 0.16;
+        o.scale.set(s * 1.4, s * 0.6, s);
+        o.updateMatrix();
+        stones.current?.setMatrixAt(n++, o.matrix);
+      }
+    }
+    if (stones.current) stones.current.count = n;
+    // fence: posts every few steps, two rails between them
+    let p = 0;
+    let q = 0;
+    for (const [from, to, side] of FENCES) {
+      for (let i = from; i < to && p < NPo; i += 4) {
+        const a = dirAt(i);
+        const x = ROAD[i].x + Math.cos(a) * 2.5 * side;
+        const z = ROAD[i].z - Math.sin(a) * 2.5 * side;
+        o.position.set(x, 0.5, z);
+        o.rotation.set(0, a, (r() - 0.5) * 0.08);
+        o.scale.set(1, 1, 1);
+        o.updateMatrix();
+        posts.current?.setMatrixAt(p++, o.matrix);
+        if (i + 4 < to) {
+          const a2 = dirAt(i + 4);
+          const x2 = ROAD[i + 4].x + Math.cos(a2) * 2.5 * side;
+          const z2 = ROAD[i + 4].z - Math.sin(a2) * 2.5 * side;
+          const len = Math.hypot(x2 - x, z2 - z);
+          for (const y of [0.42, 0.78]) {
+            o.position.set((x + x2) / 2, y, (z + z2) / 2);
+            o.rotation.set(0, Math.atan2(x2 - x, z2 - z), 0);
+            o.scale.set(1, 1, len);
+            o.updateMatrix();
+            rails.current?.setMatrixAt(q++, o.matrix);
+          }
+        }
+      }
+    }
+    if (posts.current) posts.current.count = p;
+    if (rails.current) rails.current.count = q;
+    // lamp posts at intervals, alternating sides
+    let l = 0;
+    for (let i = 24; i < ROAD.length - 20 && l < NL; i += 30) {
+      if (STOPS.some((s) => Math.hypot(s.x - ROAD[i].x, s.z - ROAD[i].z) < 5)) continue;
+      const a = dirAt(i);
+      const side = l % 2 ? 1 : -1;
+      const x = ROAD[i].x + Math.cos(a) * 2.2 * side;
+      const z = ROAD[i].z - Math.sin(a) * 2.2 * side;
+      o.position.set(x, 1.15, z);
+      o.rotation.set(0, 0, 0);
+      o.scale.set(1, 1, 1);
+      o.updateMatrix();
+      poles.current?.setMatrixAt(l, o.matrix);
+      o.position.set(x, 2.35, z);
+      o.updateMatrix();
+      heads.current?.setMatrixAt(l, o.matrix);
+      l++;
+    }
+    if (poles.current) poles.current.count = l;
+    if (heads.current) heads.current.count = l;
+    for (const im of [stones, posts, rails, poles, heads])
+      if (im.current) {
+        im.current.instanceMatrix.needsUpdate = true;
+        im.current.computeBoundingSphere();
+      }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  return (
+    <>
+      <instancedMesh ref={stones} args={[undefined, undefined, NS]} castShadow receiveShadow material={m.stone}>
+        <icosahedronGeometry args={[1, 0]} />
+      </instancedMesh>
+      <instancedMesh ref={posts} args={[undefined, undefined, NPo]} castShadow material={m.wood}>
+        <boxGeometry args={[0.12, 1, 0.12]} />
+      </instancedMesh>
+      <instancedMesh ref={rails} args={[undefined, undefined, NPo * 2]} castShadow material={m.wood}>
+        <boxGeometry args={[0.06, 0.07, 1]} />
+      </instancedMesh>
+      <instancedMesh ref={poles} args={[undefined, undefined, NL]} castShadow material={m.wood}>
+        <cylinderGeometry args={[0.05, 0.07, 2.3, 5]} />
+      </instancedMesh>
+      <instancedMesh ref={heads} args={[undefined, undefined, NL]} material={m.glow}>
+        <boxGeometry args={[0.2, 0.24, 0.2]} />
+      </instancedMesh>
+      {/* a wooden sign after each stop, pointing on up the road */}
+      {signs.map((s, i) => (
+        <group key={i} position={[s.x, 0, s.z]} rotation={[0, s.ang, 0]}>
+          <mesh position={[0, 0.75, 0]} castShadow material={m.wood}>
+            <boxGeometry args={[0.1, 1.5, 0.1]} />
+          </mesh>
+          <mesh position={[0, 1.32, 0.3]} castShadow material={m.wall}>
+            <boxGeometry args={[0.08, 0.26, 0.75]} />
+          </mesh>
+          <mesh position={[0, 1.32, 0.72]} rotation={[0, 0, 0]} castShadow material={m.wall}>
+            <coneGeometry args={[0.13, 0.18, 3]} />
+          </mesh>
+        </group>
+      ))}
+    </>
+  );
+}
+
+// ── seed fluff drifting across the land ──
+function Fluff({ walker }: { walker: React.RefObject<Walker> }) {
+  const N = 260;
+  const pts = useRef<THREE.Points>(null);
+  const seed = useMemo(() => {
+    const r = rng(41);
+    return Array.from({ length: N }, () => [(r() * 2 - 1) * 22, 0.4 + r() * 3.2, (r() * 2 - 1) * 22, r() * 6]);
+  }, []);
+  const geo = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(N * 3), 3));
+    return g;
+  }, []);
+  const mat = useMemo(() => new THREE.PointsMaterial({ color: '#ffffff', size: 0.07, transparent: true, opacity: 0.85, depthWrite: false }), []);
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
+    const w = walker.current;
+    const pos = geo.attributes.position as THREE.BufferAttribute;
+    // a field of fluff that travels with you, wrapped round a box
+    for (let i = 0; i < N; i++) {
+      const [x, y, z, ph] = seed[i];
+      const wx = ((((x + t * 0.6 - w.x) % 44) + 44) % 44) - 22 + w.x;
+      const wz = ((((z + Math.sin(t * 0.3 + ph) * 2 - w.z) % 44) + 44) % 44) - 22 + w.z;
+      pos.setXYZ(i, wx, y + Math.sin(t * 0.8 + ph) * 0.3, wz);
+    }
+    pos.needsUpdate = true;
+  });
+  return <points ref={pts} geometry={geo} material={mat} frustumCulled={false} />;
 }
 
 // ── pieces ──

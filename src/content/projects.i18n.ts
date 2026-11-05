@@ -26,7 +26,8 @@ type Slug =
   | 'lj-treinamento-integrado'
   | 'onde-estao-os-netos'
   | 'medical-chatbot'
-  | 'phantom-commerce';
+  | 'phantom-commerce'
+  | 'guessquest';
 
 export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   en: {
@@ -87,6 +88,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         'A gaming-focused commerce platform built around premium product presentation, animated interactions, and a glass-deep visual language. The store as exhibit, not as catalogue. Full-stack Next.js with Firebase for auth and Firestore for the product / user data.',
       team: 'Team of 3 · Unijui',
+    },
+    guessquest: {
+      status: "Academic · Desktop game",
+      tagline: "An arcade quiz: name the game from a single image.",
+      summary:
+        "A retro arcade quiz in JavaFX: each stage shows a game's cover or a screenshot from the RAWG database and four answers. Fifteen stages, lives, three difficulties up to Souls, lifelines and a leaderboard.",
+      team: "Team of 2 · Unijui",
     },
   },
 
@@ -149,6 +157,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         'Uma plataforma de e-commerce voltada a games, construída em torno de uma apresentação premium dos produtos, interações animadas e uma linguagem visual de vidro profundo. A loja como exposição, não como catálogo. Next.js full-stack com Firebase para autenticação e Firestore para os dados de produtos e usuários.',
       team: 'Equipe de 3 · Unijui',
     },
+    guessquest: {
+      status: "Acadêmico · Jogo desktop",
+      tagline: "Um quiz de fliperama: acerte o jogo por uma única imagem.",
+      summary:
+        "Um quiz de fliperama retrô em JavaFX: cada fase mostra a capa ou uma imagem de um jogo, vinda da base RAWG, e quatro respostas. Quinze fases, vidas, três dificuldades até o modo Souls, ajudas e ranking.",
+      team: "Equipe de 2 · Unijuí",
+    },
   },
 
   es: {
@@ -209,6 +224,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         'Una plataforma de comercio enfocada en gaming, construida en torno a una presentación premium de productos, interacciones animadas y un lenguaje visual de vidrio profundo. La tienda como exposición, no como catálogo. Next.js full-stack con Firebase para la autenticación y Firestore para los datos de productos y usuarios.',
       team: 'Equipo de 3 · Unijui',
+    },
+    guessquest: {
+      status: "Académico · Juego de escritorio",
+      tagline: "Un quiz de arcade: adivina el juego con una sola imagen.",
+      summary:
+        "Un quiz de arcade retro en JavaFX: cada fase muestra la portada o una imagen de un juego, de la base RAWG, y cuatro respuestas. Quince fases, vidas, tres dificultades hasta el modo Souls, comodines y ranking.",
+      team: "Equipo de 2 · Unijuí",
     },
   },
 
@@ -271,6 +293,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         'Una piattaforma di e-commerce dedicata al gaming, costruita attorno a una presentazione premium dei prodotti, interazioni animate e un linguaggio visivo di vetro profondo. Il negozio come mostra, non come catalogo. Next.js full-stack con Firebase per l’autenticazione e Firestore per i dati di prodotti e utenti.',
       team: 'Team di 3 · Unijui',
     },
+    guessquest: {
+      status: "Accademico · Gioco desktop",
+      tagline: "Un quiz da sala giochi: indovina il gioco da una sola immagine.",
+      summary:
+        "Un quiz arcade retrò in JavaFX: ogni livello mostra la copertina o un'immagine di un gioco, dal database RAWG, e quattro risposte. Quindici livelli, vite, tre difficoltà fino alla modalità Souls, aiuti e classifica.",
+      team: "Team di 2 · Unijuí",
+    },
   },
 
   ja: {
@@ -331,6 +360,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         'ゲーム向けのコマースプラットフォーム。上質な商品の見せ方、アニメーションするインタラクション、深いガラスのビジュアル言語を軸に構築。カタログではなく、展示としてのストア。Next.js のフルスタックで、認証に Firebase、商品とユーザーのデータに Firestore。',
       team: '3人チーム · Unijui',
+    },
+    guessquest: {
+      status: "学術 · デスクトップゲーム",
+      tagline: "一枚の画像からゲームを当てるアーケードクイズ。",
+      summary:
+        "JavaFXで作ったレトロなアーケードクイズ。各ステージにRAWGデータベースのゲームのパッケージや画面と4つの選択肢が出ます。15ステージ、ライフ、Soulsまでの3つの難易度、ヘルプ、ランキング付き。",
+      team: "2人チーム · Unijuí",
     },
   },
 };

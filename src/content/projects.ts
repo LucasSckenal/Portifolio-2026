@@ -1032,6 +1032,101 @@ export const nightProjects: ProjectCase[] = [
       },
     ],
   },
+
+  // ─────────────────────────────────────────
+  // 04 — GuessQuest (Unijui)
+  // ─────────────────────────────────────────
+  {
+    slug: 'guessquest',
+    index: '04',
+    title: 'GuessQuest',
+    jp: '謎',
+    jpLabel: '謎 · Riddle',
+    year: '2025',
+    status: 'Academic · Desktop game',
+    tagline: 'An arcade quiz: name the game from a single image.',
+    description:
+      'A retro arcade quiz in JavaFX: each stage shows a game\'s cover or a screenshot and four answers. Fifteen stages, lives, three difficulties and a leaderboard. Built at Unijui.',
+    roles: ['Game Design', 'Desktop UI', 'API Integration', 'Sound'],
+    tech: ['Java 17', 'JavaFX', 'Maven', 'RAWG API'],
+    team: 'Team of 2 · Unijui',
+    href: 'https://github.com/LucasSckenal/GuessQuest',
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'A retro arcade quiz for people who grew up with games: one image, four answers, and a life on the line.',
+      },
+      {
+        type: 'image',
+        src: '/projects/guessquest/game.webp',
+        alt: 'GuessQuest — a game cover with four answers on a CRT arcade screen',
+        caption: 'A stage — the cover, four answers, and the lifelines below.',
+      },
+      {
+        type: 'heading',
+        text: 'How it plays',
+        jp: '遊',
+        jpLabel: '遊 · Play',
+      },
+      {
+        type: 'list',
+        items: [
+          'Pick a difficulty: Normal, Hard or Souls',
+          'Each stage shows a cover or a screenshot pulled from the RAWG games database, with four answers',
+          'A wrong answer costs a life; fifteen stages to reach the end',
+          'Three lifelines: call Otacon, ask the students, and the avocado power',
+          'Enter your initials and climb the leaderboard, saved on your machine',
+          'Sound for every pick, hit, miss and win',
+        ],
+      },
+      {
+        type: 'image',
+        src: '/projects/guessquest/menu.webp',
+        alt: 'GuessQuest — the difficulty select screen',
+        caption: 'Insert coin — Normal, Hard or Souls.',
+      },
+      {
+        type: 'heading',
+        text: 'Secret initials',
+        jp: '猫',
+        jpLabel: '猫 · Cat',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'A few initials are secret words. Type the right one and the arcade summons a cat, a duck or a dog, fetched live from public image APIs.',
+      },
+      {
+        type: 'image',
+        src: '/projects/guessquest/easter-egg.webp',
+        alt: 'GuessQuest — a cat summoned on the initials screen',
+        caption: 'GATO — and a cat appears.',
+      },
+      {
+        type: 'heading',
+        text: 'Stack',
+        jp: '工',
+        jpLabel: '工 · Craft',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'Java 17 and JavaFX, with FXML screens styled in CSS and fade transitions between them, built with Maven and packaged as a desktop executable with jpackage. The RAWG API supplies the games; the GitHub API shows the developers\' avatars.',
+      },
+      {
+        type: 'heading',
+        text: 'The team',
+        jp: '組',
+        jpLabel: '組 · Group',
+      },
+      {
+        type: 'paragraph',
+        body: 'A two-person build at Unijui — Luan and myself. The project is open source on GitHub.',
+      },
+    ],
+  },
 ];
 
 // Combined lookup — case study routes serve from either array.

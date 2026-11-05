@@ -18,7 +18,8 @@ export type ProjectId =
   | 'lj-treinamento-integrado'
   | 'onde-estao-os-netos'
   | 'medical-chatbot'
-  | 'phantom-commerce';
+  | 'phantom-commerce'
+  | 'guessquest';
 
 type Shot = { src: string; clip?: string }; // clip: 5 s, 640×400 loop (plays while facing you)
 
@@ -149,6 +150,17 @@ export const SHOWCASE: Showcase[] = [
     // video built from the real screens (the app needs its private Firebase keys to run)
     shots: [{ src: '/projects/PhantomComerce/example_productpage.png', clip: '/projects/PhantomComerce/panel.mp4' }],
     media: video('PhantomComerce', '/projects/PhantomComerce/example_productpage.png'),
+  },
+  {
+    slug: 'guessquest',
+    title: 'GuessQuest',
+    short: 'GuessQuest',
+    note: 'JavaFX · RAWG',
+    tone: '#22d3ee',
+    icon: '/icons/app/guessquest.png',
+    // cut from Lucas's own play-through recording
+    shots: [{ src: '/projects/guessquest/game.webp', clip: '/projects/guessquest/panel.mp4' }],
+    media: video('guessquest', '/projects/guessquest/preview-poster.webp'),
   },
 ];
 

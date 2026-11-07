@@ -17,6 +17,9 @@ import styles from './journey.module.scss';
 // Everything is also readable as a plain list, and is the only view when
 // there's no WebGL.
 
+// a project outside the site opens in its own tab
+const outside = (href: string) => (href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {});
+
 function hasGL() {
   try {
     const c = document.createElement('canvas');
@@ -204,7 +207,7 @@ export default function Journey({ onClose }: { onClose: () => void }) {
           {stop === 0 && won && <p className={styles.item}>{mp.flag}</p>}
           <div className={styles.row}>
             {S.href && (
-              <a className={styles.ghostDark} href={S.href}>
+              <a className={styles.ghostDark} href={S.href} {...outside(S.href)}>
                 {mp.project} ↗
               </a>
             )}
@@ -246,7 +249,7 @@ export default function Journey({ onClose }: { onClose: () => void }) {
                       </button>
                     )}
                     {x.href && (
-                      <a className={styles.ghostDark} href={x.href}>
+                      <a className={styles.ghostDark} href={x.href} {...outside(x.href)}>
                         {mp.project} ↗
                       </a>
                     )}

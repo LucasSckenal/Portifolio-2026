@@ -331,7 +331,7 @@ export const it: Dictionary = {
           {
             "place": "L'arena",
             "title": "L'Armatura Vuota",
-            "body": "Amo i giochi souls-like. In fondo alla strada, un'armatura aspetta.",
+            "body": "Amo i giochi souls-like. In fondo alla strada, un'armatura aspetta. Questo duello è un'anteprima di O Visitante, un gioco che sto sviluppando.",
             "item": "Spada"
           }
         ]

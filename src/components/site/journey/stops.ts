@@ -24,7 +24,7 @@ export const STOPS: Stop[] = [
   { key: 'caravan', x: -8, z: -47, side: -1, gain: 'bag' },
   { key: 'workshop', x: 8, z: -62, side: 1, gain: 'shield', href: '/work/medical-chatbot' },
   { key: 'tavern', x: -7, z: -77, side: -1, gain: 'token', href: '/work/guessquest' },
-  { key: 'arena', x: 0, z: -93, side: 0, gain: 'sword' },
+  { key: 'arena', x: 0, z: -93, side: 0, gain: 'sword', href: 'https://o-visitante.vercel.app' },
 ];
 
 export const ARRIVE = 4.2; // how near a stop counts as being there

@@ -28,7 +28,8 @@ type Slug =
   | 'medical-chatbot'
   | 'phantom-commerce'
   | 'guessquest'
-  | 'estacao-sao-paulo';
+  | 'estacao-sao-paulo'
+  | 'lucas-patterns';
 
 export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   en: {
@@ -103,6 +104,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         'A weather station dashboard over a camera on the city: the first screen says what is out of the ordinary right now — UV, gusts, rain, fine particles — and every one of the fourteen readings has its own chart across the last twenty-four hours.',
       team: 'Unijui · Redesign',
+    },
+    'lucas-patterns': {
+      status: 'Open source · Claude Code skill',
+      tagline: 'My way of building front end, written down so an agent can follow it.',
+      summary:
+        'A Claude Code skill that carries my process and my taste: the client’s pain first, a structure reference, colours and fonts picked for each app, a blind review, then small fixes. It reads the code and measures the page in a real browser.',
+      team: 'Solo · Open source',
     },
   },
 
@@ -179,6 +187,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         'O painel de uma estação meteorológica sobre uma câmera da cidade: a primeira tela diz o que está fora do normal agora — UV, rajadas, chuva, partículas no ar — e cada uma das catorze medidas tem o seu gráfico das últimas vinte e quatro horas.',
       team: 'Unijuí · Redesenho',
     },
+    'lucas-patterns': {
+      status: 'Código aberto · Skill do Claude Code',
+      tagline: 'O meu jeito de fazer front-end, escrito para um agente seguir.',
+      summary:
+        'Uma skill do Claude Code com o meu processo e o meu gosto: a dor do cliente primeiro, uma referência de estrutura, cores e fontes escolhidas para cada app, uma revisão cega e depois os micro ajustes. Ela lê o código e mede a página num navegador de verdade.',
+      team: 'Solo · Código aberto',
+    },
   },
 
   es: {
@@ -253,6 +268,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         'El panel de una estación meteorológica sobre una cámara de la ciudad: la primera pantalla dice qué está fuera de lo normal ahora — UV, ráfagas, lluvia, partículas en el aire — y cada una de las catorce mediciones tiene su gráfico de las últimas veinticuatro horas.',
       team: 'Unijui · Rediseño',
+    },
+    'lucas-patterns': {
+      status: 'Código abierto · Skill de Claude Code',
+      tagline: 'Mi forma de hacer front end, escrita para que un agente la siga.',
+      summary:
+        'Una skill de Claude Code con mi proceso y mi gusto: primero el dolor del cliente, una referencia de estructura, colores y fuentes elegidos para cada app, una revisión a ciegas y luego pequeños ajustes. Lee el código y mide la página en un navegador real.',
+      team: 'Solo · Código abierto',
     },
   },
 
@@ -329,6 +351,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         'Il pannello di una stazione meteorologica sopra una telecamera sulla città: la prima schermata dice cosa è fuori dal normale adesso — UV, raffiche, pioggia, polveri sottili — e ognuna delle quattordici misure ha il suo grafico delle ultime ventiquattro ore.',
       team: 'Unijui · Redesign',
     },
+    'lucas-patterns': {
+      status: 'Open source · Skill di Claude Code',
+      tagline: 'Il mio modo di fare front end, scritto perché un agente lo segua.',
+      summary:
+        'Una skill di Claude Code con il mio processo e il mio gusto: prima il problema del cliente, un riferimento di struttura, colori e font scelti per ogni app, una revisione alla cieca e poi piccoli ritocchi. Legge il codice e misura la pagina in un browser vero.',
+      team: 'Solo · Open source',
+    },
   },
 
   ja: {
@@ -403,6 +432,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         '街のカメラ映像の上に重ねた気象ステーションのダッシュボード。最初の画面で、いま普段と違うこと（紫外線、突風、雨、微小粒子）を伝え、14の計測値それぞれに過去24時間のグラフがあります。',
       team: 'Unijui · リデザイン',
+    },
+    'lucas-patterns': {
+      status: 'オープンソース · Claude Code スキル',
+      tagline: '私のフロントエンドの作り方を、エージェントが従えるように書き留めたもの。',
+      summary:
+        '私のプロセスと好みを持つ Claude Code スキル。まず依頼主の課題、構成の参考、アプリごとに選ぶ色とフォント、ブラインドレビュー、そして細かな調整。コードを読み、本物のブラウザでページを測ります。',
+      team: 'ソロ · オープンソース',
     },
   },
 };

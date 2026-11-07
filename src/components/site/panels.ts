@@ -20,7 +20,8 @@ export type ProjectId =
   | 'medical-chatbot'
   | 'phantom-commerce'
   | 'guessquest'
-  | 'estacao-sao-paulo';
+  | 'estacao-sao-paulo'
+  | 'lucas-patterns';
 
 type Shot = { src: string; clip?: string }; // clip: 5 s, 640×400 loop (plays while facing you)
 
@@ -173,6 +174,17 @@ export const SHOWCASE: Showcase[] = [
     // recorded from the live site (sample data); the city footage is from Pexels
     shots: [{ src: '/projects/estacao/inicio.webp', clip: '/projects/estacao/panel.mp4' }],
     media: video('estacao', '/projects/estacao/inicio.webp'),
+  },
+  {
+    slug: 'lucas-patterns',
+    title: 'lucas-patterns',
+    short: 'lucas-patterns',
+    note: 'Skill · Claude Code',
+    tone: '#e8e4dc',
+    icon: '/icons/app/lucas-patterns.png',
+    // the weather station before and after the skill, wiped from one to the other
+    shots: [{ src: '/projects/lucas-patterns/inicio.webp', clip: '/projects/lucas-patterns/panel.mp4' }],
+    media: video('lucas-patterns', '/projects/lucas-patterns/inicio.webp'),
   },
 ];
 

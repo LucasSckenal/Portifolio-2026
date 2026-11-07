@@ -86,6 +86,81 @@ function Figure({ src, alt, caption, variant }: { src: string; alt: string; capt
   );
 }
 
+type CompareSection = Extract<CaseSection, { type: 'compare' }>;
+
+// The old screen over the new one. On first sight the seam sweeps once to the
+// middle so it reads as something to drag; after that it is the visitor's.
+function Compare({ s }: { s: CompareSection }) {
+  const ref = useRef<HTMLElement>(null);
+  const touched = useRef(false);
+  const [pos, setPos] = useState(50);
+  const [seen, setSeen] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        setSeen(true);
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const t0 = performance.now();
+        const step = (t: number) => {
+          if (touched.current) return;
+          const k = Math.min(1, (t - t0) / 1400);
+          const ease = 1 - Math.pow(1 - k, 3);
+          setPos(88 - 38 * ease);
+          if (k < 1) raf = requestAnimationFrame(step);
+        };
+        setPos(88);
+        raf = requestAnimationFrame(step);
+      },
+      { threshold: 0.4 }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return (
+    <figure ref={ref} className={`${styles.figure} ${styles.compare} ${seen ? styles.compareSeen : ''}`}>
+      <div className={styles.frame} style={{ ['--pos' as string]: `${pos}%` }}>
+        <Image src={s.after.src} alt={s.after.alt} fill sizes="(max-width: 900px) 100vw, 1000px" />
+        <div className={styles.compareBefore}>
+          <Image src={s.before.src} alt={s.before.alt} fill sizes="(max-width: 900px) 100vw, 1000px" />
+        </div>
+        <span className={styles.seam} aria-hidden />
+        <span className={`${styles.compareTag} ${styles.compareTagBefore}`} aria-hidden>
+          {s.before.tag}
+        </span>
+        <span className={`${styles.compareTag} ${styles.compareTagAfter}`} aria-hidden>
+          {s.after.tag}
+        </span>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          step={1}
+          value={Math.round(pos)}
+          aria-label={s.label}
+          aria-valuetext={`${s.before.tag} ${Math.round(pos)}% · ${s.after.tag} ${100 - Math.round(pos)}%`}
+          onPointerDown={() => (touched.current = true)}
+          onKeyDown={() => (touched.current = true)}
+          onChange={(e) => {
+            touched.current = true;
+            setPos(+e.target.value);
+          }}
+        />
+      </div>
+      {s.caption && <figcaption>{s.caption}</figcaption>}
+    </figure>
+  );
+}
+
 function Section({ s }: { s: CaseSection }) {
   switch (s.type) {
     case 'lead':
@@ -132,6 +207,8 @@ function Section({ s }: { s: CaseSection }) {
           ))}
         </dl>
       );
+    case 'compare':
+      return <Compare s={s} />;
     case 'divider':
       return <hr className={styles.hr} />;
     default:

@@ -459,6 +459,105 @@
   transform: scale(1.02);
 }
 
+// Before / after: the old capture sits over the new one, cut at --pos.
+.compare .frame {
+  aspect-ratio: 2 / 1;
+  touch-action: pan-y;
+
+  img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+
+  &:has(input:focus-visible) .seam::after {
+    outline: 2px solid var(--surface);
+    outline-offset: 3px;
+  }
+}
+
+.compareBefore {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0);
+}
+
+.seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos, 50%);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--surface);
+  box-shadow: 0 0 12px rgba(13, 13, 13, 0.4);
+  pointer-events: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background:
+      linear-gradient(90deg, transparent 13px, var(--ink) 13px 15px, transparent 15px 25px, var(--ink) 25px 27px, transparent 27px)
+        center / 100% 14px no-repeat,
+      var(--surface);
+    box-shadow: 0 8px 20px -6px rgba(13, 13, 13, 0.55);
+    transition: transform 0.2s var(--ease-out);
+  }
+}
+
+.compare .frame:active .seam::after {
+  transform: translate(-50%, -50%) scale(0.92);
+}
+
+.compareTag {
+  position: absolute;
+  top: 14px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--surface);
+  background: rgba(13, 13, 13, 0.55);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out) 0.4s;
+}
+
+.compareTagBefore {
+  left: 14px;
+}
+
+.compareTagAfter {
+  right: 14px;
+}
+
+.compareSeen .compareTag {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce), (scripting: none) {
+  .compareTag {
+    opacity: 1;
+    transition: none;
+  }
+}
+
 .primary,
 .secondary {
   &:active {

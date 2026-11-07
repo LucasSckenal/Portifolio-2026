@@ -21,6 +21,14 @@ export type CaseSection =
   | { type: 'image'; src: string; alt: string; caption?: string; variant?: 'wide' | 'mobile' }
   | { type: 'gallery'; images: Array<{ src: string; alt: string; caption?: string; variant?: 'wide' | 'mobile' }> }
   | { type: 'stats'; items: Array<{ label: string; value: string; jp?: string }> }
+  // two captures of the same screen, one over the other, with a handle to drag
+  | {
+      type: 'compare';
+      label: string;
+      before: { src: string; alt: string; tag: string };
+      after: { src: string; alt: string; tag: string };
+      caption?: string;
+    }
   | { type: 'divider' };
 
 export type ProjectCase = {
@@ -444,6 +452,82 @@ export const projects: ProjectCase[] = [
         alt: 'LJ mobile view — same hierarchy at phone width',
         caption: 'Mobile view — same hierarchy, same restraint. Booking still one tap.',
         variant: 'mobile',
+      },
+    ],
+  },
+  {
+    slug: 'lucas-patterns',
+    index: '04',
+    title: 'lucas-patterns',
+    jp: '型',
+    jpLabel: '型 · Pattern',
+    year: '2026',
+    status: 'Open source · Claude Code skill',
+    tagline: 'My way of building front end, written down so an agent can follow it.',
+    description:
+      'A Claude Code skill that carries my process and my taste, so the pages it helps build reach the level of this portfolio without copying its look.',
+    roles: ['Design System', 'Process', 'Tooling'],
+    tech: ['Claude Code', 'Node', 'Chrome DevTools Protocol'],
+    team: 'Solo · Open source',
+    href: 'https://github.com/LucasSckenal/lucas-patterns',
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body: 'Taste is hard to hand over. This skill writes mine down: little text, a lot of empty space, one idea per page, and one piece a common site does not have.',
+      },
+      {
+        type: 'compare',
+        label: 'Drag to compare the old weather station dashboard with the new one',
+        before: {
+          src: '/projects/lucas-patterns/antes.webp',
+          alt: 'The old Unijui weather station dashboard: a grid of charts behind a login',
+          tag: '2024',
+        },
+        after: {
+          src: '/projects/lucas-patterns/depois.webp',
+          alt: 'Estação São Paulo: one sentence about the hour over a live view of the city',
+          tag: '2026',
+        },
+        caption: 'The first screen, before and after the skill. Drag the line.',
+      },
+      {
+        type: 'paragraph',
+        body: 'Before, every chart had the same weight and a menu of switches decided what showed. After, the hour is one sentence, and each reading gets the chart that suits it.',
+      },
+      {
+        type: 'compare',
+        label: 'Drag to compare the old charts with the new ones',
+        before: {
+          src: '/projects/lucas-patterns/antes-graficos.webp',
+          alt: 'The old charts: a compass, a dial and three grids with the same purple and green lines',
+          tag: '2024',
+        },
+        after: {
+          src: '/projects/lucas-patterns/depois-graficos.webp',
+          alt: 'The new charts: a timeline over glass cards, wind bars with gusts, a compass and the rain highlighted',
+          tag: '2026',
+        },
+        caption: 'The charts: one timeline moves them all, and what is out of the ordinary is lit.',
+      },
+      { type: 'heading', text: 'Four steps, in order', jp: '順', jpLabel: '順 · Order' },
+      {
+        type: 'list',
+        ordered: true,
+        items: [
+          'The client’s pain, in their words.',
+          'A structure reference, from Pinterest or a sketch.',
+          'Colours and fonts chosen for this app, never reused.',
+          'A blind review, then small fixes.',
+        ],
+      },
+      {
+        type: 'paragraph',
+        body: 'Two scripts keep it honest: one reads the code for colours outside the tokens and exposed secrets, the other opens the page in a headless Chrome and measures contrast, touch targets, word count and load time, wide and narrow.',
+      },
+      {
+        type: 'paragraph',
+        body: 'Install it with one line: npx skills add LucasSckenal/lucas-patterns -g -a claude-code',
       },
     ],
   },

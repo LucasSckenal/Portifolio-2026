@@ -1355,8 +1355,8 @@ export const nightProjects: ProjectCase[] = [
       'A new front end for a weather station dashboard first built at Unijui: instead of picking a sensor and a line from menus, the first screen says what is out of the ordinary right now, over a camera on the city.',
     roles: ['Product Design', 'Front-End', 'Data Viz', 'Motion'],
     tech: ['React', 'Vite', 'SCSS', 'NestJS', 'PostgreSQL'],
-    href: 'https://github.com/LucasSckenal/estacao-unijui',
-    live: 'https://estacao-unijui.vercel.app/',
+    href: 'https://github.com/LucasSckenal/estacao-sao-paulo',
+    live: 'https://estacao-sao-paulo.vercel.app/',
     mood: 'dark',
     sections: [
       {

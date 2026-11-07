@@ -21,7 +21,9 @@ export type ProjectId =
   | 'phantom-commerce'
   | 'guessquest'
   | 'estacao-sao-paulo'
-  | 'lucas-patterns';
+  | 'lucas-patterns'
+  | 'mirante'
+  | 'prancha';
 
 type Shot = { src: string; clip?: string }; // clip: 5 s, 640×400 loop (plays while facing you)
 
@@ -185,6 +187,28 @@ export const SHOWCASE: Showcase[] = [
     // the weather station before and after the skill, wiped from one to the other
     shots: [{ src: '/projects/lucas-patterns/inicio.webp', clip: '/projects/lucas-patterns/panel.mp4' }],
     media: video('lucas-patterns', '/projects/lucas-patterns/inicio.webp'),
+  },
+  {
+    slug: 'mirante',
+    title: 'Mirante Imóveis',
+    short: 'Mirante',
+    note: 'HTML · WebGL',
+    tone: '#c08a66',
+    icon: '/icons/app/mirante.png',
+    // recorded from the site (sample listings); landscape photos from Unsplash
+    shots: [{ src: '/projects/mirante/inicio.webp', clip: '/projects/mirante/panel.mp4' }],
+    media: video('mirante', '/projects/mirante/inicio.webp'),
+  },
+  {
+    slug: 'prancha',
+    title: 'Prancha',
+    short: 'Prancha',
+    note: 'Next.js · Gemini',
+    tone: '#8e8e93',
+    icon: '/icons/app/prancha.png',
+    // recorded from the live demo (sample clients, replies from the offline template)
+    shots: [{ src: '/projects/prancha/inicio.webp', clip: '/projects/prancha/panel.mp4' }],
+    media: video('prancha', '/projects/prancha/inicio.webp'),
   },
 ];
 

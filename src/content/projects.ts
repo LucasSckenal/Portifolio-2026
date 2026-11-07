@@ -531,6 +531,136 @@ export const projects: ProjectCase[] = [
       },
     ],
   },
+  {
+    slug: 'mirante',
+    index: '05',
+    title: 'Mirante Imóveis',
+    jp: '眺',
+    jpLabel: '眺 · View',
+    year: '2026',
+    status: 'Template · Concept',
+    tagline: 'Start with the view. The house comes after.',
+    description:
+      'A site template for a high-end real-estate agency. People who buy these houses are buying what they see from the window, so the search starts there — sea, mountains, lake or city — instead of with neighbourhood and price.',
+    roles: ['Concept', 'Front-End', 'WebGL', 'Motion'],
+    tech: ['HTML', 'CSS', 'JavaScript', 'WebGL'],
+    team: 'Solo · Concept',
+    href: 'https://github.com/LucasSckenal/mirante-imoveis',
+    mood: 'light',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'Real-estate sites make you start like a portal: neighbourhood, bedrooms, price. Mirante starts with the one thing these buyers actually pay for — the view — and lets the house follow.',
+      },
+      {
+        type: 'image',
+        src: '/projects/mirante/inicio.webp',
+        alt: 'Mirante Imóveis — the first screen: “Comece pela Vista” over the sea, with the featured house, the numbers and the call to sell',
+        caption: 'The first screen: pick a view, and the landscape, the featured house and the count all follow.',
+      },
+      { type: 'heading', text: 'A view, then a house', jp: '景', jpLabel: '景 · Scene' },
+      {
+        type: 'paragraph',
+        body:
+          'Choosing Sea, Mountains, Lake or City swaps the landscape with a WebGL wave that rises from the horizon, and the houses below are already filtered. The count, the starting price and the featured house roll to their new values. The filter lives in the address, so a search can be sent over WhatsApp as a link.',
+      },
+      {
+        type: 'image',
+        src: '/projects/mirante/serra.webp',
+        alt: 'Mirante Imóveis — the mountain view, with three houses and the featured one from Campos do Jordão',
+        caption: 'The mountain view. Every number on the screen is counted from the listings, never typed by hand.',
+      },
+      {
+        type: 'paragraph',
+        body:
+          'On scroll, the first screen stays pinned and shrinks into a rounded frame while the list of houses slides over it. With reduced motion everything simply appears in place, and without JavaScript the full list is already in the HTML.',
+      },
+      {
+        type: 'image',
+        src: '/projects/mirante/lista.webp',
+        alt: 'Mirante Imóveis — the list of houses with a mountain view, with filters for bedrooms and price',
+        caption: 'Each house opens a WhatsApp message with its code already written.',
+      },
+      {
+        type: 'gallery',
+        images: [
+          { src: '/projects/mirante/celular.webp', alt: 'The first screen on a phone', caption: 'On the phone, the cards stack under the title.', variant: 'mobile' },
+          { src: '/projects/mirante/celular-lista.webp', alt: 'The list of houses on a phone', caption: 'The list in one column.', variant: 'mobile' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        body:
+          'It is a template, not a client: listings, prices and the agency are sample data, and the photos are from Unsplash. The layout of the first screen follows a reference shot found on Pinterest; the view-first idea, the WebGL transition, the scroll frame and the build are mine.',
+      },
+    ],
+  },
+  {
+    slug: 'prancha',
+    index: '06',
+    title: 'Prancha',
+    jp: '板',
+    jpLabel: '板 · Board',
+    year: '2026',
+    status: 'Personal · Live demo',
+    tagline: 'Loose ideas from WhatsApp, turned into a brief Claude can build from.',
+    description:
+      'Clients send ideas in pieces: a voice note, a print of a site they like, three messages at midnight. Prancha is where I paste those pieces, one conversation per client, until they add up to a brief Claude can build from.',
+    roles: ['Product', 'Front-End', 'AI', 'WebGL'],
+    tech: ['Next.js 16', 'React 19', 'TypeScript', 'Gemini', 'Three.js'],
+    team: 'Solo · Personal tool',
+    live: 'https://prancha-two.vercel.app',
+    mood: 'light',
+    sections: [
+      {
+        type: 'lead',
+        body: 'The hard part of building for a client is not the code. It is getting from “I want something clean” to a brief that says what to build. Prancha does that part with me.',
+      },
+      {
+        type: 'image',
+        src: '/projects/prancha/inicio.webp',
+        alt: 'Prancha — the clients list, the conversation with Studio Pilates Leve and the finished brief in a dark panel',
+        caption: 'One conversation per client. The brief sits beside it, ready to copy.',
+      },
+      { type: 'heading', text: 'I write as the client', jp: '話', jpLabel: '話 · Talk' },
+      {
+        type: 'paragraph',
+        body: 'Each message I send is something the client said, with their prints and audio attached. Gemini reads it all, says what it understood and asks only what is still missing: the pain, the main action, who uses it, the tone, a reference. I forward the questions on WhatsApp in one tap.',
+      },
+      {
+        type: 'paragraph',
+        body: 'When nothing is missing, it writes the brief in the order of my own front-end skill, lucas-patterns, and ends by telling Claude Code to use it. A second prompt describes a visual concept of the screen for an image model.',
+      },
+      {
+        type: 'image',
+        src: '/projects/prancha/entrar.webp',
+        alt: 'Prancha sign-in — a black card with a 3D scene of scattered fragments becoming one sheet, beside the sign-in form',
+        caption: 'The sign-in screen tells the product in three acts: pieces arrive, get organised, a sheet comes out.',
+      },
+      {
+        type: 'paragraph',
+        body: 'The folded corner of the logo is the signature of the whole app: the sidebar and the black card are cut the same way. Everything is monochrome glass, so the only colour on screen is what the client sent.',
+      },
+      {
+        type: 'image',
+        src: '/projects/prancha/arquivos.webp',
+        alt: 'Prancha files — folders per client with prints, audio, briefs as Markdown and concepts',
+        caption: 'Files: every print, audio, brief and concept, sorted by client.',
+      },
+      {
+        type: 'gallery',
+        images: [
+          { src: '/projects/prancha/celular-lista.webp', alt: 'The clients list on a phone', caption: 'On the phone, the sidebar becomes a top bar.', variant: 'mobile' },
+          { src: '/projects/prancha/celular.webp', alt: 'A conversation on a phone', caption: 'Conversation and brief switch with one tab.', variant: 'mobile' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        body: 'It is built for one person, so the history lives in the browser and the Gemini key stays on the server. The public demo opens with sample clients and answers from an offline template, so nothing is sent anywhere.',
+      },
+    ],
+  },
 ];
 
 // =========================================

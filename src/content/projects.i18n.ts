@@ -29,7 +29,9 @@ type Slug =
   | 'phantom-commerce'
   | 'guessquest'
   | 'estacao-sao-paulo'
-  | 'lucas-patterns';
+  | 'lucas-patterns'
+  | 'mirante'
+  | 'prancha';
 
 export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   en: {
@@ -111,6 +113,20 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         'A Claude Code skill that carries my process and my taste: the client’s pain first, a structure reference, colours and fonts picked for each app, a blind review, then small fixes. It reads the code and measures the page in a real browser.',
       team: 'Solo · Open source',
+    },
+    'mirante': {
+      status: 'Template · Concept',
+      tagline: 'Start with the view. The house comes after.',
+      summary:
+        'A real-estate template for high-end homes where the search begins with what you see from the window — sea, mountains, lake or city. Picking a view swaps the landscape with a WebGL wave and filters the houses below; scrolling shrinks the screen into a frame.',
+      team: 'Solo · Concept',
+    },
+    prancha: {
+      status: 'Personal · Live demo',
+      tagline: 'Loose ideas from WhatsApp, turned into a brief Claude can build from.',
+      summary:
+        'A personal tool where each client is a conversation: I paste in their texts, prints and audio, Gemini asks what is missing, and the result is a brief ready for Claude. It also writes the prompt for a visual concept of the screen.',
+      team: 'Solo · Personal tool',
     },
   },
 
@@ -194,6 +210,20 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         'Uma skill do Claude Code com o meu processo e o meu gosto: a dor do cliente primeiro, uma referência de estrutura, cores e fontes escolhidas para cada app, uma revisão cega e depois os micro ajustes. Ela lê o código e mede a página num navegador de verdade.',
       team: 'Solo · Código aberto',
     },
+    'mirante': {
+      status: 'Template · Conceito',
+      tagline: 'Comece pela vista. A casa vem depois.',
+      summary:
+        'Um template de imobiliária de alto padrão em que a busca começa pelo que se vê da janela — mar, serra, lago ou cidade. Escolher a vista troca a paisagem com uma onda em WebGL e filtra as casas logo abaixo; ao rolar, a tela encolhe até virar moldura.',
+      team: 'Solo · Conceito',
+    },
+    prancha: {
+      status: 'Pessoal · Demo no ar',
+      tagline: 'Ideias soltas do WhatsApp viram um briefing que o Claude consegue construir.',
+      summary:
+        'Uma ferramenta pessoal em que cada cliente é uma conversa: colo os textos, prints e áudios dele, o Gemini pergunta o que falta e o resultado é um briefing pronto para o Claude. Também escreve o prompt de um conceito visual da tela.',
+      team: 'Solo · Ferramenta pessoal',
+    },
   },
 
   es: {
@@ -275,6 +305,20 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         'Una skill de Claude Code con mi proceso y mi gusto: primero el dolor del cliente, una referencia de estructura, colores y fuentes elegidos para cada app, una revisión a ciegas y luego pequeños ajustes. Lee el código y mide la página en un navegador real.',
       team: 'Solo · Código abierto',
+    },
+    'mirante': {
+      status: 'Plantilla · Concepto',
+      tagline: 'Empieza por la vista. La casa viene después.',
+      summary:
+        'Una plantilla inmobiliaria de alto nivel en la que la búsqueda empieza por lo que se ve desde la ventana — mar, sierra, lago o ciudad. Elegir la vista cambia el paisaje con una onda en WebGL y filtra las casas de abajo; al desplazarse, la pantalla se encoge hasta volverse un marco.',
+      team: 'Solo · Concepto',
+    },
+    prancha: {
+      status: 'Personal · Demo en línea',
+      tagline: 'Ideas sueltas de WhatsApp convertidas en un brief con el que Claude puede construir.',
+      summary:
+        'Una herramienta personal en la que cada cliente es una conversación: pego sus textos, capturas y audios, Gemini pregunta lo que falta y el resultado es un brief listo para Claude. También escribe el prompt de un concepto visual de la pantalla.',
+      team: 'Solo · Herramienta personal',
     },
   },
 
@@ -358,6 +402,20 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         'Una skill di Claude Code con il mio processo e il mio gusto: prima il problema del cliente, un riferimento di struttura, colori e font scelti per ogni app, una revisione alla cieca e poi piccoli ritocchi. Legge il codice e misura la pagina in un browser vero.',
       team: 'Solo · Open source',
     },
+    'mirante': {
+      status: 'Template · Concept',
+      tagline: 'Parti dalla vista. La casa viene dopo.',
+      summary:
+        'Un template immobiliare di fascia alta in cui la ricerca parte da ciò che si vede dalla finestra — mare, montagna, lago o città. Scegliere la vista cambia il paesaggio con un’onda in WebGL e filtra le case sotto; scorrendo, lo schermo si rimpicciolisce fino a diventare una cornice.',
+      team: 'Solo · Concept',
+    },
+    prancha: {
+      status: 'Personale · Demo online',
+      tagline: 'Idee sparse da WhatsApp trasformate in un brief da cui Claude può costruire.',
+      summary:
+        'Uno strumento personale in cui ogni cliente è una conversazione: incollo i suoi testi, screenshot e audio, Gemini chiede ciò che manca e il risultato è un brief pronto per Claude. Scrive anche il prompt di un concept visivo della schermata.',
+      team: 'Solo · Strumento personale',
+    },
   },
 
   ja: {
@@ -439,6 +497,20 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         '私のプロセスと好みを持つ Claude Code スキル。まず依頼主の課題、構成の参考、アプリごとに選ぶ色とフォント、ブラインドレビュー、そして細かな調整。コードを読み、本物のブラウザでページを測ります。',
       team: 'ソロ · オープンソース',
+    },
+    'mirante': {
+      status: 'テンプレート · コンセプト',
+      tagline: 'まず眺めから。家はそのあとで。',
+      summary:
+        '高級住宅向けの不動産サイトのテンプレート。検索は窓から見える景色（海・山・湖・街）から始まります。眺めを選ぶとWebGLの波で風景が切り替わり、下の物件が絞り込まれます。スクロールすると画面が縮んで額縁になります。',
+      team: 'ソロ · コンセプト',
+    },
+    prancha: {
+      status: '個人 · デモ公開中',
+      tagline: 'WhatsApp で届いたばらばらのアイデアを、Claude が作れる指示書に。',
+      summary:
+        'クライアントごとにひとつの会話になる個人用ツール。テキスト、スクリーンショット、音声を貼ると Gemini が足りないことを質問し、Claude にそのまま渡せる指示書ができあがります。画面のビジュアルコンセプト用のプロンプトも書きます。',
+      team: 'ソロ · 個人用ツール',
     },
   },
 };

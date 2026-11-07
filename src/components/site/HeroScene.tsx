@@ -996,12 +996,22 @@ function Rig({ reduced }: { reduced: boolean }) {
 }
 
 function Stage({ reduced, onOpen, controlRef, onReady, openSlug, onFlight }: Props) {
-  const { viewport } = useThree();
+  const { viewport, size } = useThree();
   const textures = usePanelTextures();
+  // the hero measures how tall the photo may be under its buttons
+  const [cap, setCap] = useState(anchors.photoMax);
+  useEffect(() => {
+    const on = () => setCap(anchors.photoMax);
+    on();
+    window.addEventListener('hero:photo', on);
+    return () => window.removeEventListener('hero:photo', on);
+  }, []);
   // The canvas covers the whole hero. The photo sits bottom-aligned and
   // large (on phones it bleeds past the sides — its ground is the page).
   const narrow = viewport.width < viewport.height;
-  const h = Math.min(viewport.height * 0.6, (viewport.width / PHOTO_ASPECT) * (narrow ? 1.75 : 1.12));
+  const capUnits = cap && size.height ? (cap * viewport.height) / size.height : Infinity;
+  // phones: the head fills the space under the buttons instead of leaving a gap
+  const h = Math.min(viewport.height * (narrow ? 0.7 : 0.6), (viewport.width / PHOTO_ASPECT) * (narrow ? 2.5 : 1.12), capUnits);
   const y = -viewport.height / 2 + h / 2;
   const radius = h * ORBIT_DEFAULTS.radius;
   // head centre in the photo ≈ (0.54, 0.40) of the frame, ring at eye level

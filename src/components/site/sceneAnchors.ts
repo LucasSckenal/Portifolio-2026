@@ -14,4 +14,10 @@ export const anchors: {
   focus: { x0: number; y0: number; x1: number; y1: number } | null;
   /** "About me" is open: points on Lucas's head (HEAD_POINTS order) */
   head: Point[] | null;
-} = { left: null, right: null, focus: null, head: null };
+  /** tallest the photo may be (CSS px) so the ring stays under the buttons */
+  photoMax: number | null;
+} = { left: null, right: null, focus: null, head: null, photoMax: null };
+
+// The ring's highest card sits about this far below the photo's top edge,
+// as a share of the photo's height (measured with the default tuning).
+export const RING_TOP = 0.24;

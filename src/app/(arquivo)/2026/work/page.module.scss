@@ -273,7 +273,7 @@ a.rowInner:hover,
 .footerLink {
   position: relative;
   font-family: var(--font-mono);
-  font-size: 0.6em;
+  font-size: max(0.6em, 0.75rem);
   letter-spacing: var(--track-mark);
   text-transform: uppercase;
   font-style: normal;

@@ -37,7 +37,7 @@
   font-size: var(--t-xs);
   letter-spacing: var(--track-mark);
   text-transform: uppercase;
-  color: rgba(242, 239, 233, 0.45);
+  color: rgba(242, 239, 233, 0.62);
   transition: color 0.5s var(--ease-cinema);
 
   .label {
@@ -81,8 +81,8 @@
 }
 
 .indexNum {
-  font-size: 0.6rem;
-  opacity: 0.8;
+  font-size: 0.75rem;
+  opacity: 1;
 }
 
 // Out of flow and to the left of the dot, shown on hover/focus only, so the

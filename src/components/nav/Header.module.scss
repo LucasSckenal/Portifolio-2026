@@ -149,12 +149,12 @@
       transform: translateX(-50%) translateY(0) scale(1);
     }
 
-    .linkIndex { color: var(--accent); }
+    .linkIndex { color: var(--accent-text); }
   }
 
   &Index {
-    opacity: 0.5;
-    font-size: 0.65rem;
+    opacity: 0.7;
+    font-size: 0.75rem;
     transition: color 0.5s var(--ease-cinema);
   }
 
@@ -162,7 +162,7 @@
   // nav item's section. The label is fully opaque and the index goes accent.
   &Active {
     opacity: 1;
-    .linkIndex { color: var(--accent); }
+    .linkIndex { color: var(--accent-text); }
   }
 }
 
@@ -280,6 +280,8 @@
   }
 
   @include breakpoint(md) { display: none; }
+  // between tablet and wide desktop the links and pickers take the row
+  @media (max-width: 1120px) { display: none; }
 }
 
 // ── Mobile menu trigger ──────────────────

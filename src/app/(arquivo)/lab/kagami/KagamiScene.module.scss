@@ -133,15 +133,15 @@
   font-style: italic;
   font-size: 1.4rem;
   letter-spacing: 0.04em;
-  margin-top: 4px;
+  margin: 4px 0 0;
 }
 
 .signatureSub {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: var(--track-mark);
   text-transform: uppercase;
-  color: rgba(242, 239, 233, 0.45);
+  color: rgba(242, 239, 233, 0.7);
   margin-top: 4px;
 }
 
@@ -150,10 +150,10 @@
   align-self: end;
   justify-self: center;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   letter-spacing: var(--track-mark);
   text-transform: uppercase;
-  color: rgba(242, 239, 233, 0.35);
+  color: rgba(242, 239, 233, 0.62);
   margin-bottom: 8px;
 }
 

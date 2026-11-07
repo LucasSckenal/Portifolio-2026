@@ -233,12 +233,12 @@
 .role {
   padding: 5px 12px;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   letter-spacing: var(--track-mark);
   text-transform: uppercase;
   border: 1px solid currentColor;
   border-radius: 999px;
-  opacity: 0.6;
+  opacity: 0.75;
   transition: opacity 0.5s var(--ease-cinema);
 
   &:hover { opacity: 1; }
@@ -274,14 +274,14 @@
   gap: 8px;
   margin-top: 2px;
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: var(--track-mark);
   text-transform: uppercase;
   opacity: 0.45;
 }
 
 .teamMark {
-  color: var(--accent);
+  color: var(--accent-text);
   opacity: 0.85;
 }
 
@@ -354,7 +354,7 @@
 // ── Primary CTA (Live) ─────────────────
 // Reads as the inviting one — visitor sees "Live" first, then "Repository"
 .viewPrimary {
-  color: var(--accent);
+  color: var(--accent-text);
 
   &::after { background: var(--accent); }
 }

@@ -8,6 +8,7 @@ import { getProjectCopy } from '@/content/projects.i18n';
 import LeaderLines from './LeaderLines';
 import Orbit from './Orbit';
 import { SHOWCASE, type PanelId, type ProjectId } from './panels';
+import { anchors, RING_TOP } from './sceneAnchors';
 import SocialComb from './SocialComb';
 import styles from './hero.module.scss';
 
@@ -75,10 +76,38 @@ export default function Hero() {
   const a = t.site.about;
   const leftNote = useRef<HTMLDivElement>(null);
   const rightNote = useRef<HTMLDivElement>(null);
+
+  // On short screens the photo shrinks so the ring's top cards stay clear of
+  // the buttons; the scene and the poster both read this cap.
+  const section = useRef<HTMLElement>(null);
+  const actions = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const hero = section.current;
+    const row = actions.current;
+    if (!hero || !row) return;
+    const measure = () => {
+      const top = hero.getBoundingClientRect().top;
+      const free = hero.clientHeight - (row.getBoundingClientRect().bottom - top) - 40;
+      const max = Math.max(hero.clientHeight * 0.4, free / (1 - RING_TOP));
+      anchors.photoMax = max;
+      hero.style.setProperty('--photo-max', `${Math.round(max)}px`);
+      window.dispatchEvent(new Event('hero:photo'));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(hero);
+    ro.observe(row);
+    row.addEventListener('animationend', measure);
+    document.fonts?.ready.then(measure).catch(() => {});
+    return () => {
+      ro.disconnect();
+      row.removeEventListener('animationend', measure);
+    };
+  }, []);
   const busy = activity ? SHOWCASE.find((p) => p.slug === activity.slug) : undefined;
 
   return (
-    <section className={`${styles.hero} ${aboutOpen ? styles.heroAbout : ''}`} aria-labelledby="hero-title">
+    <section ref={section} className={`${styles.hero} ${aboutOpen ? styles.heroAbout : ''}`} aria-labelledby="hero-title">
       <div className={styles.copy}>
         {/* keyed by language: switching replays the rise as feedback */}
         <h1 id="hero-title" key={`t-${locale}`} className={styles.title}>
@@ -88,7 +117,7 @@ export default function Hero() {
         <p key={`s-${locale}`} className={styles.sub}>
           {h.sub}
         </p>
-        <div className={styles.actions}>
+        <div ref={actions} className={styles.actions}>
           <button type="button" className={styles.primary} onClick={openFirst}>
             {h.primary}
             <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden>

@@ -58,7 +58,7 @@ export default function KagamiClient() {
 
         <div className={styles.signature}>
           <span className={styles.signatureKanji}>鏡</span>
-          <span className={styles.signatureName}>Kagami</span>
+          <h1 className={styles.signatureName}>Kagami</h1>
           <span className={styles.signatureSub}>WebGL study · 2026</span>
         </div>
 

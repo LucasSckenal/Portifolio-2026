@@ -53,7 +53,19 @@ function HeroMedia({ slug }: { slug: ProjectId }) {
   );
 }
 
-function Figure({ src, alt, caption, variant }: { src: string; alt: string; caption?: string; variant?: 'wide' | 'mobile' }) {
+function Figure({
+  src,
+  alt,
+  caption,
+  variant,
+  sizes,
+}: {
+  src: string;
+  alt: string;
+  caption?: string;
+  variant?: 'wide' | 'mobile';
+  sizes?: string;
+}) {
   const ref = useRef<HTMLElement>(null);
   const [armed, setArmed] = useState(false);
   const [seen, setSeen] = useState(false);
@@ -79,7 +91,12 @@ function Figure({ src, alt, caption, variant }: { src: string; alt: string; capt
       className={`${styles.figure} ${variant === 'mobile' ? styles.figureMobile : ''} ${armed ? styles.armed : ''} ${seen ? styles.seen : ''}`}
     >
       <div className={styles.frame}>
-        <Image src={src} alt={alt} fill sizes={variant === 'mobile' ? '360px' : '(max-width: 900px) 100vw, 1000px'} />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes ?? (variant === 'mobile' ? '360px' : '(max-width: 900px) 100vw, 1000px')}
+        />
       </div>
       {caption && <figcaption>{caption}</figcaption>}
     </figure>
@@ -192,7 +209,12 @@ function Section({ s }: { s: CaseSection }) {
       return (
         <div className={styles.gallery}>
           {s.images.map((im) => (
-            <Figure key={im.src} {...im} />
+            // a gallery cell is a third to a half of the column, not the whole of it
+            <Figure
+              key={im.src}
+              {...im}
+              sizes={im.variant === 'mobile' ? '360px' : '(max-width: 560px) 100vw, (max-width: 900px) 50vw, 360px'}
+            />
           ))}
         </div>
       );

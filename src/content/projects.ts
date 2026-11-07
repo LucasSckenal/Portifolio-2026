@@ -984,9 +984,10 @@ export const nightProjects: ProjectCase[] = [
 
       {
         type: 'image',
-        src: '/projects/PhantomComerce/homepage.png',
+        src: '/projects/PhantomComerce/mobile.png',
         alt: 'Store homepage',
         caption: 'Homepage — composed like a gallery wall.',
+        variant: 'mobile',
       },
 
       {

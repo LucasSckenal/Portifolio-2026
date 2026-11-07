@@ -27,7 +27,8 @@ type Slug =
   | 'onde-estao-os-netos'
   | 'medical-chatbot'
   | 'phantom-commerce'
-  | 'guessquest';
+  | 'guessquest'
+  | 'estacao-sao-paulo';
 
 export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
   en: {
@@ -95,6 +96,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         "A retro arcade quiz in JavaFX: each stage shows a game's cover or a screenshot from the RAWG database and four answers. Fifteen stages, lives, three difficulties up to Souls, lifelines and a leaderboard.",
       team: "Team of 2 · Unijui",
+    },
+    'estacao-sao-paulo': {
+      status: 'Academic · Live demo',
+      tagline: 'A weather station that tells you what is wrong before you ask.',
+      summary:
+        'A weather station dashboard over a camera on the city: the first screen says what is out of the ordinary right now — UV, gusts, rain, fine particles — and every one of the fourteen readings has its own chart across the last twenty-four hours.',
+      team: 'Unijui · Redesign',
     },
   },
 
@@ -164,6 +172,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         "Um quiz de fliperama retrô em JavaFX: cada fase mostra a capa ou uma imagem de um jogo, vinda da base RAWG, e quatro respostas. Quinze fases, vidas, três dificuldades até o modo Souls, ajudas e ranking.",
       team: "Equipe de 2 · Unijuí",
     },
+    'estacao-sao-paulo': {
+      status: 'Acadêmico · Demo no ar',
+      tagline: 'Uma estação do tempo que diz o que está errado antes da pergunta.',
+      summary:
+        'O painel de uma estação meteorológica sobre uma câmera da cidade: a primeira tela diz o que está fora do normal agora — UV, rajadas, chuva, partículas no ar — e cada uma das catorze medidas tem o seu gráfico das últimas vinte e quatro horas.',
+      team: 'Unijuí · Redesenho',
+    },
   },
 
   es: {
@@ -231,6 +246,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         "Un quiz de arcade retro en JavaFX: cada fase muestra la portada o una imagen de un juego, de la base RAWG, y cuatro respuestas. Quince fases, vidas, tres dificultades hasta el modo Souls, comodines y ranking.",
       team: "Equipo de 2 · Unijuí",
+    },
+    'estacao-sao-paulo': {
+      status: 'Académico · Demo en línea',
+      tagline: 'Una estación del tiempo que dice qué anda mal antes de preguntar.',
+      summary:
+        'El panel de una estación meteorológica sobre una cámara de la ciudad: la primera pantalla dice qué está fuera de lo normal ahora — UV, ráfagas, lluvia, partículas en el aire — y cada una de las catorce mediciones tiene su gráfico de las últimas veinticuatro horas.',
+      team: 'Unijui · Rediseño',
     },
   },
 
@@ -300,6 +322,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
         "Un quiz arcade retrò in JavaFX: ogni livello mostra la copertina o un'immagine di un gioco, dal database RAWG, e quattro risposte. Quindici livelli, vite, tre difficoltà fino alla modalità Souls, aiuti e classifica.",
       team: "Team di 2 · Unijuí",
     },
+    'estacao-sao-paulo': {
+      status: 'Accademico · Demo online',
+      tagline: 'Una stazione meteo che ti dice cosa non va prima che tu lo chieda.',
+      summary:
+        'Il pannello di una stazione meteorologica sopra una telecamera sulla città: la prima schermata dice cosa è fuori dal normale adesso — UV, raffiche, pioggia, polveri sottili — e ognuna delle quattordici misure ha il suo grafico delle ultime ventiquattro ore.',
+      team: 'Unijui · Redesign',
+    },
   },
 
   ja: {
@@ -367,6 +396,13 @@ export const projectCopy: Record<Locale, Record<Slug, ProjectCopy>> = {
       summary:
         "JavaFXで作ったレトロなアーケードクイズ。各ステージにRAWGデータベースのゲームのパッケージや画面と4つの選択肢が出ます。15ステージ、ライフ、Soulsまでの3つの難易度、ヘルプ、ランキング付き。",
       team: "2人チーム · Unijuí",
+    },
+    'estacao-sao-paulo': {
+      status: '学業 · デモ公開中',
+      tagline: '聞く前に、いま何がおかしいかを教えてくれる気象ステーション。',
+      summary:
+        '街のカメラ映像の上に重ねた気象ステーションのダッシュボード。最初の画面で、いま普段と違うこと（紫外線、突風、雨、微小粒子）を伝え、14の計測値それぞれに過去24時間のグラフがあります。',
+      team: 'Unijui · リデザイン',
     },
   },
 };

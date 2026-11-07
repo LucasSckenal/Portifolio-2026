@@ -1128,6 +1128,60 @@ export const nightProjects: ProjectCase[] = [
       },
     ],
   },
+  {
+    slug: 'estacao-sao-paulo',
+    index: '05',
+    title: 'Estação São Paulo',
+    jp: '天',
+    jpLabel: '天 · Sky',
+    year: '2026',
+    status: 'Academic · Live demo',
+    tagline: 'A weather station that tells you what is wrong before you ask.',
+    description:
+      'A new front end for a weather station dashboard first built at Unijui: instead of picking a sensor and a line from menus, the first screen says what is out of the ordinary right now, over a camera on the city.',
+    roles: ['Product Design', 'Front-End', 'Data Viz', 'Motion'],
+    tech: ['React', 'Vite', 'SCSS', 'NestJS', 'PostgreSQL'],
+    href: 'https://github.com/LucasSckenal/estacao-unijui',
+    live: 'https://estacao-unijui.vercel.app/',
+    mood: 'dark',
+    sections: [
+      {
+        type: 'lead',
+        body:
+          'The old dashboard made people open menus to find out anything. This one answers first: UV too high, a strong gust, rain, fine particles in the air — or simply that all is normal.',
+      },
+      {
+        type: 'image',
+        src: '/projects/estacao/inicio.webp',
+        alt: 'Estação São Paulo — the first screen: the reading of the hour over the city at night',
+        caption: 'The first screen: the hour in one sentence, the temperature, and the readings on glass.',
+      },
+      { type: 'heading', text: 'Every reading, in its own shape', jp: '形', jpLabel: '形 · Form' },
+      {
+        type: 'paragraph',
+        body:
+          'Fourteen readings from two devices, each drawn the way it reads best: a heat strip for UV, a barometer for pressure, bars with a gust mark for wind, a compass for direction, stems for fine particles. One timeline moves every chart at once, back as far as thirty days.',
+      },
+      {
+        type: 'image',
+        src: '/projects/estacao/graficos.webp',
+        alt: 'Estação São Paulo — the twenty-four hours of every sensor',
+        caption: 'The last twenty-four hours, with the chosen hour marked across every chart.',
+      },
+      {
+        type: 'gallery',
+        images: [
+          { src: '/projects/estacao/celular.webp', alt: 'The first screen on a phone', caption: 'On the phone, the same first screen.', variant: 'mobile' },
+          { src: '/projects/estacao/celular-graficos.webp', alt: 'The charts on a phone', caption: 'Charts stack into one column.', variant: 'mobile' },
+        ],
+      },
+      {
+        type: 'paragraph',
+        body:
+          'It reads the station API from the original project; when that API does not answer, the numbers are sample data and the screen says so. The city video is from Pexels.',
+      },
+    ],
+  },
 ];
 
 // Combined lookup — case study routes serve from either array.

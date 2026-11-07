@@ -19,7 +19,8 @@ export type ProjectId =
   | 'onde-estao-os-netos'
   | 'medical-chatbot'
   | 'phantom-commerce'
-  | 'guessquest';
+  | 'guessquest'
+  | 'estacao-sao-paulo';
 
 type Shot = { src: string; clip?: string }; // clip: 5 s, 640×400 loop (plays while facing you)
 
@@ -161,6 +162,17 @@ export const SHOWCASE: Showcase[] = [
     // cut from Lucas's own play-through recording
     shots: [{ src: '/projects/guessquest/game.webp', clip: '/projects/guessquest/panel.mp4' }],
     media: video('guessquest', '/projects/guessquest/preview-poster.webp'),
+  },
+  {
+    slug: 'estacao-sao-paulo',
+    title: 'Estação São Paulo',
+    short: 'Estação SP',
+    note: 'React · Clima',
+    tone: '#ffb357',
+    icon: '/icons/app/estacao.png',
+    // recorded from the live site (sample data); the city footage is from Pexels
+    shots: [{ src: '/projects/estacao/inicio.webp', clip: '/projects/estacao/panel.mp4' }],
+    media: video('estacao', '/projects/estacao/inicio.webp'),
   },
 ];
 

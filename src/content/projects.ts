@@ -486,7 +486,7 @@ export const projects: ProjectCase[] = [
         },
         after: {
           src: '/projects/lucas-patterns/depois.webp',
-          alt: 'Estação São Paulo: one sentence about the hour over a live view of the city',
+          alt: 'Dashboard Meteorológica: one sentence about the hour over a live view of the city',
           tag: '2026',
         },
         caption: 'The first screen, before and after the skill. Drag the line.',
@@ -1345,7 +1345,7 @@ export const nightProjects: ProjectCase[] = [
   {
     slug: 'estacao-sao-paulo',
     index: '05',
-    title: 'Estação São Paulo',
+    title: 'Dashboard Meteorológica',
     jp: '天',
     jpLabel: '天 · Sky',
     year: '2026',
@@ -1355,8 +1355,8 @@ export const nightProjects: ProjectCase[] = [
       'A new front end for a weather station dashboard first built at Unijui: instead of picking a sensor and a line from menus, the first screen says what is out of the ordinary right now, over a camera on the city.',
     roles: ['Product Design', 'Front-End', 'Data Viz', 'Motion'],
     tech: ['React', 'Vite', 'SCSS', 'NestJS', 'PostgreSQL'],
-    href: 'https://github.com/LucasSckenal/estacao-sao-paulo',
-    live: 'https://estacao-sao-paulo.vercel.app/',
+    href: 'https://github.com/LucasSckenal/dashboard-meteorologico',
+    live: 'https://dashboard-meteorologico-sp.vercel.app/',
     mood: 'dark',
     sections: [
       {
@@ -1367,7 +1367,7 @@ export const nightProjects: ProjectCase[] = [
       {
         type: 'image',
         src: '/projects/estacao/inicio.webp',
-        alt: 'Estação São Paulo — the first screen: the reading of the hour over the city at night',
+        alt: 'Dashboard Meteorológica — the first screen: the reading of the hour over the city at night',
         caption: 'The first screen: the hour in one sentence, the temperature, and the readings on glass.',
       },
       { type: 'heading', text: 'Every reading, in its own shape', jp: '形', jpLabel: '形 · Form' },
@@ -1379,7 +1379,7 @@ export const nightProjects: ProjectCase[] = [
       {
         type: 'image',
         src: '/projects/estacao/graficos.webp',
-        alt: 'Estação São Paulo — the twenty-four hours of every sensor',
+        alt: 'Dashboard Meteorológica — the twenty-four hours of every sensor',
         caption: 'The last twenty-four hours, with the chosen hour marked across every chart.',
       },
       {

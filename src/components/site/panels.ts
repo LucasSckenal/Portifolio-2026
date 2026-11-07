@@ -168,8 +168,8 @@ export const SHOWCASE: Showcase[] = [
   },
   {
     slug: 'estacao-sao-paulo',
-    title: 'Estação São Paulo',
-    short: 'Estação SP',
+    title: 'Dashboard Meteorológica',
+    short: 'Meteorológica',
     note: 'React · Clima',
     tone: '#ffb357',
     icon: '/icons/app/estacao.png',

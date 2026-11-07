@@ -55,6 +55,7 @@
 }
 
 .wordmark {
+  @include hit-area;
   justify-self: start;
   white-space: nowrap;
   font-weight: 600;

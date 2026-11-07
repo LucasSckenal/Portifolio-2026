@@ -1,3 +1,5 @@
+@use './tokens' as *;
+
 // =========================================
 // Case study — the current edition's world: paper-white ground, display
 // serif, project media in glass frames. The home is one fixed screen, so
@@ -25,6 +27,7 @@
 }
 
 .back {
+  @include hit-area;
   justify-self: center;
   font-size: 0.85rem;
   color: var(--ink-3);
@@ -194,6 +197,9 @@
   max-width: 68ch;
   margin: clamp(56px, 8vw, 104px) auto 0;
   display: grid;
+  // the track stays the reading width: a wide figure breaks out of it instead
+  // of stretching it, which pushed the text wide and the page sideways
+  grid-template-columns: minmax(0, 1fr);
   gap: 22px;
 }
 
@@ -270,6 +276,12 @@
 
   .frame {
     box-shadow: 0 30px 60px -36px rgba(13, 13, 13, 0.5);
+
+    // captures are wider than the frame: show them whole, as the hero does
+    img {
+      object-fit: contain;
+      object-position: center;
+    }
   }
 
   figcaption {
@@ -381,6 +393,7 @@
   padding: clamp(64px, 9vw, 120px) 0 clamp(56px, 7vw, 96px);
 
   a {
+    @include hit-area(8px, 8px);
     font-family: var(--font-display), Georgia, serif;
     font-style: italic;
     font-size: clamp(1.4rem, 3.4vw, 2.6rem);

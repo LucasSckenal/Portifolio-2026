@@ -1,3 +1,14 @@
+// Grows what a finger or pointer can hit without moving anything around it.
+@mixin hit-area($y: 10px, $x: 8px) {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: (-$y) (-$x);
+  }
+}
+
 // The site's colour and size tokens. `.site` carries them; anything drawn
 // outside it (portals on document.body) includes them too, or it would pick
 // up the older global theme's values.

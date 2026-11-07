@@ -106,6 +106,8 @@
 
 .card {
   display: grid;
+  // a taller neighbour must not pull this card's text down
+  align-content: start;
   gap: 12px;
   height: 100%;
   padding: 10px 10px 14px;

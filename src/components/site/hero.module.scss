@@ -1,3 +1,5 @@
+@use './tokens' as *;
+
 // =========================================
 // Hero — portrait with a halo of real project screens (Orbit.tsx).
 // =========================================
@@ -348,8 +350,8 @@
   gap: 8px;
   margin-bottom: 4px;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 0.66rem;
-  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-3);
 }
@@ -376,13 +378,14 @@
   gap: 2px;
   margin-top: 8px;
   font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: var(--ink-3);
 }
 
 // the one way from the note to the project it names
 .activityLink {
+  @include hit-area(6px, 4px);
   font-weight: 600;
   color: var(--ink);
   text-decoration: underline;
@@ -492,8 +495,9 @@
 }
 
 .privacy {
+  @include hit-area(6px, 4px);
   width: fit-content;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--ink-3);
   text-decoration: underline;
   text-underline-offset: 3px;
